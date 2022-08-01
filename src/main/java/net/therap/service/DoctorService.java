@@ -4,6 +4,7 @@ import net.therap.dao.DoctorDao;
 import net.therap.model.Admin;
 import net.therap.model.Doctor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  * @author raian.rahman
  * @since 8/1/22
  */
+@Service
 public class DoctorService {
 
     @Autowired
