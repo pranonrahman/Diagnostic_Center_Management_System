@@ -9,5 +9,4 @@ public class DiagnosticCenterManagementSystemApplication {
     public static void main(String[] args) {
         SpringApplication.run(DiagnosticCenterManagementSystemApplication.class, args);
     }
-
 }
