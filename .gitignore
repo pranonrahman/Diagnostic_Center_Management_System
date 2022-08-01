@@ -21,7 +21,6 @@ dist/
 
 # Maven
 target/
-dist/
 
 # JetBrains IDE
 .idea/
@@ -48,3 +47,15 @@ Thumbs.db
 *.mov
 *.wmv
 
+# java files
+.class
+.idea
+out
+build
+*.iml
+
+# Ignore Gradle project-specific cache directory
+.gradle
+gradlew
+gradlew.*
+gradle/
