@@ -19,7 +19,7 @@ public class MedicineDao extends Dao<Medicine> {
         super(Medicine.class);
     }
 
-    public List<Speciality> findAll() {
-        return entityManager.createQuery(FIND_ALL_QUERY, Speciality.class).getResultList();
+    public List<Medicine> findAll() {
+        return entityManager.createQuery(FIND_ALL_QUERY, Medicine.class).getResultList();
     }
 }
