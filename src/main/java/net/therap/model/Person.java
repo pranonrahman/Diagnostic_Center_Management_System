@@ -1,28 +1,47 @@
 package net.therap.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author raian.rahman
  * @since 8/1/22
  */
+@MappedSuperclass
 public class Person extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     private String name;
+
     private String phone;
+
     private String email;
+
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @Column(name = "date_of_birth")
     private Date dateOfBirth;
+
+    @Column(name = "user_name")
     private String userName;
+
     private String password;
-    private List<Role> roleList;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "person_role",
+            joinColumns = {@JoinColumn(name = "person_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<Role> roles;
 
     public Person() {
     }
 
     public Person(Long id, String name, String phone, String email, Gender gender, Date dateOfBirth,
-                  List<Role> roleList, String userName, String password) {
+                  Set<Role> roles, String userName, String password) {
 
         super(id);
         this.name = name;
@@ -30,7 +49,7 @@ public class Person extends BaseEntity {
         this.email = email;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
-        this.roleList = roleList;
+        this.roles = roles;
         this.userName = userName;
         this.password = password;
     }
@@ -75,12 +94,12 @@ public class Person extends BaseEntity {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public List<Role> getRoleList() {
-        return roleList;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public String getUserName() {

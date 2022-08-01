@@ -1,13 +1,21 @@
 package net.therap.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
 /**
  * @author raian.rahman
  * @since 8/1/22
  */
+@Entity
 public class Particular extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     private String name;
+
     private Double cost;
+
     private Integer units;
 
     public Particular() {

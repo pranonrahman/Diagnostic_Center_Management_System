@@ -1,42 +1,51 @@
 package net.therap.model;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author raian.rahman
  * @since 8/1/22
  */
+@Entity
+@Table(name = "patient")
 public class Patient extends Person {
 
-    private List<Prescription> prescriptionList;
-    private List<Invoice> invoiceList;
+    private static final long serialVersionUID = 1L;
+
+    @OneToMany
+    private Set<Prescription> prescriptions;
+
+    @OneToMany
+    private Set<Invoice> invoices;
 
     public Patient() {
     }
 
     public Patient(Long id, String name, String phone, String email, Gender gender,
-                   Date dateOfBirth, List<Role> roleList, String userName, String password,
-                   List<Prescription> prescriptionList, List<Invoice> invoiceList) {
+                   Date dateOfBirth, Set<Role> roleList, String userName, String password,
+                   Set<Prescription> prescriptions, Set<Invoice> invoices) {
 
         super(id, name, phone, email, gender, dateOfBirth, roleList, userName, password);
-        this.prescriptionList = prescriptionList;
-        this.invoiceList = invoiceList;
+        this.prescriptions = prescriptions;
+        this.invoices = invoices;
     }
 
-    public List<Prescription> getPrescriptionList() {
-        return prescriptionList;
+    public Set<Prescription> getPrescriptions() {
+        return prescriptions;
     }
 
-    public void setPrescriptionList(List<Prescription> prescriptionList) {
-        this.prescriptionList = prescriptionList;
+    public void setPrescriptions(Set<Prescription> prescriptions) {
+        this.prescriptions = prescriptions;
     }
 
-    public List<Invoice> getInvoiceList() {
-        return invoiceList;
+    public Set<Invoice> getInvoices() {
+        return invoices;
     }
 
-    public void setInvoiceList(List<Invoice> invoiceList) {
-        this.invoiceList = invoiceList;
+    public void setInvoices(Set<Invoice> invoices) {
+        this.invoices = invoices;
     }
 }

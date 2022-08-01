@@ -1,18 +1,26 @@
 package net.therap.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * @author raian.rahman
  * @since 8/1/22
  */
-public class Service extends BaseEntity {
+@Entity
+@Table(name = "facility")
+public class Facility extends BaseEntity {
+
+    private static final long serialVersionUID = 1L;
 
     private String name;
+
     private Double price;
 
-    public Service() {
+    public Facility() {
     }
 
-    public Service(Long id, String name, Double price) {
+    public Facility(Long id, String name, Double price) {
         super(id);
         this.name = name;
         this.price = price;

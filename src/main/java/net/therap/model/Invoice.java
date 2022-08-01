@@ -1,36 +1,60 @@
 package net.therap.model;
 
-import java.util.List;
+import javax.persistence.*;
+import java.util.Set;
 
 /**
  * @author raian.rahman
  * @since 8/1/22
  */
+@Entity
+@Table(name = "invoice")
 public class Invoice extends BaseEntity {
 
-    private List<Particular> particularList;
+    private static final long serialVersionUID = 1L;
+
     private Double totalCost;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "receptionist_id",
+            nullable = false
+    )
     private Receptionist generator;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "patient_id",
+            nullable = false
+    )
     private Patient patient;
+
+    @ManyToMany
+    @JoinTable(
+            name = "invoice_particular_join_table",
+            joinColumns = {@JoinColumn(name = "invoice_id")},
+            inverseJoinColumns = {@JoinColumn(name = "particular_id")}
+    )
+    private Set<Particular> particulars;
 
     public Invoice() {
     }
 
-    public Invoice(Long id, List<Particular> particularList,
+    public Invoice(Long id, Set<Particular> particulars,
                    Double totalCost, Receptionist generator, Patient patient) {
         super(id);
-        this.particularList = particularList;
+        this.particulars = particulars;
         this.totalCost = totalCost;
         this.generator = generator;
         this.patient = patient;
     }
 
-    public List<Particular> getParticularList() {
-        return particularList;
+    public Set<Particular> getParticulars() {
+        return particulars;
     }
 
-    public void setParticularList(List<Particular> particularList) {
-        this.particularList = particularList;
+    public void setParticulars(Set<Particular> particularList) {
+        this.particulars = particularList;
     }
 
     public Double getTotalCost() {

@@ -1,19 +1,19 @@
 package net.therap.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author raian.rahman
  * @since 8/1/22
  */
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntity implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idSequence")
+    @SequenceGenerator(name = "idSequence", sequenceName = "id_sequence", allocationSize = 1)
     private Long id;
 
     public BaseEntity() {
@@ -29,5 +29,9 @@ public class BaseEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isNew() {
+        return Objects.isNull(id) || id==0;
     }
 }

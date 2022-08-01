@@ -1,26 +1,38 @@
 package net.therap.model;
 
+import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author raian.rahman
  * @since 8/1/22
  */
+@Entity
+@Table(name = "doctor")
 public class Doctor extends Person {
 
+    private static final long serialVersionUID = 1L;
+
     private Double fee;
-    List<Speciality> specialityList;
+
+    @ManyToMany
+    @JoinTable(
+            name = "doctor_specialities",
+            joinColumns = {@JoinColumn(name = "doctor_id")},
+            inverseJoinColumns = {@JoinColumn(name = "speciality_id")}
+    )
+    Set<Speciality> specialities;
 
     public Doctor() {
     }
 
     public Doctor(Long id, String name, String phone, String email, Gender gender, Date dateOfBirth,
-                  List<Role> roleList, String userName, String password, Double fee, List<Speciality> specialityList) {
+                  Set<Role> roles, String userName, String password, Double fee, Set<Speciality> specialities) {
 
-        super(id, name, phone, email, gender, dateOfBirth, roleList, userName, password);
+        super(id, name, phone, email, gender, dateOfBirth, roles, userName, password);
         this.fee = fee;
-        this.specialityList = specialityList;
+        this.specialities = specialities;
     }
 
     public Double getFee() {
@@ -31,11 +43,11 @@ public class Doctor extends Person {
         this.fee = fee;
     }
 
-    public List<Speciality> getSpecialityList() {
-        return specialityList;
+    public Set<Speciality> getSpecialities() {
+        return specialities;
     }
 
-    public void setSpecialityList(List<Speciality> specialityList) {
-        this.specialityList = specialityList;
+    public void setSpecialities(Set<Speciality> specialityList) {
+        this.specialities = specialityList;
     }
 }
