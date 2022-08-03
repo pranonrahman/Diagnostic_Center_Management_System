@@ -14,6 +14,7 @@ public class Invoice extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @Column(name = "total_cost")
     private Double totalCost;
 
     @ManyToOne(fetch = FetchType.LAZY)

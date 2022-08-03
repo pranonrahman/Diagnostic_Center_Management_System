@@ -1,5 +1,6 @@
 package net.therap.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -15,8 +16,10 @@ public class Medicine extends BaseEntity {
 
     private String name;
 
+    @Column(name = "generic_name")
     private String genericName;
 
+    @Column(name = "price_per_unit")
     private Double pricePerUnit;
 
     public Medicine() {

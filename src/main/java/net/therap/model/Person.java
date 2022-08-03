@@ -10,8 +10,10 @@ import java.util.Set;
  * @since 8/1/22
  */
 @Entity
-@Table(name = "person")
+@Table(name = "person", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_name"})})
 public class Person extends BaseEntity {
+
+    private static final long serialVersionUID = 1L;
 
     private String name;
 

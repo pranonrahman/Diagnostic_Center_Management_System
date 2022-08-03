@@ -21,6 +21,7 @@ public class Prescription extends BaseEntity {
 
     private String comment;
 
+    @Column(name = "date_of_visit")
     private Date dateOfVisit;
 
     @ManyToOne
