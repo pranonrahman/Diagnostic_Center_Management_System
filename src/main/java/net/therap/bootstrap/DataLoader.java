@@ -40,6 +40,7 @@ public class DataLoader implements CommandLineRunner {
         createSeedPerson();
         createSeedDoctor();
         createSeedPatient();
+        createSeedMedicine();
     }
 
     private void createSeedFacility() {
@@ -69,15 +70,15 @@ public class DataLoader implements CommandLineRunner {
 
     private void createSeedPerson() {
         Person person1 = new Person();
-        person1.setName("Person 1");
+        person1.setName("Abul Mia");
         personService.saveOrUpdate(person1);
 
         Person person2 = new Person();
-        person2.setName("Person 1");
+        person2.setName("Abdul Kuddus");
         personService.saveOrUpdate(person2);
 
         Person person3 = new Person();
-        person3.setName("Person 1");
+        person3.setName("Abdul Khalek");
         personService.saveOrUpdate(person3);
 
         List<Role> roles = roleService.findAll();

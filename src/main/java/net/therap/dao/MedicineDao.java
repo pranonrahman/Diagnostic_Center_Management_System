@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public class MedicineDao extends Dao<Medicine> {
 
-    private static final String FIND_ALL_QUERY = "FROM Speciality";
+    private static final String FIND_ALL_QUERY = "FROM Medicine";
 
     public MedicineDao() {
         super(Medicine.class);

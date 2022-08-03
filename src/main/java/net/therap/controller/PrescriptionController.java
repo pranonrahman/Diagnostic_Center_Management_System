@@ -2,7 +2,7 @@ package net.therap.controller;
 
 import net.therap.model.Facility;
 import net.therap.model.Prescription;
-import net.therap.property_editor.FacilityEditor;
+import net.therap.editor.FacilityEditor;
 import net.therap.service.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
