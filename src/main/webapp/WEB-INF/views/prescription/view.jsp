@@ -19,40 +19,66 @@
 
 <div class="container-fluid bg-primary-custom h-100">
 
-    <h2 class="text-center my-3"> Student </h2>
-    <div class="w-50">
+    <h2 class="text-center py-3"> Prescription of --patient name-- </h2>
+    <div class="w-50 mx-auto">
 
         <%--@elvariable id="prescription" type="net.therap.model.Prescription"--%>
         <form:form method="post"
                    modelAttribute="prescription">
 
             <div class="mb-3">
-                <form:label path="symptoms" cssClass="form-label">
-                    Student Name
-                </form:label>
+                <form:label path="symptoms" cssClass="form-label">Symptoms</form:label>
 
-                <form:input type="text"
-                            minlength="2"
-                            maxlength="50"
-                            cssClass="form-control"
-                            path="symptoms"/>
+                <form:textarea rows="3"
+                               cssClass="form-control"
+                               path="symptoms"/>
 
                 <form:errors path="symptoms" cssClass="invalid-feedback d-block"/>
             </div>
 
-            <div class="mb-3">
-                <form:label path="diagnosis" cssClass="form-label">
-                    Department
-                </form:label>
+            <fieldset class="form-group mb-3">
+                <label class="col-form-label col-sm-2">Recommendations</label>
+                <div class="col-sm-10">
+                    <form:checkboxes path="facilities"
+                                     items="${facilities}"
+                                     itemLabel="name"
+                                     itemValue="id"
+                                     cssClass="form-check-inline ms-3"/>
 
-                <form:input type="text"
-                            minlength="2"
-                            maxlength="20"
-                            class="form-control"
-                            path="diagnosis"/>
+                    <form:errors path="facilities" cssClass="invalid-feedback d-block"/>
+                </div>
+            </fieldset>
+
+            <div class="mb-3">
+                <form:label path="diagnosis" cssClass="form-label">Diagnosis</form:label>
+
+                <form:textarea rows="3"
+                               cssClass="form-control"
+                               path="diagnosis"/>
 
                 <form:errors path="diagnosis" cssClass="invalid-feedback d-block"/>
             </div>
+
+            <div class="mb-3">
+                <form:label path="medicines" cssClass="form-label">Medicines</form:label>
+
+                <form:textarea rows="3"
+                               cssClass="form-control"
+                               path="medicines"/>
+
+                <form:errors path="medicines" cssClass="invalid-feedback d-block"/>
+            </div>
+
+            <div class="mb-3">
+                <form:label path="comment" cssClass="form-label">Comments</form:label>
+
+                <form:textarea rows="3"
+                               cssClass="form-control"
+                               path="comment"/>
+
+                <form:errors path="comment" cssClass="invalid-feedback d-block"/>
+            </div>
+
 
             <div class="d-grid">
                     <%--                <c:choose>--%>
@@ -62,13 +88,6 @@
                         name="action"
                         value="UPDATE">
                     UPDATE
-                </button>
-
-                <button type="submit"
-                        class="btn btn-danger"
-                        name="action"
-                        value="DELETE">
-                    DELETE
                 </button>
                     <%--                    </c:when>--%>
 

@@ -35,8 +35,7 @@ public class Prescription extends BaseEntity {
     @ManyToMany
     private Set<Facility> facilities;
 
-    @ManyToMany
-    private Set<Medicine> medicines;
+    private String medicines;
 
     public Prescription() {
         facilities = new HashSet<>();
@@ -111,11 +110,11 @@ public class Prescription extends BaseEntity {
         this.facilities = facilities;
     }
 
-    public Set<Medicine> getMedicines() {
+    public String getMedicines() {
         return medicines;
     }
 
-    public void setMedicines(Set<Medicine> medicines) {
+    public void setMedicines(String medicines) {
         this.medicines = medicines;
     }
 }
