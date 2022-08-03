@@ -19,16 +19,16 @@ public class Medicine extends BaseEntity {
     @Column(name = "generic_name")
     private String genericName;
 
-    @Column(name = "price_per_unit")
-    private Double pricePerUnit;
+    @Column(name = "unit_price")
+    private Double unitPrice;
 
     public Medicine() {
     }
 
-    public Medicine(String name, String genericName, Double pricePerUnit) {
+    public Medicine(String name, String genericName, Double unitPrice) {
         this.name = name;
         this.genericName = genericName;
-        this.pricePerUnit = pricePerUnit;
+        this.unitPrice = unitPrice;
     }
 
     public String getName() {
@@ -47,11 +47,11 @@ public class Medicine extends BaseEntity {
         this.genericName = genericName;
     }
 
-    public Double getPricePerUnit() {
-        return pricePerUnit;
+    public Double getUnitPrice() {
+        return unitPrice;
     }
 
-    public void setPricePerUnit(Double pricePerUnit) {
-        this.pricePerUnit = pricePerUnit;
+    public void setUnitPrice(Double pricePerUnit) {
+        this.unitPrice = pricePerUnit;
     }
 }
