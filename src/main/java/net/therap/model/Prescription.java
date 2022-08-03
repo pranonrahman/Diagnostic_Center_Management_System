@@ -26,7 +26,7 @@ public class Prescription extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
-    private Invoice invoice;
+    private Patient patient;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
@@ -41,7 +41,7 @@ public class Prescription extends BaseEntity {
         facilities = new HashSet<>();
     }
 
-    public Prescription(String symptoms, String diagnosis, String comment, Date dateOfVisit, Invoice invoice,
+    public Prescription(String symptoms, String diagnosis, String comment, Date dateOfVisit, Patient patient,
                         Doctor doctor) {
 
         this();
@@ -50,7 +50,7 @@ public class Prescription extends BaseEntity {
         this.diagnosis = diagnosis;
         this.comment = comment;
         this.dateOfVisit = dateOfVisit;
-        this.invoice = invoice;
+        this.patient = patient;
         this.doctor = doctor;
     }
 
@@ -86,12 +86,12 @@ public class Prescription extends BaseEntity {
         this.dateOfVisit = dateOfVisit;
     }
 
-    public Invoice getInvoice() {
-        return invoice;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     public Doctor getDoctor() {
