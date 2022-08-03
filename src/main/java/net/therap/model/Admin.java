@@ -10,7 +10,7 @@ import javax.persistence.UniqueConstraint;
  * @since 8/1/22
  */
 @Entity
-@Table(name = "admin", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_name"})})
+@Table(name = "admin")
 public class Admin extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
