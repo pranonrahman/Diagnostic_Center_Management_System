@@ -1,6 +1,7 @@
 package net.therap.dao;
 
 import net.therap.model.Invoice;
+import net.therap.model.Patient;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,15 +11,15 @@ import java.util.List;
  * @since 8/1/22
  */
 @Repository
-public class PatientDao extends Dao<Invoice> {
+public class PatientDao extends Dao<Patient> {
 
     private static final String FIND_ALL_QUERY = "FROM Patient";
 
     public PatientDao() {
-        super(Invoice.class);
+        super(Patient.class);
     }
 
-    public List<Invoice> findAll() {
-        return entityManager.createQuery(FIND_ALL_QUERY, Invoice.class).getResultList();
+    public List<Patient> findAll() {
+        return entityManager.createQuery(FIND_ALL_QUERY, Patient.class).getResultList();
     }
 }

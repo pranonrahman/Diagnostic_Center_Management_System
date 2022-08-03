@@ -29,7 +29,7 @@ public class Invoice extends BaseEntity {
             name = "patient_id",
             nullable = false
     )
-    private Invoice invoice;
+    private Patient patient;
 
     @ManyToMany
     @JoinTable(
@@ -43,12 +43,10 @@ public class Invoice extends BaseEntity {
         particulars = new HashSet<>();
     }
 
-    public Invoice(Double totalCost, Receptionist generator, Invoice invoice) {
-        this();
-
+    public Invoice(Double totalCost, Receptionist generator, Patient patient) {
         this.totalCost = totalCost;
         this.generator = generator;
-        this.invoice = invoice;
+        this.patient = patient;
     }
 
     public Double getTotalCost() {
@@ -67,12 +65,12 @@ public class Invoice extends BaseEntity {
         this.generator = generator;
     }
 
-    public Invoice getInvoice() {
-        return invoice;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     public Set<Particular> getParticulars() {

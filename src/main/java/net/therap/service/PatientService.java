@@ -2,6 +2,7 @@ package net.therap.service;
 
 import net.therap.dao.PatientDao;
 import net.therap.model.Invoice;
+import net.therap.model.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,27 +19,27 @@ public class PatientService {
     @Autowired
     private PatientDao patientDao;
 
-    public List<Invoice> findAll() {
+    public List<Patient> findAll() {
         return patientDao.findAll();
     }
 
-    public Invoice findById(Long id) {
+    public Patient findById(Long id) {
         return patientDao.findById(id);
     }
 
     @Transactional
-    public Invoice saveOrUpdate(Invoice invoice) {
-        if(invoice.isNew()) {
-            invoice = patientDao.save(invoice);
+    public Patient saveOrUpdate(Patient patient) {
+        if(patient.isNew()) {
+            patient = patientDao.save(patient);
         } else {
-            invoice = patientDao.update(invoice);
+            patient = patientDao.update(patient);
         }
 
-        return invoice;
+        return patient;
     }
 
     @Transactional
-    public void delete(Invoice invoice) {
-        patientDao.delete(invoice);
+    public void delete(Patient patient) {
+        patientDao.delete(patient);
     }
 }
