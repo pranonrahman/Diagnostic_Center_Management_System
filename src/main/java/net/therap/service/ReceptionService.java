@@ -28,13 +28,7 @@ public class ReceptionService {
 
     @Transactional
     public Receptionist saveOrUpdate(Receptionist receptionist) {
-        if(receptionist.isNew()) {
-            receptionist = receptionistDao.save(receptionist);
-        } else {
-            receptionist = receptionistDao.update(receptionist);
-        }
-
-        return receptionist;
+        return receptionistDao.saveOrUpdate(receptionist);
     }
 
     @Transactional

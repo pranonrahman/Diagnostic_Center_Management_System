@@ -1,7 +1,6 @@
 package net.therap.service;
 
 import net.therap.dao.DoctorDao;
-import net.therap.model.Admin;
 import net.therap.model.Doctor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,13 +28,7 @@ public class DoctorService {
 
     @Transactional
     public Doctor saveOrUpdate(Doctor doctor) {
-        if(doctor.isNew()) {
-            doctor = doctorDao.save(doctor);
-        } else {
-            doctor = doctorDao.update(doctor);
-        }
-
-        return doctor;
+        return doctorDao.saveOrUpdate(doctor);
     }
 
     @Transactional

@@ -28,13 +28,7 @@ public class PersonService {
 
     @Transactional
     public Person saveOrUpdate(Person person) {
-        if(person.isNew()) {
-            person = personDao.save(person);
-        } else {
-            person = personDao.update(person);
-        }
-
-        return person;
+        return personDao.saveOrUpdate(person);
     }
 
     @Transactional

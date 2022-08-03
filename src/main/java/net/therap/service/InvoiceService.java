@@ -28,13 +28,7 @@ public class InvoiceService {
 
     @Transactional
     public Invoice saveOrUpdate(Invoice invoice) {
-        if(invoice.isNew()) {
-            invoice = invoiceDao.save(invoice);
-        } else {
-            invoice = invoiceDao.update(invoice);
-        }
-
-        return invoice;
+        return invoiceDao.saveOrUpdate(invoice);
     }
 
     @Transactional
