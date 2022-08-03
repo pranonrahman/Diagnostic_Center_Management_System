@@ -1,7 +1,7 @@
 package net.therap.model;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -10,11 +10,9 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "doctor")
-public class Doctor extends Person {
+public class Doctor extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-
-    private Double fee;
 
     @ManyToMany
     @JoinTable(
@@ -24,15 +22,20 @@ public class Doctor extends Person {
     )
     Set<Speciality> specialities;
 
+    private Double fee;
+
+    @OneToOne
+    private Person person;
+
     public Doctor() {
+        specialities = new HashSet<>();
     }
 
-    public Doctor(Long id, String name, String phone, String email, Gender gender, Date dateOfBirth,
-                  Set<Role> roles, String userName, String password, Double fee, Set<Speciality> specialities) {
+    public Doctor(Double fee, Person person) {
+        this();
 
-        super(id, name, phone, email, gender, dateOfBirth, roles, userName, password);
         this.fee = fee;
-        this.specialities = specialities;
+        this.person = person;
     }
 
     public Double getFee() {
@@ -43,11 +46,19 @@ public class Doctor extends Person {
         this.fee = fee;
     }
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
     public Set<Speciality> getSpecialities() {
         return specialities;
     }
 
-    public void setSpecialities(Set<Speciality> specialityList) {
-        this.specialities = specialityList;
+    public void setSpecialities(Set<Speciality> specialities) {
+        this.specialities = specialities;
     }
 }

@@ -1,11 +1,8 @@
 package net.therap.model;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author raian.rahman
@@ -13,16 +10,25 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "receptionist")
-public class Receptionist extends Person {
+public class Receptionist extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
+
+    @OneToOne
+    private Person person;
 
     public Receptionist() {
     }
 
-    public Receptionist(Long id, String name, String phone, String email, Gender gender, Date dateOfBirth,
-                        Set<Role> roleSet, String userName, String password) {
+    public Receptionist(Person person) {
+        this.person = person;
+    }
 
-        super(id, name, phone, email, gender, dateOfBirth, roleSet, userName, password);
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

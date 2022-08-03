@@ -2,7 +2,8 @@ package net.therap.model;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author raian.rahman
@@ -20,6 +21,7 @@ public class Prescription extends BaseEntity {
 
     private String comment;
 
+    @Column(name = "date_of_visit")
     private Date dateOfVisit;
 
     @ManyToOne
@@ -31,26 +33,26 @@ public class Prescription extends BaseEntity {
     private Doctor doctor;
 
     @ManyToMany
-    private List<Facility> facilityList;
+    private Set<Facility> facilities;
 
     @ManyToMany
-    private List<Medicine> medicineList;
+    private Set<Medicine> medicines;
 
     public Prescription() {
+        facilities = new HashSet<>();
     }
 
-    public Prescription(Long id, String symptoms, String diagnosis, String comment, Date dateOfVisit, Invoice invoice,
-                        Doctor doctor, List<Facility> facilityList, List<Medicine> medicineList) {
+    public Prescription(String symptoms, String diagnosis, String comment, Date dateOfVisit, Invoice invoice,
+                        Doctor doctor) {
 
-        super(id);
+        this();
+
         this.symptoms = symptoms;
         this.diagnosis = diagnosis;
         this.comment = comment;
         this.dateOfVisit = dateOfVisit;
         this.invoice = invoice;
         this.doctor = doctor;
-        this.facilityList = facilityList;
-        this.medicineList = medicineList;
     }
 
     public String getSymptoms() {
@@ -101,19 +103,19 @@ public class Prescription extends BaseEntity {
         this.doctor = doctor;
     }
 
-    public List<Facility> getFacilityList() {
-        return facilityList;
+    public Set<Facility> getFacilities() {
+        return facilities;
     }
 
-    public void setFacilityList(List<Facility> facilityList) {
-        this.facilityList = facilityList;
+    public void setFacilities(Set<Facility> facilities) {
+        this.facilities = facilities;
     }
 
-    public List<Medicine> getMedicineList() {
-        return medicineList;
+    public Set<Medicine> getMedicines() {
+        return medicines;
     }
 
-    public void setMedicineList(List<Medicine> medicineList) {
-        this.medicineList = medicineList;
+    public void setMedicines(Set<Medicine> medicines) {
+        this.medicines = medicines;
     }
 }

@@ -1,15 +1,16 @@
 package net.therap.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author raian.rahman
  * @since 8/1/22
  */
-@MappedSuperclass
+@Entity
+@Table(name = "person", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_name"})})
 public class Person extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -38,18 +39,17 @@ public class Person extends BaseEntity {
     private Set<Role> roles;
 
     public Person() {
+        roles = new HashSet<>();
     }
 
-    public Person(Long id, String name, String phone, String email, Gender gender, Date dateOfBirth,
-                  Set<Role> roles, String userName, String password) {
+    public Person(String name, String phone, String email, Gender gender, Date dateOfBirth, String userName, String password) {
+        this();
 
-        super(id);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
-        this.roles = roles;
         this.userName = userName;
         this.password = password;
     }
@@ -94,14 +94,6 @@ public class Person extends BaseEntity {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
     public String getUserName() {
         return userName;
     }
@@ -116,5 +108,13 @@ public class Person extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

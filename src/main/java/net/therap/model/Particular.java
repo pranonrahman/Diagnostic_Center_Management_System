@@ -1,6 +1,5 @@
 package net.therap.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
@@ -21,8 +20,7 @@ public class Particular extends BaseEntity {
     public Particular() {
     }
 
-    public Particular(Long id, String name, Double cost, Integer units) {
-        super(id);
+    public Particular(String name, Double cost, Integer units) {
         this.name = name;
         this.cost = cost;
         this.units = units;
