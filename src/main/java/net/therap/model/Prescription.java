@@ -1,5 +1,8 @@
 package net.therap.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +13,8 @@ import java.util.List;
  */
 @Entity
 @Table(name = "prescription")
+@Getter
+@Setter
 public class Prescription extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
