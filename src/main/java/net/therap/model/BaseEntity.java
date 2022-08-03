@@ -2,7 +2,8 @@ package net.therap.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
+
+import static java.util.Objects.isNull;
 
 /**
  * @author raian.rahman
@@ -25,6 +26,6 @@ public class BaseEntity implements Serializable {
     }
 
     public boolean isNew() {
-        return Objects.isNull(id) || id == 0;
+        return isNull(id) || id == 0;
     }
 }
