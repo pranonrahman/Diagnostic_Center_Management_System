@@ -28,13 +28,7 @@ public class FacilityService {
 
     @Transactional
     public Facility saveOrUpdate(Facility facility) {
-        if(facility.isNew()) {
-            facility = facilityDao.save(facility);
-        } else {
-            facility = facilityDao.update(facility);
-        }
-
-        return facility;
+        return facilityDao.saveOrUpdate(facility);
     }
 
     @Transactional

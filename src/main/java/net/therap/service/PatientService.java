@@ -1,7 +1,6 @@
 package net.therap.service;
 
 import net.therap.dao.PatientDao;
-import net.therap.model.Invoice;
 import net.therap.model.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,13 +28,7 @@ public class PatientService {
 
     @Transactional
     public Patient saveOrUpdate(Patient patient) {
-        if(patient.isNew()) {
-            patient = patientDao.save(patient);
-        } else {
-            patient = patientDao.update(patient);
-        }
-
-        return patient;
+        return patientDao.saveOrUpdate(patient);
     }
 
     @Transactional

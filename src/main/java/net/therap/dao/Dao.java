@@ -1,8 +1,5 @@
 package net.therap.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -25,13 +22,7 @@ public class Dao<T> {
         return entityManager.find(clazz, id);
     }
 
-    public T save(T object) {
-        entityManager.persist(object);
-        entityManager.flush();
-        return object;
-    }
-
-    public T update(T object) {
+    public T saveOrUpdate(T object) {
         object = entityManager.merge(object);
         entityManager.flush();
         return object;

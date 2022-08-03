@@ -28,13 +28,7 @@ public class PrescriptionService {
 
     @Transactional
     public Prescription saveOrUpdate(Prescription prescription) {
-        if(prescription.isNew()) {
-            prescription = prescriptionDao.save(prescription);
-        } else {
-            prescription = prescriptionDao.update(prescription);
-        }
-
-        return prescription;
+        return prescriptionDao.saveOrUpdate(prescription);
     }
 
     @Transactional

@@ -28,13 +28,7 @@ public class AdminService {
 
     @Transactional
     public Admin saveOrUpdate(Admin admin) {
-        if(admin.isNew()) {
-            admin = adminDao.save(admin);
-        } else {
-            admin = adminDao.update(admin);
-        }
-
-        return admin;
+        return adminDao.saveOrUpdate(admin);
     }
 
     @Transactional

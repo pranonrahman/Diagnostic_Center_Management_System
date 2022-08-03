@@ -28,13 +28,7 @@ public class RoleService {
 
     @Transactional
     public Role saveOrUpdate(Role role) {
-        if(role.isNew()) {
-            role = roleDao.save(role);
-        } else {
-            role = roleDao.update(role);
-        }
-
-        return role;
+        return roleDao.saveOrUpdate(role);
     }
 
     @Transactional

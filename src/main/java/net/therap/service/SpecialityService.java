@@ -28,13 +28,7 @@ public class SpecialityService {
 
     @Transactional
     public Speciality saveOrUpdate(Speciality speciality) {
-        if(speciality.isNew()) {
-            speciality = specialityDao.save(speciality);
-        } else {
-            speciality = specialityDao.update(speciality);
-        }
-
-        return speciality;
+        return specialityDao.saveOrUpdate(speciality);
     }
 
     @Transactional

@@ -28,13 +28,7 @@ public class ParticularService {
 
     @Transactional
     public Particular saveOrUpdate(Particular particular) {
-        if(particular.isNew()) {
-            particular = particularDao.save(particular);
-        } else {
-            particular = particularDao.update(particular);
-        }
-
-        return particular;
+        return particularDao.saveOrUpdate(particular);
     }
 
     @Transactional

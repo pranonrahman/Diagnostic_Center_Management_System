@@ -28,13 +28,7 @@ public class MedicineService {
 
     @Transactional
     public Medicine saveOrUpdate(Medicine medicine) {
-        if(medicine.isNew()) {
-            medicine = medicineDao.save(medicine);
-        } else {
-            medicine = medicineDao.update(medicine);
-        }
-
-        return medicine;
+        return medicineDao.saveOrUpdate(medicine);
     }
 
     @Transactional
