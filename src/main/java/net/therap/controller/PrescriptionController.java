@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class PrescriptionController {
 
+    private static final String VIEW_PAGE = "prescription/view";
+
     @GetMapping("/")
     public String view(ModelMap modelMap){
         modelMap.put("prescription", new Prescription());
 
-        return "prescription/view";
+        return VIEW_PAGE;
     }
 }
