@@ -20,8 +20,7 @@ public class Facility extends BaseEntity {
     public Facility() {
     }
 
-    public Facility(Long id, String name, Double price) {
-        super(id);
+    public Facility(String name, Double price) {
         this.name = name;
         this.price = price;
     }

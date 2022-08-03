@@ -1,6 +1,7 @@
 package net.therap.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -38,23 +39,15 @@ public class Invoice extends BaseEntity {
     private Set<Particular> particulars;
 
     public Invoice() {
+        particulars = new HashSet<>();
     }
 
-    public Invoice(Long id, Set<Particular> particulars,
-                   Double totalCost, Receptionist generator, Invoice invoice) {
-        super(id);
-        this.particulars = particulars;
+    public Invoice(Double totalCost, Receptionist generator, Invoice invoice) {
+        this();
+
         this.totalCost = totalCost;
         this.generator = generator;
         this.invoice = invoice;
-    }
-
-    public Set<Particular> getParticulars() {
-        return particulars;
-    }
-
-    public void setParticulars(Set<Particular> particularList) {
-        this.particulars = particularList;
     }
 
     public Double getTotalCost() {
@@ -73,11 +66,19 @@ public class Invoice extends BaseEntity {
         this.generator = generator;
     }
 
-    public Invoice getPatient() {
+    public Invoice getInvoice() {
         return invoice;
     }
 
-    public void setPatient(Invoice invoice) {
+    public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
+    }
+
+    public Set<Particular> getParticulars() {
+        return particulars;
+    }
+
+    public void setParticulars(Set<Particular> particulars) {
+        this.particulars = particulars;
     }
 }

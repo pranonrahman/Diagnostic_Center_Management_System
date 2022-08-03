@@ -1,6 +1,7 @@
 package net.therap.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * @author raian.rahman
@@ -8,7 +9,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "role")
-public class Role extends BaseEntity{
+public class Role extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,8 +18,7 @@ public class Role extends BaseEntity{
     public Role() {
     }
 
-    public Role(Long id, String name) {
-        super(id);
+    public Role(String name) {
         this.name = name;
     }
 

@@ -18,8 +18,7 @@ public class Speciality extends BaseEntity {
     public Speciality() {
     }
 
-    public Speciality(Long id, String name) {
-        super(id);
+    public Speciality(String name) {
         this.name = name;
     }
 

@@ -1,7 +1,10 @@
 package net.therap.model;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -10,9 +13,12 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "patient")
-public class Patient extends Person {
+public class Patient extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
+
+    @OneToOne
+    private Person person;
 
     @OneToMany
     private Set<Prescription> prescriptions;
@@ -21,15 +27,22 @@ public class Patient extends Person {
     private Set<Invoice> invoices;
 
     public Patient() {
+        prescriptions = new HashSet<>();
+        invoices = new HashSet<>();
     }
 
-    public Patient(Long id, String name, String phone, String email, Gender gender,
-                   Date dateOfBirth, Set<Role> roleList, String userName, String password,
-                   Set<Prescription> prescriptions, Set<Invoice> invoices) {
+    public Patient(Person person) {
+        this();
 
-        super(id, name, phone, email, gender, dateOfBirth, roleList, userName, password);
-        this.prescriptions = prescriptions;
-        this.invoices = invoices;
+        this.person = person;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public Set<Prescription> getPrescriptions() {

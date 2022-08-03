@@ -22,8 +22,7 @@ public class Medicine extends BaseEntity {
     public Medicine() {
     }
 
-    public Medicine(Long id, String name, String genericName, Double pricePerUnit) {
-        super(id);
+    public Medicine(String name, String genericName, Double pricePerUnit) {
         this.name = name;
         this.genericName = genericName;
         this.pricePerUnit = pricePerUnit;

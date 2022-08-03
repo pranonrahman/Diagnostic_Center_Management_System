@@ -16,13 +16,6 @@ public class BaseEntity implements Serializable {
     @SequenceGenerator(name = "idSequence", sequenceName = "id_sequence", allocationSize = 1)
     private Long id;
 
-    public BaseEntity() {
-    }
-
-    public BaseEntity(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
     }
@@ -32,6 +25,6 @@ public class BaseEntity implements Serializable {
     }
 
     public boolean isNew() {
-        return Objects.isNull(id) || id==0;
+        return Objects.isNull(id) || id == 0;
     }
 }
