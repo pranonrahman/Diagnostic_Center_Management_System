@@ -14,6 +14,11 @@ public class Invoice extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @Column(name = "invoice_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoiceIdGenerator")
+    @SequenceGenerator(name = "invoiceIdGenerator", sequenceName = "invoice_id_gen", initialValue = 1000, allocationSize = 1)
+    private Long invoiceId;
+
     @Column(name = "total_cost")
     private Double totalCost;
 
@@ -22,7 +27,7 @@ public class Invoice extends BaseEntity {
             name = "receptionist_id",
             nullable = false
     )
-    private Receptionist generator;
+    private Receptionist generatedBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -43,10 +48,19 @@ public class Invoice extends BaseEntity {
         particulars = new HashSet<>();
     }
 
-    public Invoice(Double totalCost, Receptionist generator, Patient patient) {
+    public Invoice(Long invoiceId, Double totalCost, Receptionist generatedBy, Patient patient) {
+        this.invoiceId = invoiceId;
         this.totalCost = totalCost;
-        this.generator = generator;
+        this.generatedBy = generatedBy;
         this.patient = patient;
+    }
+
+    public Long getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(Long invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
     public Double getTotalCost() {
@@ -57,12 +71,12 @@ public class Invoice extends BaseEntity {
         this.totalCost = totalCost;
     }
 
-    public Receptionist getGenerator() {
-        return generator;
+    public Receptionist getGeneratedBy() {
+        return generatedBy;
     }
 
-    public void setGenerator(Receptionist generator) {
-        this.generator = generator;
+    public void setGeneratedBy(Receptionist generator) {
+        this.generatedBy = generator;
     }
 
     public Patient getPatient() {
