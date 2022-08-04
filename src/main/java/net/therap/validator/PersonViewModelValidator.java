@@ -17,6 +17,7 @@ public class PersonViewModelValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
+        System.out.println(PersonViewModel.class.equals(clazz));
         return PersonViewModel.class.equals(clazz);
     }
 
@@ -26,19 +27,19 @@ public class PersonViewModelValidator implements Validator {
 
         if(isNull(personViewModel.getUserName())) {
             errors.rejectValue("userName", "{person.userName.notNull}", "{person.userName.notNull}");
-        } else if(nonNull(personViewModel.getUserName()) && personViewModel.getUserName().strip().length() == 0) {
+        } else if(nonNull(personViewModel.getUserName()) && personViewModel.getUserName().isBlank()) {
             errors.rejectValue("userName", "{person.userName.notBlank}", "{person.userName.notBlank}");
         }
 
         if(isNull(personViewModel.getPassword())) {
             errors.rejectValue("password", "{person.password.notNull}", "{person.password.notNull}");
-        } else if(nonNull(personViewModel.getUserName()) && personViewModel.getUserName().strip().length() == 0) {
+        } else if(nonNull(personViewModel.getUserName()) && personViewModel.getUserName().isBlank()) {
             errors.rejectValue("password", "{person.password.notBlank}", "{person.password.notBlank}");
         }
 
         if(isNull(personViewModel.getUserName())) {
             errors.rejectValue("role", "{person.role.notNull}", "{person.role.notNull}");
-        } else if(nonNull(personViewModel.getUserName()) && personViewModel.getUserName().strip().length() == 0) {
+        } else if(nonNull(personViewModel.getUserName()) && personViewModel.getUserName().isBlank()) {
             errors.rejectValue("role", "{person.role.notBlank}", "{person.role.notBlank}");
         }
     }
