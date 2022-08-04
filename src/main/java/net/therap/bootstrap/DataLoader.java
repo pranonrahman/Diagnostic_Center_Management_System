@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static net.therap.model.RoleEnum.*;
+
 /**
  * @author raian.rahman
  * @since 8/3/22
@@ -55,30 +57,36 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void createSeedRole() {
-        Role adminRole = new Role("admin");
+        Role adminRole = new Role(ADMIN);
         roleService.saveOrUpdate(adminRole);
 
-        Role doctorRole = new Role("doctor");
+        Role doctorRole = new Role(DOCTOR);
         roleService.saveOrUpdate(doctorRole);
 
-        Role patientRole = new Role("patient");
+        Role patientRole = new Role(PATIENT);
         roleService.saveOrUpdate(patientRole);
 
-        Role receptionistRole = new Role("receptionist");
+        Role receptionistRole = new Role(RECEPTIONIST);
         roleService.saveOrUpdate(receptionistRole);
     }
 
     private void createSeedPerson() {
         Person person1 = new Person();
         person1.setName("Abul Mia");
+        person1.setUserName("abul");
+        person1.setPassword("abul");
         personService.saveOrUpdate(person1);
 
         Person person2 = new Person();
         person2.setName("Abdul Kuddus");
+        person2.setUserName("abdul");
+        person2.setPassword("abdul");
         personService.saveOrUpdate(person2);
 
         Person person3 = new Person();
         person3.setName("Abdul Khalek");
+        person3.setUserName("khalek");
+        person3.setPassword("khalek");
         personService.saveOrUpdate(person3);
 
         List<Role> roles = roleService.findAll();

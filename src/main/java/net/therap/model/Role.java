@@ -13,20 +13,20 @@ public class Role extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private String name;
+    private RoleEnum name;
 
     public Role() {
     }
 
-    public Role(String name) {
+    public Role(RoleEnum name) {
         this.name = name;
     }
 
-    public String getName() {
+    public RoleEnum getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(RoleEnum name) {
         this.name = name;
     }
 }
