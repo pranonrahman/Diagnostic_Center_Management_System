@@ -26,7 +26,7 @@ public class AuthenticationController {
     private static final String PATIENT_DASHBOARD_REDIRECT_PATH = "redirect:/patient";
     private static final String RECEPTIONIST_DASHBOARD_REDIRECT_PATH = "redirect:/invoice";
 
-    private static final String VIEW_PAGE = "authentication/login";
+    private static final String VIEW_PAGE = "authentication/view";
 
     @Autowired
     private RoleService roleService;
