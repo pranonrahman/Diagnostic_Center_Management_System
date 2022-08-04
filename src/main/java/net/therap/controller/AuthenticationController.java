@@ -27,6 +27,7 @@ public class AuthenticationController {
     private static final String RECEPTIONIST_DASHBOARD_REDIRECT_PATH = "redirect:/invoice";
 
     private static final String VIEW_PAGE = "authentication/view";
+    private static final String FORM_PAGE = "authentication/form";
 
     @Autowired
     private RoleService roleService;
@@ -50,7 +51,7 @@ public class AuthenticationController {
     public String showLoginForm(ModelMap modelMap) {
         modelMap.put("personViewModel", new PersonViewModel());
         modelMap.put("seedRoleList", roleService.findAll());
-        return VIEW_PAGE;
+        return FORM_PAGE;
     }
 
     @PostMapping
@@ -60,11 +61,11 @@ public class AuthenticationController {
         setUpReferenceData(modelMap);
 
         if(result.hasErrors()) {
-            return VIEW_PAGE;
+            return FORM_PAGE;
         }
 
         if(!authenticationService.authenticate(personViewModel)) {
-            return VIEW_PAGE;
+            return FORM_PAGE;
         }
 
         switch (personViewModel.getRole().getName()) {
@@ -77,7 +78,7 @@ public class AuthenticationController {
             case RECEPTIONIST:
                 return RECEPTIONIST_DASHBOARD_REDIRECT_PATH;
             default:
-                return VIEW_PAGE;
+                return FORM_PAGE;
         }
     }
 
