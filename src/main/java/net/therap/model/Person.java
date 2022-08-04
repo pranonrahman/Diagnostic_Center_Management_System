@@ -24,6 +24,7 @@ public class Person extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
