@@ -42,7 +42,10 @@ public class PrescriptionController {
     }
 
     @PostMapping("/")
-    public String processCreate(@ModelAttribute("prescription") Prescription prescription) {
+    public String processCreate(@ModelAttribute("prescription") Prescription prescription, ModelMap modelMap) {
+        modelMap.put("prescription", new Prescription());
+        modelMap.put("facilities", facilityService.findAll());
+
         return VIEW_PAGE;
     }
 }

@@ -81,7 +81,7 @@ public class DataLoader implements CommandLineRunner {
         personService.saveOrUpdate(person3);
 
         List<Role> roles = roleService.findAll();
-        for(Role role : roles) {
+        for (Role role : roles) {
             person1.getRoles().add(role);
             person2.getRoles().add(role);
             person3.getRoles().add(role);
@@ -91,7 +91,7 @@ public class DataLoader implements CommandLineRunner {
     private void createSeedPatient() {
         List<Person> persons = personService.findAll();
 
-        for(Person person : persons) {
+        for (Person person : persons) {
             Patient patient = new Patient(person);
             patientService.saveOrUpdate(patient);
         }
@@ -100,7 +100,7 @@ public class DataLoader implements CommandLineRunner {
     private void createSeedDoctor() {
         List<Person> persons = personService.findAll();
 
-        for(Person person : persons) {
+        for (Person person : persons) {
             Doctor doctor = new Doctor(1000.0, person);
             doctorService.saveOrUpdate(doctor);
         }

@@ -66,6 +66,9 @@
                                cssClass="form-control"
                                path="medicines"/>
 
+                <small id="medicineHelp" class="form-text text-muted">
+                    please separate each medicine by a semicolon (;)</small>
+
                 <form:errors path="medicines" cssClass="invalid-feedback d-block"/>
             </div>
 
@@ -81,25 +84,25 @@
 
 
             <div class="d-grid">
-                    <%--                <c:choose>--%>
-                    <%--                    <c:when test="${!student.isNew()}">--%>
-                <button type="submit"
-                        class="btn btn-primary mb-2"
-                        name="action"
-                        value="UPDATE">
-                    UPDATE
-                </button>
-                    <%--                    </c:when>--%>
+                <c:choose>
+                    <c:when test="${!prescription.isNew()}">
+                        <button type="submit"
+                                class="btn btn-primary mb-2"
+                                name="action"
+                                value="UPDATE">
+                            UPDATE
+                        </button>
+                    </c:when>
 
-                    <%--                    <c:otherwise>--%>
-                <button type="submit"
-                        class="btn btn-primary"
-                        name="action"
-                        value="CREATE">
-                    CREATE
-                </button>
-                    <%--                    </c:otherwise>--%>
-                    <%--                </c:choose>--%>
+                    <c:otherwise>
+                        <button type="submit"
+                                class="btn btn-primary"
+                                name="action"
+                                value="CREATE">
+                            CREATE
+                        </button>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </form:form>
     </div>
