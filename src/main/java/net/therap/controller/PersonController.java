@@ -84,9 +84,22 @@ public class PersonController {
         return FORM_PAGE;
     }
 
-    @RequestMapping
+    @RequestMapping("list")
     public String showList(ModelMap modelMap) {
-        modelMap.put("personList", personService.findAll());
+        modelMap.put("persons", personService.findAll());
         return LIST_PAGE;
+    }
+
+    @PostMapping("delete")
+    public String deletePerson(@RequestParam(value = "id") Long id, ModelMap modelMap) {
+        Person person = personService.findById(id);
+
+        if(isNull(person)) {
+            throw new RuntimeException("Person not found");
+        }
+
+        personService.delete(person);
+
+        return LIST_REDIRECT_PATH;
     }
 }
