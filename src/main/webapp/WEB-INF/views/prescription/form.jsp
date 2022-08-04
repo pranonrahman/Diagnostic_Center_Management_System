@@ -19,7 +19,7 @@
 
 <div class="container-fluid bg-primary-custom h-100">
 
-    <h2 class="text-center py-3"> Prescription of --patient name-- </h2>
+    <h2 class="text-center py-3"> Prescription of ${prescription.patient.person.name} </h2>
     <div class="w-50 mx-auto">
 
         <%--@elvariable id="prescription" type="net.therap.model.Prescription"--%>
@@ -31,7 +31,9 @@
 
                 <form:textarea rows="3"
                                cssClass="form-control"
-                               path="symptoms"/>
+                               path="symptoms"
+                               readonly="${readonly}"
+                />
 
                 <form:errors path="symptoms" cssClass="invalid-feedback d-block"/>
             </div>
@@ -43,7 +45,9 @@
                                      items="${facilities}"
                                      itemLabel="name"
                                      itemValue="id"
-                                     cssClass="form-check-inline ms-3"/>
+                                     cssClass="form-check-inline ms-3"
+                                     disabled="${readonly}"
+                    />
 
                     <form:errors path="facilities" cssClass="invalid-feedback d-block"/>
                 </div>
@@ -54,7 +58,9 @@
 
                 <form:textarea rows="3"
                                cssClass="form-control"
-                               path="diagnosis"/>
+                               path="diagnosis"
+                               readonly="${readonly}"
+                />
 
                 <form:errors path="diagnosis" cssClass="invalid-feedback d-block"/>
             </div>
@@ -64,7 +70,9 @@
 
                 <form:textarea rows="3"
                                cssClass="form-control"
-                               path="medicines"/>
+                               path="medicines"
+                               readonly="${readonly}"
+                />
 
                 <small id="medicineHelp" class="form-text text-muted">
                     please separate each medicine by a semicolon (;)</small>
@@ -77,7 +85,9 @@
 
                 <form:textarea rows="3"
                                cssClass="form-control"
-                               path="comment"/>
+                               path="comment"
+                               readonly="${readonly}"
+                />
 
                 <form:errors path="comment" cssClass="invalid-feedback d-block"/>
             </div>

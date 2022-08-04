@@ -27,7 +27,7 @@ public class Doctor extends BaseEntity {
     @OneToOne
     private Person person;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor")
     private Set<Prescription> prescriptions;
 
     public Doctor() {

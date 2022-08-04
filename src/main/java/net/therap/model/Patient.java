@@ -1,9 +1,6 @@
 package net.therap.model;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +17,7 @@ public class Patient extends BaseEntity {
     @OneToOne
     private Person person;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Prescription> prescriptions;
 
     @OneToMany
