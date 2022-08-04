@@ -45,7 +45,7 @@
                 <form:errors path="role"/>
             </div>
 
-            <button type="submit" value="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" value="submit" class="btn btn-primary w-100">Submit</button>
         </form:form>
     </div>
 </div>
