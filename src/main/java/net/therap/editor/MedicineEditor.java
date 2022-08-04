@@ -1,6 +1,6 @@
 package net.therap.editor;
 
-import net.therap.service.FacilityService;
+import net.therap.service.MedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,19 +9,19 @@ import java.beans.PropertyEditorSupport;
 import static java.util.Objects.nonNull;
 
 /**
- * @author amimul.ehsan
- * @since 03/08/2022
+ * @author khandaker.maruf
+ * @since 8/4/22
  */
 @Component
-public class FacilityEditor extends PropertyEditorSupport {
+public class MedicineEditor extends PropertyEditorSupport {
 
     @Autowired
-    private FacilityService facilityService;
+    private MedicineService medicineService;
 
     @Override
     public void setAsText(String id) throws IllegalArgumentException {
         if (nonNull(id) && !id.isEmpty()) {
-            setValue(facilityService.findById(Long.valueOf(id)));
+            setValue(medicineService.findById(Long.valueOf(id)));
         }
     }
 }
