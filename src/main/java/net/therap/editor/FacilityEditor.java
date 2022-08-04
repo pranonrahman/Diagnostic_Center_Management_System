@@ -1,4 +1,4 @@
-package net.therap.property_editor;
+package net.therap.editor;
 
 import net.therap.model.Facility;
 import net.therap.service.FacilityService;
