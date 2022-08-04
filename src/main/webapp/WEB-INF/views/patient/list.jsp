@@ -6,7 +6,7 @@
 --%>
 <html>
 <head>
-    <title>Prescription</title>
+    <title>Patients</title>
 
     <link type="text/css" href="<c:url value="../../../assets/css/bootstrap.min.css"/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
@@ -38,7 +38,10 @@
                 <td><c:out value="${patient.person.name}"/></td>
                 <td>very old</td>
                 <td><c:out value="${patient.person.gender}"/></td>
-                <td><a href="<c:url value="/patient/list"/>">View</a></td>
+                <c:url var="historyViewPage" value="${pageContext.request.contextPath}/patient/history">
+                    <c:param name="id" value="${patient.id}"/>
+                </c:url>
+                <td><a href="${historyViewPage}">View</a></td>
                 <td><a href="<c:url value="/patient/list"/>">Edit</a></td>
             </tr>
         </c:forEach>
