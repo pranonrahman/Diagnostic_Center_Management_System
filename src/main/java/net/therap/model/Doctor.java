@@ -27,7 +27,11 @@ public class Doctor extends BaseEntity {
     @OneToOne
     private Person person;
 
+    @OneToMany
+    private Set<Prescription> prescriptions;
+
     public Doctor() {
+        prescriptions = new HashSet<>();
         specialities = new HashSet<>();
     }
 
@@ -60,5 +64,13 @@ public class Doctor extends BaseEntity {
 
     public void setSpecialities(Set<Speciality> specialities) {
         this.specialities = specialities;
+    }
+
+    public Set<Prescription> getPrescriptions() {
+        return prescriptions;
+    }
+
+    public void setPrescriptions(Set<Prescription> prescriptions) {
+        this.prescriptions = prescriptions;
     }
 }
