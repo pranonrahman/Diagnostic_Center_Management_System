@@ -13,7 +13,7 @@ import java.util.List;
  * @since 8/1/22
  */
 @Service
-public class ReceptionService {
+public class ReceptionistService {
 
     @Autowired
     private ReceptionistDao receptionistDao;
