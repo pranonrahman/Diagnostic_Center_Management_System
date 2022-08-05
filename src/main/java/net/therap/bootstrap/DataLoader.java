@@ -35,10 +35,19 @@ public class DataLoader implements CommandLineRunner {
     private DoctorService doctorService;
 
     @Autowired
+    private ReceptionistService receptionistService;
+
+    @Autowired
     private MedicineService medicineService;
 
     @Autowired
     private PrescriptionService prescriptionService;
+
+    @Autowired
+    private ParticularService particularService;
+
+    @Autowired
+    private InvoiceService invoiceService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -47,8 +56,11 @@ public class DataLoader implements CommandLineRunner {
         createSeedPerson();
         createSeedDoctor();
         createSeedPatient();
+        createSeedReceptionist();
         createSeedMedicine();
         createSeedPrescription();
+        createSeedParticular();
+        createSeedInvoice();
     }
 
     private void createSeedFacility() {
@@ -119,6 +131,31 @@ public class DataLoader implements CommandLineRunner {
             Doctor doctor = new Doctor(1000.0, person);
             doctorService.saveOrUpdate(doctor);
         }
+    }
+
+    private void createSeedReceptionist() {
+        Person person = new Person();
+        person.setName("Rupban");
+        person.setUserName("rupban");
+        person.setPassword("rupban");
+        Role receptionistRole = null;
+        for (Role role : roleService.findAll()) {
+            if(role.getName().equals(RECEPTIONIST)){
+                receptionistRole = role;
+            }
+        }
+        person.getRoles().add(receptionistRole);
+        Person savedPerson = personService.saveOrUpdate(person);
+        Receptionist receptionist = new Receptionist(savedPerson);
+        receptionistService.saveOrUpdate(receptionist);
+
+        Person person2 = new Person();
+        person2.setName("Fulbanu");
+        person2.setUserName("fulbanu");
+        person2.setPassword("fulbanu");
+        person2.getRoles().add(receptionistRole);
+        Person savedPerson2 = personService.saveOrUpdate(person2);
+        receptionistService.saveOrUpdate(new Receptionist(savedPerson2));
     }
 
     private void createSeedMedicine() {
@@ -206,5 +243,39 @@ public class DataLoader implements CommandLineRunner {
 
         doctors.get(2).getPrescriptions().add(prescription3);
         doctorService.saveOrUpdate(doctors.get(2));
+    }
+
+    private void createSeedParticular() {
+        Particular particular = new Particular("Dr. Visit 1", 1000.0, 1);
+        particularService.saveOrUpdate(particular);
+
+        Particular particular2 = new Particular("Napa", 10.0, 5);
+        particularService.saveOrUpdate(particular2);
+
+        Particular particular3 = new Particular("X-Ray", 5000.0, 2);
+        particularService.saveOrUpdate(particular3);
+
+        Particular particular4 = new Particular("Safi", 300.0, 5);
+        particularService.saveOrUpdate(particular4);
+    }
+    private void createSeedInvoice() {
+        Invoice invoice = new Invoice();
+
+        Receptionist receptionist = receptionistService.findAll().get(0);
+        Patient patient = patientService.findAll().get(0);
+        double totalCost = 0;
+        for (Particular particular : particularService.findAll()) {
+            invoice.getParticulars().add(particular);
+            totalCost += particular.getUnitPrice() * particular.getUnits();
+        }
+
+        invoice.setId(1L);
+        invoice.setInvoiceId(1001L);
+        invoice.setPatient(patient);
+        invoice.setGeneratedBy(receptionist);
+        invoice.setTotalCost(totalCost);
+
+        Invoice i = invoiceService.saveOrUpdate(invoice);
+        System.out.println(i);
     }
 }
