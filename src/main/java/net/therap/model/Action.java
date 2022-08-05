@@ -10,5 +10,7 @@ public enum Action {
     VIEW,
     UPDATE,
     DELETE,
-    LIST
+    LIST,
+    SUBMIT,
+    ADD
 }
