@@ -1,6 +1,11 @@
 package net.therap.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,6 +15,8 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "invoice")
+@Getter
+@Setter
 public class Invoice extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -18,6 +25,10 @@ public class Invoice extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoiceIdGenerator")
     @SequenceGenerator(name = "invoiceIdGenerator", sequenceName = "invoice_id_gen", initialValue = 1000, allocationSize = 1)
     private Long invoiceId;
+
+    @Column(name = "generation_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date generationDate = new Date();
 
     @Column(name = "total_cost")
     private Double totalCost;
@@ -53,45 +64,5 @@ public class Invoice extends BaseEntity {
         this.totalCost = totalCost;
         this.generatedBy = generatedBy;
         this.patient = patient;
-    }
-
-    public Long getInvoiceId() {
-        return invoiceId;
-    }
-
-    public void setInvoiceId(Long invoiceId) {
-        this.invoiceId = invoiceId;
-    }
-
-    public Double getTotalCost() {
-        return totalCost;
-    }
-
-    public void setTotalCost(Double totalCost) {
-        this.totalCost = totalCost;
-    }
-
-    public Receptionist getGeneratedBy() {
-        return generatedBy;
-    }
-
-    public void setGeneratedBy(Receptionist generator) {
-        this.generatedBy = generator;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Set<Particular> getParticulars() {
-        return particulars;
-    }
-
-    public void setParticulars(Set<Particular> particulars) {
-        this.particulars = particulars;
     }
 }

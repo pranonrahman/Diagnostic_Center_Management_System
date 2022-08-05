@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--
-  * @author amimul.ehsan
+  * @author khandaker.maruf
   * @since 02/08/2022
 --%>
 
@@ -17,109 +17,52 @@
     <script type="text/javascript" src="<c:url value="../../../assets/js/bootstrap.bundle.min.js"/>"></script>
 </head>
 <body>
-
+<%--@elvariable id="invoice" type="net.therap.model.Invoice"--%>
 <div class="container-fluid bg-primary-custom h-100">
 
-    <h2 class="text-center py-3"> Invoice </h2>
-    <div class="w-50 mx-auto">
-
-        <%--@elvariable id="invoice" type="net.therap.viewModel.InvoiceViewModel"--%>
-        <form:form method="post" modelAttribute="invoice">
-
-            <div class="mb-3">
-                <form:label path="patient" cssClass="form-label">
-                    Patient
-                </form:label>
-
-                <form:select path="patient"
-                             cssClass="form-select form-select-lg mb-3">
-
-                    <form:option value="">
-                        Select
-                    </form:option>
-                    <form:options items="${patients}"
-                                  itemValue="id"
-                                  itemLabel="person.name"/>
-                </form:select>
-
-                <form:errors path="patient" cssClass="invalid-feedback d-block"/>
-            </div>
-
-            <div class="mb-3">
-                <form:label path="doctors"> Select Doctors </form:label>
-
-                <div class="form-check d-grid">
-                    <form:checkboxes class="form-check-input"
-                                     items="${doctors}"
-                                     itemValue="id"
-                                     itemLabel="person.name"
-                                     path="doctors"/>
-                </div>
-
-                <form:errors path="doctors" cssClass="invalid-feedback d-block"/>
-            </div>
-
-            <div class="mb-3">
-                <form:label path="medicines"> Select Medicines </form:label>
-
-                <div class="form-check d-grid">
-                    <form:checkboxes class="form-check-input"
-                                     items="${medicines}"
-                                     itemValue="id"
-                                     itemLabel="name"
-                                     path="medicines"/>
-                </div>
-
-                <form:errors path="doctors" cssClass="invalid-feedback d-block"/>
-            </div>
-
-            <div class="mb-3">
-                <form:label path="facilities"> Select Facilities </form:label>
-
-                <div class="form-check d-grid">
-                    <form:checkboxes class="form-check-input"
-                                     items="${facilities}"
-                                     itemValue="id"
-                                     itemLabel="name"
-                                     path="facilities"/>
-                </div>
-
-                <form:errors path="facilities" cssClass="invalid-feedback d-block"/>
-            </div>
+    <div class="card">
+        <h5 class="card-header">
+            Invoice of <c:out value="${invoice.patient.person.name}"/>
+        </h5>
+        <div class="card-body">
+            <h5 class="card-title">
+                Services:
+            </h5>
 
 
-<%--
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Service Name</th>
+                    <th scope="col">Unit price</th>
+                    <th scope="col">Units</th>
+                    <th scope="col">Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${invoice.particulars}" var="particular" varStatus="loop">
+                    <p class="card-text">
+                        <tr>
+                            <th scope="row">${loop.index + 1}</th>
+                            <td><c:out value="${particular.name}"/></td>
+                            <td><c:out value="${particular.unitPrice}"/></td>
+                            <td><c:out value="${particular.units}"/></td>
+                            <td><c:out value="${particular.units * particular.unitPrice}"/></td>
+                        </tr>
+                    </p>
+                </c:forEach>
 
-            <div class="d-grid">
-                    <%--                <c:choose>--%>
-                    <%--                    <c:when test="${!student.isNew()}">--%>
-                <button type="submit"
-                        class="btn btn-primary mb-2"
-                        name="action"
-                        value="UPDATE">
-                    UPDATE
-                </button>
+                <tr>
+                    <td colspan="5"> <c:out value="${invoice.totalCost}"/> </td>
+                </tr>
 
-                <button type="submit"
-                        class="btn btn-danger"
-                        name="action"
-                        value="DELETE">
-                    DELETE
-                </button>
-                    <%--                    </c:when>--%>
-
-                    <%--                    <c:otherwise>--%>
-                <button type="submit"
-                        class="btn btn-primary"
-                        name="action"
-                        value="CREATE">
-                    CREATE
-                </button>
-                    <%--                    </c:otherwise>--%>
-                    <%--                </c:choose>--%>
-            </div>
-        </form:form>
+                </tbody>
+            </table>
+            <a href="#" class="btn btn-primary">Print Invoice</a>
+        </div>
     </div>
+    
 </div>
 
 </body>
