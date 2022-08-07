@@ -26,6 +26,12 @@
         <form:form method="post"
                    modelAttribute="prescription">
 
+            <c:set var="readonly" value="${!prescription.isNew()}"/>
+            <c:set var="editable" value="${!prescription.isNew() && action == 'edit'}"/>
+
+            <form:input path="patient.id" value="${patientId}" hidden="true"/>
+            <form:input path="doctor.id" value="${doctorId}" hidden="true"/>
+
             <div class="mb-3">
                 <form:label path="symptoms" cssClass="form-label">Symptoms</form:label>
 
@@ -71,7 +77,7 @@
                 <form:textarea rows="3"
                                cssClass="form-control"
                                path="medicines"
-                               readonly="${readonly}"
+                               readonly="${editable != null ? !editable : readonly}"
                 />
 
                 <small id="medicineHelp" class="form-text text-muted">
@@ -86,7 +92,7 @@
                 <form:textarea rows="3"
                                cssClass="form-control"
                                path="comment"
-                               readonly="${readonly}"
+                               readonly="${editable != null ? !editable : readonly}"
                 />
 
                 <form:errors path="comment" cssClass="invalid-feedback d-block"/>

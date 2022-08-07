@@ -3,6 +3,7 @@ package net.therap.controller;
 import net.therap.editor.FacilityEditor;
 import net.therap.model.Facility;
 import net.therap.model.Prescription;
+import net.therap.service.DoctorService;
 import net.therap.service.FacilityService;
 import net.therap.service.PatientService;
 import net.therap.service.PrescriptionService;
@@ -26,7 +27,7 @@ public class PrescriptionController {
     private FacilityService facilityService;
 
     @Autowired
-    private FacilityEditor facilityEditor;
+    private DoctorService doctorService;
 
     @Autowired
     private PrescriptionService prescriptionService;
@@ -34,21 +35,30 @@ public class PrescriptionController {
     @Autowired
     private PatientService patientService;
 
+    @Autowired
+    private FacilityEditor facilityEditor;
+
     @InitBinder
     private void InitBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Facility.class, facilityEditor);
     }
 
     @GetMapping("/create")
-    public String loadViewPage(ModelMap modelMap) {
+    public String loadViewPage(@RequestParam("doctorId") String doctorId, @RequestParam("patientId") String patientId, ModelMap modelMap) {
         modelMap.put("prescription", new Prescription());
         modelMap.put("facilities", facilityService.findAll());
+        modelMap.put("doctorId", doctorId);
+        modelMap.put("patientId", patientId);
 
         return VIEW_PAGE;
     }
 
     @PostMapping("/create")
     public String processCreate(@ModelAttribute("prescription") Prescription prescription, ModelMap modelMap) {
+        prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
+        prescription.setDoctor(doctorService.findById(prescription.getDoctor().getId()));
+
+        prescriptionService.saveOrUpdate(prescription);
         modelMap.put("prescription", new Prescription());
         modelMap.put("facilities", facilityService.findAll());
 
@@ -56,11 +66,33 @@ public class PrescriptionController {
     }
 
     @GetMapping("/view")
-    public String loadViewPage(@RequestParam("id") String id, ModelMap modelMap){
-        modelMap.put("readonly", true);
+    public String loadViewPage(@RequestParam("id") String id, ModelMap modelMap) {
+//        modelMap.put("readonly", true);
+        modelMap.put("action", "view");
         modelMap.put("facilities", facilityService.findAll());
         modelMap.put("prescription", prescriptionService.findById(Long.parseLong(id)));
 
         return VIEW_PAGE;
+    }
+
+    @GetMapping("/edit")
+    public String loadEditPage(@RequestParam("id") String id, ModelMap modelMap) {
+        modelMap.put("action", "edit");
+        modelMap.put("facilities", facilityService.findAll());
+        modelMap.put("prescription", prescriptionService.findById(Long.parseLong(id)));
+
+        return VIEW_PAGE;
+    }
+
+    @PostMapping("/edit")
+    public String processEdit(@ModelAttribute("prescription") Prescription prescription, ModelMap modelMap) {
+        prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
+        prescription.setDoctor(doctorService.findById(prescription.getDoctor().getId()));
+
+        prescriptionService.saveOrUpdate(prescription);
+        modelMap.put("prescription", new Prescription());
+        modelMap.put("facilities", facilityService.findAll());
+
+        return "redirect:/prescription/view?id=" + prescription.getId();
     }
 }
