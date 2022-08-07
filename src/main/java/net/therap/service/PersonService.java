@@ -71,6 +71,10 @@ public class PersonService {
         Role receptionistRole = roleDao.findByRole(RoleEnum.valueOf("RECEPTIONIST"));
         Role patientRole = roleDao.findByRole(RoleEnum.valueOf("PATIENT"));
 
+        if(nonNull(person.getDoctor()) && roleUpdateViewModel.getDoctor()) {
+            person.getDoctor().setFee(roleUpdateViewModel.getFee());
+        }
+
         if (isNull(person.getDoctor()) && roleUpdateViewModel.getDoctor()) {
             Doctor doctor = new Doctor(roleUpdateViewModel.getFee(), person);
             doctor = doctorDao.saveOrUpdate(doctor);
