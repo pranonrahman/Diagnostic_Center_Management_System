@@ -103,7 +103,7 @@
                         <td><c:out value="${item.medicine.name}"/></td>
                         <td><c:out value="${item.medicine.unitPrice}"/></td>
                         <td><c:out value="${item.quantity}"/></td>
-                        <td><c:out value="${item.medicine.unitPrice * item.quantity}"/></td>
+                        <td><fmt:formatNumber value="${item.medicine.unitPrice * item.quantity}"/></td>
                         <td>
                                 <%--@elvariable id="removeModel" type="net.therap.viewModel.RemoveModel"--%>
                             <form:form method="post" modelAttribute="removeModel" action="/invoice/medicine/remove">

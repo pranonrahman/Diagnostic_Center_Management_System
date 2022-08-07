@@ -23,6 +23,7 @@
     <h2 class="text-center py-3"> Invoice </h2>
     <div class="w-50 mx-auto">
 
+        <%--@elvariable id="doctorVisit" type="net.therap.viewModel.DoctorVisit"--%>
         <form:form method="post" modelAttribute="doctorVisit">
 
         <div class="mb-3">

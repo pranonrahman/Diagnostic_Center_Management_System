@@ -71,18 +71,18 @@ public class DoctorVisitController {
 
         invoice.setDoctors(doctorVisit.getDoctors());
         invoice.setPatient(doctorVisit.getPatient());
-//        model.put(INVOICE_CMD, invoice);
 
         return "redirect:/invoice/medicine";
     }
 
     private void setUpReferenceData(ModelMap model, Action action) {
         if(action.equals(VIEW)) {
-            model.put(DOCTOR_VISIT_CMD, new DoctorVisit());
-
             if(!model.containsAttribute(INVOICE_CMD)) {
                 model.put(INVOICE_CMD, new InvoiceViewModel());
             }
+            InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
+            model.put(DOCTOR_VISIT_CMD, new DoctorVisit(invoice.getPatient(), invoice.getDoctors()));
+
         }
 
         model.put("patients", patientService.findAll());

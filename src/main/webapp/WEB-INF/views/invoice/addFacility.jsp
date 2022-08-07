@@ -81,7 +81,7 @@
 
 
     <%--@elvariable id="invoice" type="net.therap.viewModel.InvoiceViewModel"--%>
-    <c:if test="${invoice.facilities.size > 0}">
+    <c:if test="${invoice.facilities.size() > 0}">
         <div class="w-50 mx-auto mt-4 fw-light">
             <hr>
             <h4 class="text-center fw-light">Added facilities</h4>

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static java.util.Objects.isNull;
 import static net.therap.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.model.Action.*;
 
@@ -45,6 +46,12 @@ public class FacilityItemController {
 
     @GetMapping
     public String view(ModelMap model) {
+        InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
+
+        if(isNull(invoice) || isNull(invoice.getPatient())) {
+            return "redirect:/invoice/doctor";
+        }
+
         setUpReferenceData(model, VIEW);
 
         return ADD_FACILITY_PAGE;

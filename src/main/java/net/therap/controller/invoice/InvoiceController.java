@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+import static java.util.Objects.isNull;
 import static net.therap.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.model.Action.*;
 
@@ -45,7 +46,13 @@ public class InvoiceController {
     }
 
     @GetMapping
-    public String review(ModelMap model, @SessionAttribute(INVOICE_CMD) InvoiceViewModel invoice) {
+    public String review(ModelMap model) {
+        InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
+
+        if(isNull(invoice) || isNull(invoice.getPatient())) {
+            return "redirect:/invoice/doctor";
+        }
+
         model.put(INVOICE_VIEW_CMD, invoiceService.getInvoiceFromViewModel(invoice));
         model.put("action", REVIEW);
 
@@ -66,7 +73,15 @@ public class InvoiceController {
                        SessionStatus status,
                        ModelMap model) {
 
-        Invoice savedInvoice = invoiceService.saveOrUpdate(invoiceService.getInvoiceFromViewModel(invoice));
+        Invoice readyToSaveInvoice = invoiceService.getInvoiceFromViewModel(invoice);
+
+        if(readyToSaveInvoice.getParticulars().isEmpty()) {
+            model.put("errorMessage", "No Service or product selected!");
+
+            return VIEW_PAGE;
+        }
+
+        Invoice savedInvoice = invoiceService.saveOrUpdate(readyToSaveInvoice);
 
         if(model.containsAttribute(INVOICE_CMD)) {
             status.setComplete();
