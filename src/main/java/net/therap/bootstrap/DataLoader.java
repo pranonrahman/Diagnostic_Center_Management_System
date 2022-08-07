@@ -237,6 +237,28 @@ public class DataLoader implements CommandLineRunner {
 
         doctors.get(2).getPrescriptions().add(prescription3);
         doctorService.saveOrUpdate(doctors.get(2));
+
+        Prescription prescription4 = new Prescription();
+        prescription4.setSymptoms("pain near appendix");
+        prescription4.setDiagnosis("appendicitis");
+        prescription4.setMedicines("appendoset 200 mg;");
+        prescription4.getFacilities().add(facilities.get(0));
+        prescription4.getFacilities().add(facilities.get(2));
+
+        c.set(2022, Calendar.AUGUST, 5);
+        Date d4 = c.getTime();
+        prescription4.setDateOfVisit(d4);
+
+        prescription4.setPatient(patients.get(0));
+        prescription4.setDoctor(doctors.get(1));
+
+        prescription4 = prescriptionService.saveOrUpdate(prescription4);
+
+        patients.get(0).getPrescriptions().add(prescription4);
+        patientService.saveOrUpdate(patients.get(0));
+
+        doctors.get(1).getPrescriptions().add(prescription4);
+        doctorService.saveOrUpdate(doctors.get(1));
     }
 
     private void createSeedParticular() {

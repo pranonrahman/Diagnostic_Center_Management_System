@@ -20,6 +20,24 @@
     <h2 class="text-center py-3"> History of ${patientName} </h2>
 
     <div class="list-group">
+        <c:forEach items="${doctorSpecificPrescriptions}" var="prescriptionViewModel">
+            <c:url var="prescriptionViewPage" value="${pageContext.request.contextPath}/prescription/view">
+                <c:param name="id" value="${prescriptionViewModel.prescription.id}"/>
+            </c:url>
+            <a href="${prescriptionViewPage}"
+               class="list-group-item list-group-item-dark mb-2 ">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="card-title">${prescriptionViewModel.prescription.diagnosis}</h5>
+                    <small><c:out value="${prescriptionViewModel.getDaysElapsed()}"/> days ago</small>
+                </div>
+                <p class="card-text">${prescriptionViewModel.prescription.symptoms}</p>
+            </a>
+        </c:forEach>
+    </div>
+
+    <hr/>
+
+    <div class="list-group">
         <c:forEach items="${prescriptionViewModels}" var="prescriptionViewModel">
             <c:url var="prescriptionViewPage" value="${pageContext.request.contextPath}/prescription/view">
                 <c:param name="id" value="${prescriptionViewModel.prescription.id}"/>
