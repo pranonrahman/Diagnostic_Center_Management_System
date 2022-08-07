@@ -4,7 +4,7 @@ import net.therap.editor.DateEditor;
 import net.therap.model.Gender;
 import net.therap.model.Person;
 import net.therap.service.PersonService;
-import net.therap.validator.RoleUpdateViewModelValidator;
+import net.therap.service.RoleUpdateViewModelService;
 import net.therap.viewModel.RoleUpdateViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,12 +41,12 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
+
     @Autowired
-    private RoleUpdateViewModelValidator roleUpdateViewModelValidator;
+    private RoleUpdateViewModelService roleUpdateViewModelService;
 
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
-//        webDataBinder.addValidators(roleUpdateViewModelValidator);
         webDataBinder.registerCustomEditor(Date.class, dateEditor);
     }
 
@@ -122,7 +122,10 @@ public class PersonController {
         }
 
         modelMap.put("person", person);
-        modelMap.put("roleUpdateViewModel", new RoleUpdateViewModel());
+
+        RoleUpdateViewModel roleUpdateViewModel = roleUpdateViewModelService.getRoleUpdateViewModel(person);
+
+        modelMap.put("roleUpdateViewModel", roleUpdateViewModel);
 
         return ROLE_UPDATE_PAGE;
     }
@@ -130,6 +133,7 @@ public class PersonController {
     @PostMapping("updateRole")
     public String processUpdateRoleForm(@Validated @ModelAttribute RoleUpdateViewModel roleUpdateViewModel,
                                         BindingResult bindingResult, ModelMap modelMap) {
+
         if(bindingResult.hasErrors()) {
             modelMap.put("person", personService.findById(roleUpdateViewModel.getId()));
             modelMap.put("roleUpdateViewModel", new RoleUpdateViewModel());
@@ -142,7 +146,7 @@ public class PersonController {
             throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
         }
 
-        personService.updateRole(person, roleUpdateViewModel);
+        person = personService.updateRole(person, roleUpdateViewModel);
 
         return VIEW_REDIRECT_PATH + person.getId();
     }
