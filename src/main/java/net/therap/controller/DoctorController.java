@@ -41,6 +41,7 @@ public class DoctorController {
             patients.add(prescription.getPatient());
         }
 
+        modelMap.put("doctorId", doctorId);
         modelMap.put("patients", patients);
 
         return PATIENTS_VIEW_PAGE;
