@@ -134,4 +134,8 @@ public class PersonService {
 
         return person;
     }
+
+    public Person findByUserName(String userName) {
+        return personDao.findByUserName(userName);
+    }
 }
