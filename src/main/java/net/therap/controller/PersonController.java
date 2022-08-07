@@ -3,8 +3,11 @@ package net.therap.controller;
 import net.therap.editor.DateEditor;
 import net.therap.model.Gender;
 import net.therap.model.Person;
+import net.therap.model.Role;
+import net.therap.model.RoleEnum;
 import net.therap.service.PersonService;
-import net.therap.validator.RoleUpdateViewModelValidator;
+import net.therap.service.RoleService;
+import net.therap.service.RoleUpdateViewModelService;
 import net.therap.viewModel.RoleUpdateViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,9 +17,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static java.util.Objects.isNull;
+import static net.therap.model.RoleEnum.DOCTOR;
 
 /**
  * @author raian.rahman
@@ -41,12 +47,15 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
+
     @Autowired
-    private RoleUpdateViewModelValidator roleUpdateViewModelValidator;
+    private RoleUpdateViewModelService roleUpdateViewModelService;
+
+    @Autowired
+    private RoleService roleService;
 
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
-//        webDataBinder.addValidators(roleUpdateViewModelValidator);
         webDataBinder.registerCustomEditor(Date.class, dateEditor);
     }
 
@@ -95,8 +104,19 @@ public class PersonController {
     }
 
     @RequestMapping("list")
-    public String showList(ModelMap modelMap) {
-        modelMap.put("persons", personService.findAll());
+    public String showList(@RequestParam(value = "filterBy", required = false) String filterBy, ModelMap modelMap) {
+
+        if(isNull(filterBy)) {
+            modelMap.put("persons", personService.findAll());
+        } else  {
+            Role role = roleService.findByRole(RoleEnum.valueOf(filterBy));
+            List<Person> personList = new ArrayList<>();
+            personService.findAll()
+                    .stream()
+                    .filter(person -> person.getRoles().contains(role))
+                    .forEach(personList::add);
+            modelMap.put("persons", personList);
+        }
         return LIST_PAGE;
     }
 
@@ -122,7 +142,10 @@ public class PersonController {
         }
 
         modelMap.put("person", person);
-        modelMap.put("roleUpdateViewModel", new RoleUpdateViewModel());
+
+        RoleUpdateViewModel roleUpdateViewModel = roleUpdateViewModelService.getRoleUpdateViewModel(person);
+
+        modelMap.put("roleUpdateViewModel", roleUpdateViewModel);
 
         return ROLE_UPDATE_PAGE;
     }
@@ -130,6 +153,7 @@ public class PersonController {
     @PostMapping("updateRole")
     public String processUpdateRoleForm(@Validated @ModelAttribute RoleUpdateViewModel roleUpdateViewModel,
                                         BindingResult bindingResult, ModelMap modelMap) {
+
         if(bindingResult.hasErrors()) {
             modelMap.put("person", personService.findById(roleUpdateViewModel.getId()));
             modelMap.put("roleUpdateViewModel", new RoleUpdateViewModel());
@@ -142,7 +166,7 @@ public class PersonController {
             throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
         }
 
-        personService.updateRole(person, roleUpdateViewModel);
+        person = personService.updateRole(person, roleUpdateViewModel);
 
         return VIEW_REDIRECT_PATH + person.getId();
     }

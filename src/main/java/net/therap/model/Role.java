@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 /**
@@ -20,6 +22,7 @@ public class Role extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @Enumerated(EnumType.STRING)
     private RoleEnum name;
 
     public Role(RoleEnum name) {

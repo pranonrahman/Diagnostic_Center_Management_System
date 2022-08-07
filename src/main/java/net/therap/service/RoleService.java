@@ -2,6 +2,7 @@ package net.therap.service;
 
 import net.therap.dao.RoleDao;
 import net.therap.model.Role;
+import net.therap.model.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,10 @@ public class RoleService {
 
     public Role findById(long id) {
         return roleDao.findById(id);
+    }
+
+    public Role findByRole(RoleEnum role) {
+        return roleDao.findByRole(role);
     }
 
     @Transactional
