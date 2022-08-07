@@ -22,7 +22,7 @@
     <h2 class="text-center py-3"> User form </h2>
     <div class="w-50 mx-auto">
         <%--@elvariable id="person" type="net.therap.model.Person"--%>
-        <form:form action="/person/createOrUpdate" method="POST" modelAttribute="person">
+        <form:form action="/person/save" method="POST" modelAttribute="person">
             <div class="mb-3">
                 <form:input hidden="hidden" path="id" type="text" value="${person.id}" cssClass="form-control"/>
                 <form:label path="userName" cssClass="form-label">Username</form:label>
@@ -120,7 +120,7 @@
             </div>
 
             <div class="mb-3">
-                <form action="/person/createOrUpdate" method="get">
+                <form action="/person/save" method="get">
                     <input name="id" hidden="hidden" value="${person.id}">
                     <button type="submit" value="submit" class="btn btn-primary w-100">Edit information</button>
                 </form>
