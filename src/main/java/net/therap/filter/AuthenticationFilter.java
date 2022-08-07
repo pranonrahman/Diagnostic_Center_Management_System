@@ -1,6 +1,5 @@
 package net.therap.filter;
 
-import net.therap.model.Person;
 import net.therap.model.Role;
 import net.therap.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 import static net.therap.model.RoleEnum.*;
 
 /**
@@ -22,8 +20,9 @@ import static net.therap.model.RoleEnum.*;
 @Component
 public class AuthenticationFilter implements Filter {
 
-    private static final String LOGIN_REDIRECT_PATH = "authentication/form";
-    private static final String INVALID_ACCESS_PAGE_PATH = "invalidPage";
+    private static final String LOGIN_REDIRECT_PATH = "/login";
+
+    private static final String INVALID_ACCESS_PAGE_PATH = "/invalidPage";
 
     @Autowired
     private RoleService roleService;
@@ -46,23 +45,18 @@ public class AuthenticationFilter implements Filter {
 
         if ((isNull(httpServletRequest.getSession().getAttribute("user"))
                 || isNull(httpServletRequest.getSession().getAttribute("role")))
-                && !httpServletRequest.getRequestURI().contains("login")) {
+                && !httpServletRequest.getRequestURI().contains("login")
+                && !httpServletRequest.getRequestURI().contains("assets/")
+        ) {
 
             httpServletResponse.sendRedirect(LOGIN_REDIRECT_PATH);
 
             return;
         }
 
-        Person person = (Person) httpServletRequest.getSession().getAttribute("user");
         Role role = (Role) httpServletRequest.getSession().getAttribute("role");
 
-        if(httpServletRequest.getRequestURI().contains("person") && !adminRole.equals(role)) {
-            httpServletResponse.sendRedirect(INVALID_ACCESS_PAGE_PATH);
-
-            return;
-        }
-
-        if(httpServletRequest.getRequestURI().contains("invoice/view")
+        if (httpServletRequest.getRequestURI().contains("invoice/view")
                 && !receptionistRole.equals(role)
                 && !patientRole.equals(role)) {
 
@@ -71,7 +65,7 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        if((httpServletRequest.getRequestURI().contains("invoice/save")
+        if ((httpServletRequest.getRequestURI().contains("invoice/save")
                 || httpServletRequest.getRequestURI().contains("invoice/list"))
                 && !receptionistRole.equals(role)) {
 
@@ -80,7 +74,7 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        if(httpServletRequest.getRequestURI().contains("prescription/view")
+        if (httpServletRequest.getRequestURI().contains("prescription/view")
                 && !doctorRole.equals(role)
                 && !patientRole.equals(role)) {
 
@@ -89,14 +83,14 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        if(httpServletRequest.getRequestURI().contains("prescription/save") && !doctorRole.equals(role)) {
+        if (httpServletRequest.getRequestURI().contains("prescription/save") && !doctorRole.equals(role)) {
 
             httpServletResponse.sendRedirect(INVALID_ACCESS_PAGE_PATH);
 
             return;
         }
 
-        if(httpServletRequest.getRequestURI().contains("patient/history")
+        if (httpServletRequest.getRequestURI().contains("patient/history")
                 && !doctorRole.equals(role)
                 && !patientRole.equals(role)) {
 
@@ -105,7 +99,7 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        if(httpServletRequest.getRequestURI().contains("doctor/patients")
+        if (httpServletRequest.getRequestURI().contains("doctor/patients")
                 && !doctorRole.equals(role)) {
 
             httpServletResponse.sendRedirect(INVALID_ACCESS_PAGE_PATH);
@@ -113,15 +107,13 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        if((httpServletRequest.getRequestURI().contains("person/save")
-                || httpServletRequest.getRequestURI().contains("person/view")
-                || httpServletRequest.getRequestURI().contains("person/updateRole")
+        if ((httpServletRequest.getRequestURI().contains("person/list")
+                || httpServletRequest.getRequestURI().contains("person/save")
                 || httpServletRequest.getRequestURI().contains("person/delete")
+                || httpServletRequest.getRequestURI().contains("person/view")
         )
                 && !adminRole.equals(role)) {
-
             httpServletResponse.sendRedirect(INVALID_ACCESS_PAGE_PATH);
-
             return;
         }
 
