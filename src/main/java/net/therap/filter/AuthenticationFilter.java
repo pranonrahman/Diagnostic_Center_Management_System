@@ -20,7 +20,8 @@ import static net.therap.model.RoleEnum.*;
 @Component
 public class AuthenticationFilter implements Filter {
 
-    private static final String LOGIN_REDIRECT_PATH = "authentication/form";
+    private static final String LOGIN_REDIRECT_PATH = "/login";
+
     private static final String INVALID_ACCESS_PAGE_PATH = "/invalidPage";
 
     @Autowired
