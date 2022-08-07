@@ -1,5 +1,9 @@
 package net.therap.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -9,35 +13,19 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "facility")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Facility extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
     private String name;
 
-    private Double price;
-
-    public Facility() {
-    }
+    private double price;
 
     public Facility(String name, Double price) {
         this.name = name;
-        this.price = price;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
         this.price = price;
     }
 }
