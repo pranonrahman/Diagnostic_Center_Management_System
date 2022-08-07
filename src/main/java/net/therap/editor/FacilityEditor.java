@@ -21,7 +21,7 @@ public class FacilityEditor extends PropertyEditorSupport {
     @Override
     public void setAsText(String id) throws IllegalArgumentException {
         if (nonNull(id) && !id.isEmpty()) {
-            setValue(facilityService.findById(Long.valueOf(id)));
+            setValue(facilityService.findById(Long.parseLong(id)));
         }
     }
 }

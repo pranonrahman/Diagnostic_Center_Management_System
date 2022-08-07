@@ -22,7 +22,7 @@ public class DoctorService {
         return doctorDao.findAll();
     }
 
-    public Doctor findById(Long id) {
+    public Doctor findById(long id) {
         return doctorDao.findById(id);
     }
 

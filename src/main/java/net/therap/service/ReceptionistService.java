@@ -22,7 +22,7 @@ public class ReceptionistService {
         return receptionistDao.findAll();
     }
 
-    public Receptionist findById(Long id) {
+    public Receptionist findById(long id) {
         return receptionistDao.findById(id);
     }
 

@@ -18,7 +18,7 @@ public class Dao<T> {
         this.clazz = clazz;
     }
 
-    public T findById(Long id) {
+    public T findById(long id) {
         return entityManager.find(clazz, id);
     }
 

@@ -31,7 +31,7 @@ public class InvoiceService {
         return invoiceDao.findAll();
     }
 
-    public Invoice findById(Long id) {
+    public Invoice findById(long id) {
         return invoiceDao.findById(id);
     }
 

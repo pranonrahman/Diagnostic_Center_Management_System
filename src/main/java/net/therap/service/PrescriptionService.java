@@ -22,7 +22,7 @@ public class PrescriptionService {
         return prescriptionDao.findAll();
     }
 
-    public Prescription findById(Long id) {
+    public Prescription findById(long id) {
         return prescriptionDao.findById(id);
     }
 

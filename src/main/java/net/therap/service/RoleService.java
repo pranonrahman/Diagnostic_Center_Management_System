@@ -22,7 +22,7 @@ public class RoleService {
         return roleDao.findAll();
     }
 
-    public Role findById(Long id) {
+    public Role findById(long id) {
         return roleDao.findById(id);
     }
 
