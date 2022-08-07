@@ -2,7 +2,7 @@ package net.therap.viewModel;
 
 public class RoleUpdateViewModel {
 
-    private Long id;
+    private long id;
     private Boolean doctor;
     private Boolean patient;
     private Boolean receptionist;
@@ -12,7 +12,7 @@ public class RoleUpdateViewModel {
     public RoleUpdateViewModel() {
     }
 
-    public RoleUpdateViewModel(Long id, Boolean doctor, Boolean patient, Boolean receptionist, Boolean admin, Double fee) {
+    public RoleUpdateViewModel(long id, Boolean doctor, Boolean patient, Boolean receptionist, Boolean admin, Double fee) {
         this.id = id;
         this.doctor = doctor;
         this.patient = patient;
@@ -21,11 +21,11 @@ public class RoleUpdateViewModel {
         this.fee = fee;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

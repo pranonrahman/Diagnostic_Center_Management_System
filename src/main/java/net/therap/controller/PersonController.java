@@ -4,11 +4,13 @@ import net.therap.editor.DateEditor;
 import net.therap.model.Gender;
 import net.therap.model.Person;
 import net.therap.service.PersonService;
+import net.therap.validator.RoleUpdateViewModelValidator;
 import net.therap.viewModel.RoleUpdateViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,14 +33,20 @@ public class PersonController {
     private static final String VIEW_REDIRECT_PATH = "redirect:/person/view?id=";
     private static final String LIST_REDIRECT_PATH = "redirect:/person/list";
 
+    private static final String PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE = "Person not found";
+
     @Autowired
     private DateEditor dateEditor;
 
     @Autowired
     private PersonService personService;
 
+    @Autowired
+    private RoleUpdateViewModelValidator roleUpdateViewModelValidator;
+
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
+//        webDataBinder.addValidators(roleUpdateViewModelValidator);
         webDataBinder.registerCustomEditor(Date.class, dateEditor);
     }
 
@@ -78,7 +86,7 @@ public class PersonController {
         Person person = personService.findById(id);
 
         if(isNull(person)) {
-            throw new RuntimeException("Person not found");
+            throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
         }
 
         modelMap.addAttribute("person", person);
@@ -93,11 +101,11 @@ public class PersonController {
     }
 
     @PostMapping("delete")
-    public String deletePerson(@RequestParam(value = "id") Long id, ModelMap modelMap) {
+    public String deletePerson(@RequestParam(value = "id") Long id) {
         Person person = personService.findById(id);
 
         if(isNull(person)) {
-            throw new RuntimeException("Person not found");
+            throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
         }
 
         personService.delete(person);
@@ -110,7 +118,7 @@ public class PersonController {
         Person person = personService.findById(id);
 
         if(isNull(person)) {
-            throw new RuntimeException("Person not found");
+            throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
         }
 
         modelMap.put("person", person);
@@ -120,12 +128,22 @@ public class PersonController {
     }
 
     @PostMapping("updateRole")
-    public String processUpdateRoleForm(@ModelAttribute RoleUpdateViewModel roleUpdateViewModel, BindingResult bindingResult, ModelMap modelMap) {
+    public String processUpdateRoleForm(@Validated @ModelAttribute RoleUpdateViewModel roleUpdateViewModel,
+                                        BindingResult bindingResult, ModelMap modelMap) {
+        if(bindingResult.hasErrors()) {
+            modelMap.put("person", personService.findById(roleUpdateViewModel.getId()));
+            modelMap.put("roleUpdateViewModel", new RoleUpdateViewModel());
+            return ROLE_UPDATE_PAGE;
+        }
+
         Person person = personService.findById(roleUpdateViewModel.getId());
 
-        modelMap.put("person", person);
-        modelMap.put("roleUpdateViewModel", new RoleUpdateViewModel());
+        if(isNull(person)) {
+            throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
+        }
 
-        return ROLE_UPDATE_PAGE;
+        personService.updateRole(person, roleUpdateViewModel);
+
+        return VIEW_REDIRECT_PATH + person.getId();
     }
 }

@@ -22,7 +22,7 @@ public class MedicineService {
         return medicineDao.findAll();
     }
 
-    public Medicine findById(Long id) {
+    public Medicine findById(long id) {
         return medicineDao.findById(id);
     }
 

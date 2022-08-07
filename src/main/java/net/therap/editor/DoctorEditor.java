@@ -21,7 +21,7 @@ public class DoctorEditor extends PropertyEditorSupport {
     @Override
     public void setAsText(String id) throws IllegalArgumentException {
         if (nonNull(id) && !id.isEmpty()) {
-            setValue(doctorService.findById(Long.valueOf(id)));
+            setValue(doctorService.findById(Long.parseLong(id)));
         }
     }
 }

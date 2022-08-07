@@ -22,7 +22,7 @@ public class ParticularService {
         return particularDao.findAll();
     }
 
-    public Particular findById(Long id) {
+    public Particular findById(long id) {
         return particularDao.findById(id);
     }
 

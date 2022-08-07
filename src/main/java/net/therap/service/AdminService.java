@@ -22,7 +22,7 @@ public class AdminService {
         return adminDao.findAll();
     }
 
-    public Admin findById(Long id) {
+    public Admin findById(long id) {
         return adminDao.findById(id);
     }
 

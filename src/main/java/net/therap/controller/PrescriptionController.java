@@ -59,7 +59,7 @@ public class PrescriptionController {
     public String loadViewPage(@RequestParam("id") String id, ModelMap modelMap){
         modelMap.put("readonly", true);
         modelMap.put("facilities", facilityService.findAll());
-        modelMap.put("prescription", prescriptionService.findById(Long.valueOf(id)));
+        modelMap.put("prescription", prescriptionService.findById(Long.parseLong(id)));
 
         return VIEW_PAGE;
     }

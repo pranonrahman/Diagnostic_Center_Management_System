@@ -22,7 +22,7 @@ public class FacilityService {
         return facilityDao.findAll();
     }
 
-    public Facility findById(Long id) {
+    public Facility findById(long id) {
         return facilityDao.findById(id);
     }
 
