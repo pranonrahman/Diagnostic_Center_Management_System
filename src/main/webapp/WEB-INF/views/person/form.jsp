@@ -88,6 +88,23 @@
         </form:form>
 
         <c:if test="${readOnly}">
+            <c:if test="${person.roles.size() > 0}">
+                <div class="mb-3">
+                    Roles: <br>
+                    <ul>
+                        <c:forEach var="role" items="${person.roles}">
+                            <li> <c:out value="${role.name}"/> </li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </c:if>
+
+            <c:if test="${not empty person.doctor}">
+                <div class="mb-3">
+                    <b>Fee: </b> <c:out value="${person.doctor.fee}"/>
+                </div>
+            </c:if>
+
             <div class="mb-3">
                 <form action="/person/updateRole" method="get">
                     <input name="id" hidden="hidden" value="${person.id}">
