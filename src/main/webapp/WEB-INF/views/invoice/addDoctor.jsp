@@ -23,7 +23,7 @@
     <h2 class="text-center py-3"> Invoice </h2>
     <div class="w-50 mx-auto">
 
-        <form:form method="post" modelAttribute="invoice">
+        <form:form method="post" modelAttribute="doctorVisit">
 
         <div class="mb-3">
             <form:label path="patient" cssClass="form-label">
@@ -45,7 +45,7 @@
         </div>
 
         <div class="mb-3">
-            <form:label path="doctors"> Select Doctors </form:label>
+            <form:label path="doctors"> Select visiting doctors: </form:label>
 
             <div class="form-check d-grid">
                 <form:checkboxes class="form-check-input"
