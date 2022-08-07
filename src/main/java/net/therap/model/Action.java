@@ -7,10 +7,14 @@ package net.therap.model;
 public enum Action {
 
     CREATE,
+    SAVE,
     VIEW,
+    REVIEW,
     UPDATE,
     DELETE,
     LIST,
     SUBMIT,
-    ADD
+    ADD,
+    NEXT,
+    PREVIOUS
 }

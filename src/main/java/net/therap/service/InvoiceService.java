@@ -44,12 +44,7 @@ public class InvoiceService {
         return invoiceDao.saveOrUpdate(invoice);
     }
 
-    public Invoice saveOrUpdate(InvoiceViewModel invoiceViewModel) {
-        Invoice invoice = getInvoiceFromViewModel(invoiceViewModel);
-        return saveOrUpdate(invoice);
-    }
-
-    private Invoice getInvoiceFromViewModel(InvoiceViewModel invoiceViewModel) {
+    public Invoice getInvoiceFromViewModel(InvoiceViewModel invoiceViewModel) {
         Invoice invoice = new Invoice();
         invoice.setPatient(invoiceViewModel.getPatient());
         double totalCost = 0;
@@ -87,7 +82,7 @@ public class InvoiceService {
 
         invoice.setTotalCost(totalCost);
 
-        return invoiceDao.saveOrUpdate(invoice);
+        return invoice;
     }
 
     @Transactional

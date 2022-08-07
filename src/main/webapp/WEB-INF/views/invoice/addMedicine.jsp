@@ -56,21 +56,23 @@
             <form:errors path="quantity" cssClass="invalid-feedback d-block"/>
         </div>
 
-        <div class="d-grid">
+        <div class="d-flex justify-content-between">
+            <a href="/invoice/doctor" class="btn btn-primary">
+                PREVIOUS
+            </a>
             <button type="submit"
-                    class="btn btn-primary"
+                    class="btn btn-primary flex-grow-1 mx-3"
                     value="ADD"
                     name="action">
-                Add more
+                Add
             </button>
             <button type="submit"
                     class="btn btn-primary"
-                    value="SUBMIT"
+                    value="NEXT"
                     name="action">
                 NEXT
             </button>
         </div>
-
 
     </div>
     </form:form>
