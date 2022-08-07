@@ -6,6 +6,7 @@ import net.therap.model.Facility;
 import net.therap.service.FacilityService;
 import net.therap.viewModel.FacilityItem;
 import net.therap.viewModel.InvoiceViewModel;
+import net.therap.viewModel.RemoveModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -66,6 +67,7 @@ public class FacilityItemController {
             return ADD_FACILITY_PAGE;
         }
 
+        invoice.getFacilities().removeIf(facility -> facility.getFacility().getId() == facilityItem.getFacility().getId());
         invoice.getFacilities().add(facilityItem);
 
         if(action.equals(ADD)) {
@@ -73,6 +75,17 @@ public class FacilityItemController {
         }
 
         return "redirect:/invoice";
+    }
+
+    @PostMapping("/remove")
+    public String remove(@ModelAttribute("removeModel") RemoveModel removeModel,
+                         ModelMap model,
+                         @SessionAttribute(INVOICE_CMD) InvoiceViewModel invoice) {
+        invoice.getFacilities().removeIf(medicineItem -> medicineItem.getFacility().getId() == removeModel.getId());
+
+
+
+        return "redirect:/invoice/facility";
     }
 
     private void setUpReferenceData(ModelMap model, Action action) {

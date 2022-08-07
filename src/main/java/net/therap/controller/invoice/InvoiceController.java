@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -60,9 +62,16 @@ public class InvoiceController {
     @PostMapping
     public String save(@SessionAttribute(INVOICE_CMD) InvoiceViewModel invoice,
                        RedirectAttributes ra,
-                       ModelMap modelMap) {
+                       WebRequest request,
+                       SessionStatus status,
+                       ModelMap model) {
 
         Invoice savedInvoice = invoiceService.saveOrUpdate(invoiceService.getInvoiceFromViewModel(invoice));
+
+        if(model.containsAttribute(INVOICE_CMD)) {
+            status.setComplete();
+            request.removeAttribute(INVOICE_CMD, WebRequest.SCOPE_SESSION);
+        }
 
         ra.addAttribute("id", savedInvoice.getId());
         return "redirect:/invoice/view";
