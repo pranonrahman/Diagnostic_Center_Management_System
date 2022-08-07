@@ -34,6 +34,9 @@ public class PersonService {
     @Autowired
     private AdminDao adminDao;
 
+    @Autowired
+    private RoleDao roleDao;
+
     public List<Person> findAll() {
         return personDao.findAll();
     }
@@ -55,16 +58,23 @@ public class PersonService {
     @Transactional
     public Person updateRole(Person person, RoleUpdateViewModel roleUpdateViewModel) {
 
+        Role doctorRole = roleDao.findByRole(RoleEnum.valueOf("DOCTOR"));
+        Role adminRole = roleDao.findByRole(RoleEnum.valueOf("ADMIN"));
+        Role receptionistRole = roleDao.findByRole(RoleEnum.valueOf("RECEPTIONIST"));
+        Role patientRole = roleDao.findByRole(RoleEnum.valueOf("PATIENT"));
+
         if(isNull(person.getDoctor()) && roleUpdateViewModel.getDoctor()) {
             Doctor doctor = new Doctor(roleUpdateViewModel.getFee(), person);
             doctor = doctorDao.saveOrUpdate(doctor);
 
             person.setDoctor(doctor);
+            person.getRoles().add(doctorRole);
         }
 
         if(nonNull(person.getDoctor()) && !roleUpdateViewModel.getDoctor()) {
             doctorDao.delete(person.getDoctor());
             person.setDoctor(null);
+            person.getRoles().remove(doctorRole);
         }
 
         if(isNull(person.getPatient()) && roleUpdateViewModel.getPatient()) {
@@ -72,12 +82,14 @@ public class PersonService {
             patient = patientDao.saveOrUpdate(patient);
 
             person.setPatient(patient);
+            person.getRoles().add(patientRole);
         }
 
         if(nonNull(person.getPatient()) && !roleUpdateViewModel.getPatient()) {
             patientDao.delete(person.getPatient());
 
             person.setPatient(null);
+            person.getRoles().remove(patientRole);
         }
 
         if(isNull(person.getAdmin()) && roleUpdateViewModel.getAdmin()) {
@@ -85,12 +97,14 @@ public class PersonService {
             admin = adminDao.saveOrUpdate(admin);
 
             person.setAdmin(admin);
+            person.getRoles().add(adminRole);
         }
 
         if(nonNull(person.getAdmin()) && !roleUpdateViewModel.getAdmin()) {
             adminDao.delete(person.getAdmin());
 
             person.setAdmin(null);
+            person.getRoles().remove(adminRole);
         }
 
         if(isNull(person.getReceptionist()) && roleUpdateViewModel.getReceptionist()) {
@@ -98,12 +112,14 @@ public class PersonService {
             receptionist = receptionistDao.saveOrUpdate(receptionist);
 
             person.setReceptionist(receptionist);
+            person.getRoles().add(receptionistRole);
         }
 
         if(nonNull(person.getReceptionist()) && !roleUpdateViewModel.getReceptionist()) {
             receptionistDao.delete(person.getReceptionist());
 
             person.setReceptionist(null);
+            person.getRoles().remove(receptionistRole);
         }
 
         personDao.saveOrUpdate(person);
