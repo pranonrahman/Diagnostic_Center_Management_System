@@ -13,6 +13,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 /**
  * @author amimul.ehsan
  * @since 02/08/2022
@@ -43,33 +45,11 @@ public class PrescriptionController {
         webDataBinder.registerCustomEditor(Facility.class, facilityEditor);
     }
 
-    @GetMapping("/create")
-    public String loadViewPage(@RequestParam("doctorId") String doctorId, @RequestParam("patientId") String patientId, ModelMap modelMap) {
-        modelMap.put("prescription", new Prescription());
-        modelMap.put("facilities", facilityService.findAll());
-        modelMap.put("doctorId", doctorId);
-        modelMap.put("patientId", patientId);
-
-        return VIEW_PAGE;
-    }
-
-    @PostMapping("/create")
-    public String processCreate(@ModelAttribute("prescription") Prescription prescription, ModelMap modelMap) {
-        prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
-        prescription.setDoctor(doctorService.findById(prescription.getDoctor().getId()));
-
-        prescriptionService.saveOrUpdate(prescription);
-        modelMap.put("prescription", new Prescription());
-        modelMap.put("facilities", facilityService.findAll());
-
-        return VIEW_PAGE;
-    }
-
     @GetMapping("/view")
     public String loadViewPage(@RequestParam("id") String id, ModelMap modelMap) {
-//        modelMap.put("readonly", true);
         modelMap.put("action", "view");
         modelMap.put("facilities", facilityService.findAll());
+        modelMap.put("doctorId", 11);
         modelMap.put("prescription", prescriptionService.findById(Long.parseLong(id)));
 
         return VIEW_PAGE;
@@ -88,6 +68,7 @@ public class PrescriptionController {
     public String processEdit(@ModelAttribute("prescription") Prescription prescription, ModelMap modelMap) {
         prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
         prescription.setDoctor(doctorService.findById(prescription.getDoctor().getId()));
+        prescription.setDateOfVisit(new Date());
 
         prescriptionService.saveOrUpdate(prescription);
         modelMap.put("prescription", new Prescription());
