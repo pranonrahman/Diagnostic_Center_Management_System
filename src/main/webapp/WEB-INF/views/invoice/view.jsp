@@ -37,7 +37,7 @@
                     <th scope="col">Service Name</th>
                     <th scope="col">Unit price</th>
                     <th scope="col">Units</th>
-                    <th scope="col">Price</th>
+                    <th scope="col" class="text-end">Price (BDT)</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -46,19 +46,22 @@
                         <tr>
                             <th scope="row">${loop.index + 1}</th>
                             <td><c:out value="${particular.name}"/></td>
-                            <td><c:out value="${particular.unitPrice}"/></td>
-                            <td><c:out value="${particular.units}"/></td>
-                            <td><c:out value="${particular.units * particular.unitPrice}"/></td>
+                            <td><fmt:formatNumber value="${particular.unitPrice}"/></td>
+                            <td><fmt:formatNumber value="${particular.units}"/></td>
+                            <td class="text-end"><fmt:formatNumber value="${particular.units * particular.unitPrice}"/></td>
                         </tr>
                     </p>
                 </c:forEach>
 
                 <tr>
-                    <td colspan="5"> <c:out value="${invoiceView.totalCost}"/> </td>
+                    <td colspan="5" class="text-end"><fmt:formatNumber value="${invoiceView.totalCost}"/> </td>
                 </tr>
 
                 </tbody>
             </table>
+
+            <p class="text-danger text-center py-2">${errorMessage}</p>
+
             <form:form method="post">
                 <c:choose>
                     <c:when test="${action == 'VIEW'}">

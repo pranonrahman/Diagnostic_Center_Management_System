@@ -23,6 +23,7 @@
     <h2 class="text-center py-3"> Invoice </h2>
     <div class="w-50 mx-auto">
 
+        <%--@elvariable id="facilityItem" type="net.therap.viewModel.FacilityItem"--%>
         <form:form method="post" modelAttribute="facilityItem">
 
         <div class="mb-3">
@@ -57,7 +58,7 @@
         </div>
 
         <div class="d-flex justify-content-between">
-            <a href="/invoice/doctor" class="btn btn-primary">
+            <a href="/invoice/medicine" class="btn btn-primary">
                 PREVIOUS
             </a>
             <button type="submit"
@@ -77,6 +78,56 @@
 
     </div>
     </form:form>
+
+
+    <%--@elvariable id="invoice" type="net.therap.viewModel.InvoiceViewModel"--%>
+    <c:if test="${invoice.facilities.size() > 0}">
+        <div class="w-50 mx-auto mt-4 fw-light">
+            <hr>
+            <h4 class="text-center fw-light">Added facilities</h4>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="fw-light" scope="col">#</th>
+                    <th class="fw-light" scope="col">Facility</th>
+                    <th class="fw-light" scope="col">Unit price</th>
+                    <th class="fw-light" scope="col">Units</th>
+                    <th class="fw-light" scope="col">Price</th>
+                    <th class="fw-light" scope="col">Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <c:forEach items="${invoice.facilities}" var="item" varStatus="loop">
+                    <p class="card-text">
+                        <tr>
+                            <th scope="row">${loop.index + 1}</th>
+                            <td><c:out value="${item.facility.name}"/></td>
+                            <td><c:out value="${item.facility.price}"/></td>
+                            <td><c:out value="${item.quantity}"/></td>
+                            <td><c:out value="${item.facility.price * item.quantity}"/></td>
+                            <td>
+                                    <%--@elvariable id="removeModel" type="net.therap.viewModel.RemoveModel"--%>
+                                <form:form method="post" modelAttribute="removeModel" action="/invoice/facility/remove">
+                                    <input type="hidden" name="id" value="${item.facility.id}">
+                                    <button type="submit"
+                                            class="btn btn-primary flex-grow-1 mx-3"
+                                            value="REMOVE"
+                                            name="action">
+                                        REMOVE
+                                    </button>
+                                </form:form>
+
+                            </td>
+                        </tr>
+                    </p>
+                </c:forEach>
+
+                </tbody>
+            </table>
+        </div>
+    </c:if>
+
 </div>
 </div>
 

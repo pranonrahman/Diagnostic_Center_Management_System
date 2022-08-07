@@ -16,5 +16,6 @@ public enum Action {
     SUBMIT,
     ADD,
     NEXT,
-    PREVIOUS
+    PREVIOUS,
+    REMOVE
 }

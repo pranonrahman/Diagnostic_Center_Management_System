@@ -6,6 +6,7 @@ import net.therap.service.MedicineService;
 import net.therap.validator.MedicineItemValidator;
 import net.therap.viewModel.InvoiceViewModel;
 import net.therap.viewModel.MedicineItem;
+import net.therap.viewModel.RemoveModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static java.util.Objects.isNull;
 import static net.therap.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.model.Action.*;
 
@@ -48,6 +50,12 @@ public class MedicineItemController {
 
     @GetMapping
     public String view(ModelMap model) {
+        InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
+
+        if(isNull(invoice) || isNull(invoice.getPatient())) {
+            return "redirect:/invoice/doctor";
+        }
+
         setUpReferenceData(model, VIEW);
 
         return ADD_MEDICINE_PAGE;
@@ -70,6 +78,7 @@ public class MedicineItemController {
             return ADD_MEDICINE_PAGE;
         }
 
+        invoice.getMedicines().removeIf(facility -> facility.getMedicine().getId() == medicineItem.getMedicine().getId());
         invoice.getMedicines().add(medicineItem);
 
         if(action.equals(ADD)) {
@@ -77,6 +86,17 @@ public class MedicineItemController {
         }
 
         return "redirect:/invoice/facility";
+    }
+
+    @PostMapping("/remove")
+    public String remove(@ModelAttribute("removeModel") RemoveModel removeModel,
+                         ModelMap model,
+                         @SessionAttribute(INVOICE_CMD) InvoiceViewModel invoice) {
+        invoice.getMedicines().removeIf(medicineItem -> medicineItem.getMedicine().getId() == removeModel.getId());
+
+
+
+        return "redirect:/invoice/medicine";
     }
 
     private void setUpReferenceData(ModelMap model, Action action) {
