@@ -1,5 +1,10 @@
 package net.therap.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,6 +15,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "medicine")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Medicine extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -22,36 +31,6 @@ public class Medicine extends BaseEntity {
     @Column(name = "unit_price")
     private Double unitPrice;
 
-    public Medicine() {
-    }
-
-    public Medicine(String name, String genericName, Double unitPrice) {
-        this.name = name;
-        this.genericName = genericName;
-        this.unitPrice = unitPrice;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getGenericName() {
-        return genericName;
-    }
-
-    public void setGenericName(String genericName) {
-        this.genericName = genericName;
-    }
-
-    public Double getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(Double pricePerUnit) {
-        this.unitPrice = pricePerUnit;
-    }
+    @Column(name = "available_units")
+    private int availableUnits;
 }
