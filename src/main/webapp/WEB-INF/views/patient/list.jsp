@@ -27,7 +27,7 @@
             <th scope="col">Age</th>
             <th scope="col">Sex</th>
             <th scope="col">History</th>
-            <th scope="col">Appointments with me</th>
+            <th scope="col">New Prescription</th>
         </tr>
         </thead>
 
@@ -42,7 +42,11 @@
                     <c:param name="id" value="${patient.id}"/>
                 </c:url>
                 <td><a href="${historyViewPage}">View</a></td>
-                <td><a href="<c:url value="/patient/list"/>">Edit</a></td>
+                <c:url var="prescriptionForm" value="/prescription/create">
+                    <c:param name="patientId" value="${patient.id}"/>
+                    <c:param name="doctorId" value="${doctorId}"/>
+                </c:url>
+                <td><a href="<c:url value="${prescriptionForm}"/>">Add</a></td>
             </tr>
         </c:forEach>
         </tbody>
