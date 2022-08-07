@@ -12,6 +12,7 @@
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value="../../../assets/js/jquery-3.6.0.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="../../../assets/js/bootstrap.bundle.min.js"/>"></script>
+    <jsp:include page="../header.jsp"/>
 </head>
 <body>
 
@@ -27,7 +28,6 @@
             <th scope="col">Age</th>
             <th scope="col">Sex</th>
             <th scope="col">History</th>
-            <th scope="col">New Prescription</th>
         </tr>
         </thead>
 
@@ -42,11 +42,6 @@
                     <c:param name="id" value="${patient.id}"/>
                 </c:url>
                 <td><a href="${historyViewPage}">View</a></td>
-                <c:url var="prescriptionForm" value="/prescription/create">
-                    <c:param name="patientId" value="${patient.id}"/>
-                    <c:param name="doctorId" value="${doctorId}"/>
-                </c:url>
-                <td><a href="<c:url value="${prescriptionForm}"/>">Add</a></td>
             </tr>
         </c:forEach>
         </tbody>

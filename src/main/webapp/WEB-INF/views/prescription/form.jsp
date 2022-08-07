@@ -26,11 +26,10 @@
         <form:form method="post"
                    modelAttribute="prescription">
 
-            <c:set var="readonly" value="${!prescription.isNew()}"/>
-            <c:set var="editable" value="${!prescription.isNew() && action == 'edit'}"/>
+            <c:set var="readonly" value="${(action != null && action == 'edit') ? false : true}"/>
 
-            <form:input path="patient.id" value="${patientId}" hidden="true"/>
-            <form:input path="doctor.id" value="${doctorId}" hidden="true"/>
+            <form:input path="patient.id" value="${prescription.patient.id}" hidden="true"/>
+            <form:input path="doctor.id" value="${prescription.doctor.id}" hidden="true"/>
 
             <div class="mb-3">
                 <form:label path="symptoms" cssClass="form-label">Symptoms</form:label>
@@ -77,7 +76,7 @@
                 <form:textarea rows="3"
                                cssClass="form-control"
                                path="medicines"
-                               readonly="${editable != null ? !editable : readonly}"
+                               readonly="${readonly}"
                 />
 
                 <small id="medicineHelp" class="form-text text-muted">
@@ -92,7 +91,7 @@
                 <form:textarea rows="3"
                                cssClass="form-control"
                                path="comment"
-                               readonly="${editable != null ? !editable : readonly}"
+                               readonly="${readonly}"
                 />
 
                 <form:errors path="comment" cssClass="invalid-feedback d-block"/>
@@ -101,7 +100,7 @@
 
             <div class="d-grid">
                 <c:choose>
-                    <c:when test="${!prescription.isNew()}">
+                    <c:when test="${!readonly}">
                         <button type="submit"
                                 class="btn btn-primary mb-2"
                                 name="action"
@@ -110,14 +109,12 @@
                         </button>
                     </c:when>
 
-                    <c:otherwise>
-                        <button type="submit"
-                                class="btn btn-primary"
-                                name="action"
-                                value="CREATE">
-                            CREATE
-                        </button>
-                    </c:otherwise>
+                    <c:when test="${prescription.doctor.id == doctorId}">
+                        <c:url var="prescriptionEditPage" value="/prescription/edit">
+                            <c:param name="id" value="${prescription.id}"/>
+                        </c:url>
+                        <a href="${prescriptionEditPage}" class="btn btn-primary">EDIT</a>
+                    </c:when>
                 </c:choose>
             </div>
         </form:form>

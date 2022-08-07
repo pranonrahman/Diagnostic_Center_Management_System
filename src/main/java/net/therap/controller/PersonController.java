@@ -67,7 +67,7 @@ public class PersonController {
         webDataBinder.addValidators(roleUpdateViewModelValidator);
     }
 
-    @GetMapping("createOrUpdate")
+    @GetMapping("save")
     public String showForm(@RequestParam(value = "id", required = false) Long id, ModelMap modelMap) {
         modelMap.put("readOnly", false);
         modelMap.put("genderList", Gender.values());
@@ -77,7 +77,7 @@ public class PersonController {
         return FORM_PAGE;
     }
 
-    @PostMapping("createOrUpdate")
+    @PostMapping("save")
     public String processPersonForm(@ModelAttribute Person person, BindingResult bindingResult, ModelMap modelMap) {
         modelMap.put("readOnly", false);
         modelMap.put("genderList", Gender.values());

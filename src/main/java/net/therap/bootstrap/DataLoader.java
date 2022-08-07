@@ -93,19 +93,19 @@ public class DataLoader implements CommandLineRunner {
         person1.setName("Abul Mia");
         person1.setUserName("abul");
         person1.setPassword("abul");
-        personService.saveOrUpdate(person1);
+        person1 = personService.saveOrUpdate(person1);
 
         Person person2 = new Person();
         person2.setName("Abdul Kuddus");
         person2.setUserName("abdul");
         person2.setPassword("abdul");
-        personService.saveOrUpdate(person2);
+        person2 = personService.saveOrUpdate(person2);
 
         Person person3 = new Person();
         person3.setName("Abdul Khalek");
         person3.setUserName("khalek");
         person3.setPassword("khalek");
-        personService.saveOrUpdate(person3);
+        person3 = personService.saveOrUpdate(person3);
 
         List<Role> roles = roleService.findAll();
         for (Role role : roles) {
@@ -113,6 +113,10 @@ public class DataLoader implements CommandLineRunner {
             person2.getRoles().add(role);
             person3.getRoles().add(role);
         }
+
+        person1 = personService.saveOrUpdate(person1);
+        person2 = personService.saveOrUpdate(person2);
+        person3 = personService.saveOrUpdate(person3);
     }
 
     private void createSeedPatient() {
