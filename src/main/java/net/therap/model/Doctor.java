@@ -37,4 +37,16 @@ public class Doctor extends BaseEntity {
         this.fee = fee;
         this.person = person;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Doctor)) return false;
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

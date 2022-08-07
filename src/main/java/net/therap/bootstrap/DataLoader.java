@@ -159,7 +159,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void createSeedMedicine() {
-        Medicine napa = new Medicine("Napa", "Peracetamol", 10.0, 100);
+        Medicine napa = new Medicine("Napa", "Peracetamol", 10.5, 100);
         medicineService.saveOrUpdate(napa);
 
         Medicine dermovet =  new Medicine("Dermovet", "deracetamol", 17.0, 10);
