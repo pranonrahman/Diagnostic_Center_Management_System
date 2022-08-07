@@ -1,10 +1,5 @@
 package net.therap.viewModel;
 
-import net.therap.model.Speciality;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class RoleUpdateViewModel {
 
     private Long id;
@@ -13,15 +8,11 @@ public class RoleUpdateViewModel {
     private Boolean receptionist;
     private Boolean admin;
     private Double fee;
-    private List<Speciality> specialities;
 
     public RoleUpdateViewModel() {
-        specialities = new ArrayList<>();
     }
 
     public RoleUpdateViewModel(Long id, Boolean doctor, Boolean patient, Boolean receptionist, Boolean admin, Double fee) {
-        this();
-
         this.id = id;
         this.doctor = doctor;
         this.patient = patient;
@@ -76,13 +67,5 @@ public class RoleUpdateViewModel {
 
     public void setFee(Double fee) {
         this.fee = fee;
-    }
-
-    public List<Speciality> getSpecialities() {
-        return specialities;
-    }
-
-    public void setSpecialities(List<Speciality> specialities) {
-        this.specialities = specialities;
     }
 }
