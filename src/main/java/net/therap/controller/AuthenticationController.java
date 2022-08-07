@@ -5,7 +5,6 @@ import net.therap.model.Role;
 import net.therap.service.AuthenticationService;
 import net.therap.service.PersonService;
 import net.therap.service.RoleService;
-import net.therap.validator.PersonViewModelValidator;
 import net.therap.viewModel.PersonViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +20,6 @@ import javax.servlet.http.HttpSession;
  * @since 8/3/22
  */
 @Controller
-@RequestMapping("login")
 public class AuthenticationController {
 
     private static final String ADMIN_DASHBOARD_REDIRECT_PATH = "redirect:/admin";
@@ -29,8 +27,7 @@ public class AuthenticationController {
     private static final String PATIENT_DASHBOARD_REDIRECT_PATH = "redirect:/patient";
     private static final String RECEPTIONIST_DASHBOARD_REDIRECT_PATH = "redirect:/invoice";
 
-    private static final String VIEW_PAGE = "authentication/view";
-    private static final String FORM_PAGE = "authentication/form";
+    private static final String FORM_PAGE = "/authentication/form";
 
     @Autowired
     private RoleService roleService;
@@ -42,9 +39,6 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @Autowired
-    private PersonViewModelValidator personViewModelValidator;
-
-    @Autowired
     private PersonService personService;
 
     @InitBinder
@@ -52,14 +46,16 @@ public class AuthenticationController {
         webDataBinder.registerCustomEditor(Role.class, roleEditor);
     }
 
-    @GetMapping
+    @GetMapping("login")
     public String showLoginForm(ModelMap modelMap) {
+        setUpReferenceData(modelMap);
+
         modelMap.put("personViewModel", new PersonViewModel());
-        modelMap.put("seedRoleList", roleService.findAll());
+
         return FORM_PAGE;
     }
 
-    @PostMapping
+    @PostMapping("login")
     public String processLoginForm(@ModelAttribute PersonViewModel personViewModel,
                                    BindingResult result,
                                    ModelMap modelMap,
@@ -93,9 +89,12 @@ public class AuthenticationController {
     }
 
     @RequestMapping("logout")
-    public String logout(ModelMap modelMap, HttpSession session) {
+    public String logout(HttpSession session, ModelMap modelMap) {
         session.removeAttribute("user");
         session.removeAttribute("role");
+
+        setUpReferenceData(modelMap);
+        modelMap.put("personViewModel", new PersonViewModel());
 
         return FORM_PAGE;
     }
