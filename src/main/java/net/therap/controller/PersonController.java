@@ -4,7 +4,6 @@ import net.therap.editor.DateEditor;
 import net.therap.model.Gender;
 import net.therap.model.Person;
 import net.therap.service.PersonService;
-import net.therap.service.SpecialityService;
 import net.therap.viewModel.RoleUpdateViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 /**
  * @author raian.rahman
@@ -38,9 +36,6 @@ public class PersonController {
 
     @Autowired
     private PersonService personService;
-
-    @Autowired
-    private SpecialityService specialityService;
 
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
@@ -120,7 +115,6 @@ public class PersonController {
 
         modelMap.put("person", person);
         modelMap.put("roleUpdateViewModel", new RoleUpdateViewModel());
-        modelMap.put("specialityList", specialityService.findAll());
 
         return ROLE_UPDATE_PAGE;
     }
