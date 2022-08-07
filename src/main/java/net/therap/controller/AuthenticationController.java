@@ -3,6 +3,7 @@ package net.therap.controller;
 import net.therap.editor.RoleEditor;
 import net.therap.model.Role;
 import net.therap.service.AuthenticationService;
+import net.therap.service.PersonService;
 import net.therap.service.RoleService;
 import net.therap.validator.PersonViewModelValidator;
 import net.therap.viewModel.PersonViewModel;
@@ -12,6 +13,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @author raian.rahman
@@ -41,10 +44,12 @@ public class AuthenticationController {
     @Autowired
     private PersonViewModelValidator personViewModelValidator;
 
+    @Autowired
+    private PersonService personService;
+
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Role.class, roleEditor);
-        webDataBinder.addValidators(personViewModelValidator);
     }
 
     @GetMapping
@@ -57,7 +62,9 @@ public class AuthenticationController {
     @PostMapping
     public String processLoginForm(@ModelAttribute PersonViewModel personViewModel,
                                    BindingResult result,
-                                   ModelMap modelMap) {
+                                   ModelMap modelMap,
+                                   HttpSession session) {
+
         setUpReferenceData(modelMap);
 
         if (result.hasErrors()) {
@@ -67,6 +74,9 @@ public class AuthenticationController {
         if (!authenticationService.authenticate(personViewModel)) {
             return FORM_PAGE;
         }
+
+        session.setAttribute("user", personService.findByUserName(personViewModel.getUserName()));
+        session.setAttribute("role", personViewModel.getRole());
 
         switch (personViewModel.getRole().getName()) {
             case ADMIN:
@@ -80,6 +90,14 @@ public class AuthenticationController {
             default:
                 return FORM_PAGE;
         }
+    }
+
+    @RequestMapping("logout")
+    public String logout(ModelMap modelMap, HttpSession session) {
+        session.removeAttribute("user");
+        session.removeAttribute("role");
+
+        return FORM_PAGE;
     }
 
     private void setUpReferenceData(ModelMap modelMap) {
