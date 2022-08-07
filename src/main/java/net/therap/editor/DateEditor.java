@@ -17,7 +17,7 @@ public class DateEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) {
-        if(isNull(text) || text.isBlank()) {
+        if (isNull(text) || text.isBlank()) {
             setValue(null);
         } else {
             try {

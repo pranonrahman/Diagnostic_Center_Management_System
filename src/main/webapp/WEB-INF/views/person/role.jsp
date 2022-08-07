@@ -50,9 +50,11 @@
             <div class="mb-3">
                 <form:checkbox path="doctor" value="${isDoctor}" cssClass="form-check-inline"/>
                 <form:label path="doctor" cssClass="form-check-label w-25">Doctor</form:label>
+                <form:errors path="doctor" cssClass="invalid-feedback d-block"/>
 
                 <form:label path="fee" cssClass="form-check-label">Fee: (bdt) </form:label>
                 <form:input path="fee" cssClass="form-text" type="number" min="0" step="0.1"/>
+                <form:errors path="fee" cssClass="invalid-feedback d-block"/>
             </div>
 
             <button type="submit" value="submit" class="btn btn-primary w-100">Update</button>
