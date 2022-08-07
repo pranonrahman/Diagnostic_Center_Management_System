@@ -19,7 +19,7 @@ public class RoleEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String roleId) throws IllegalArgumentException {
-        if(!roleId.isEmpty()) {
+        if (!roleId.isEmpty()) {
             Role role = roleService.findById(Long.parseLong(roleId));
             setValue(role);
         }

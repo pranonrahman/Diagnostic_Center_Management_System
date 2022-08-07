@@ -22,7 +22,7 @@ public class RoleUpdateViewModelService {
         roleUpdateViewModel.setPatient(nonNull(person.getPatient()));
         roleUpdateViewModel.setReceptionist(nonNull(person.getReceptionist()));
 
-        if(nonNull(person.getDoctor())) {
+        if (nonNull(person.getDoctor())) {
             roleUpdateViewModel.setFee(person.getDoctor().getFee());
         }
 

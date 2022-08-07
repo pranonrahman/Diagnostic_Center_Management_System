@@ -8,21 +8,21 @@ import net.therap.model.RoleEnum;
 import net.therap.service.PersonService;
 import net.therap.service.RoleService;
 import net.therap.service.RoleUpdateViewModelService;
+import net.therap.validator.RoleUpdateViewModelValidator;
 import net.therap.viewModel.RoleUpdateViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static java.util.Objects.isNull;
-import static net.therap.model.RoleEnum.DOCTOR;
 
 /**
  * @author raian.rahman
@@ -54,9 +54,17 @@ public class PersonController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private RoleUpdateViewModelValidator roleUpdateViewModelValidator;
+
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Date.class, dateEditor);
+    }
+
+    @InitBinder("roleUpdateViewModel")
+    private void roleUpdateViewModelInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(roleUpdateViewModelValidator);
     }
 
     @GetMapping("createOrUpdate")
@@ -74,7 +82,7 @@ public class PersonController {
         modelMap.put("readOnly", false);
         modelMap.put("genderList", Gender.values());
 
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return FORM_PAGE;
         }
 
@@ -88,13 +96,13 @@ public class PersonController {
         modelMap.put("readOnly", true);
         modelMap.put("genderList", Gender.values());
 
-        if(isNull(id)) {
+        if (isNull(id)) {
             return LIST_REDIRECT_PATH;
         }
 
         Person person = personService.findById(id);
 
-        if(isNull(person)) {
+        if (isNull(person)) {
             throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
         }
 
@@ -106,9 +114,9 @@ public class PersonController {
     @RequestMapping("list")
     public String showList(@RequestParam(value = "filterBy", required = false) String filterBy, ModelMap modelMap) {
 
-        if(isNull(filterBy)) {
+        if (isNull(filterBy)) {
             modelMap.put("persons", personService.findAll());
-        } else  {
+        } else {
             Role role = roleService.findByRole(RoleEnum.valueOf(filterBy));
             List<Person> personList = new ArrayList<>();
             personService.findAll()
@@ -124,7 +132,7 @@ public class PersonController {
     public String deletePerson(@RequestParam(value = "id") Long id) {
         Person person = personService.findById(id);
 
-        if(isNull(person)) {
+        if (isNull(person)) {
             throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
         }
 
@@ -137,7 +145,7 @@ public class PersonController {
     public String showUpdateRoleForm(@RequestParam(value = "id") Long id, ModelMap modelMap) {
         Person person = personService.findById(id);
 
-        if(isNull(person)) {
+        if (isNull(person)) {
             throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
         }
 
@@ -151,18 +159,16 @@ public class PersonController {
     }
 
     @PostMapping("updateRole")
-    public String processUpdateRoleForm(@Validated @ModelAttribute RoleUpdateViewModel roleUpdateViewModel,
-                                        BindingResult bindingResult, ModelMap modelMap) {
+    public String processUpdateRoleForm(@Valid @ModelAttribute RoleUpdateViewModel roleUpdateViewModel,
+                                        BindingResult bindingResult) {
 
-        if(bindingResult.hasErrors()) {
-            modelMap.put("person", personService.findById(roleUpdateViewModel.getId()));
-            modelMap.put("roleUpdateViewModel", new RoleUpdateViewModel());
+        if (bindingResult.hasErrors()) {
             return ROLE_UPDATE_PAGE;
         }
 
         Person person = personService.findById(roleUpdateViewModel.getId());
 
-        if(isNull(person)) {
+        if (isNull(person)) {
             throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
         }
 
