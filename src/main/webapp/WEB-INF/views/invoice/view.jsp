@@ -17,12 +17,12 @@
     <script type="text/javascript" src="<c:url value="../../../assets/js/bootstrap.bundle.min.js"/>"></script>
 </head>
 <body>
-<%--@elvariable id="invoice" type="net.therap.model.Invoice"--%>
-<div class="container-fluid bg-primary-custom h-100">
 
+<div class="container-fluid bg-primary-custom h-100">
+    <%--@elvariable id="invoiceView" type="net.therap.model.Invoice"--%>
     <div class="card">
         <h5 class="card-header">
-            Invoice of <c:out value="${invoice.patient.person.name}"/>
+            Invoice of <c:out value="${invoiceView.patient.person.name}"/>
         </h5>
         <div class="card-body">
             <h5 class="card-title">
@@ -41,7 +41,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${invoice.particulars}" var="particular" varStatus="loop">
+                <c:forEach items="${invoiceView.particulars}" var="particular" varStatus="loop">
                     <p class="card-text">
                         <tr>
                             <th scope="row">${loop.index + 1}</th>
@@ -54,12 +54,28 @@
                 </c:forEach>
 
                 <tr>
-                    <td colspan="5"> <c:out value="${invoice.totalCost}"/> </td>
+                    <td colspan="5"> <c:out value="${invoiceView.totalCost}"/> </td>
                 </tr>
 
                 </tbody>
             </table>
-            <a href="#" class="btn btn-primary">Print Invoice</a>
+            <form:form method="post">
+                <c:choose>
+                    <c:when test="${action == 'VIEW'}">
+                        <a href="/invoice/list" class="btn btn-primary">
+                            GO TO INVOICE LIST
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="/invoice/facility" class="btn btn-primary" type="submit">
+                            PREVIOUS
+                        </a>
+                        <button class="btn btn-primary" type="submit">
+                            CREATE INVOICE
+                        </button>
+                    </c:otherwise>
+                </c:choose>
+            </form:form>
         </div>
     </div>
     
