@@ -6,7 +6,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 /**
  * @author raian.rahman
@@ -20,27 +19,19 @@ public class RoleUpdateViewModelValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return RoleUpdateViewModelValidator.class.equals(clazz);
+        return RoleUpdateViewModel.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
         RoleUpdateViewModel roleUpdateViewModel = (RoleUpdateViewModel) target;
 
-        if(roleUpdateViewModel.getDoctor()
+        if (roleUpdateViewModel.getDoctor()
                 && (isNull(roleUpdateViewModel.getFee()) || roleUpdateViewModel.getFee() == 0)) {
 
             errors.rejectValue("fee",
                     "{roleUpdateViewModel.doctor.feeNull}",
                     FEE_NOT_PROVIDED_MESSAGE);
-        }
-
-        if(!roleUpdateViewModel.getDoctor()
-                && (nonNull(roleUpdateViewModel.getFee()) || roleUpdateViewModel.getFee() != 0)) {
-
-            errors.rejectValue("fee",
-                    "{roleUpdateViewModel.doctor.feeNotNull}",
-                    DOCTOR_NULL_AND_FEE_PROVIDED_MESSAGE);
         }
     }
 }

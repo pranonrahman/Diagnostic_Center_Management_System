@@ -25,21 +25,21 @@ public class PersonViewModelValidator implements Validator {
     public void validate(Object target, Errors errors) {
         PersonViewModel personViewModel = (PersonViewModel) target;
 
-        if(isNull(personViewModel.getUserName())) {
+        if (isNull(personViewModel.getUserName())) {
             errors.rejectValue("userName", "{person.userName.notNull}", "{person.userName.notNull}");
-        } else if(nonNull(personViewModel.getUserName()) && personViewModel.getUserName().isBlank()) {
+        } else if (nonNull(personViewModel.getUserName()) && personViewModel.getUserName().isBlank()) {
             errors.rejectValue("userName", "{person.userName.notBlank}", "{person.userName.notBlank}");
         }
 
-        if(isNull(personViewModel.getPassword())) {
+        if (isNull(personViewModel.getPassword())) {
             errors.rejectValue("password", "{person.password.notNull}", "{person.password.notNull}");
-        } else if(nonNull(personViewModel.getUserName()) && personViewModel.getUserName().isBlank()) {
+        } else if (nonNull(personViewModel.getUserName()) && personViewModel.getUserName().isBlank()) {
             errors.rejectValue("password", "{person.password.notBlank}", "{person.password.notBlank}");
         }
 
-        if(isNull(personViewModel.getUserName())) {
+        if (isNull(personViewModel.getUserName())) {
             errors.rejectValue("role", "{person.role.notNull}", "{person.role.notNull}");
-        } else if(nonNull(personViewModel.getUserName()) && personViewModel.getUserName().isBlank()) {
+        } else if (nonNull(personViewModel.getUserName()) && personViewModel.getUserName().isBlank()) {
             errors.rejectValue("role", "{person.role.notBlank}", "{person.role.notBlank}");
         }
     }

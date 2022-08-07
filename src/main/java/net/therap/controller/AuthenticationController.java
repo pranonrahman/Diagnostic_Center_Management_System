@@ -1,11 +1,11 @@
 package net.therap.controller;
 
-import net.therap.model.Role;
-import net.therap.validator.PersonViewModelValidator;
-import net.therap.viewModel.PersonViewModel;
 import net.therap.editor.RoleEditor;
+import net.therap.model.Role;
 import net.therap.service.AuthenticationService;
 import net.therap.service.RoleService;
+import net.therap.validator.PersonViewModelValidator;
+import net.therap.viewModel.PersonViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -60,11 +60,11 @@ public class AuthenticationController {
                                    ModelMap modelMap) {
         setUpReferenceData(modelMap);
 
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             return FORM_PAGE;
         }
 
-        if(!authenticationService.authenticate(personViewModel)) {
+        if (!authenticationService.authenticate(personViewModel)) {
             return FORM_PAGE;
         }
 
