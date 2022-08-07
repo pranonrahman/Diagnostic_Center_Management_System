@@ -1,5 +1,8 @@
 package net.therap.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -11,6 +14,8 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "prescription")
+@Getter
+@Setter
 public class Prescription extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -52,69 +57,5 @@ public class Prescription extends BaseEntity {
         this.dateOfVisit = dateOfVisit;
         this.patient = patient;
         this.doctor = doctor;
-    }
-
-    public String getSymptoms() {
-        return symptoms;
-    }
-
-    public void setSymptoms(String symptoms) {
-        this.symptoms = symptoms;
-    }
-
-    public String getDiagnosis() {
-        return diagnosis;
-    }
-
-    public void setDiagnosis(String diagnosis) {
-        this.diagnosis = diagnosis;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Date getDateOfVisit() {
-        return dateOfVisit;
-    }
-
-    public void setDateOfVisit(Date dateOfVisit) {
-        this.dateOfVisit = dateOfVisit;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-
-    public Set<Facility> getFacilities() {
-        return facilities;
-    }
-
-    public void setFacilities(Set<Facility> facilities) {
-        this.facilities = facilities;
-    }
-
-    public String getMedicines() {
-        return medicines;
-    }
-
-    public void setMedicines(String medicines) {
-        this.medicines = medicines;
     }
 }

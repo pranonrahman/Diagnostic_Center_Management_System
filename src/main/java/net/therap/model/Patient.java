@@ -1,5 +1,8 @@
 package net.therap.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +13,8 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "patient")
+@Getter
+@Setter
 public class Patient extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -32,29 +37,5 @@ public class Patient extends BaseEntity {
         this();
 
         this.person = person;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    public Set<Prescription> getPrescriptions() {
-        return prescriptions;
-    }
-
-    public void setPrescriptions(Set<Prescription> prescriptions) {
-        this.prescriptions = prescriptions;
-    }
-
-    public Set<Invoice> getInvoices() {
-        return invoices;
-    }
-
-    public void setInvoices(Set<Invoice> invoices) {
-        this.invoices = invoices;
     }
 }

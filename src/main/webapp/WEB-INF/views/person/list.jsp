@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -32,10 +32,11 @@
            </tr>
            </thead>
            <tbody>
+               <%--@elvariable id="persons" type="java.util.List"--%>
                <c:forEach items="${persons}" var="person">
                    <tr>
                        <td>
-                           <a href="/person/view?id=${person.id}"><c:out value="${person.userName}"/></a>
+                           <a href="${pageContext.request.contextPath}/person/view?id=${person.id}"><c:out value="${person.userName}"/></a>
                        </td>
 
                        <td>

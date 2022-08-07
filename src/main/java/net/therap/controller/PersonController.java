@@ -4,6 +4,8 @@ import net.therap.editor.DateEditor;
 import net.therap.model.Gender;
 import net.therap.model.Person;
 import net.therap.service.PersonService;
+import net.therap.service.SpecialityService;
+import net.therap.viewModel.RoleUpdateViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 /**
  * @author raian.rahman
@@ -25,6 +28,7 @@ public class PersonController {
 
     private static final String FORM_PAGE = "person/form";
     private static final String LIST_PAGE = "person/list";
+    private static final String ROLE_UPDATE_PAGE = "person/role";
 
     private static final String VIEW_REDIRECT_PATH = "redirect:/person/view?id=";
     private static final String LIST_REDIRECT_PATH = "redirect:/person/list";
@@ -34,6 +38,9 @@ public class PersonController {
 
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private SpecialityService specialityService;
 
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
@@ -101,5 +108,30 @@ public class PersonController {
         personService.delete(person);
 
         return LIST_REDIRECT_PATH;
+    }
+
+    @GetMapping("updateRole")
+    public String showUpdateRoleForm(@RequestParam(value = "id") Long id, ModelMap modelMap) {
+        Person person = personService.findById(id);
+
+        if(isNull(person)) {
+            throw new RuntimeException("Person not found");
+        }
+
+        modelMap.put("person", person);
+        modelMap.put("roleUpdateViewModel", new RoleUpdateViewModel());
+        modelMap.put("specialityList", specialityService.findAll());
+
+        return ROLE_UPDATE_PAGE;
+    }
+
+    @PostMapping("updateRole")
+    public String processUpdateRoleForm(@ModelAttribute RoleUpdateViewModel roleUpdateViewModel, BindingResult bindingResult, ModelMap modelMap) {
+        Person person = personService.findById(roleUpdateViewModel.getId());
+
+        modelMap.put("person", person);
+        modelMap.put("roleUpdateViewModel", new RoleUpdateViewModel());
+
+        return ROLE_UPDATE_PAGE;
     }
 }

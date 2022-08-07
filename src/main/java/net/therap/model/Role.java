@@ -1,5 +1,9 @@
 package net.therap.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -9,24 +13,16 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "role")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Role extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
     private RoleEnum name;
 
-    public Role() {
-    }
-
     public Role(RoleEnum name) {
-        this.name = name;
-    }
-
-    public RoleEnum getName() {
-        return name;
-    }
-
-    public void setName(RoleEnum name) {
         this.name = name;
     }
 }
