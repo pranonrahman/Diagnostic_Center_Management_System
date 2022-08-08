@@ -1,6 +1,7 @@
 package net.therap.controller;
 
 import net.therap.editor.RoleEditor;
+import net.therap.model.Person;
 import net.therap.model.Role;
 import net.therap.service.AuthenticationService;
 import net.therap.service.PersonService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 /**
  * @author raian.rahman
@@ -26,8 +28,11 @@ public class AuthenticationController {
     private static final String DOCTOR_DASHBOARD_REDIRECT_PATH = "redirect:/doctor";
     private static final String PATIENT_DASHBOARD_REDIRECT_PATH = "redirect:/patient";
     private static final String RECEPTIONIST_DASHBOARD_REDIRECT_PATH = "redirect:/invoice";
+    private static final String LOGIN_REDIRECT_PATH = "redirect:/login";
 
     private static final String FORM_PAGE = "/authentication/form";
+
+    private static final String INVALID_CREDENTIALS_PROVIDED = "Invalid credentials provided";
 
     @Autowired
     private RoleService roleService;
@@ -48,30 +53,43 @@ public class AuthenticationController {
 
     @GetMapping("login")
     public String showLoginForm(ModelMap modelMap) {
-        setUpReferenceData(modelMap);
-
         modelMap.put("personViewModel", new PersonViewModel());
 
         return FORM_PAGE;
     }
 
     @PostMapping("login")
-    public String processLoginForm(@ModelAttribute PersonViewModel personViewModel,
-                                   BindingResult result,
-                                   ModelMap modelMap,
-                                   HttpSession session) {
-
-        setUpReferenceData(modelMap);
+    public String processLoginForm(@ModelAttribute PersonViewModel personViewModel, BindingResult result,
+                                   ModelMap modelMap, HttpSession session) {
 
         if (result.hasErrors()) {
             return FORM_PAGE;
         }
 
-        if (!authenticationService.authenticate(personViewModel)) {
+        if (!authenticationService.authenticateByPassword(personViewModel)) {
+            modelMap.put("message", INVALID_CREDENTIALS_PROVIDED);
             return FORM_PAGE;
         }
 
         session.setAttribute("user", personService.findByUserName(personViewModel.getUserName()));
+
+        modelMap.put("seedRoleList", personService.findByUserName(personViewModel.getUserName()).getRoles());
+
+        return FORM_PAGE;
+    }
+
+    @PostMapping("login/role")
+    public String loginByRole(@Valid @ModelAttribute PersonViewModel personViewModel, BindingResult bindingResult,
+                              HttpSession session) {
+
+        if (bindingResult.hasErrors()) {
+            return FORM_PAGE;
+        }
+
+        if (!authenticationService.authenticateByRole(personViewModel, (Person) session.getAttribute("user"))) {
+            return FORM_PAGE;
+        }
+
         session.setAttribute("role", personViewModel.getRole());
 
         switch (personViewModel.getRole().getName()) {
@@ -96,7 +114,7 @@ public class AuthenticationController {
         setUpReferenceData(modelMap);
         modelMap.put("personViewModel", new PersonViewModel());
 
-        return FORM_PAGE;
+        return LOGIN_REDIRECT_PATH;
     }
 
     private void setUpReferenceData(ModelMap modelMap) {
