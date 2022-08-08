@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 /**
  * @author raian.rahman
  * @since 8/3/22
@@ -29,6 +32,8 @@ public class AuthenticationController {
     private static final String PATIENT_DASHBOARD_REDIRECT_PATH = "redirect:/patient";
     private static final String RECEPTIONIST_DASHBOARD_REDIRECT_PATH = "redirect:/invoice";
     private static final String LOGIN_REDIRECT_PATH = "redirect:/login";
+    private static final String LOGOUT_REDIRECT_PATH = "redirect:/logout";
+    private static final String LOGIN_ROLE_REDIRECT_PATH = "redirect:/login/role";
 
     private static final String FORM_PAGE = "/authentication/form";
 
@@ -52,7 +57,11 @@ public class AuthenticationController {
     }
 
     @GetMapping("login")
-    public String showLoginForm(ModelMap modelMap) {
+    public String showLoginForm(ModelMap modelMap, HttpSession session) {
+        if(nonNull(session.getAttribute("user")) || nonNull(session.getAttribute("role"))) {
+            return LOGOUT_REDIRECT_PATH;
+        }
+
         modelMap.put("personViewModel", new PersonViewModel());
 
         return FORM_PAGE;
@@ -74,6 +83,21 @@ public class AuthenticationController {
         session.setAttribute("user", personService.findByUserName(personViewModel.getUserName()));
 
         modelMap.put("seedRoleList", personService.findByUserName(personViewModel.getUserName()).getRoles());
+
+        return LOGIN_ROLE_REDIRECT_PATH;
+    }
+
+    @GetMapping("login/role")
+    public String showRoleForm(ModelMap modelMap, HttpSession session) {
+
+        if(isNull(session.getAttribute("user"))) {
+            return LOGIN_REDIRECT_PATH;
+        }
+
+        Person person = (Person) session.getAttribute("user");
+
+        modelMap.put("personViewModel", new PersonViewModel());
+        modelMap.put("seedRoleList", person.getRoles());
 
         return FORM_PAGE;
     }
