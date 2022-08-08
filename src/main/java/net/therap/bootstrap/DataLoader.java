@@ -89,22 +89,33 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void createSeedPerson() {
+        Calendar c = Calendar.getInstance();
+
         Person person1 = new Person();
         person1.setName("Abul Mia");
         person1.setUserName("abul");
         person1.setPassword("abul");
+        c.set(1970, Calendar.JULY, 25);
+        Date d1 = c.getTime();
+        person1.setDateOfBirth(d1);
         person1 = personService.saveOrUpdate(person1);
 
         Person person2 = new Person();
         person2.setName("Abdul Kuddus");
         person2.setUserName("abdul");
         person2.setPassword("abdul");
+        c.set(1968, Calendar.JULY, 25);
+        d1 = c.getTime();
+        person2.setDateOfBirth(d1);
         person2 = personService.saveOrUpdate(person2);
 
         Person person3 = new Person();
         person3.setName("Abdul Khalek");
         person3.setUserName("khalek");
         person3.setPassword("khalek");
+        c.set(1975, Calendar.MARCH, 20);
+        d1 = c.getTime();
+        person3.setDateOfBirth(d1);
         person3 = personService.saveOrUpdate(person3);
 
         List<Role> roles = roleService.findAll();
