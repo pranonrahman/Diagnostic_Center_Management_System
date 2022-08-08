@@ -1,9 +1,7 @@
 package net.therap.controller;
 
 import net.therap.editor.FacilityEditor;
-import net.therap.model.Facility;
-import net.therap.model.Person;
-import net.therap.model.Prescription;
+import net.therap.model.*;
 import net.therap.service.DoctorService;
 import net.therap.service.FacilityService;
 import net.therap.service.PatientService;
@@ -16,14 +14,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-import static java.util.Objects.nonNull;
-
 /**
  * @author amimul.ehsan
  * @since 02/08/2022
  */
 @Controller
-@SessionAttributes("user")
+@SessionAttributes({"role", "user"})
 @RequestMapping("/prescription")
 public class PrescriptionController {
 
@@ -50,10 +46,10 @@ public class PrescriptionController {
     }
 
     @GetMapping("/view")
-    public String loadViewPage(@ModelAttribute("user") Person user, @RequestParam("id") String id, ModelMap modelMap) {
+    public String loadViewPage(@ModelAttribute("user") Person user, @ModelAttribute("role") Role role, @RequestParam("id") String id, ModelMap modelMap) {
         modelMap.put("action", "view");
         modelMap.put("facilities", facilityService.findAll());
-        modelMap.put("doctorId", nonNull(user.getDoctor()) ? user.getDoctor().getId() : 0);
+        modelMap.put("doctorId", role.getName().equals(RoleEnum.DOCTOR) ? user.getDoctor().getId() : 0);
         modelMap.put("prescription", prescriptionService.findById(Long.parseLong(id)));
 
         return VIEW_PAGE;

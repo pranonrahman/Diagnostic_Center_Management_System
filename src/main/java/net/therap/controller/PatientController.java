@@ -12,7 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author amimul.ehsan
@@ -30,6 +33,24 @@ public class PatientController {
 
     @Autowired
     private DoctorService doctorService;
+
+    @GetMapping("")
+    public String loadPrescriptionList(@ModelAttribute("user") Person user, ModelMap modelMap) {
+        Patient patient = user.getPatient();
+        List<PrescriptionViewModel> prescriptionViewModels = new ArrayList<>();
+        Set<Prescription> prescriptions = patient.getPrescriptions();
+
+        for (Prescription prescription : prescriptions) {
+            prescriptionViewModels.add(new PrescriptionViewModel(prescription));
+        }
+
+        Collections.sort(prescriptionViewModels);
+
+        modelMap.put("patientName", user.getName());
+        modelMap.put("prescriptionViewModels", prescriptionViewModels);
+
+        return "prescription/list";
+    }
 
     @GetMapping("/history")
     public String loadList(@ModelAttribute("user") Person user, @RequestParam("id") String id, ModelMap modelMap) {
