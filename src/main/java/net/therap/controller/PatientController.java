@@ -2,6 +2,7 @@ package net.therap.controller;
 
 import net.therap.model.Doctor;
 import net.therap.model.Patient;
+import net.therap.model.Person;
 import net.therap.model.Prescription;
 import net.therap.service.DoctorService;
 import net.therap.service.PatientService;
@@ -9,9 +10,7 @@ import net.therap.viewModel.PrescriptionViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -20,6 +19,7 @@ import java.util.*;
  * @since 03/08/2022
  */
 @Controller
+@SessionAttributes("user")
 @RequestMapping("/patient")
 public class PatientController {
 
@@ -32,9 +32,9 @@ public class PatientController {
     private DoctorService doctorService;
 
     @GetMapping("/history")
-    public String loadList(@RequestParam("id") String id, ModelMap modelMap) {
-        String doctorId = "11";
-        Doctor doctor = doctorService.findById(Long.parseLong(doctorId));
+    public String loadList(@ModelAttribute("user") Person user, @RequestParam("id") String id, ModelMap modelMap) {
+        long doctorId = user.getDoctor().getId();
+        Doctor doctor = doctorService.findById(doctorId);
         Patient patient = patientService.findById(Long.parseLong(id));
 
         List<PrescriptionViewModel> allPrescriptionViewModels = new ArrayList<>();
@@ -45,7 +45,6 @@ public class PatientController {
             if (prescription.getDoctor().equals(doctor)) {
                 doctorSpecificPrescriptions.add(new PrescriptionViewModel(prescription));
             } else {
-
                 allPrescriptionViewModels.add(new PrescriptionViewModel(prescription));
             }
         }

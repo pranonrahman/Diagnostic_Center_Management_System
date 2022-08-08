@@ -32,14 +32,14 @@
         </thead>
 
         <tbody>
-        <c:forEach var="patient" items="${patients}" varStatus="loop">
+        <c:forEach var="patientViewModel" items="${patients}" varStatus="loop">
             <tr>
                 <th scope="row">${loop.index + 1}</th>
-                <td><c:out value="${patient.person.name}"/></td>
-                <td>very old</td>
-                <td><c:out value="${patient.person.gender}"/></td>
+                <td><c:out value="${patientViewModel.patient.person.name}"/></td>
+                <td><c:out value="${patientViewModel.getAge()}"/></td>
+                <td><c:out value="${patientViewModel.patient.person.gender}"/></td>
                 <c:url var="historyViewPage" value="${pageContext.request.contextPath}/patient/history">
-                    <c:param name="id" value="${patient.id}"/>
+                    <c:param name="id" value="${patientViewModel.patient.id}"/>
                 </c:url>
                 <td><a href="${historyViewPage}">View</a></td>
             </tr>

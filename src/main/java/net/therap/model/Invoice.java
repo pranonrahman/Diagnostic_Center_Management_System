@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author raian.rahman
@@ -22,9 +23,7 @@ public class Invoice extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "invoice_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoiceIdGenerator")
-    @SequenceGenerator(name = "invoiceIdGenerator", sequenceName = "invoice_id_gen", initialValue = 1000, allocationSize = 1)
-    private long invoiceId;
+    private String invoiceId;
 
     @Column(name = "generation_date")
     @Temporal(TemporalType.TIMESTAMP)
@@ -57,12 +56,6 @@ public class Invoice extends BaseEntity {
 
     public Invoice() {
         particulars = new HashSet<>();
-    }
-
-    public Invoice(long invoiceId, Double totalCost, Person person, Patient patient) {
-        this.invoiceId = invoiceId;
-        this.totalCost = totalCost;
-        this.generatedBy = generatedBy;
-        this.patient = patient;
+        invoiceId = UUID.randomUUID().toString();
     }
 }
