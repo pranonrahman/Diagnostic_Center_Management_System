@@ -41,8 +41,6 @@ public class AuthenticationFilter implements Filter {
         httpServletResponse.setHeader("Pragma", "no-cache");
         httpServletResponse.setDateHeader("Expires", 0);
 
-        System.out.println(httpServletRequest.getRequestURI());
-
         if ((isNull(httpServletRequest.getSession().getAttribute("user"))
                 || isNull(httpServletRequest.getSession().getAttribute("role")))
                 && !httpServletRequest.getRequestURI().contains("login")
