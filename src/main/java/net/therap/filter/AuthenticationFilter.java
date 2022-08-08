@@ -21,15 +21,13 @@ import static net.therap.model.RoleEnum.*;
 public class AuthenticationFilter implements Filter {
 
     private static final String LOGIN_REDIRECT_PATH = "/login";
-
-    private static final String INVALID_ACCESS_PAGE_PATH = "/invalidPage";
+    private static final String INVALID_ACCESS_REDIRECT_PATH = "/invalidPage";
 
     @Autowired
     private RoleService roleService;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         Role adminRole = roleService.findByRole(ADMIN);
         Role doctorRole = roleService.findByRole(DOCTOR);
@@ -43,11 +41,7 @@ public class AuthenticationFilter implements Filter {
         httpServletResponse.setHeader("Pragma", "no-cache");
         httpServletResponse.setDateHeader("Expires", 0);
 
-        if ((isNull(httpServletRequest.getSession().getAttribute("user"))
-                || isNull(httpServletRequest.getSession().getAttribute("role")))
-                && !httpServletRequest.getRequestURI().contains("login")
-                && !httpServletRequest.getRequestURI().contains("assets/")
-        ) {
+        if ((isNull(httpServletRequest.getSession().getAttribute("user")) || isNull(httpServletRequest.getSession().getAttribute("role"))) && !httpServletRequest.getRequestURI().contains("login") && !httpServletRequest.getRequestURI().contains("login/role") && !httpServletRequest.getRequestURI().contains("logout") && !httpServletRequest.getRequestURI().contains("assets/")) {
 
             httpServletResponse.sendRedirect(LOGIN_REDIRECT_PATH);
 
@@ -56,11 +50,9 @@ public class AuthenticationFilter implements Filter {
 
         Role role = (Role) httpServletRequest.getSession().getAttribute("role");
 
-        if (httpServletRequest.getRequestURI().contains("invoice/view")
-                && !receptionistRole.equals(role)
-                && !patientRole.equals(role)) {
+        if (httpServletRequest.getRequestURI().contains("invoice/view") && !receptionistRole.equals(role) && !patientRole.equals(role)) {
 
-            httpServletResponse.sendRedirect(INVALID_ACCESS_PAGE_PATH);
+            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
 
             return;
         }
@@ -69,7 +61,7 @@ public class AuthenticationFilter implements Filter {
                 || httpServletRequest.getRequestURI().contains("invoice/list"))
                 && !receptionistRole.equals(role)) {
 
-            httpServletResponse.sendRedirect(INVALID_ACCESS_PAGE_PATH);
+            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
 
             return;
         }
@@ -78,14 +70,14 @@ public class AuthenticationFilter implements Filter {
                 && !doctorRole.equals(role)
                 && !patientRole.equals(role)) {
 
-            httpServletResponse.sendRedirect(INVALID_ACCESS_PAGE_PATH);
+            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
 
             return;
         }
 
         if (httpServletRequest.getRequestURI().contains("prescription/save") && !doctorRole.equals(role)) {
 
-            httpServletResponse.sendRedirect(INVALID_ACCESS_PAGE_PATH);
+            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
 
             return;
         }
@@ -94,7 +86,7 @@ public class AuthenticationFilter implements Filter {
                 && !doctorRole.equals(role)
                 && !patientRole.equals(role)) {
 
-            httpServletResponse.sendRedirect(INVALID_ACCESS_PAGE_PATH);
+            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
 
             return;
         }
@@ -102,7 +94,7 @@ public class AuthenticationFilter implements Filter {
         if (httpServletRequest.getRequestURI().contains("doctor/patients")
                 && !doctorRole.equals(role)) {
 
-            httpServletResponse.sendRedirect(INVALID_ACCESS_PAGE_PATH);
+            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
 
             return;
         }
@@ -110,10 +102,10 @@ public class AuthenticationFilter implements Filter {
         if ((httpServletRequest.getRequestURI().contains("person/list")
                 || httpServletRequest.getRequestURI().contains("person/save")
                 || httpServletRequest.getRequestURI().contains("person/delete")
-                || httpServletRequest.getRequestURI().contains("person/view")
-        )
+                || httpServletRequest.getRequestURI().contains("person/view"))
                 && !adminRole.equals(role)) {
-            httpServletResponse.sendRedirect(INVALID_ACCESS_PAGE_PATH);
+
+            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
             return;
         }
 
