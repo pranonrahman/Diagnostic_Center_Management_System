@@ -292,7 +292,7 @@ public class DataLoader implements CommandLineRunner {
         invoice.setId(1L);
         invoice.setInvoiceId(1001L);
         invoice.setPatient(patient);
-        invoice.setGeneratedBy(receptionist);
+        invoice.setGeneratedBy(receptionist.getPerson());
         invoice.setTotalCost(totalCost);
 
         Invoice i = invoiceService.saveOrUpdate(invoice);

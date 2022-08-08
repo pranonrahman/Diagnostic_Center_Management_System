@@ -77,9 +77,6 @@ public class InvoiceService {
             totalCost += particular.getUnitPrice() * particular.getUnits();
         }
 
-        Receptionist receptionist = receptionistService.findAll().get(0);
-        invoice.setGeneratedBy(receptionist);
-
         invoice.setTotalCost(totalCost);
 
         return invoice;

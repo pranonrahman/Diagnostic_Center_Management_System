@@ -1,6 +1,6 @@
 package net.therap.controller.invoice;
 
-import net.therap.model.Invoice;
+import net.therap.model.*;
 import net.therap.service.*;
 import net.therap.viewModel.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +11,13 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 import static java.util.Objects.isNull;
 import static net.therap.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.model.Action.*;
+import static net.therap.model.RoleEnum.ADMIN;
+import static net.therap.model.RoleEnum.RECEPTIONIST;
 
 /**
  * @author khandaker.maruf
@@ -35,11 +37,12 @@ public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;
 
+    @Autowired
+    private PrescriptionService prescriptionService;
+
     @GetMapping("/view")
-    public String view(@RequestParam long id, ModelMap model) {
-        List<Invoice> invoices = invoiceService.findAll();
-        Invoice invoice = invoiceService.findById(id);
-        model.addAttribute(INVOICE_VIEW_CMD, invoiceService.findById(id));
+    public String view(@RequestParam Long id, ModelMap model) {
+        model.addAttribute(INVOICE_VIEW_CMD,invoiceService.findById(id));
         model.put("action", VIEW);
 
         return VIEW_PAGE;
@@ -69,8 +72,9 @@ public class InvoiceController {
     @PostMapping
     public String save(@SessionAttribute(INVOICE_CMD) InvoiceViewModel invoice,
                        RedirectAttributes ra,
-                       WebRequest request,
+                       WebRequest webRequest,
                        SessionStatus status,
+                       HttpServletRequest request,
                        ModelMap model) {
 
         Invoice readyToSaveInvoice = invoiceService.getInvoiceFromViewModel(invoice);
@@ -81,14 +85,33 @@ public class InvoiceController {
             return VIEW_PAGE;
         }
 
+        Person person = (Person) request.getSession().getAttribute("user");
+        Role personRole = (Role) request.getSession().getAttribute("role");
+
+        if(isNull(person) || !(personRole.getName().equals(RECEPTIONIST) || personRole.getName().equals(ADMIN))){
+            model.put("errorMessage", "User is not authorized");
+
+            return VIEW_PAGE;
+        }
+
+        for (Doctor doctor : invoice.getDoctors()) {
+            Prescription prescription = new Prescription();
+            prescription.setPatient(invoice.getPatient());
+            prescription.setDoctor(doctor);
+
+            prescriptionService.saveOrUpdate(prescription);
+        }
+
+        readyToSaveInvoice.setGeneratedBy(person);
         Invoice savedInvoice = invoiceService.saveOrUpdate(readyToSaveInvoice);
 
         if(model.containsAttribute(INVOICE_CMD)) {
             status.setComplete();
-            request.removeAttribute(INVOICE_CMD, WebRequest.SCOPE_SESSION);
+            webRequest.removeAttribute(INVOICE_CMD, WebRequest.SCOPE_SESSION);
         }
 
         ra.addAttribute("id", savedInvoice.getId());
+
         return "redirect:/invoice/view";
     }
 }

@@ -38,7 +38,7 @@ public class Invoice extends BaseEntity {
             name = "receptionist_id",
             nullable = false
     )
-    private Receptionist generatedBy;
+    private Person generatedBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -59,7 +59,7 @@ public class Invoice extends BaseEntity {
         particulars = new HashSet<>();
     }
 
-    public Invoice(long invoiceId, Double totalCost, Receptionist generatedBy, Patient patient) {
+    public Invoice(long invoiceId, Double totalCost, Person person, Patient patient) {
         this.invoiceId = invoiceId;
         this.totalCost = totalCost;
         this.generatedBy = generatedBy;
