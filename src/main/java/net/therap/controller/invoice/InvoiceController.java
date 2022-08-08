@@ -13,6 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.Date;
+
 import static java.util.Objects.isNull;
 import static net.therap.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.model.Action.*;
@@ -99,6 +101,7 @@ public class InvoiceController {
             Prescription prescription = new Prescription();
             prescription.setPatient(invoice.getPatient());
             prescription.setDoctor(doctor);
+            prescription.setDateOfVisit(new Date());
 
             prescriptionService.saveOrUpdate(prescription);
         }
