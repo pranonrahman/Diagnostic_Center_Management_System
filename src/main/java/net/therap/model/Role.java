@@ -35,7 +35,7 @@ public class Role extends BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
 
         Role role = (Role) o;
-        System.out.println(name.getValue() + " " + role.name.getValue());
+
         return name.getValue().equals(role.name.getValue());
     }
 
