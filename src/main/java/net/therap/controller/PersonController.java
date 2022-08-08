@@ -29,7 +29,7 @@ import static java.util.Objects.isNull;
  * @since 8/4/22
  */
 @Controller
-@RequestMapping("person")
+@RequestMapping("/person")
 public class PersonController {
 
     private static final String FORM_PAGE = "person/form";
@@ -67,7 +67,7 @@ public class PersonController {
         webDataBinder.addValidators(roleUpdateViewModelValidator);
     }
 
-    @GetMapping("save")
+    @GetMapping("/save")
     public String showForm(@RequestParam(value = "id", required = false) Long id, ModelMap modelMap) {
         modelMap.put("readOnly", false);
         modelMap.put("genderList", Gender.values());
@@ -77,7 +77,7 @@ public class PersonController {
         return FORM_PAGE;
     }
 
-    @PostMapping("save")
+    @PostMapping("/save")
     public String processPersonForm(@ModelAttribute Person person, BindingResult bindingResult, ModelMap modelMap) {
         modelMap.put("readOnly", false);
         modelMap.put("genderList", Gender.values());
@@ -91,7 +91,7 @@ public class PersonController {
         return VIEW_REDIRECT_PATH + person.getId();
     }
 
-    @GetMapping("view")
+    @GetMapping("/view")
     public String showView(@RequestParam(value = "id") Long id, ModelMap modelMap) {
         modelMap.put("readOnly", true);
         modelMap.put("genderList", Gender.values());
@@ -111,7 +111,7 @@ public class PersonController {
         return FORM_PAGE;
     }
 
-    @RequestMapping("list")
+    @RequestMapping("/list")
     public String showList(@RequestParam(value = "filterBy", required = false) String filterBy, ModelMap modelMap) {
 
         if (isNull(filterBy)) {
@@ -128,7 +128,7 @@ public class PersonController {
         return LIST_PAGE;
     }
 
-    @PostMapping("delete")
+    @PostMapping("/delete")
     public String deletePerson(@RequestParam(value = "id") Long id) {
         Person person = personService.findById(id);
 
@@ -141,7 +141,7 @@ public class PersonController {
         return LIST_REDIRECT_PATH;
     }
 
-    @GetMapping("updateRole")
+    @GetMapping("/updateRole")
     public String showUpdateRoleForm(@RequestParam(value = "id") Long id, ModelMap modelMap) {
         Person person = personService.findById(id);
 
@@ -158,7 +158,7 @@ public class PersonController {
         return ROLE_UPDATE_PAGE;
     }
 
-    @PostMapping("updateRole")
+    @PostMapping("/updateRole")
     public String processUpdateRoleForm(@Valid @ModelAttribute RoleUpdateViewModel roleUpdateViewModel,
                                         BindingResult bindingResult) {
 

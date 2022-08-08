@@ -55,8 +55,9 @@ public class AuthenticationController {
         webDataBinder.registerCustomEditor(Role.class, roleEditor);
     }
 
-    @GetMapping("login")
+    @GetMapping({"/login","/"})
     public String showLoginForm(ModelMap modelMap, HttpSession session) {
+
         if (nonNull(session.getAttribute("user")) || nonNull(session.getAttribute("role"))) {
             switch (((Role) session.getAttribute("role")).getName()) {
                 case ADMIN:
@@ -77,7 +78,7 @@ public class AuthenticationController {
         return FORM_PAGE;
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public String processLoginForm(@ModelAttribute PersonViewModel personViewModel, BindingResult result, ModelMap modelMap, HttpSession session) {
 
         if (result.hasErrors()) {
@@ -96,7 +97,7 @@ public class AuthenticationController {
         return LOGIN_ROLE_REDIRECT_PATH;
     }
 
-    @GetMapping("login/role")
+    @GetMapping("/login/role")
     public String showRoleForm(ModelMap modelMap, HttpSession session) {
 
         if (nonNull(session.getAttribute("user")) && nonNull(session.getAttribute("role"))) {
@@ -115,7 +116,7 @@ public class AuthenticationController {
         return FORM_PAGE;
     }
 
-    @PostMapping("login/role")
+    @PostMapping("/login/role")
     public String loginByRole(@Valid @ModelAttribute PersonViewModel personViewModel, BindingResult bindingResult, HttpSession session) {
 
         if (bindingResult.hasErrors()) {
@@ -142,7 +143,7 @@ public class AuthenticationController {
         }
     }
 
-    @RequestMapping("logout")
+    @RequestMapping("/logout")
     public String logout(HttpSession session, ModelMap modelMap) {
         session.removeAttribute("user");
         session.removeAttribute("role");
