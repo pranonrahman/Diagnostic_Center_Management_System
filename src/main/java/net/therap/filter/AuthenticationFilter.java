@@ -43,10 +43,10 @@ public class AuthenticationFilter implements Filter {
 
         if ((isNull(httpServletRequest.getSession().getAttribute("user"))
                 || isNull(httpServletRequest.getSession().getAttribute("role")))
-                && !httpServletRequest.getRequestURI().contains("login")
-                && !httpServletRequest.getRequestURI().contains("login/role")
-                && !httpServletRequest.getRequestURI().contains("logout")
-                && !httpServletRequest.getRequestURI().contains("assets/")
+                && !httpServletRequest.getRequestURI().contains("/login")
+                && !httpServletRequest.getRequestURI().contains("/login/role")
+                && !httpServletRequest.getRequestURI().contains("/logout")
+                && !httpServletRequest.getRequestURI().contains("/assets/")
                 && !httpServletRequest.getRequestURI().contains("/favicon.ico")
         ) {
 
@@ -57,15 +57,17 @@ public class AuthenticationFilter implements Filter {
 
         Role role = (Role) httpServletRequest.getSession().getAttribute("role");
 
-        if (httpServletRequest.getRequestURI().contains("invoice/view") && !receptionistRole.equals(role) && !patientRole.equals(role)) {
+        if (httpServletRequest.getRequestURI().contains("/invoice/view")
+                && !receptionistRole.equals(role)
+                && !patientRole.equals(role)) {
 
             httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
 
             return;
         }
 
-        if ((httpServletRequest.getRequestURI().contains("invoice/save")
-                || httpServletRequest.getRequestURI().contains("invoice/list"))
+        if ((httpServletRequest.getRequestURI().contains("/invoice")
+                || httpServletRequest.getRequestURI().contains("/invoice/list"))
                 && !receptionistRole.equals(role)) {
 
             httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
@@ -73,7 +75,7 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        if (httpServletRequest.getRequestURI().contains("prescription/view")
+        if (httpServletRequest.getRequestURI().contains("/prescription/view")
                 && !doctorRole.equals(role)
                 && !patientRole.equals(role)) {
 
@@ -82,14 +84,14 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        if (httpServletRequest.getRequestURI().contains("prescription/save") && !doctorRole.equals(role)) {
+        if (httpServletRequest.getRequestURI().contains("/prescription/save") && !doctorRole.equals(role)) {
 
             httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
 
             return;
         }
 
-        if (httpServletRequest.getRequestURI().contains("patient/history")
+        if (httpServletRequest.getRequestURI().contains("/patient/history")
                 && !doctorRole.equals(role)
                 && !patientRole.equals(role)) {
 
@@ -98,18 +100,18 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        if (httpServletRequest.getRequestURI().contains("doctor")
+        if (httpServletRequest.getRequestURI().contains("/doctor/patients")
                 && !doctorRole.equals(role)) {
-
+            System.out.println(httpServletRequest.getRequestURI());
             httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
 
             return;
         }
 
-        if ((httpServletRequest.getRequestURI().contains("person/list")
-                || httpServletRequest.getRequestURI().contains("person/save")
-                || httpServletRequest.getRequestURI().contains("person/delete")
-                || httpServletRequest.getRequestURI().contains("person/view"))
+        if ((httpServletRequest.getRequestURI().contains("/person/list")
+                || httpServletRequest.getRequestURI().contains("/person/save")
+                || httpServletRequest.getRequestURI().contains("/person/delete")
+                || httpServletRequest.getRequestURI().contains("/person/view"))
                 && !adminRole.equals(role)) {
 
             httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
