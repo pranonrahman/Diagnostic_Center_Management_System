@@ -1,15 +1,12 @@
 package net.therap.controller;
 
-import net.therap.model.Patient;
-import net.therap.model.Prescription;
+import net.therap.model.*;
 import net.therap.service.DoctorService;
 import net.therap.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +18,7 @@ import java.util.Set;
  */
 @Controller
 @RequestMapping("/doctor")
+@SessionAttributes({"user", "role"})
 public class DoctorController {
 
     private static final String PATIENTS_VIEW_PAGE = "patient/list";
@@ -31,10 +29,10 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    @GetMapping("/patients")
-    public String loadPatientListPage(ModelMap modelMap) {
-        String doctorId = "11";
-        Set<Prescription> prescriptions = doctorService.findById(Long.parseLong(doctorId)).getPrescriptions();
+    @GetMapping({"", "/"})
+    public String loadPatientListPage(@ModelAttribute("role") Role role, @ModelAttribute("user") Person user, ModelMap modelMap) {
+        long doctorId = user.getDoctor().getId();
+        Set<Prescription> prescriptions = doctorService.findById(doctorId).getPrescriptions();
         List<Patient> patients = new ArrayList<>();
 
         for(Prescription prescription : prescriptions) {

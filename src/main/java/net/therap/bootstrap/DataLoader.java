@@ -124,7 +124,9 @@ public class DataLoader implements CommandLineRunner {
 
         for (Person person : persons) {
             Patient patient = new Patient(person);
-            patientService.saveOrUpdate(patient);
+            patient = patientService.saveOrUpdate(patient);
+            person.setPatient(patient);
+            personService.saveOrUpdate(person);
         }
     }
 
@@ -133,7 +135,9 @@ public class DataLoader implements CommandLineRunner {
 
         for (Person person : persons) {
             Doctor doctor = new Doctor(1000.0, person);
-            doctorService.saveOrUpdate(doctor);
+            doctor = doctorService.saveOrUpdate(doctor);
+            person.setDoctor(doctor);
+            personService.saveOrUpdate(person);
         }
     }
 
