@@ -20,13 +20,22 @@ public class AuthenticationService {
     @Autowired
     private PersonDao personDao;
 
-    public boolean authenticate(PersonViewModel user) {
+    public boolean authenticateByPassword(PersonViewModel user) {
         Person person = personDao.findByUserName(user.getUserName());
 
         if (isNull(person)) {
             return false;
         }
 
-        return Objects.equals(person.getPassword(), user.getPassword()) && person.getRoles().contains(user.getRole());
+        return Objects.equals(person.getPassword(), user.getPassword());
+    }
+
+    public boolean authenticateByRole(PersonViewModel user, Person person) {
+
+        if(isNull(person)) {
+            return false;
+        }
+
+        return person.getRoles().contains(user.getRole());
     }
 }
