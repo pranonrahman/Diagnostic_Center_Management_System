@@ -29,10 +29,11 @@ import static net.therap.model.RoleEnum.RECEPTIONIST;
 public class InvoiceController {
 
     private static final String VIEW_PAGE = "/invoice/view";
+    private static final String REDIRECT_VIEW_PAGE = "redirect:/invoice/view";
     private static final String LIST_VIEW_PAGE = "/invoice/list";
-    private static final String FORM_PAGE = "/invoice/form";
     public static final String INVOICE_CMD = "invoice";
     public static final String INVOICE_VIEW_CMD = "invoiceView";
+    private static final String REDIRECT_DOCTOR_PAGE = "redirect:/invoice/doctor";
 
     @Autowired
     private InvoiceService invoiceService;
@@ -53,7 +54,7 @@ public class InvoiceController {
         InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
 
         if(isNull(invoice) || isNull(invoice.getPatient())) {
-            return "redirect:/invoice/doctor";
+            return REDIRECT_DOCTOR_PAGE;
         }
 
         model.put(INVOICE_VIEW_CMD, invoiceService.getInvoiceFromViewModel(invoice));
@@ -112,6 +113,6 @@ public class InvoiceController {
 
         ra.addAttribute("id", savedInvoice.getId());
 
-        return "redirect:/invoice/view";
+        return REDIRECT_VIEW_PAGE;
     }
 }

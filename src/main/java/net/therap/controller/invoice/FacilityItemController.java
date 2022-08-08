@@ -32,6 +32,9 @@ public class FacilityItemController {
     public static final String INVOICE_CMD = "invoice";
     public static final String FACILITY_CMD = "facilityItem";
     private static final String ADD_FACILITY_PAGE = "/invoice/addFacility";
+    private static final String REDIRECT_FACILITY_PAGE = "redirect:/invoice/facility";
+    private static final String REDIRECT_DOCTOR_PAGE = "redirect:/invoice/doctor";
+    private static final String REDIRECT_INVOICE_REVIEW_PAGE = "redirect:/invoice";
 
     @Autowired
     private FacilityService facilityService;
@@ -49,7 +52,7 @@ public class FacilityItemController {
         InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
 
         if(isNull(invoice) || isNull(invoice.getPatient())) {
-            return "redirect:/invoice/doctor";
+            return REDIRECT_DOCTOR_PAGE;
         }
 
         setUpReferenceData(model, VIEW);
@@ -60,12 +63,11 @@ public class FacilityItemController {
     @PostMapping
     public String save(@Valid @ModelAttribute(FACILITY_CMD) FacilityItem facilityItem,
                                BindingResult result,
-                               @SessionAttribute(INVOICE_CMD) InvoiceViewModel invoice,
                                @RequestParam("action") Action action,
                                ModelMap model) {
 
         if(action.equals(NEXT)) {
-            return "redirect:/invoice";
+            return REDIRECT_INVOICE_REVIEW_PAGE;
         }
 
         if(result.hasErrors()) {
@@ -74,25 +76,23 @@ public class FacilityItemController {
             return ADD_FACILITY_PAGE;
         }
 
+        InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
         invoice.getFacilities().removeIf(facility -> facility.getFacility().getId() == facilityItem.getFacility().getId());
         invoice.getFacilities().add(facilityItem);
 
         if(action.equals(ADD)) {
-            return "redirect:/invoice/facility";
+            return REDIRECT_FACILITY_PAGE;
         }
 
-        return "redirect:/invoice";
+        return REDIRECT_INVOICE_REVIEW_PAGE;
     }
 
     @PostMapping("/remove")
-    public String remove(@ModelAttribute("removeModel") RemoveModel removeModel,
-                         ModelMap model,
-                         @SessionAttribute(INVOICE_CMD) InvoiceViewModel invoice) {
+    public String remove(@ModelAttribute("removeModel") RemoveModel removeModel, ModelMap model) {
+        InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
         invoice.getFacilities().removeIf(medicineItem -> medicineItem.getFacility().getId() == removeModel.getId());
 
-
-
-        return "redirect:/invoice/facility";
+        return REDIRECT_FACILITY_PAGE;
     }
 
     private void setUpReferenceData(ModelMap model, Action action) {
