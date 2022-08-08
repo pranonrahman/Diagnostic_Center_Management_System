@@ -32,6 +32,7 @@ public class DoctorVisitController {
     private static final String ADD_DOCTOR_PAGE = "/invoice/addDoctor";
     private static final String DOCTOR_VISIT_CMD = "doctorVisit";
     public static final String INVOICE_CMD = "invoice";
+    public static final String REDIRECT_MEDICINE_PAGE = "redirect:/invoice/medicine";
 
     @Autowired
     private PatientService patientService;
@@ -72,7 +73,7 @@ public class DoctorVisitController {
         invoice.setDoctors(doctorVisit.getDoctors());
         invoice.setPatient(doctorVisit.getPatient());
 
-        return "redirect:/invoice/medicine";
+        return REDIRECT_MEDICINE_PAGE;
     }
 
     private void setUpReferenceData(ModelMap model, Action action) {
