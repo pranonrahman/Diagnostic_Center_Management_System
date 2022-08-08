@@ -288,14 +288,10 @@ public class DataLoader implements CommandLineRunner {
             invoice.getParticulars().add(particular);
             totalCost += particular.getUnitPrice() * particular.getUnits();
         }
-
-        invoice.setId(1L);
-        invoice.setInvoiceId(1001L);
         invoice.setPatient(patient);
         invoice.setGeneratedBy(receptionist.getPerson());
         invoice.setTotalCost(totalCost);
 
-        Invoice i = invoiceService.saveOrUpdate(invoice);
-        System.out.println(i);
+        invoiceService.saveOrUpdate(invoice);
     }
 }
