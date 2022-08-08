@@ -41,7 +41,16 @@ public class AuthenticationFilter implements Filter {
         httpServletResponse.setHeader("Pragma", "no-cache");
         httpServletResponse.setDateHeader("Expires", 0);
 
-        if ((isNull(httpServletRequest.getSession().getAttribute("user")) || isNull(httpServletRequest.getSession().getAttribute("role"))) && !httpServletRequest.getRequestURI().contains("login") && !httpServletRequest.getRequestURI().contains("login/role") && !httpServletRequest.getRequestURI().contains("logout") && !httpServletRequest.getRequestURI().contains("assets/")) {
+        System.out.println(httpServletRequest.getRequestURI());
+
+        if ((isNull(httpServletRequest.getSession().getAttribute("user"))
+                || isNull(httpServletRequest.getSession().getAttribute("role")))
+                && !httpServletRequest.getRequestURI().contains("login")
+                && !httpServletRequest.getRequestURI().contains("login/role")
+                && !httpServletRequest.getRequestURI().contains("logout")
+                && !httpServletRequest.getRequestURI().contains("assets/")
+                && !httpServletRequest.getRequestURI().contains("/favicon.ico")
+        ) {
 
             httpServletResponse.sendRedirect(LOGIN_REDIRECT_PATH);
 
