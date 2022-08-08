@@ -87,8 +87,9 @@ public class InvoiceController {
 
         Person person = (Person) request.getSession().getAttribute("user");
         Role personRole = (Role) request.getSession().getAttribute("role");
+
         if(isNull(person) || !(personRole.getName().equals(RECEPTIONIST) || personRole.getName().equals(ADMIN))){
-            model.put("errorMessage", "User is authorized");
+            model.put("errorMessage", "User is not authorized");
 
             return VIEW_PAGE;
         }
