@@ -32,7 +32,6 @@ public class AuthenticationController {
     private static final String PATIENT_DASHBOARD_REDIRECT_PATH = "redirect:/patient";
     private static final String RECEPTIONIST_DASHBOARD_REDIRECT_PATH = "redirect:/invoice";
     private static final String LOGIN_REDIRECT_PATH = "redirect:/login";
-    private static final String LOGOUT_REDIRECT_PATH = "redirect:/logout";
     private static final String LOGIN_ROLE_REDIRECT_PATH = "redirect:/login/role";
 
     private static final String FORM_PAGE = "/authentication/form";
@@ -58,8 +57,19 @@ public class AuthenticationController {
 
     @GetMapping("login")
     public String showLoginForm(ModelMap modelMap, HttpSession session) {
-        if(nonNull(session.getAttribute("user")) || nonNull(session.getAttribute("role"))) {
-            return LOGOUT_REDIRECT_PATH;
+        if (nonNull(session.getAttribute("user")) || nonNull(session.getAttribute("role"))) {
+            switch (((Role) session.getAttribute("role")).getName()) {
+                case ADMIN:
+                    return ADMIN_DASHBOARD_REDIRECT_PATH;
+                case PATIENT:
+                    return PATIENT_DASHBOARD_REDIRECT_PATH;
+                case DOCTOR:
+                    return DOCTOR_DASHBOARD_REDIRECT_PATH;
+                case RECEPTIONIST:
+                    return RECEPTIONIST_DASHBOARD_REDIRECT_PATH;
+                default:
+                    return FORM_PAGE;
+            }
         }
 
         modelMap.put("personViewModel", new PersonViewModel());
@@ -68,8 +78,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("login")
-    public String processLoginForm(@ModelAttribute PersonViewModel personViewModel, BindingResult result,
-                                   ModelMap modelMap, HttpSession session) {
+    public String processLoginForm(@ModelAttribute PersonViewModel personViewModel, BindingResult result, ModelMap modelMap, HttpSession session) {
 
         if (result.hasErrors()) {
             return FORM_PAGE;
@@ -90,7 +99,11 @@ public class AuthenticationController {
     @GetMapping("login/role")
     public String showRoleForm(ModelMap modelMap, HttpSession session) {
 
-        if(isNull(session.getAttribute("user"))) {
+        if (nonNull(session.getAttribute("user")) && nonNull(session.getAttribute("role"))) {
+            return LOGIN_REDIRECT_PATH;
+        }
+
+        if (isNull(session.getAttribute("user"))) {
             return LOGIN_REDIRECT_PATH;
         }
 
@@ -103,8 +116,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("login/role")
-    public String loginByRole(@Valid @ModelAttribute PersonViewModel personViewModel, BindingResult bindingResult,
-                              HttpSession session) {
+    public String loginByRole(@Valid @ModelAttribute PersonViewModel personViewModel, BindingResult bindingResult, HttpSession session) {
 
         if (bindingResult.hasErrors()) {
             return FORM_PAGE;
