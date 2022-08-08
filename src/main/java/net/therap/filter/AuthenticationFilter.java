@@ -91,7 +91,7 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        if (httpServletRequest.getRequestURI().contains("doctor/patients")
+        if (httpServletRequest.getRequestURI().contains("doctor")
                 && !doctorRole.equals(role)) {
 
             httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
