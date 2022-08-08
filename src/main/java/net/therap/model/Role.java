@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import java.util.Objects;
 
 /**
  * @author raian.rahman
@@ -34,13 +33,16 @@ public class Role extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+
         Role role = (Role) o;
-        return name == role.name;
+        System.out.println(name.getValue() + " " + role.name.getValue());
+        return name.getValue().equals(role.name.getValue());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name);
+        int result = super.hashCode();
+        result = 31 * result + name.hashCode();
+        return result;
     }
 }
