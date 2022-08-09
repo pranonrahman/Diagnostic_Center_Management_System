@@ -27,10 +27,10 @@ import static java.util.Objects.nonNull;
 @Controller
 public class AuthenticationController {
 
-    private static final String ADMIN_DASHBOARD_REDIRECT_PATH = "redirect:/admin";
-    private static final String DOCTOR_DASHBOARD_REDIRECT_PATH = "redirect:/doctor";
-    private static final String PATIENT_DASHBOARD_REDIRECT_PATH = "redirect:/patient";
-    private static final String RECEPTIONIST_DASHBOARD_REDIRECT_PATH = "redirect:/invoice";
+    private static final String ADMIN_DASHBOARD_REDIRECT_PATH = "redirect:/person/list";
+    private static final String DOCTOR_DASHBOARD_REDIRECT_PATH = "redirect:/patient/list";
+    private static final String PATIENT_DASHBOARD_REDIRECT_PATH = "redirect:/prescription/list";
+    private static final String RECEPTIONIST_DASHBOARD_REDIRECT_PATH = "redirect:/invoice/list";
     private static final String LOGIN_REDIRECT_PATH = "redirect:/login";
     private static final String LOGIN_ROLE_REDIRECT_PATH = "redirect:/login/role";
 
