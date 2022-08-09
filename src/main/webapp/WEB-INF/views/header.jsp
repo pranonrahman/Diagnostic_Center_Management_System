@@ -1,5 +1,7 @@
+<%@ page import="net.therap.model.Role" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="net.therap.model.RoleEnum" %>
 <%--
   @author: khandaker.maruf
   @since: 6/20/22
@@ -15,10 +17,47 @@
         </a>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
             <ul class="navbar-nav mx-3">
-                <li class="nav-item">
-                    <a href="${pageContext.request.contextPath}/doctor/patients" class="nav-link active">View
-                        Patients</a>
-                </li>
+                <c:choose>
+                    <c:when test="${role.getName().equals(RoleEnum.DOCTOR)}">
+                        <li class="nav-item">
+                            <a href="${pageContext.request.contextPath}/patient/list" class="nav-link active">View
+                                Patients</a>
+                        </li>
+                    </c:when>
+
+                    <c:when test="${role.getName().equals(RoleEnum.PATIENT)}">
+                        <li class="nav-item">
+                            <a href="${pageContext.request.contextPath}/prescription/list" class="nav-link active">View
+                                Prescriptions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="${pageContext.request.contextPath}/invoice/list" class="nav-link active">View
+                                Invoices</a>
+                        </li>
+                    </c:when>
+
+                    <c:when test="${role.getName().equals(RoleEnum.RECEPTIONIST)}">
+                        <li class="nav-item">
+                            <a href="${pageContext.request.contextPath}/invoice/doctor" class="nav-link active">Create
+                                Invoice</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="${pageContext.request.contextPath}/invoice/list" class="nav-link active">View
+                                Invoices</a>
+                        </li>
+                    </c:when>
+
+                    <c:when test="${role.getName().equals(RoleEnum.ADMIN)}">
+                        <li class="nav-item">
+                            <a href="${pageContext.request.contextPath}/person/list" class="nav-link active">View
+                                Users</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="${pageContext.request.contextPath}/person/save" class="nav-link active">Create
+                                User</a>
+                        </li>
+                    </c:when>
+                </c:choose>
             </ul>
             <a href="${pageContext.request.contextPath}/logout" class="btn btn-danger">Logout</a>
         </div>

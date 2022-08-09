@@ -14,6 +14,7 @@
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value="../../../assets/js/jquery-3.6.0.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="../../../assets/js/bootstrap.bundle.min.js"/>"></script>
+    <jsp:include page="../header.jsp"/>
 </head>
 <body>
 
@@ -112,7 +113,7 @@
                     </c:when>
 
                     <c:when test="${prescription.doctor.id == doctorId}">
-                        <c:url var="prescriptionEditPage" value="/prescription/edit">
+                        <c:url var="prescriptionEditPage" value="/prescription/save">
                             <c:param name="id" value="${prescription.id}"/>
                         </c:url>
                         <a href="${prescriptionEditPage}" class="btn btn-primary">EDIT</a>

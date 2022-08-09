@@ -1,11 +1,9 @@
 package net.therap.controller;
 
-import net.therap.model.Doctor;
-import net.therap.model.Patient;
-import net.therap.model.Person;
-import net.therap.model.Prescription;
+import net.therap.model.*;
 import net.therap.service.DoctorService;
 import net.therap.service.PatientService;
+import net.therap.viewModel.PatientViewModel;
 import net.therap.viewModel.PrescriptionViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,11 +20,13 @@ import java.util.Set;
  * @since 03/08/2022
  */
 @Controller
-@SessionAttributes("user")
+@SessionAttributes({"user", "role"})
 @RequestMapping("/patient")
 public class PatientController {
 
     private static final String HISTORY_PAGE = "patient/history";
+    
+    private static final String PATIENT_LIST_VIEW_PAGE = "patient/list";
 
     @Autowired
     private PatientService patientService;
@@ -34,22 +34,20 @@ public class PatientController {
     @Autowired
     private DoctorService doctorService;
 
-    @GetMapping("")
-    public String loadPrescriptionList(@ModelAttribute("user") Person user, ModelMap modelMap) {
-        Patient patient = user.getPatient();
-        List<PrescriptionViewModel> prescriptionViewModels = new ArrayList<>();
-        Set<Prescription> prescriptions = patient.getPrescriptions();
+    @GetMapping("/list")
+    public String loadPatientListPage(@ModelAttribute("role") Role role, @ModelAttribute("user") Person user, ModelMap modelMap) {
+        long doctorId = user.getDoctor().getId();
+        Set<Prescription> prescriptions = doctorService.findById(doctorId).getPrescriptions();
+        List<PatientViewModel> patients = new ArrayList<>();
 
-        for (Prescription prescription : prescriptions) {
-            prescriptionViewModels.add(new PrescriptionViewModel(prescription));
+        for(Prescription prescription : prescriptions) {
+            patients.add(new PatientViewModel(prescription.getPatient()));
         }
 
-        Collections.sort(prescriptionViewModels);
+        modelMap.put("doctorId", doctorId);
+        modelMap.put("patients", patients);
 
-        modelMap.put("patientName", user.getName());
-        modelMap.put("prescriptionViewModels", prescriptionViewModels);
-
-        return "prescription/list";
+        return PATIENT_LIST_VIEW_PAGE;
     }
 
     @GetMapping("/history")
