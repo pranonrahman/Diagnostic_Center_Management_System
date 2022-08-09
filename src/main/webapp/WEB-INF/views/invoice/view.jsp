@@ -9,7 +9,7 @@
 
 <html>
 <head>
-    <title>Prescription</title>
+    <title> <fmt:message key="title.invoice"/> </title>
 
     <link type="text/css" href="<c:url value="../../../assets/css/bootstrap.min.css"/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
@@ -19,27 +19,27 @@
 <body>
 
 <div class="container-fluid bg-primary-custom h-100">
+
     <%--@elvariable id="invoiceView" type="net.therap.model.Invoice"--%>
     <div class="card">
         <h5 class="card-header">
-            Invoice of <c:out value="${invoiceView.patient.person.name}"/>
+            <fmt:message key="text.invoiceOf"/> <c:out value="${invoiceView.patient.person.name}"/>
         </h5>
         <div class="card-body">
-            <h5 class="card-title">
-                Services:
-            </h5>
-
+            <h5 class="card-title"> <fmt:message key="header.table.services"/>: </h5>
 
             <table class="table">
+
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Service Name</th>
-                    <th scope="col">Unit price</th>
-                    <th scope="col">Units</th>
-                    <th scope="col" class="text-end">Price (BDT)</th>
+                    <th scope="col"> <fmt:message key="column.table.serviceName"/> </th>
+                    <th scope="col"> <fmt:message key="column.table.unitPrice"/> </th>
+                    <th scope="col"> <fmt:message key="column.table.units"/> </th>
+                    <th scope="col" class="text-end"> <fmt:message key="column.table.priceInBDT"/> </th>
                 </tr>
                 </thead>
+
                 <tbody>
                 <c:forEach items="${invoiceView.particulars}" var="particular" varStatus="loop">
                     <p class="card-text">
@@ -66,15 +66,15 @@
                 <c:choose>
                     <c:when test="${action == 'VIEW'}">
                         <a href="/invoice/list" class="btn btn-primary">
-                            GO TO INVOICE LIST
+                            <fmt:message key="button.label.invoiceList"/>
                         </a>
                     </c:when>
                     <c:otherwise>
                         <a href="/invoice/facility" class="btn btn-primary" type="submit">
-                            PREVIOUS
+                            <fmt:message key="button.label.previous"/>
                         </a>
                         <button class="btn btn-primary" type="submit">
-                            CREATE INVOICE
+                            <fmt:message key="button.label.createInvoice"/>
                         </button>
                     </c:otherwise>
                 </c:choose>

@@ -9,34 +9,33 @@
 
 <html>
 <head>
-    <title>Invoice :: Medicine</title>
+    <title> <fmt:message key="title.invoice.addMedicine"/> </title>
 
     <link type="text/css" href="<c:url value="../../../assets/css/bootstrap.min.css"/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value="../../../assets/js/jquery-3.6.0.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="../../../assets/js/bootstrap.bundle.min.js"/>"></script>
 </head>
-<body>
 
+<body>
 <div class="container-fluid bg-primary-custom h-100">
 
-    <h2 class="text-center py-3"> Invoice </h2>
-    <%--@elvariable id="medicineItem" type="net.therap.viewModel.MedicineItem"--%>
-    <div class="w-50 mx-auto">
+    <h2 class="text-center py-3"> <fmt:message key="title.invoice"/> </h2>
 
+    <div class="w-50 mx-auto">
+        <%--@elvariable id="medicineItem" type="net.therap.viewModel.MedicineItem"--%>
         <form:form method="post" modelAttribute="medicineItem">
 
         <div class="mb-3">
             <form:label path="medicine" cssClass="form-label">
-                Medicine
+                <fmt:message key="label.medicine"/>
             </form:label>
 
             <form:select path="medicine"
                          cssClass="form-select form-select-lg mb-3">
 
-                <form:option value="">
-                    Select
-                </form:option>
+                <form:option value=""> <fmt:message key="label.select"/> </form:option>
+
                 <form:options items="${medicines}"
                               itemValue="id"
                               itemLabel="name"/>
@@ -46,9 +45,7 @@
         </div>
 
         <div class="mb-3">
-            <form:label path="quantity" cssClass="form-label">
-                Quantity
-            </form:label>
+            <form:label path="quantity" cssClass="form-label"> <fmt:message key="label.quantity"/> </form:label>
 
             <form:input path="quantity"
                         type="number"
@@ -58,75 +55,79 @@
         </div>
 
         <div class="d-flex justify-content-between">
-            <a href="/invoice/doctor" class="btn btn-primary">
-                PREVIOUS
+            <a href="<c:url value="/invoice/doctor"/>" class="btn btn-primary">
+                <fmt:message key="button.label.previous"/>
             </a>
+
             <button type="submit"
                     class="btn btn-primary flex-grow-1 mx-3"
                     value="ADD"
                     name="action">
-                Add
+                <fmt:message key="button.label.add"/>
             </button>
+
             <button type="submit"
                     class="btn btn-primary"
                     value="NEXT"
                     name="action">
-                NEXT
+                <fmt:message key="button.label.next"/>
             </button>
         </div>
 
+        </form:form>
     </div>
-    </form:form>
 
-    \<%--@elvariable id="invoice" type="net.therap.viewModel.InvoiceViewModel"--%>
-<c:if test="${invoice.medicines.size() > 0}">
-    <div class="w-50 mx-auto mt-4 fw-light">
-        <hr>
-        <h4 class="text-center fw-light">Added medicines</h4>
-        <table class="table">
-            <thead>
-            <tr>
-                <th class="fw-light" scope="col">#</th>
-                <th class="fw-light" scope="col">Medicine</th>
-                <th class="fw-light" scope="col">Unit price</th>
-                <th class="fw-light" scope="col">Units</th>
-                <th class="fw-light" scope="col">Price</th>
-                <th class="fw-light" scope="col">Action</th>
-            </tr>
-            </thead>
+    <%--@elvariable id="invoice" type="net.therap.viewModel.InvoiceViewModel"--%>
+    <c:if test="${invoice.medicines.size() > 0}">
+        <div class="w-50 mx-auto mt-4 fw-light">
+            <hr>
 
-            <tbody>
-            <c:forEach items="${invoice.medicines}" var="item" varStatus="loop">
-                <p class="card-text">
-                    <tr>
-                        <th scope="row">${loop.index + 1}</th>
-                        <td><c:out value="${item.medicine.name}"/></td>
-                        <td><c:out value="${item.medicine.unitPrice}"/></td>
-                        <td><c:out value="${item.quantity}"/></td>
-                        <td><fmt:formatNumber value="${item.medicine.unitPrice * item.quantity}"/></td>
-                        <td>
-                                <%--@elvariable id="removeModel" type="net.therap.viewModel.RemoveModel"--%>
-                            <form:form method="post" modelAttribute="removeModel" action="/invoice/medicine/remove">
-                                <input type="hidden" name="id" value="${item.medicine.id}">
-                                <button type="submit"
-                                        class="btn btn-primary flex-grow-1 mx-3"
-                                        value="REMOVE"
-                                        name="action">
-                                    REMOVE
-                                </button>
-                            </form:form>
+            <h4 class="text-center fw-light"> <fmt:message key="header.table.AddedMedicines"/> </h4>
 
-                        </td>
-                    </tr>
-                </p>
-            </c:forEach>
+            <table class="table">
 
-            </tbody>
-        </table>
-    </div>
-</c:if>
+                <thead>
+                <tr>
+                    <th class="fw-light" scope="col">#</th>
+                    <th class="fw-light" scope="col"> <fmt:message key="column.table.medicine"/> </th>
+                    <th class="fw-light" scope="col"> <fmt:message key="column.table.unitPrice"/> </th>
+                    <th class="fw-light" scope="col"> <fmt:message key="column.table.units"/> </th>
+                    <th class="fw-light" scope="col"> <fmt:message key="column.table.price"/> </th>
+                    <th class="fw-light" scope="col"> <fmt:message key="column.table.action"/> </th>
+                </tr>
+                </thead>
 
-</div>
+                <tbody>
+                <c:forEach items="${invoice.medicines}" var="item" varStatus="loop">
+                    <p class="card-text">
+                        <tr>
+                            <th scope="row">${loop.index + 1}</th>
+                            <td><c:out value="${item.medicine.name}"/></td>
+                            <td><c:out value="${item.medicine.unitPrice}"/></td>
+                            <td><c:out value="${item.quantity}"/></td>
+                            <td><fmt:formatNumber value="${item.medicine.unitPrice * item.quantity}"/></td>
+                            <td>
+                                    <%--@elvariable id="removeModel" type="net.therap.viewModel.RemoveModel"--%>
+                                <form:form method="post" modelAttribute="removeModel" action="/invoice/medicine/remove">
+                                    <input type="hidden" name="id" value="${item.medicine.id}">
+                                    <button type="submit"
+                                            class="btn btn-primary flex-grow-1 mx-3"
+                                            value="REMOVE"
+                                            name="action">
+                                        REMOVE
+                                    </button>
+                                </form:form>
+
+                            </td>
+                        </tr>
+                    </p>
+                </c:forEach>
+
+                </tbody>
+            </table>
+        </div>
+    </c:if>
+
 </div>
 
 </body>
