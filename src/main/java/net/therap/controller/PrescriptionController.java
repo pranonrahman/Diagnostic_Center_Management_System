@@ -6,13 +6,14 @@ import net.therap.service.DoctorService;
 import net.therap.service.FacilityService;
 import net.therap.service.PatientService;
 import net.therap.service.PrescriptionService;
+import net.therap.viewModel.PrescriptionViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.util.*;
 
 /**
  * @author amimul.ehsan
@@ -24,6 +25,8 @@ import java.util.Date;
 public class PrescriptionController {
 
     private static final String VIEW_PAGE = "prescription/form";
+    
+    private static final String PRESCRIPTION_LIST_VIEW_PAGE = "prescription/list";
 
     @Autowired
     private FacilityService facilityService;
@@ -55,7 +58,25 @@ public class PrescriptionController {
         return VIEW_PAGE;
     }
 
-    @GetMapping("/edit")
+    @GetMapping("/list")
+    public String loadPrescriptionList(@ModelAttribute("user") Person user, ModelMap modelMap) {
+        Patient patient = user.getPatient();
+        List<PrescriptionViewModel> prescriptionViewModels = new ArrayList<>();
+        Set<Prescription> prescriptions = patient.getPrescriptions();
+
+        for (Prescription prescription : prescriptions) {
+            prescriptionViewModels.add(new PrescriptionViewModel(prescription));
+        }
+
+        Collections.sort(prescriptionViewModels);
+
+        modelMap.put("patientName", user.getName());
+        modelMap.put("prescriptionViewModels", prescriptionViewModels);
+
+        return PRESCRIPTION_LIST_VIEW_PAGE;
+    }
+
+    @GetMapping("/save")
     public String loadEditPage(@RequestParam("id") String id, ModelMap modelMap) {
         modelMap.put("action", "edit");
         modelMap.put("facilities", facilityService.findAll());
@@ -64,7 +85,7 @@ public class PrescriptionController {
         return VIEW_PAGE;
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/save")
     public String processEdit(@ModelAttribute("prescription") Prescription prescription, ModelMap modelMap) {
         prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
         prescription.setDoctor(doctorService.findById(prescription.getDoctor().getId()));
