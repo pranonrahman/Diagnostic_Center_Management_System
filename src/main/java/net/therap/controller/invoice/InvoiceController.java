@@ -72,7 +72,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/list")
-    public String list(HttpServletRequest request, ModelMap modelMap) {
+    public String list(HttpServletRequest request, ModelMap model) {
         Role userRole = (Role) request.getSession().getAttribute("role");
 
         List<Invoice> invoices = new ArrayList<>();
@@ -85,7 +85,7 @@ public class InvoiceController {
             invoices = invoiceService.findAll();
         }
 
-        modelMap.addAttribute("invoices", invoiceService.findAll());
+        model.addAttribute("invoices", invoiceService.findAll());
 
         return LIST_VIEW_PAGE;
     }
