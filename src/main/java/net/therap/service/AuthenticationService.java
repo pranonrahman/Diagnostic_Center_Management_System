@@ -30,7 +30,7 @@ public class AuthenticationService {
 
     public boolean authenticateByRole(UserViewModel userViewModel, User user) {
 
-        if(isNull(userViewModel)) {
+        if (isNull(userViewModel)) {
             return false;
         }
 

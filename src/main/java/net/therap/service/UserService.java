@@ -48,7 +48,7 @@ public class UserService {
 
     @Transactional
     public User saveOrUpdate(User user) {
-        if(!user.isNew()) {
+        if (!user.isNew()) {
             user.setRoles(userDao.findById(user.getId()).getRoles());
         }
 
@@ -59,7 +59,7 @@ public class UserService {
     public void delete(User user) {
         List<Role> roles = new ArrayList<>(user.getRoles());
 
-        for(Role role: roles) {
+        for (Role role : roles) {
             user.getRoles().remove(role);
             userDao.saveOrUpdate(user);
         }
@@ -75,7 +75,7 @@ public class UserService {
         Role receptionistRole = roleDao.findByRole(RoleEnum.valueOf("RECEPTIONIST"));
         Role patientRole = roleDao.findByRole(RoleEnum.valueOf("PATIENT"));
 
-        if(nonNull(user.getDoctor()) && roleUpdateViewModel.getDoctor()) {
+        if (nonNull(user.getDoctor()) && roleUpdateViewModel.getDoctor()) {
             user.getDoctor().setFee(roleUpdateViewModel.getFee());
         }
 
@@ -89,6 +89,7 @@ public class UserService {
 
         if (nonNull(user.getDoctor()) && !roleUpdateViewModel.getDoctor()) {
             doctorDao.delete(user.getDoctor());
+
             user.setDoctor(null);
             user.getRoles().remove(doctorRole);
         }
