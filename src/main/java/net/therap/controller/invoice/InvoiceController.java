@@ -3,6 +3,7 @@ package net.therap.controller.invoice;
 import net.therap.model.*;
 import net.therap.service.*;
 import net.therap.viewModel.InvoiceViewModel;
+import net.therap.viewModel.MedicineItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -42,6 +43,9 @@ public class InvoiceController {
 
     @Autowired
     private PrescriptionService prescriptionService;
+
+    @Autowired
+    private MedicineService medicineService;
 
     @GetMapping("/view")
     public String view(@RequestParam Long id, ModelMap model) {
@@ -104,6 +108,12 @@ public class InvoiceController {
             prescription.setDateOfVisit(new Date());
 
             prescriptionService.saveOrUpdate(prescription);
+        }
+
+        for (MedicineItem medicineItem : invoice.getMedicines()) {
+            Medicine updatedMedicine = medicineItem.getMedicine();
+            updatedMedicine.setAvailableUnits(updatedMedicine.getAvailableUnits() - medicineItem.getQuantity());
+            medicineService.saveOrUpdate(updatedMedicine);
         }
 
         readyToSaveInvoice.setGeneratedBy(person);
