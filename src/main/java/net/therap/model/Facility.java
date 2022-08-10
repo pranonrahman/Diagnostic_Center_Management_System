@@ -25,7 +25,6 @@ public class Facility extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @NotNull(message = "{name.notNull}")
-    @NotBlank(message = "{name.notBlank}")
     @Size(min = 1, max = 30, message = "{name.size}")
     private String name;
 
