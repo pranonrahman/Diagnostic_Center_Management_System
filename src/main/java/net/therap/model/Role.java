@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -19,6 +16,10 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @NoArgsConstructor
+@NamedQueries({
+        @NamedQuery(name = "Role.findAll", query = "FROM Role"),
+        @NamedQuery(name = "Role.findByName", query = "FROM Role WHERE name = :role"),
+})
 public class Role extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

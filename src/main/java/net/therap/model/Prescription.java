@@ -18,6 +18,7 @@ import java.util.Set;
 @Table(name = "prescription")
 @Getter
 @Setter
+@NamedQuery(name = "Prescription.findAll", query = "FROM Prescription")
 public class Prescription extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

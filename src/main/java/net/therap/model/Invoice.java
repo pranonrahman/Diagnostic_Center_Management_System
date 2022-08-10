@@ -18,6 +18,10 @@ import java.util.UUID;
 @Table(name = "invoice")
 @Getter
 @Setter
+@NamedQueries({
+        @NamedQuery(name = "Invoice.findAll", query = "FROM Invoice"),
+        @NamedQuery(name = "Invoice.findByPatientId", query = "FROM Invoice where patient.id = :patientId"),
+})
 public class Invoice extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

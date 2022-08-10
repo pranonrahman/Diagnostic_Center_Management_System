@@ -14,22 +14,20 @@ import java.util.List;
 @Repository
 public class RoleDao extends Dao<Role> {
 
-    private static final String FIND_ALL_QUERY = "FROM Role";
-    private static final String FIND_BY_ROLE_QUERY = "FROM Role WHERE name = :role";
-
     public RoleDao() {
         super(Role.class);
     }
 
     public List<Role> findAll() {
-        return entityManager.createQuery(FIND_ALL_QUERY, Role.class).getResultList();
+        return entityManager.createNamedQuery("Role.findAll", Role.class).getResultList();
     }
 
     public Role findByRole(RoleEnum role) {
         try {
-            return entityManager.createQuery(FIND_BY_ROLE_QUERY, Role.class)
+            return entityManager.createNamedQuery("Role.findByName", Role.class)
                     .setParameter("role", role)
                     .getSingleResult();
+
         } catch (NoResultException noResultException) {
             return null;
         }

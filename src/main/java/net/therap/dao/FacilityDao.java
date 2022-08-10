@@ -12,13 +12,11 @@ import java.util.List;
 @Repository
 public class FacilityDao extends Dao<Facility> {
 
-    private static final String FIND_ALL_QUERY = "FROM Facility";
-
     public FacilityDao() {
         super(Facility.class);
     }
 
     public List<Facility> findAll() {
-        return entityManager.createQuery(FIND_ALL_QUERY, net.therap.model.Facility.class).getResultList();
+        return entityManager.createNamedQuery("Facility.findAll", Facility.class).getResultList();
     }
 }

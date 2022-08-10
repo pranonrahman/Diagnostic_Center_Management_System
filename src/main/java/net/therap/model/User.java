@@ -20,6 +20,10 @@ import java.util.Set;
 @Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_name"})})
 @Getter
 @Setter
+@NamedQueries({
+        @NamedQuery(name = "User.findAll", query = "FROM User"),
+        @NamedQuery(name = "User.findByUserName", query = "FROM User WHERE userName = :userName")
+})
 public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
