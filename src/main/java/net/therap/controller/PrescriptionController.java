@@ -25,7 +25,7 @@ import java.util.*;
 public class PrescriptionController {
 
     private static final String VIEW_PAGE = "prescription/form";
-    
+
     private static final String PRESCRIPTION_LIST_VIEW_PAGE = "prescription/list";
 
     @Autowired
@@ -50,10 +50,8 @@ public class PrescriptionController {
 
     @GetMapping("/view")
     public String loadViewPage(@ModelAttribute("user") User user, @ModelAttribute("role") Role role, @RequestParam("id") String id, ModelMap modelMap) {
-        modelMap.put("action", "view");
-        modelMap.put("facilities", facilityService.findAll());
         modelMap.put("doctorId", role.getName().equals(RoleEnum.DOCTOR) ? user.getDoctor().getId() : 0);
-        modelMap.put("prescription", prescriptionService.findById(Long.parseLong(id)));
+        setupReferenceData(modelMap, Long.parseLong(id));
 
         return VIEW_PAGE;
     }
@@ -79,8 +77,7 @@ public class PrescriptionController {
     @GetMapping("/save")
     public String loadEditPage(@RequestParam("id") String id, ModelMap modelMap) {
         modelMap.put("action", "edit");
-        modelMap.put("facilities", facilityService.findAll());
-        modelMap.put("prescription", prescriptionService.findById(Long.parseLong(id)));
+        setupReferenceData(modelMap, Long.parseLong(id));
 
         return VIEW_PAGE;
     }
@@ -92,9 +89,18 @@ public class PrescriptionController {
         prescription.setDateOfVisit(new Date());
 
         prescriptionService.saveOrUpdate(prescription);
-        modelMap.put("prescription", new Prescription());
-        modelMap.put("facilities", facilityService.findAll());
+        setupReferenceData(modelMap, 0);
 
         return "redirect:/prescription/view?id=" + prescription.getId();
+    }
+
+    private void setupReferenceData(ModelMap modelMap, long prescriptionId) {
+        modelMap.put("facilities", facilityService.findAll());
+
+        if (prescriptionId == 0) {
+            modelMap.put("prescription", new Prescription());
+        } else {
+            modelMap.put("prescription", prescriptionService.findById(prescriptionId));
+        }
     }
 }

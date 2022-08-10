@@ -1,12 +1,10 @@
 package net.therap.service;
 
-import net.therap.dao.PersonDao;
+import net.therap.dao.UserDao;
 import net.therap.model.User;
 import net.therap.viewModel.UserViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 import static java.util.Objects.isNull;
 
@@ -18,7 +16,7 @@ import static java.util.Objects.isNull;
 public class AuthenticationService {
 
     @Autowired
-    private PersonDao userDao;
+    private UserDao userDao;
 
     public boolean authenticateByPassword(UserViewModel userViewModel) {
         User user = userDao.findByUserName(userViewModel.getUserName());
@@ -27,7 +25,7 @@ public class AuthenticationService {
             return false;
         }
 
-        return Objects.equals(user.getPassword(), userViewModel.getPassword());
+        return user.getPassword().equals(userViewModel.getPassword());
     }
 
     public boolean authenticateByRole(UserViewModel userViewModel, User user) {

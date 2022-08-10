@@ -18,10 +18,10 @@ import static java.util.Objects.nonNull;
  * @since 8/3/22
  */
 @Service
-public class PersonService {
+public class UserService {
 
     @Autowired
-    private PersonDao userDao;
+    private UserDao userDao;
 
     @Autowired
     private DoctorDao doctorDao;
