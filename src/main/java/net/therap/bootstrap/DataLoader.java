@@ -169,6 +169,10 @@ public class DataLoader implements CommandLineRunner {
         person.setName("Rupban");
         person.setUserName("rupban");
         person.setPassword("rupban");
+        person.setDateOfBirth(new Date());
+        person.setEmail("abdul@abdul");
+        person.setPhone("01234567890");
+        person.setGender(Gender.FEMALE);
         Role receptionistRole = null;
         for (Role role : roleService.findAll()) {
             if(role.getName().equals(RECEPTIONIST)){
@@ -186,7 +190,10 @@ public class DataLoader implements CommandLineRunner {
         person2.setName("Fulbanu");
         person2.setUserName("fulbanu");
         person2.setPassword("fulbanu");
-
+        person2.setDateOfBirth(new Date());
+        person2.setEmail("abdul@abdul");
+        person2.setPhone("01234567890");
+        person2.setGender(Gender.FEMALE);
         person2.getRoles().add(receptionistRole);
         person2 = personService.saveOrUpdate(person2);
         Receptionist receptionist2 = new Receptionist(person2);
