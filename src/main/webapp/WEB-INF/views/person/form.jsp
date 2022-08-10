@@ -9,7 +9,9 @@
 
 <html>
 <head>
-    <title>User form</title>
+    <title>
+        <fmt:message key="user.form.title"/>
+    </title>
     <link type="text/css" href="<c:url value="../../../assets/css/bootstrap.min.css"/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value="../../../assets/js/jquery-3.6.0.min.js"/>"></script>
@@ -20,7 +22,9 @@
 
 <div class="container-fluid bg-primary-custom h-100">
 
-    <h2 class="text-center py-3"> User form </h2>
+    <h2 class="text-center py-3">
+        <fmt:message key="user.form.header"/>
+    </h2>
     <div class="w-50 mx-auto">
         <%--@elvariable id="person" type="net.therap.model.Person"--%>
         <form:form action="/person/save" method="POST" modelAttribute="person">
@@ -29,7 +33,9 @@
 
                 <c:choose>
                     <c:when test="${person.isNew()}">
-                        <form:label path="userName" cssClass="form-label">Username</form:label>
+                        <form:label path="userName" cssClass="form-label">
+                            <fmt:message key="user.form.userName"/>
+                        </form:label>
                         <form:input readonly="${readOnly}" path="userName" type="text" value="${person.userName}"
                                     cssClass="form-control"/>
                         <form:errors path="userName" cssClass="invalid-feedback d-block"/>
@@ -43,35 +49,45 @@
 
             <c:if test="${not readOnly}">
                 <div class="mb-3">
-                    <form:label path="password" cssClass="form-label">Password</form:label>
+                    <form:label path="password" cssClass="form-label">
+                        <fmt:message key="user.form.password"/>
+                    </form:label>
                     <form:input path="password" type="password" cssClass="form-control"/>
                     <form:errors path="password" cssClass="invalid-feedback d-block"/>
                 </div>
             </c:if>
 
             <div class="mb-3">
-                <form:label path="name" cssClass="form-label">Name</form:label>
+                <form:label path="name" cssClass="form-label">
+                    <fmt:message key="user.form.name"/>
+                </form:label>
                 <form:input readonly="${readOnly}" path="name" type="text" value="${person.name}"
                             cssClass="form-control"/>
                 <form:errors path="name" cssClass="invalid-feedback d-block"/>
             </div>
 
             <div class="mb-3">
-                <form:label path="phone" cssClass="form-label">Phone</form:label>
+                <form:label path="phone" cssClass="form-label">
+                    <fmt:message key="user.form.phone"/>
+                </form:label>
                 <form:input readonly="${readOnly}" path="phone" type="text" maxlength="11" value="${person.phone}"
                             cssClass="form-control"/>
                 <form:errors path="phone" cssClass="invalid-feedback d-block"/>
             </div>
 
             <div class="mb-3">
-                <form:label path="email" cssClass="form-label">Email</form:label>
+                <form:label path="email" cssClass="form-label">
+                    <fmt:message key="user.form.email"/>
+                </form:label>
                 <form:input readonly="${readOnly}" path="email" type="email" value="${person.email}"
                             cssClass="form-control"/>
                 <form:errors path="email" cssClass="invalid-feedback d-block"/>
             </div>
 
             <div class="mb-3">
-                <form:label path="gender" cssClass="form-label">Gender</form:label>
+                <form:label path="gender" cssClass="form-label">
+                    <fmt:message key="user.form.gender"/>
+                </form:label>
                 <c:forEach var="gender" items="${genderList}">
                     <div class="form-check">
                         <form:radiobutton disabled="${readOnly}" cssClass="form-check-input" value="${gender}"
@@ -87,27 +103,33 @@
             <div class="mb-3">
                 <c:choose>
                     <c:when test="${not readOnly}">
-                        <form:label path="dateOfBirth" cssClass="form-label">Date of birth</form:label>
+                        <form:label path="dateOfBirth" cssClass="form-label">
+                            <fmt:message key="user.form.dateOfBirth"/>
+                        </form:label>
                         <fmt:formatDate value="${person.dateOfBirth}" var="dateString" pattern="dd/MM/yyyy"/>
                         <form:input path="dateOfBirth" type="date" value="${dateString}" cssClass="form-control"/>
                         <form:errors path="dateOfBirth" cssClass="invalid-feedback d-block"/>
                     </c:when>
                     <c:when test="${not empty person.dateOfBirth}">
-                        <form:label path="dateOfBirth">Date of birth</form:label>
+                        <form:label path="dateOfBirth">
+                            <fmt:message key="user.form.dateOfBirth"/>
+                        </form:label>
                         <input type="text" disabled="disabled" class="form-control"
                                value="<fmt:formatDate value="${person.dateOfBirth}"/>">
                     </c:when>
                 </c:choose>
             </div>
             <c:if test="${not readOnly}">
-                <button type="submit" value="submit" class="btn btn-primary w-100">Submit</button>
+                <button type="submit" value="submit" class="btn btn-primary w-100">
+                    <fmt:message key="user.form.submit"/>
+                </button>
             </c:if>
         </form:form>
 
         <c:if test="${readOnly}">
             <c:if test="${person.roles.size() > 0}">
                 <div class="mb-3">
-                    Roles: <br>
+                    <fmt:message key="user.form.roles"/> <br>
                     <ul>
                         <c:forEach var="role" items="${person.roles}">
                             <li><c:out value="${role.name}"/></li>
@@ -118,28 +140,37 @@
 
             <c:if test="${not empty person.doctor}">
                 <div class="mb-3">
-                    <b>Fee: </b> <c:out value="${person.doctor.fee}"/>
+                    <b>
+                        <fmt:message key="user.form.fee"/>
+                    </b>
+                    <c:out value="${person.doctor.fee}"/>
                 </div>
             </c:if>
 
             <div class="mb-3">
                 <form action="/person/updateRole" method="get">
                     <input name="id" hidden="hidden" value="${person.id}">
-                    <button type="submit" value="submit" class="btn btn-dark w-100">Update Role</button>
+                    <button type="submit" value="submit" class="btn btn-dark w-100">
+                        <fmt:message key="user.form.updateRole"/>
+                    </button>
                 </form>
             </div>
 
             <div class="mb-3">
                 <form action="/person/save" method="get">
                     <input name="id" hidden="hidden" value="${person.id}">
-                    <button type="submit" value="submit" class="btn btn-primary w-100">Edit information</button>
+                    <button type="submit" value="submit" class="btn btn-primary w-100">
+                        <fmt:message key="user.form.editInformation"/>
+                    </button>
                 </form>
             </div>
 
             <div class="mb-3">
                 <form action="/person/delete" method="post">
                     <input name="id" hidden="hidden" value="${person.id}">
-                    <button type="submit" value="submit" class="btn btn-danger w-100">Delete person</button>
+                    <button type="submit" value="submit" class="btn btn-danger w-100">
+                        <fmt:message key="user.form.delete"/>
+                    </button>
                 </form>
             </div>
         </c:if>
