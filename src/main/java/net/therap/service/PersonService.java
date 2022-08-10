@@ -48,6 +48,10 @@ public class PersonService {
 
     @Transactional
     public Person saveOrUpdate(Person person) {
+        if(!person.isNew()) {
+            person.setRoles(personDao.findById(person.getId()).getRoles());
+        }
+
         return personDao.saveOrUpdate(person);
     }
 
