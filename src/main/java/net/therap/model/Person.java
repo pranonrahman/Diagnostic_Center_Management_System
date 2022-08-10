@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,6 +37,7 @@ public class Person extends BaseEntity {
     private Gender gender;
 
     @NotNull(message = "{dateOfBirth.notNull}")
+    @PastOrPresent(message = "{dateOfBirth.past}")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
