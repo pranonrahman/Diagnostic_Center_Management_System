@@ -73,6 +73,7 @@
                         </form:label>
                     </div>
                 </c:forEach>
+                <form:errors path="gender" cssClass="d-block invalid-feedback"/>
             </div>
 
             <div class="mb-3">
