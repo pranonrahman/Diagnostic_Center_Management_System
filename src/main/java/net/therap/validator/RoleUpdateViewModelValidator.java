@@ -14,7 +14,6 @@ import static java.util.Objects.isNull;
 @Component
 public class RoleUpdateViewModelValidator implements Validator {
 
-    private static final String DOCTOR_NULL_AND_FEE_PROVIDED_MESSAGE = "Fees must have a doctor";
     private static final String FEE_NOT_PROVIDED_MESSAGE = "Doctor must have a fee";
 
     @Override
