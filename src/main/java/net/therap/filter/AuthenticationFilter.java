@@ -68,12 +68,27 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        if ((httpServletRequest.getRequestURI().contains(INVOICE_SAVE)
-                || httpServletRequest.getRequestURI().contains(INVOICE_LIST)
+        if(httpServletRequest.getRequestURI().contains(PATIENT_LIST)
+            && !doctorRole.equals(role)) {
+
+            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
+
+            return;
+        }
+
+        if(httpServletRequest.getRequestURI().contains(INVOICE_LIST)
+            && !receptionistRole.equals(role)
+            && !patientRole.equals(role)) {
+
+            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
+
+            return;
+        }
+
+        if ((httpServletRequest.getRequestURI().equals(INVOICE_SAVE)
                 || httpServletRequest.getRequestURI().contains(INVOICE_DOCTOR)
                 || httpServletRequest.getRequestURI().contains(INVOICE_FACILITY)
                 || httpServletRequest.getRequestURI().contains(INVOICE_MEDICINE)
-                || httpServletRequest.getRequestURI().contains(INVOICE_LIST)
         )
                 && !receptionistRole.equals(role)) {
 
@@ -115,6 +130,7 @@ public class AuthenticationFilter implements Filter {
                 && !adminRole.equals(role)) {
 
             httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
+
             return;
         }
 
