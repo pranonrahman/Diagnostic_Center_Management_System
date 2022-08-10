@@ -9,7 +9,7 @@
 
 <html>
 <head>
-    <title>Prescription</title>
+    <title> <fmt:message key="title.invoice.addFacility"/> </title>
 
     <link type="text/css" href="<c:url value="../../../assets/css/bootstrap.min.css"/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
@@ -17,27 +17,26 @@
     <script type="text/javascript" src="<c:url value="../../../assets/js/bootstrap.bundle.min.js"/>"></script>
     <jsp:include page="../header.jsp"/>
 </head>
-<body>
 
+<body>
 <div class="container-fluid bg-primary-custom h-100">
 
-    <h2 class="text-center py-3"> Invoice </h2>
-    <div class="w-50 mx-auto">
+    <h2 class="text-center py-3"> <fmt:message key="title.invoice"/> </h2>
 
+    <div class="w-50 mx-auto">
         <%--@elvariable id="facilityItem" type="net.therap.viewModel.FacilityItem"--%>
         <form:form method="post" modelAttribute="facilityItem">
 
         <div class="mb-3">
             <form:label path="facility" cssClass="form-label">
-                Facility
+                <fmt:message key="label.facility"/>
             </form:label>
 
             <form:select path="facility"
                          cssClass="form-select form-select-lg mb-3">
 
-                <form:option value="">
-                    Select
-                </form:option>
+                <form:option value=""> <fmt:message key="label.select"/> </form:option>
+
                 <form:options items="${facilities}"
                               itemValue="id"
                               itemLabel="name"/>
@@ -48,7 +47,7 @@
 
         <div class="mb-3">
             <form:label path="quantity" cssClass="form-label">
-                Quantity
+                <fmt:message key="label.quantity"/>
             </form:label>
 
             <form:input path="quantity"
@@ -59,42 +58,47 @@
         </div>
 
         <div class="d-flex justify-content-between">
-            <a href="/invoice/medicine" class="btn btn-primary">
-                PREVIOUS
+            <a href="<c:url value="/invoice/medicine"/>"
+               class="btn btn-primary">
+
+                <fmt:message key="button.label.previous"/>
             </a>
+
             <button type="submit"
                     class="btn btn-primary flex-grow-1 mx-3"
                     value="ADD"
                     name="action">
-                Add
+                <fmt:message key="button.label.add"/>
             </button>
+
             <button type="submit"
                     class="btn btn-primary"
                     value="NEXT"
                     name="action">
-                NEXT
+                <fmt:message key="button.label.next"/>
             </button>
         </div>
 
-
+        </form:form>
     </div>
-    </form:form>
-
 
     <%--@elvariable id="invoice" type="net.therap.viewModel.InvoiceViewModel"--%>
     <c:if test="${invoice.facilities.size() > 0}">
         <div class="w-50 mx-auto mt-4 fw-light">
             <hr>
-            <h4 class="text-center fw-light">Added facilities</h4>
+
+            <h4 class="text-center fw-light"> <fmt:message key="header.table.AddedFacilities"/> </h4>
+
             <table class="table">
+
                 <thead>
                 <tr>
                     <th class="fw-light" scope="col">#</th>
-                    <th class="fw-light" scope="col">Facility</th>
-                    <th class="fw-light" scope="col">Unit price</th>
-                    <th class="fw-light" scope="col">Units</th>
-                    <th class="fw-light" scope="col">Price</th>
-                    <th class="fw-light" scope="col">Action</th>
+                    <th class="fw-light" scope="col"> <fmt:message key="column.table.facility"/> </th>
+                    <th class="fw-light" scope="col"> <fmt:message key="column.table.unitPrice"/> </th>
+                    <th class="fw-light" scope="col"> <fmt:message key="column.table.units"/> </th>
+                    <th class="fw-light" scope="col"> <fmt:message key="column.table.price"/> </th>
+                    <th class="fw-light" scope="col"> <fmt:message key="column.table.action"/> </th>
                 </tr>
                 </thead>
 
@@ -108,17 +112,16 @@
                             <td><c:out value="${item.quantity}"/></td>
                             <td><c:out value="${item.facility.price * item.quantity}"/></td>
                             <td>
-                                    <%--@elvariable id="removeModel" type="net.therap.viewModel.RemoveModel"--%>
+                                <%--@elvariable id="removeModel" type="net.therap.viewModel.RemoveModel"--%>
                                 <form:form method="post" modelAttribute="removeModel" action="/invoice/facility/remove">
                                     <input type="hidden" name="id" value="${item.facility.id}">
                                     <button type="submit"
                                             class="btn btn-primary flex-grow-1 mx-3"
                                             value="REMOVE"
                                             name="action">
-                                        REMOVE
+                                        <fmt:message key="button.label.remove"/>
                                     </button>
                                 </form:form>
-
                             </td>
                         </tr>
                     </p>
@@ -129,7 +132,6 @@
         </div>
     </c:if>
 
-</div>
 </div>
 
 </body>
