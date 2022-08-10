@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -17,6 +18,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @NoArgsConstructor
+@NamedQuery(name = "Receptionist.findAll", query = "FROM Receptionist")
 public class Receptionist extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

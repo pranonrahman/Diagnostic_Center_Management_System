@@ -12,13 +12,11 @@ import java.util.List;
 @Repository
 public class ReceptionistDao extends Dao<Receptionist> {
 
-    private static final String FIND_ALL_QUERY = "FROM Receptionist";
-
     public ReceptionistDao() {
         super(Receptionist.class);
     }
 
     public List<Receptionist> findAll() {
-        return entityManager.createQuery(FIND_ALL_QUERY, Receptionist.class).getResultList();
+        return entityManager.createNamedQuery("Receptionist.findAll", Receptionist.class).getResultList();
     }
 }
