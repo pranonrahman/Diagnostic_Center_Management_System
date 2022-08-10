@@ -8,6 +8,7 @@ import net.therap.model.RoleEnum;
 import net.therap.service.PersonService;
 import net.therap.service.RoleService;
 import net.therap.service.RoleUpdateViewModelService;
+import net.therap.validator.PersonValidator;
 import net.therap.validator.RoleUpdateViewModelValidator;
 import net.therap.viewModel.RoleUpdateViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,9 +58,17 @@ public class PersonController {
     @Autowired
     private RoleUpdateViewModelValidator roleUpdateViewModelValidator;
 
+    @Autowired
+    private PersonValidator personValidator;
+
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Date.class, dateEditor);
+    }
+
+    @InitBinder("person")
+    private void personInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(personValidator);
     }
 
     @InitBinder("roleUpdateViewModel")
