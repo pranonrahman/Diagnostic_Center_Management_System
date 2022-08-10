@@ -26,7 +26,7 @@ public class Person extends BaseEntity {
 
     @NotBlank(message = "{name.notBlank}")
     @NotNull(message = "{name.notNull}")
-    @Size(min = 1, max = 30, message = "{name.message}")
+    @Size(min = 1, max = 30, message = "{name.size}")
     private String name;
 
     @NotBlank(message = "{phone.notBlank}")
@@ -54,7 +54,7 @@ public class Person extends BaseEntity {
 
     @NotNull(message = "{password.notNull}")
     @NotBlank(message = "{password.notBlank}")
-    @Size(min = 5, max=255, message = "{password.size}")
+    @Size(min = 3, max=255, message = "{password.size}")
     private String password;
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
