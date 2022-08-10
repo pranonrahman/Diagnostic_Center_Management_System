@@ -48,7 +48,7 @@
                 <td class="d-inline-block text-truncate" style="max-width: 150px">
                     <c:out value="${invoice.invoiceId}"/>
                 </td>
-                <td hidden="${isPatient}"><c:out value="${invoice.patient.person.name}"/></td>
+                <td hidden="${isPatient}"><c:out value="${invoice.patient.user.name}"/></td>
                 <td> <fmt:formatDate value="${invoice.generationDate}"/> </td>
                 <td> <fmt:formatNumber value="${invoice.totalCost}"/> </td>
                 <c:url var="invoiceLink" value="/invoice/view">

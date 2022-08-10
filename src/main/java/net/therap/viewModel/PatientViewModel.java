@@ -21,6 +21,6 @@ public class PatientViewModel {
     public long getAge() {
         Date date = new Date();
 
-        return (date.getTime() - patient.getPerson().getDateOfBirth().getTime()) / 31536000000L;
+        return (date.getTime() - patient.getUser().getDateOfBirth().getTime()) / 31536000000L;
     }
 }

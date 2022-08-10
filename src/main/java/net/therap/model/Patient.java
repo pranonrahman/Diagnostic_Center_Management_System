@@ -20,7 +20,7 @@ public class Patient extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @OneToOne
-    private Person person;
+    private User user;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
     private Set<Prescription> prescriptions;
@@ -33,10 +33,10 @@ public class Patient extends BaseEntity {
         invoices = new HashSet<>();
     }
 
-    public Patient(Person person) {
+    public Patient(User user) {
         this();
 
-        this.person = person;
+        this.user = user;
     }
 
     @Override

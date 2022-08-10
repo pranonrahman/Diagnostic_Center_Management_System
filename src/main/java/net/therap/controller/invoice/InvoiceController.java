@@ -73,13 +73,13 @@ public class InvoiceController {
 
     @GetMapping("/list")
     public String list(HttpServletRequest request, ModelMap modelMap) {
-        Role personRole = (Role) request.getSession().getAttribute("role");
+        Role userRole = (Role) request.getSession().getAttribute("role");
 
         List<Invoice> invoices = new ArrayList<>();
 
-        if(personRole.getName().equals(RoleEnum.PATIENT)){
-            Person person = (Person) request.getSession().getAttribute("user");
-            Patient patient = person.getPatient();
+        if(userRole.getName().equals(RoleEnum.PATIENT)){
+            User user = (User) request.getSession().getAttribute("user");
+            Patient patient = user.getPatient();
             invoices = invoiceService.findAllByPatient(patient);
         }else {
             invoices = invoiceService.findAll();
@@ -106,10 +106,10 @@ public class InvoiceController {
             return VIEW_PAGE;
         }
 
-        Person person = (Person) request.getSession().getAttribute("user");
-        Role personRole = (Role) request.getSession().getAttribute("role");
+        User user = (User) request.getSession().getAttribute("user");
+        Role userRole = (Role) request.getSession().getAttribute("role");
 
-        if(isNull(person) || !(personRole.getName().equals(RECEPTIONIST) || personRole.getName().equals(ADMIN))){
+        if(isNull(user) || !(userRole.getName().equals(RECEPTIONIST) || userRole.getName().equals(ADMIN))){
             model.put("errorMessage", "User is not authorized");
 
             return VIEW_PAGE;
@@ -130,7 +130,7 @@ public class InvoiceController {
             medicineService.saveOrUpdate(updatedMedicine);
         }
 
-        readyToSaveInvoice.setGeneratedBy(person);
+        readyToSaveInvoice.setGeneratedBy(user);
         Invoice savedInvoice = invoiceService.saveOrUpdate(readyToSaveInvoice);
 
         if(model.containsAttribute(INVOICE_CMD)) {

@@ -1,4 +1,4 @@
-CREATE TABLE person(
+CREATE TABLE user(
      id NUMERIC(19),
      name VARCHAR(50) NOT NULL,
      phone VARCHAR(15) NOT NULL,
@@ -46,31 +46,31 @@ CREATE TABLE facility(
 
 CREATE TABLE admin(
     id NUMERIC(19),
-    person_id NUMERIC(19),
+    user_id NUMERIC(19),
     PRIMARY KEY (id),
-    FOREIGN KEY (person_id) references person(id)
+    FOREIGN KEY (user_id) references user(id)
 );
 
 CREATE TABLE patient(
     id NUMERIC(19),
-    person_id NUMERIC(19),
+    user_id NUMERIC(19),
     PRIMARY KEY (id),
-    FOREIGN KEY (person_id) references person(id)
+    FOREIGN KEY (user_id) references user(id)
 );
 
 CREATE TABLE receptionist(
     id NUMERIC(19),
-    person_id NUMERIC(19),
+    user_id NUMERIC(19),
     PRIMARY KEY (id),
-    FOREIGN KEY (person_id) references person(id)
+    FOREIGN KEY (user_id) references user(id)
 );
 
 CREATE TABLE doctor(
     id NUMERIC(19),
-    person_id NUMERIC(19),
+    user_id NUMERIC(19),
     fee NUMERIC(20, 4),
     PRIMARY KEY (id),
-    FOREIGN KEY (person_id) references person(id)
+    FOREIGN KEY (user_id) references user(id)
 );
 
 CREATE TABLE invoice(
@@ -108,7 +108,7 @@ CREATE TABLE prescription_facility(
     facility_id NUMERIC(19) NOT NULL
 );
 
-CREATE TABLE person_role(
-    person_id NUMERIC(19) NOT NULL,
+CREATE TABLE user_role(
+    user_id NUMERIC(19) NOT NULL,
     role_id NUMERIC(19) NOT NULL
 );

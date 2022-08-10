@@ -49,7 +49,7 @@ public class PrescriptionController {
     }
 
     @GetMapping("/view")
-    public String loadViewPage(@ModelAttribute("user") Person user, @ModelAttribute("role") Role role, @RequestParam("id") String id, ModelMap modelMap) {
+    public String loadViewPage(@ModelAttribute("user") User user, @ModelAttribute("role") Role role, @RequestParam("id") String id, ModelMap modelMap) {
         modelMap.put("action", "view");
         modelMap.put("facilities", facilityService.findAll());
         modelMap.put("doctorId", role.getName().equals(RoleEnum.DOCTOR) ? user.getDoctor().getId() : 0);
@@ -59,7 +59,7 @@ public class PrescriptionController {
     }
 
     @GetMapping("/list")
-    public String loadPrescriptionList(@ModelAttribute("user") Person user, ModelMap modelMap) {
+    public String loadPrescriptionList(@ModelAttribute("user") User user, ModelMap modelMap) {
         Patient patient = user.getPatient();
         List<PrescriptionViewModel> prescriptionViewModels = new ArrayList<>();
         Set<Prescription> prescriptions = patient.getPrescriptions();

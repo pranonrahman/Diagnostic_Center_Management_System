@@ -26,7 +26,7 @@ public class DataLoader implements CommandLineRunner {
     private FacilityService facilityService;
 
     @Autowired
-    private PersonService personService;
+    private PersonService userService;
 
     @Autowired
     private PatientService patientService;
@@ -91,117 +91,114 @@ public class DataLoader implements CommandLineRunner {
     private void createSeedPerson() {
         Calendar c = Calendar.getInstance();
 
-        Person person1 = new Person();
-        person1.setName("Abul Mia");
-        person1.setUserName("abul");
-        person1.setPassword("abul");
-        person1.setDateOfBirth(new Date());
-        person1.setEmail("abdul@abdul");
-        person1.setPhone("01234567890");
-        person1.setGender(Gender.MALE);
+        User user1 = new User();
+        user1.setName("Abul Mia");
+        user1.setUserName("abul");
+        user1.setPassword("abul");
+        user1.setDateOfBirth(new Date());
+        user1.setEmail("abdul@abdul");
+        user1.setPhone("01234567890");
+        user1.setGender(Gender.MALE);
         c.set(1970, Calendar.JULY, 25);
         Date d1 = c.getTime();
-        person1.setDateOfBirth(d1);
-        person1 = personService.saveOrUpdate(person1);
+        user1.setDateOfBirth(d1);
 
-        Person person2 = new Person();
-        person2.setName("Abdul Kuddus");
-        person2.setUserName("abdul");
-        person2.setPassword("abdul");
-        person2.setDateOfBirth(new Date());
-        person2.setEmail("abdul@abdul");
-        person2.setPhone("01234567890");
-        person2.setGender(Gender.MALE);
+        User user2 = new User();
+        user2.setName("Abdul Kuddus");
+        user2.setUserName("abdul");
+        user2.setPassword("abdul");
+        user2.setDateOfBirth(new Date());
+        user2.setEmail("abdul@abdul");
+        user2.setPhone("01234567890");
+        user2.setGender(Gender.MALE);
         c.set(1968, Calendar.JULY, 25);
         d1 = c.getTime();
-        person2.setDateOfBirth(d1);
-        person2 = personService.saveOrUpdate(person2);
+        user2.setDateOfBirth(d1);
 
-        Person person3 = new Person();
-        person3.setName("Abdul Khalek");
-        person3.setUserName("khalek");
-        person3.setPassword("khalek");
-        person3.setDateOfBirth(new Date());
-        person3.setEmail("abdul@abdul");
-        person3.setPhone("01234567890");
-        person3.setGender(Gender.MALE);
+        User user3 = new User();
+        user3.setName("Abdul Khalek");
+        user3.setUserName("khalek");
+        user3.setPassword("khalek");
+        user3.setDateOfBirth(new Date());
+        user3.setEmail("abdul@abdul");
+        user3.setPhone("01234567890");
+        user3.setGender(Gender.MALE);
         c.set(1975, Calendar.MARCH, 20);
         d1 = c.getTime();
-        person3.setDateOfBirth(d1);
-        person3 = personService.saveOrUpdate(person3);
+        user3.setDateOfBirth(d1);
 
         List<Role> roles = roleService.findAll();
         for (Role role : roles) {
             if(role.getName().equals(ADMIN)){
-                person1.getRoles().add(role);
-                person2.getRoles().add(role);
-                person3.getRoles().add(role);
+                user1.getRoles().add(role);
+                user2.getRoles().add(role);
+                user3.getRoles().add(role);
             }
         }
 
-        person1 = personService.saveOrUpdate(person1);
-        person2 = personService.saveOrUpdate(person2);
-        person3 = personService.saveOrUpdate(person3);
+        user1 = userService.saveOrUpdate(user1);
+        user2 = userService.saveOrUpdate(user2);
+        user3 = userService.saveOrUpdate(user3);
     }
 
     private void createSeedPatient() {
-        List<Person> persons = personService.findAll();
+        List<User> users = userService.findAll();
 
-        for (Person person : persons) {
-            Patient patient = new Patient(person);
+        for (User user : users) {
+            Patient patient = new Patient(user);
             patient = patientService.saveOrUpdate(patient);
-            person.setPatient(patient);
-            personService.saveOrUpdate(person);
+            user.setPatient(patient);
+            userService.saveOrUpdate(user);
         }
     }
 
     private void createSeedDoctor() {
-        List<Person> persons = personService.findAll();
+        List<User> users = userService.findAll();
 
-        for (Person person : persons) {
-            Doctor doctor = new Doctor(1000.0, person);
+        for (User user : users) {
+            Doctor doctor = new Doctor(1000.0, user);
             doctor = doctorService.saveOrUpdate(doctor);
-            person.setDoctor(doctor);
-            personService.saveOrUpdate(person);
+            user.setDoctor(doctor);
+            userService.saveOrUpdate(user);
         }
     }
 
     private void createSeedReceptionist() {
-        Person person = new Person();
-        person.setName("Rupban");
-        person.setUserName("rupban");
-        person.setPassword("rupban");
-        person.setDateOfBirth(new Date());
-        person.setEmail("abdul@abdul");
-        person.setPhone("01234567890");
-        person.setGender(Gender.FEMALE);
+        User user = new User();
+        user.setName("Rupban");
+        user.setUserName("rupban");
+        user.setPassword("rupban");
+        user.setDateOfBirth(new Date());
+        user.setEmail("abdul@abdul");
+        user.setPhone("01234567890");
+        user.setGender(Gender.FEMALE);
         Role receptionistRole = null;
         for (Role role : roleService.findAll()) {
             if(role.getName().equals(RECEPTIONIST)){
                 receptionistRole = role;
             }
         }
-        person.getRoles().add(receptionistRole);
-        person = personService.saveOrUpdate(person);
-        Receptionist receptionist = new Receptionist(person);
+        user.getRoles().add(receptionistRole);
+        user = userService.saveOrUpdate(user);
+        Receptionist receptionist = new Receptionist(user);
         receptionist = receptionistService.saveOrUpdate(receptionist);
-        person.setReceptionist(receptionist);
-        personService.saveOrUpdate(person);
+        user.setReceptionist(receptionist);
+        userService.saveOrUpdate(user);
 
-        Person person2 = new Person();
-        person2.setName("Fulbanu");
-        person2.setUserName("fulbanu");
-        person2.setPassword("fulbanu");
-        person2.setDateOfBirth(new Date());
-        person2.setEmail("abdul@abdul");
-        person2.setPhone("01234567890");
-        person2.setGender(Gender.FEMALE);
-        person2.getRoles().add(receptionistRole);
-        person2 = personService.saveOrUpdate(person2);
-        Receptionist receptionist2 = new Receptionist(person2);
+        User user2 = new User();
+        user2.setName("Fulbanu");
+        user2.setUserName("fulbanu");
+        user2.setPassword("fulbanu");
+        user2.setDateOfBirth(new Date());
+        user2.setEmail("abdul@abdul");
+        user2.setPhone("01234567890");
+        user2.setGender(Gender.FEMALE);
+        user2.getRoles().add(receptionistRole);
+        user2 = userService.saveOrUpdate(user2);
+        Receptionist receptionist2 = new Receptionist(user2);
         receptionist2 = receptionistService.saveOrUpdate(receptionist2);
-        person2.setReceptionist(receptionist2);
-        personService.saveOrUpdate(person2);
+        user2.setReceptionist(receptionist2);
+        userService.saveOrUpdate(user2);
     }
 
     private void createSeedMedicine() {
@@ -331,7 +328,7 @@ public class DataLoader implements CommandLineRunner {
             totalCost += particular.getUnitPrice() * particular.getUnits();
         }
         invoice.setPatient(patient);
-        invoice.setGeneratedBy(receptionist.getPerson());
+        invoice.setGeneratedBy(receptionist.getUser());
         invoice.setTotalCost(totalCost);
 
         invoiceService.saveOrUpdate(invoice);

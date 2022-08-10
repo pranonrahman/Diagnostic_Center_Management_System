@@ -1,6 +1,6 @@
 package net.therap.service;
 
-import net.therap.model.Person;
+import net.therap.model.User;
 import net.therap.viewModel.RoleUpdateViewModel;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +13,17 @@ import static java.util.Objects.nonNull;
 @Service
 public class RoleUpdateViewModelService {
 
-    public RoleUpdateViewModel getRoleUpdateViewModel(Person person) {
+    public RoleUpdateViewModel getRoleUpdateViewModel(User user) {
 
         RoleUpdateViewModel roleUpdateViewModel = new RoleUpdateViewModel();
 
-        roleUpdateViewModel.setDoctor(nonNull(person.getDoctor()));
-        roleUpdateViewModel.setAdmin(nonNull(person.getAdmin()));
-        roleUpdateViewModel.setPatient(nonNull(person.getPatient()));
-        roleUpdateViewModel.setReceptionist(nonNull(person.getReceptionist()));
+        roleUpdateViewModel.setDoctor(nonNull(user.getDoctor()));
+        roleUpdateViewModel.setAdmin(nonNull(user.getAdmin()));
+        roleUpdateViewModel.setPatient(nonNull(user.getPatient()));
+        roleUpdateViewModel.setReceptionist(nonNull(user.getReceptionist()));
 
-        if (nonNull(person.getDoctor())) {
-            roleUpdateViewModel.setFee(person.getDoctor().getFee());
+        if (nonNull(user.getDoctor())) {
+            roleUpdateViewModel.setFee(user.getDoctor().getFee());
         }
 
         return roleUpdateViewModel;
