@@ -8,6 +8,7 @@ public class UriConstant {
     public static String PERSON_DELETE = "/person/delete";
 
     public static String PATIENT_HISTORY = "/patient/history";
+    public static String PATIENT_LIST = "/patient/list";
 
     public static String PRESCRIPTION_LIST = "/prescription/list";
     public static String PRESCRIPTION_VIEW = "/prescription/view";
