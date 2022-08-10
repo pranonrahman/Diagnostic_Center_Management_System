@@ -31,15 +31,19 @@
             <div class="mb-3">
                 <form:input hidden="hidden" path="id" type="text" value="${userData.id}" cssClass="form-control"/>
 
+
                 <c:choose>
-                    <c:when test="${userData.isNew()}">
+                    <c:when test="${readOnly or userData.isNew()}">
                         <form:label path="userName" cssClass="form-label">
                             <fmt:message key="user.form.userName"/>
                         </form:label>
+
                         <form:input readonly="${readOnly}" path="userName" type="text" value="${userData.userName}"
                                     cssClass="form-control"/>
+
                         <form:errors path="userName" cssClass="invalid-feedback d-block"/>
                     </c:when>
+
                     <c:otherwise>
                         <form:input hidden="hidden" readonly="${readOnly}" path="userName" type="text" value="${userData.userName}"
                                     cssClass="form-control"/>
@@ -176,6 +180,8 @@
         </c:if>
     </div>
 </div>
+
 <jsp:include page="../footer.jsp"/>
+
 </body>
 </html>

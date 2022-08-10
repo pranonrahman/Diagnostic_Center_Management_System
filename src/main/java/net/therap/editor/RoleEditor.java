@@ -1,11 +1,12 @@
 package net.therap.editor;
 
-import net.therap.model.Role;
 import net.therap.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.beans.PropertyEditorSupport;
+
+import static java.util.Objects.nonNull;
 
 /**
  * @author raian.rahman
@@ -19,9 +20,8 @@ public class RoleEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String roleId) throws IllegalArgumentException {
-        if (!roleId.isEmpty()) {
-            Role role = roleService.findById(Long.parseLong(roleId));
-            setValue(role);
+        if (nonNull(roleId) && !roleId.isEmpty()) {
+            setValue(roleService.findById(Long.parseLong(roleId)));
         }
     }
 }

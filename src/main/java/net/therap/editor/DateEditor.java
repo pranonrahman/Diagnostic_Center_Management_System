@@ -6,7 +6,7 @@ import java.beans.PropertyEditorSupport;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 /**
  * @author raian.rahman
@@ -17,9 +17,7 @@ public class DateEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) {
-        if (isNull(text) || text.isBlank()) {
-            setValue(null);
-        } else {
+        if (nonNull(text) && !text.isBlank()) {
             try {
                 setValue(new SimpleDateFormat("yyyy-MM-dd").parse(text));
             } catch (ParseException e) {
