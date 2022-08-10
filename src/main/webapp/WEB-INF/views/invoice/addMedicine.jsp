@@ -90,11 +90,11 @@
                 <thead>
                 <tr>
                     <th class="fw-light" scope="col">#</th>
-                    <th class="fw-light" scope="col"> <fmt:message key="column.table.medicine"/> </th>
-                    <th class="fw-light" scope="col"> <fmt:message key="column.table.unitPrice"/> </th>
-                    <th class="fw-light" scope="col"> <fmt:message key="column.table.units"/> </th>
-                    <th class="fw-light" scope="col"> <fmt:message key="column.table.price"/> </th>
-                    <th class="fw-light" scope="col"> <fmt:message key="column.table.action"/> </th>
+                    <th class="fw-light" scope="col"> <fmt:message key="table.column.medicine"/> </th>
+                    <th class="fw-light" scope="col"> <fmt:message key="table.column.unitPrice"/> </th>
+                    <th class="fw-light" scope="col"> <fmt:message key="table.column.units"/> </th>
+                    <th class="fw-light" scope="col"> <fmt:message key="table.column.price"/> </th>
+                    <th class="fw-light" scope="col"> <fmt:message key="table.column.action"/> </th>
                 </tr>
                 </thead>
 

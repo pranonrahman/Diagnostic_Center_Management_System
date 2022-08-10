@@ -3,6 +3,7 @@ package net.therap.controller.invoice;
 import net.therap.model.*;
 import net.therap.service.*;
 import net.therap.viewModel.InvoiceViewModel;
+import net.therap.viewModel.MedicineItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,7 +14,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static java.util.Objects.isNull;
 import static net.therap.controller.invoice.InvoiceController.INVOICE_CMD;
@@ -43,6 +46,9 @@ public class InvoiceController {
     @Autowired
     private PrescriptionService prescriptionService;
 
+    @Autowired
+    private MedicineService medicineService;
+
     @GetMapping("/view")
     public String view(@RequestParam Long id, ModelMap model) {
         model.addAttribute(INVOICE_VIEW_CMD,invoiceService.findById(id));
@@ -66,7 +72,19 @@ public class InvoiceController {
     }
 
     @GetMapping("/list")
-    public String list(ModelMap modelMap) {
+    public String list(HttpServletRequest request, ModelMap modelMap) {
+        Role personRole = (Role) request.getSession().getAttribute("role");
+
+        List<Invoice> invoices = new ArrayList<>();
+
+        if(personRole.getName().equals(RoleEnum.PATIENT)){
+            Person person = (Person) request.getSession().getAttribute("user");
+            Patient patient = person.getPatient();
+            invoices = invoiceService.findAllByPatient(patient);
+        }else {
+            invoices = invoiceService.findAll();
+        }
+
         modelMap.addAttribute("invoices", invoiceService.findAll());
 
         return LIST_VIEW_PAGE;
@@ -104,6 +122,12 @@ public class InvoiceController {
             prescription.setDateOfVisit(new Date());
 
             prescriptionService.saveOrUpdate(prescription);
+        }
+
+        for (MedicineItem medicineItem : invoice.getMedicines()) {
+            Medicine updatedMedicine = medicineItem.getMedicine();
+            updatedMedicine.setAvailableUnits(updatedMedicine.getAvailableUnits() - medicineItem.getQuantity());
+            medicineService.saveOrUpdate(updatedMedicine);
         }
 
         readyToSaveInvoice.setGeneratedBy(person);

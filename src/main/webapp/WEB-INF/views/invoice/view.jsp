@@ -27,17 +27,19 @@
             <fmt:message key="text.invoiceOf"/> <c:out value="${invoiceView.patient.person.name}"/>
         </h5>
         <div class="card-body">
-            <h5 class="card-title"> <fmt:message key="header.table.services"/>: </h5>
+            <p class="card-title">
+                <fmt:message key="text.receivedBy"/>: <c:out value="${invoiceView.generatedBy.name}"/>
+            </p>
 
             <table class="table">
 
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col"> <fmt:message key="column.table.serviceName"/> </th>
-                    <th scope="col"> <fmt:message key="column.table.unitPrice"/> </th>
-                    <th scope="col"> <fmt:message key="column.table.units"/> </th>
-                    <th scope="col" class="text-end"> <fmt:message key="column.table.priceInBDT"/> </th>
+                    <th scope="col"> <fmt:message key="table.column.serviceName"/> </th>
+                    <th scope="col"> <fmt:message key="table.column.unitPrice"/> </th>
+                    <th scope="col"> <fmt:message key="table.column.units"/> </th>
+                    <th scope="col" class="text-end"> <fmt:message key="table.column.priceInBDT"/> </th>
                 </tr>
                 </thead>
 
