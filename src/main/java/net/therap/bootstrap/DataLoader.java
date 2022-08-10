@@ -102,7 +102,6 @@ public class DataLoader implements CommandLineRunner {
         c.set(1970, Calendar.JULY, 25);
         Date d1 = c.getTime();
         person1.setDateOfBirth(d1);
-        person1 = personService.saveOrUpdate(person1);
 
         Person person2 = new Person();
         person2.setName("Abdul Kuddus");
@@ -115,7 +114,6 @@ public class DataLoader implements CommandLineRunner {
         c.set(1968, Calendar.JULY, 25);
         d1 = c.getTime();
         person2.setDateOfBirth(d1);
-        person2 = personService.saveOrUpdate(person2);
 
         Person person3 = new Person();
         person3.setName("Abdul Khalek");
@@ -128,7 +126,6 @@ public class DataLoader implements CommandLineRunner {
         c.set(1975, Calendar.MARCH, 20);
         d1 = c.getTime();
         person3.setDateOfBirth(d1);
-        person3 = personService.saveOrUpdate(person3);
 
         List<Role> roles = roleService.findAll();
         for (Role role : roles) {
