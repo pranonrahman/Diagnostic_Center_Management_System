@@ -54,12 +54,12 @@
 
                     <c:when test="${role.getName().equals(RoleEnum.ADMIN)}">
                         <li class="nav-item">
-                            <a href="${pageContext.request.contextPath}/person/list" class="nav-link active">
+                            <a href="${pageContext.request.contextPath}/user/list" class="nav-link active">
                                 <fmt:message key="navbar.link.viewUsers"/>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="${pageContext.request.contextPath}/person/save" class="nav-link active">
+                            <a href="${pageContext.request.contextPath}/user/save" class="nav-link active">
                                 <fmt:message key="navbar.link.createUser"/>
                             </a>
                         </li>

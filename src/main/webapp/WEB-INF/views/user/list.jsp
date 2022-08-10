@@ -47,29 +47,29 @@
             </tr>
             </thead>
             <tbody>
-            <%--@elvariable id="persons" type="java.util.List"--%>
-            <c:forEach items="${persons}" var="person">
+            <%--@elvariable id="users" type="java.util.List"--%>
+            <c:forEach items="${users}" var="user">
                 <tr>
                     <td>
-                        <a href="${pageContext.request.contextPath}/person/view?id=${person.id}">
-                            <c:out value="${person.userName}"/>
+                        <a href="${pageContext.request.contextPath}/user/view?id=${user.id}">
+                            <c:out value="${user.userName}"/>
                         </a>
                     </td>
 
                     <td>
-                        <c:out value="${person.name}"/>
+                        <c:out value="${user.name}"/>
                     </td>
 
                     <td>
-                        <c:out value="${person.phone}"/>
+                        <c:out value="${user.phone}"/>
                     </td>
 
                     <td>
-                        <c:out value="${person.email}"/>
+                        <c:out value="${user.email}"/>
                     </td>
 
                     <td>
-                        <c:out value="${person.gender}"/>
+                        <c:out value="${user.gender}"/>
                     </td>
                 </tr>
             </c:forEach>

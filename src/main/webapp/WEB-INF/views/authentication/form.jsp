@@ -23,7 +23,8 @@
     <h2 class="text-center py-3"> Login </h2>
     <div class="w-50 mx-auto">
         <c:if test="${empty user}">
-            <form:form action="/login" method="post" modelAttribute="personViewModel">
+            <%--@elvariable id="userViewModel" type="net.therap.viewModel.UserViewModel"--%>
+            <form:form action="/login" method="post" modelAttribute="userViewModel">
                 <div class="mb-3">
                     <form:label path="userName">
                         <fmt:message key="authentication.form.userName"/>
@@ -51,7 +52,7 @@
         </c:if>
 
         <c:if test="${not empty user and empty role}">
-            <form:form action="/login/role" method="post" modelAttribute="personViewModel">
+            <form:form action="/login/role" method="post" modelAttribute="userViewModel">
                 <div class="mb-3">
                     <form:label path="role">
                         <fmt:message key="authentication.form.role"/>

@@ -37,7 +37,7 @@ public class Invoice extends BaseEntity {
             name = "receptionist_id",
             nullable = false
     )
-    private Person generatedBy;
+    private User generatedBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(

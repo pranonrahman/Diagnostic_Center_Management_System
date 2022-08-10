@@ -20,12 +20,12 @@ public class Receptionist extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @OneToOne
-    private Person person;
+    private User user;
 
     public Receptionist() {
     }
 
-    public Receptionist(Person person) {
-        this.person = person;
+    public Receptionist(User user) {
+        this.user = user;
     }
 }

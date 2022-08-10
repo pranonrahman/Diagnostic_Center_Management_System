@@ -21,7 +21,7 @@ import static java.util.Objects.nonNull;
 public class PersonService {
 
     @Autowired
-    private PersonDao personDao;
+    private PersonDao userDao;
 
     @Autowired
     private DoctorDao doctorDao;
@@ -38,112 +38,112 @@ public class PersonService {
     @Autowired
     private RoleDao roleDao;
 
-    public List<Person> findAll() {
-        return personDao.findAll();
+    public List<User> findAll() {
+        return userDao.findAll();
     }
 
-    public Person findById(long id) {
-        return personDao.findById(id);
+    public User findById(long id) {
+        return userDao.findById(id);
     }
 
     @Transactional
-    public Person saveOrUpdate(Person person) {
-        if(!person.isNew()) {
-            person.setRoles(personDao.findById(person.getId()).getRoles());
+    public User saveOrUpdate(User user) {
+        if(!user.isNew()) {
+            user.setRoles(userDao.findById(user.getId()).getRoles());
         }
 
-        return personDao.saveOrUpdate(person);
+        return userDao.saveOrUpdate(user);
     }
 
     @Transactional
-    public void delete(Person person) {
-        List<Role> roles = new ArrayList<>(person.getRoles());
+    public void delete(User user) {
+        List<Role> roles = new ArrayList<>(user.getRoles());
 
         for(Role role: roles) {
-            person.getRoles().remove(role);
-            personDao.saveOrUpdate(person);
+            user.getRoles().remove(role);
+            userDao.saveOrUpdate(user);
         }
 
-        personDao.delete(person);
+        userDao.delete(user);
     }
 
     @Transactional
-    public Person updateRole(Person person, RoleUpdateViewModel roleUpdateViewModel) {
+    public User updateRole(User user, RoleUpdateViewModel roleUpdateViewModel) {
 
         Role doctorRole = roleDao.findByRole(RoleEnum.valueOf("DOCTOR"));
         Role adminRole = roleDao.findByRole(RoleEnum.valueOf("ADMIN"));
         Role receptionistRole = roleDao.findByRole(RoleEnum.valueOf("RECEPTIONIST"));
         Role patientRole = roleDao.findByRole(RoleEnum.valueOf("PATIENT"));
 
-        if(nonNull(person.getDoctor()) && roleUpdateViewModel.getDoctor()) {
-            person.getDoctor().setFee(roleUpdateViewModel.getFee());
+        if(nonNull(user.getDoctor()) && roleUpdateViewModel.getDoctor()) {
+            user.getDoctor().setFee(roleUpdateViewModel.getFee());
         }
 
-        if (isNull(person.getDoctor()) && roleUpdateViewModel.getDoctor()) {
-            Doctor doctor = new Doctor(roleUpdateViewModel.getFee(), person);
+        if (isNull(user.getDoctor()) && roleUpdateViewModel.getDoctor()) {
+            Doctor doctor = new Doctor(roleUpdateViewModel.getFee(), user);
             doctor = doctorDao.saveOrUpdate(doctor);
 
-            person.setDoctor(doctor);
-            person.getRoles().add(doctorRole);
+            user.setDoctor(doctor);
+            user.getRoles().add(doctorRole);
         }
 
-        if (nonNull(person.getDoctor()) && !roleUpdateViewModel.getDoctor()) {
-            doctorDao.delete(person.getDoctor());
-            person.setDoctor(null);
-            person.getRoles().remove(doctorRole);
+        if (nonNull(user.getDoctor()) && !roleUpdateViewModel.getDoctor()) {
+            doctorDao.delete(user.getDoctor());
+            user.setDoctor(null);
+            user.getRoles().remove(doctorRole);
         }
 
-        if (isNull(person.getPatient()) && roleUpdateViewModel.getPatient()) {
-            Patient patient = new Patient(person);
+        if (isNull(user.getPatient()) && roleUpdateViewModel.getPatient()) {
+            Patient patient = new Patient(user);
             patient = patientDao.saveOrUpdate(patient);
 
-            person.setPatient(patient);
-            person.getRoles().add(patientRole);
+            user.setPatient(patient);
+            user.getRoles().add(patientRole);
         }
 
-        if (nonNull(person.getPatient()) && !roleUpdateViewModel.getPatient()) {
-            patientDao.delete(person.getPatient());
+        if (nonNull(user.getPatient()) && !roleUpdateViewModel.getPatient()) {
+            patientDao.delete(user.getPatient());
 
-            person.setPatient(null);
-            person.getRoles().remove(patientRole);
+            user.setPatient(null);
+            user.getRoles().remove(patientRole);
         }
 
-        if (isNull(person.getAdmin()) && roleUpdateViewModel.getAdmin()) {
-            Admin admin = new Admin(person);
+        if (isNull(user.getAdmin()) && roleUpdateViewModel.getAdmin()) {
+            Admin admin = new Admin(user);
             admin = adminDao.saveOrUpdate(admin);
 
-            person.setAdmin(admin);
-            person.getRoles().add(adminRole);
+            user.setAdmin(admin);
+            user.getRoles().add(adminRole);
         }
 
-        if (nonNull(person.getAdmin()) && !roleUpdateViewModel.getAdmin()) {
-            adminDao.delete(person.getAdmin());
+        if (nonNull(user.getAdmin()) && !roleUpdateViewModel.getAdmin()) {
+            adminDao.delete(user.getAdmin());
 
-            person.setAdmin(null);
-            person.getRoles().remove(adminRole);
+            user.setAdmin(null);
+            user.getRoles().remove(adminRole);
         }
 
-        if (isNull(person.getReceptionist()) && roleUpdateViewModel.getReceptionist()) {
-            Receptionist receptionist = new Receptionist(person);
+        if (isNull(user.getReceptionist()) && roleUpdateViewModel.getReceptionist()) {
+            Receptionist receptionist = new Receptionist(user);
             receptionist = receptionistDao.saveOrUpdate(receptionist);
 
-            person.setReceptionist(receptionist);
-            person.getRoles().add(receptionistRole);
+            user.setReceptionist(receptionist);
+            user.getRoles().add(receptionistRole);
         }
 
-        if (nonNull(person.getReceptionist()) && !roleUpdateViewModel.getReceptionist()) {
-            receptionistDao.delete(person.getReceptionist());
+        if (nonNull(user.getReceptionist()) && !roleUpdateViewModel.getReceptionist()) {
+            receptionistDao.delete(user.getReceptionist());
 
-            person.setReceptionist(null);
-            person.getRoles().remove(receptionistRole);
+            user.setReceptionist(null);
+            user.getRoles().remove(receptionistRole);
         }
 
-        personDao.saveOrUpdate(person);
+        userDao.saveOrUpdate(user);
 
-        return person;
+        return user;
     }
 
-    public Person findByUserName(String userName) {
-        return personDao.findByUserName(userName);
+    public User findByUserName(String userName) {
+        return userDao.findByUserName(userName);
     }
 }

@@ -24,7 +24,7 @@
     <%--@elvariable id="invoiceView" type="net.therap.model.Invoice"--%>
     <div class="card">
         <h5 class="card-header">
-            <fmt:message key="text.invoiceOf"/> <c:out value="${invoiceView.patient.person.name}"/>
+            <fmt:message key="text.invoiceOf"/> <c:out value="${invoiceView.patient.user.name}"/>
         </h5>
         <div class="card-body">
             <p class="card-title">

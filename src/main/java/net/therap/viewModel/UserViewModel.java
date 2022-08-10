@@ -6,16 +6,16 @@ import net.therap.model.Role;
  * @author raian.rahman
  * @since 8/4/22
  */
-public class PersonViewModel {
+public class UserViewModel {
 
     private String userName;
     private String password;
     private Role role;
 
-    public PersonViewModel() {
+    public UserViewModel() {
     }
 
-    public PersonViewModel(String userName, String password, Role role) {
+    public UserViewModel(String userName, String password, Role role) {
         this.userName = userName;
         this.password = password;
         this.role = role;

@@ -14,10 +14,10 @@ import java.util.Set;
  * @since 8/1/22
  */
 @Entity
-@Table(name = "person", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_name"})})
+@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_name"})})
 @Getter
 @Setter
-public class Person extends BaseEntity {
+public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -52,8 +52,8 @@ public class Person extends BaseEntity {
     private String password;
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    @JoinTable(name = "person_role",
-            joinColumns = {@JoinColumn(name = "person_id")},
+    @JoinTable(name = "user_role",
+            joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles;
 
@@ -69,11 +69,11 @@ public class Person extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Receptionist receptionist;
 
-    public Person() {
+    public User() {
         roles = new HashSet<>();
     }
 
-    public Person(String name, String phone, String email, Gender gender, Date dateOfBirth, String userName, String password) {
+    public User(String name, String phone, String email, Gender gender, Date dateOfBirth, String userName, String password) {
         this();
 
         this.name = name;
