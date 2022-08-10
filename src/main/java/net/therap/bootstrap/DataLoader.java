@@ -95,6 +95,10 @@ public class DataLoader implements CommandLineRunner {
         person1.setName("Abul Mia");
         person1.setUserName("abul");
         person1.setPassword("abul");
+        person1.setDateOfBirth(new Date());
+        person1.setEmail("abdul@abdul");
+        person1.setPhone("01234567890");
+        person1.setGender(Gender.MALE);
         c.set(1970, Calendar.JULY, 25);
         Date d1 = c.getTime();
         person1.setDateOfBirth(d1);
@@ -104,6 +108,10 @@ public class DataLoader implements CommandLineRunner {
         person2.setName("Abdul Kuddus");
         person2.setUserName("abdul");
         person2.setPassword("abdul");
+        person2.setDateOfBirth(new Date());
+        person2.setEmail("abdul@abdul");
+        person2.setPhone("01234567890");
+        person2.setGender(Gender.MALE);
         c.set(1968, Calendar.JULY, 25);
         d1 = c.getTime();
         person2.setDateOfBirth(d1);
@@ -113,6 +121,10 @@ public class DataLoader implements CommandLineRunner {
         person3.setName("Abdul Khalek");
         person3.setUserName("khalek");
         person3.setPassword("khalek");
+        person3.setDateOfBirth(new Date());
+        person3.setEmail("abdul@abdul");
+        person3.setPhone("01234567890");
+        person3.setGender(Gender.MALE);
         c.set(1975, Calendar.MARCH, 20);
         d1 = c.getTime();
         person3.setDateOfBirth(d1);
