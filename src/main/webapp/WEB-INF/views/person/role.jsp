@@ -24,7 +24,7 @@
 <div class="container-fluid bg-primary-custom h-100">
 
     <h2 class="text-center py-3">
-        <fmt:message key="user.role.header"/> ${person.userName}
+        <fmt:message key="user.role.header"/> <c:out value="${person.userName}"/>
     </h2>
     <div class="w-50 mx-auto">
         <%--@elvariable id="roleUpdateViewModel" type="net.therap.viewModel.RoleUpdateViewModel"--%>
