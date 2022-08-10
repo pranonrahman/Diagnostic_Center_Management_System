@@ -57,8 +57,11 @@ public class AuthenticationController {
 
     @GetMapping({"/login","/"})
     public String showLoginForm(ModelMap modelMap, HttpSession session) {
+        if (nonNull(session.getAttribute("user"))) {
+            if(isNull(session.getAttribute("role"))) {
+                return LOGIN_ROLE_REDIRECT_PATH;
+            }
 
-        if (nonNull(session.getAttribute("user")) || nonNull(session.getAttribute("role"))) {
             switch (((Role) session.getAttribute("role")).getName()) {
                 case ADMIN:
                     return ADMIN_DASHBOARD_REDIRECT_PATH;
