@@ -9,7 +9,9 @@
 
 <html>
 <head>
-    <title>User form</title>
+    <title>
+        <fmt:message key="user.list.title"/>
+    </title>
     <link type="text/css" href="<c:url value="../../../assets/css/bootstrap.min.css"/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value="../../../assets/js/jquery-3.6.0.min.js"/>"></script>
@@ -20,16 +22,28 @@
 
 <div class="container-fluid bg-primary-custom h-100">
 
-    <h2 class="text-center py-3"> Person list </h2>
+    <h2 class="text-center py-3">
+         <fmt:message key="user.list.header"/>
+    </h2>
     <div class="w-50 mx-auto">
         <table class="table text-center">
             <thead>
             <tr>
-                <th scope="col">Username</th>
-                <th scope="col">Name</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Email</th>
-                <th scope="col">Gender</th>
+                <th scope="col">
+                    <fmt:message key="user.list.userName"/>
+                </th>
+                <th scope="col">
+                    <fmt:message key="user.list.name"/>
+                </th>
+                <th scope="col">
+                    <fmt:message key="user.list.phone"/>
+                </th>
+                <th scope="col">
+                    <fmt:message key="user.list.email"/>
+                </th>
+                <th scope="col">
+                    <fmt:message key="user.list.gender"/>
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -37,8 +51,9 @@
             <c:forEach items="${persons}" var="person">
                 <tr>
                     <td>
-                        <a href="${pageContext.request.contextPath}/person/view?id=${person.id}"><c:out
-                                value="${person.userName}"/></a>
+                        <a href="${pageContext.request.contextPath}/person/view?id=${person.id}">
+                            <c:out value="${person.userName}"/>
+                        </a>
                     </td>
 
                     <td>
