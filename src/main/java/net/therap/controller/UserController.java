@@ -5,7 +5,7 @@ import net.therap.model.Gender;
 import net.therap.model.User;
 import net.therap.model.Role;
 import net.therap.model.RoleEnum;
-import net.therap.service.PersonService;
+import net.therap.service.UserService;
 import net.therap.service.RoleService;
 import net.therap.service.RoleUpdateViewModelService;
 import net.therap.validator.PersonValidator;
@@ -46,7 +46,7 @@ public class UserController {
     private DateEditor dateEditor;
 
     @Autowired
-    private PersonService userService;
+    private UserService userService;
 
 
     @Autowired

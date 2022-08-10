@@ -1,7 +1,7 @@
 package net.therap.validator;
 
 import net.therap.model.User;
-import net.therap.service.PersonService;
+import net.therap.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -22,7 +22,7 @@ public class PersonValidator implements Validator {
     private static final String USER_NAME_NOT_EXIST_MESSAGE = "username does not exist";
 
     @Autowired
-    private PersonService userService;
+    private UserService userService;
 
     @Override
     public boolean supports(Class<?> clazz) {

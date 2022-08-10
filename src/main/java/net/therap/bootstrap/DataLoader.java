@@ -3,7 +3,7 @@ package net.therap.bootstrap;
 import net.therap.model.*;
 import net.therap.service.FacilityService;
 import net.therap.service.MedicineService;
-import net.therap.service.PersonService;
+import net.therap.service.UserService;
 import net.therap.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -29,7 +29,7 @@ public class DataLoader implements CommandLineRunner {
     private FacilityService facilityService;
 
     @Autowired
-    private PersonService userService;
+    private UserService userService;
 
     @Autowired
     private MedicineService medicineService;

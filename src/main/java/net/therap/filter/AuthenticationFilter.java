@@ -88,8 +88,7 @@ public class AuthenticationFilter implements Filter {
         if ((httpServletRequest.getRequestURI().equals(INVOICE_SAVE)
                 || httpServletRequest.getRequestURI().contains(INVOICE_DOCTOR)
                 || httpServletRequest.getRequestURI().contains(INVOICE_FACILITY)
-                || httpServletRequest.getRequestURI().contains(INVOICE_MEDICINE)
-        )
+                || httpServletRequest.getRequestURI().contains(INVOICE_MEDICINE))
                 && !receptionistRole.equals(role)) {
 
             httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
