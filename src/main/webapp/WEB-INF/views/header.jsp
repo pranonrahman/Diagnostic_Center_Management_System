@@ -88,7 +88,7 @@
                                     <c:param name="filterBy" value="${RoleEnum.PATIENT}"/>
                                 </c:url>
                                 <a href="${patientList}" class="dropdown-item">
-                                    <fmt:message key="navbar.link.viewPatients"/>
+                                    <fmt:message key="navbar.link.viewAllPatients"/>
                                 </a>
                             </div>
                         </li>

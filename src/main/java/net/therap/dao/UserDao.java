@@ -11,12 +11,12 @@ import java.util.List;
  * @since 8/3/22
  */
 @Repository
-public class PersonDao extends Dao<User> {
+public class UserDao extends Dao<User> {
 
     private static final String FIND_ALL = "FROM User";
     private static final String FIND_BY_USER_NAME = "FROM User WHERE userName = :userName";
 
-    public PersonDao() {
+    public UserDao() {
         super(User.class);
     }
 

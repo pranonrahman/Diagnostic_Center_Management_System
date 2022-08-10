@@ -4,7 +4,7 @@ import net.therap.editor.RoleEditor;
 import net.therap.model.User;
 import net.therap.model.Role;
 import net.therap.service.AuthenticationService;
-import net.therap.service.PersonService;
+import net.therap.service.UserService;
 import net.therap.service.RoleService;
 import net.therap.viewModel.UserViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @Autowired
-    private PersonService userService;
+    private UserService userService;
 
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
