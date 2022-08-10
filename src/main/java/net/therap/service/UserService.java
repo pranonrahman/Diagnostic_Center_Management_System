@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.isNull;
@@ -57,13 +56,6 @@ public class UserService {
 
     @Transactional
     public void delete(User user) {
-        List<Role> roles = new ArrayList<>(user.getRoles());
-
-        for (Role role : roles) {
-            user.getRoles().remove(role);
-            userDao.saveOrUpdate(user);
-        }
-
         userDao.delete(user);
     }
 
