@@ -7,7 +7,7 @@
 --%>
 <html>
 <head>
-    <title>History</title>
+    <title><fmt:message key="title.history"/> </title>
 
     <link type="text/css" href="<c:url value="../../../assets/css/bootstrap.min.css"/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
@@ -19,7 +19,7 @@
 
 <div class="container-fluid bg-primary-custom h-100 w-75">
 
-    <h2 class="text-center py-3"> <fmt:message key="text.historyOf"/> ${patientName} </h2>
+    <h2 class="text-center py-3"> <fmt:message key="text.historyOf"/> <c:out value="${patientName}"/> </h2>
 
     <div class="list-group">
         <c:forEach items="${doctorSpecificPrescriptions}" var="prescriptionViewModel">
@@ -32,7 +32,7 @@
                     <h5 class="card-title">${prescriptionViewModel.prescription.diagnosis}</h5>
                     <small><c:out value="${prescriptionViewModel.getDaysElapsed()}"/> <fmt:message key="text.daysAgo"/> </small>
                 </div>
-                <p class="card-text">${prescriptionViewModel.prescription.symptoms}</p>
+                <p class="card-text"><c:out value="${prescriptionViewModel.prescription.symptoms}"/></p>
             </a>
         </c:forEach>
     </div>
