@@ -54,13 +54,13 @@ public class DataLoader implements CommandLineRunner {
         createSeedRole();
         createSeedFacility();
         createSeedPerson();
-        createSeedDoctor();
-        createSeedPatient();
-        createSeedReceptionist();
+//        createSeedDoctor();
+//        createSeedPatient();
+//        createSeedReceptionist();
         createSeedMedicine();
-        createSeedPrescription();
-        createSeedParticular();
-        createSeedInvoice();
+//        createSeedPrescription();
+//        createSeedParticular();
+//        createSeedInvoice();
     }
 
     private void createSeedFacility() {
@@ -132,9 +132,11 @@ public class DataLoader implements CommandLineRunner {
 
         List<Role> roles = roleService.findAll();
         for (Role role : roles) {
-            person1.getRoles().add(role);
-            person2.getRoles().add(role);
-            person3.getRoles().add(role);
+            if(role.getName().equals(ADMIN)){
+                person1.getRoles().add(role);
+                person2.getRoles().add(role);
+                person3.getRoles().add(role);
+            }
         }
 
         person1 = personService.saveOrUpdate(person1);

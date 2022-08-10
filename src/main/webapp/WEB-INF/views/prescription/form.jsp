@@ -33,7 +33,7 @@
             <form:input path="patient.id" value="${prescription.patient.id}" hidden="true"/>
             <form:input path="doctor.id" value="${prescription.doctor.id}" hidden="true"/>
 
-            <p><strong>Consulting doctor:</strong> <c:out value="${prescription.doctor.person.name}"/></p>
+            <p><strong><fmt:message key="text.consultingDoctor"/> :</strong> <c:out value="${prescription.doctor.person.name}"/></p>
 
             <div class="mb-3">
                 <form:label path="symptoms" cssClass="form-label"><fmt:message key="label.symptoms"/></form:label>
