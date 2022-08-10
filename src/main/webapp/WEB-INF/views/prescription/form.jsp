@@ -21,7 +21,7 @@
 
 <div class="container-fluid bg-primary-custom h-100">
 
-    <h2 class="text-center py-3"> <fmt:message key="text.prescriptionOf"/> <c:out value="${prescription.patient.person.name}"/> </h2>
+    <h2 class="text-center py-3"> <fmt:message key="text.prescriptionOf"/> <c:out value="${prescription.patient.user.name}"/> </h2>
     <div class="w-50 mx-auto">
 
         <%--@elvariable id="prescription" type="net.therap.model.Prescription"--%>
@@ -33,7 +33,7 @@
             <form:input path="patient.id" value="${prescription.patient.id}" hidden="true"/>
             <form:input path="doctor.id" value="${prescription.doctor.id}" hidden="true"/>
 
-            <p><strong><fmt:message key="text.consultingDoctor"/> :</strong> <c:out value="${prescription.doctor.person.name}"/></p>
+            <p><strong><fmt:message key="text.consultingDoctor"/> :</strong> <c:out value="${prescription.doctor.user.name}"/></p>
 
             <div class="mb-3">
                 <form:label path="symptoms" cssClass="form-label"><fmt:message key="label.symptoms"/></form:label>

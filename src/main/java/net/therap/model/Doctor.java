@@ -22,7 +22,7 @@ public class Doctor extends BaseEntity {
     private double fee;
 
     @OneToOne
-    private Person person;
+    private User user;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor")
     private Set<Prescription> prescriptions;
@@ -31,11 +31,11 @@ public class Doctor extends BaseEntity {
         prescriptions = new HashSet<>();
     }
 
-    public Doctor(Double fee, Person person) {
+    public Doctor(Double fee, User user) {
         this();
 
         this.fee = fee;
-        this.person = person;
+        this.user = user;
     }
 
     @Override

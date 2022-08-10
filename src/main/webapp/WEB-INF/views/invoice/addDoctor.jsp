@@ -37,7 +37,7 @@
 
                     <form:options items="${patients}"
                                   itemValue="id"
-                                  itemLabel="person.name"/>
+                                  itemLabel="user.name"/>
                 </form:select>
 
                 <form:errors path="patient" cssClass="invalid-feedback d-block"/>
@@ -50,7 +50,7 @@
                     <form:checkboxes class="form-check-input"
                                      items="${doctors}"
                                      itemValue="id"
-                                     itemLabel="person.name"
+                                     itemLabel="user.name"
                                      path="doctors"/>
                 </div>
 

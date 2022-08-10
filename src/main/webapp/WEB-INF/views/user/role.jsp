@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>
-        <%--@elvariable id="person" type="net.therap.model.Person"--%>
+        <%--@elvariable id="user" type="net.therap.model.User"--%>
         <fmt:message key="user.role.title"/>
     </title>
 
@@ -24,13 +24,13 @@
 <div class="container-fluid bg-primary-custom h-100">
 
     <h2 class="text-center py-3">
-        <fmt:message key="user.role.header"/> <c:out value="${person.userName}"/>
+        <fmt:message key="user.role.header"/> <c:out value="${user.userName}"/>
     </h2>
     <div class="w-50 mx-auto">
         <%--@elvariable id="roleUpdateViewModel" type="net.therap.viewModel.RoleUpdateViewModel"--%>
-        <form:form action="/person/updateRole" method="POST" modelAttribute="roleUpdateViewModel">
+        <form:form action="/user/updateRole" method="POST" modelAttribute="roleUpdateViewModel">
 
-            <form:input hidden="hidden" path="id" type="text" value="${person.id}" cssClass="form-control"/>
+            <form:input hidden="hidden" path="id" type="text" value="${userData.id}" cssClass="form-control"/>
 
             <div class="mb-3">
                 <form:checkbox path="admin" value="${isAdmin}" cssClass="form-check-inline"/>

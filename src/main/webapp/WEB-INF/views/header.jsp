@@ -8,8 +8,6 @@
 --%>
 <link type="text/css" href="<c:url value="../../assets/css/bootstrap.min.css"/>" rel="stylesheet"/>
 <link type="text/css" href="<c:url value="../../assets/css/style.css"/>" rel="stylesheet"/>
-<script type="text/javascript" src="<c:url value="../../assets/js/jquery-3.6.0.min.js"/>"></script>
-<script type="text/javascript" src="<c:url value="../../assets/js/bootstrap.bundle.min.js"/>"></script>
 <header>
     <nav class="px-4 navbar sticky-top navbar-expand-lg">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/">
@@ -53,13 +51,50 @@
                     </c:when>
 
                     <c:when test="${role.getName().equals(RoleEnum.ADMIN)}">
-                        <li class="nav-item">
-                            <a href="${pageContext.request.contextPath}/person/list" class="nav-link active">
-                                <fmt:message key="navbar.link.viewUsers"/>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                               id="navbarAdminMenuLink"
+                               aria-haspopup="true" aria-expanded="false">
+                                View
                             </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarAdminMenuLink">
+                                <a href="<c:url value="${pageContext.request.contextPath}/user/list"/>"
+                                   class="dropdown-item">
+                                    <fmt:message key="navbar.link.viewUsers"/>
+                                </a>
+
+                                <c:url var="adminList" value="${pageContext.request.contextPath}/user/list">
+                                    <c:param name="filterBy" value="${RoleEnum.ADMIN}"/>
+                                </c:url>
+                                <a href="${adminList}" class="dropdown-item">
+                                    <fmt:message key="navbar.link.viewAdmins"/>
+                                </a>
+
+                                <c:url var="doctorList" value="${pageContext.request.contextPath}/user/list">
+                                    <c:param name="filterBy" value="${RoleEnum.DOCTOR}"/>
+                                </c:url>
+                                <a href="${doctorList}" class="dropdown-item">
+                                    <fmt:message key="navbar.link.viewDoctors"/>
+                                </a>
+
+                                <c:url var="receptionistList" value="${pageContext.request.contextPath}/user/list">
+                                    <c:param name="filterBy" value="${RoleEnum.RECEPTIONIST}"/>
+                                </c:url>
+                                <a href="${receptionistList}" class="dropdown-item">
+                                    <fmt:message key="navbar.link.viewReceptionists"/>
+                                </a>
+
+                                <c:url var="patientList" value="${pageContext.request.contextPath}/user/list">
+                                    <c:param name="filterBy" value="${RoleEnum.PATIENT}"/>
+                                </c:url>
+                                <a href="${patientList}" class="dropdown-item">
+                                    <fmt:message key="navbar.link.viewPatients"/>
+                                </a>
+                            </div>
                         </li>
+
                         <li class="nav-item">
-                            <a href="${pageContext.request.contextPath}/person/save" class="nav-link active">
+                            <a href="${pageContext.request.contextPath}/user/save" class="nav-link active">
                                 <fmt:message key="navbar.link.createUser"/>
                             </a>
                         </li>

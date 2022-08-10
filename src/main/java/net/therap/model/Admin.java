@@ -22,9 +22,9 @@ public class Admin extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @OneToOne
-    private Person person;
+    private User user;
 
-    public Admin(Person person) {
-        this.person = person;
+    public Admin(User user) {
+        this.user = user;
     }
 }

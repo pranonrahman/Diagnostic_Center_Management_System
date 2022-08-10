@@ -1,12 +1,12 @@
 package net.therap.controller;
 
 import net.therap.editor.RoleEditor;
-import net.therap.model.Person;
+import net.therap.model.User;
 import net.therap.model.Role;
 import net.therap.service.AuthenticationService;
 import net.therap.service.PersonService;
 import net.therap.service.RoleService;
-import net.therap.viewModel.PersonViewModel;
+import net.therap.viewModel.UserViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,7 +27,7 @@ import static java.util.Objects.nonNull;
 @Controller
 public class AuthenticationController {
 
-    private static final String ADMIN_DASHBOARD_REDIRECT_PATH = "redirect:/person/list";
+    private static final String ADMIN_DASHBOARD_REDIRECT_PATH = "redirect:/user/list";
     private static final String DOCTOR_DASHBOARD_REDIRECT_PATH = "redirect:/patient/list";
     private static final String PATIENT_DASHBOARD_REDIRECT_PATH = "redirect:/prescription/list";
     private static final String RECEPTIONIST_DASHBOARD_REDIRECT_PATH = "redirect:/invoice/doctor";
@@ -48,7 +48,7 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @Autowired
-    private PersonService personService;
+    private PersonService userService;
 
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
@@ -73,26 +73,26 @@ public class AuthenticationController {
             }
         }
 
-        modelMap.put("personViewModel", new PersonViewModel());
+        modelMap.put("userViewModel", new UserViewModel());
 
         return FORM_PAGE;
     }
 
     @PostMapping("/login")
-    public String processLoginForm(@ModelAttribute PersonViewModel personViewModel, BindingResult result, ModelMap modelMap, HttpSession session) {
+    public String processLoginForm(@ModelAttribute("userViewModel") UserViewModel userViewModel, BindingResult result, ModelMap modelMap, HttpSession session) {
 
         if (result.hasErrors()) {
             return FORM_PAGE;
         }
 
-        if (!authenticationService.authenticateByPassword(personViewModel)) {
+        if (!authenticationService.authenticateByPassword(userViewModel)) {
             modelMap.put("message", INVALID_CREDENTIALS_PROVIDED);
             return FORM_PAGE;
         }
 
-        session.setAttribute("user", personService.findByUserName(personViewModel.getUserName()));
+        session.setAttribute("user", userService.findByUserName(userViewModel.getUserName()));
 
-        modelMap.put("seedRoleList", personService.findByUserName(personViewModel.getUserName()).getRoles());
+        modelMap.put("seedRoleList", userService.findByUserName(userViewModel.getUserName()).getRoles());
 
         return LOGIN_ROLE_REDIRECT_PATH;
     }
@@ -108,28 +108,28 @@ public class AuthenticationController {
             return LOGIN_REDIRECT_PATH;
         }
 
-        Person person = (Person) session.getAttribute("user");
+        User user = (User) session.getAttribute("user");
 
-        modelMap.put("personViewModel", new PersonViewModel());
-        modelMap.put("seedRoleList", person.getRoles());
+        modelMap.put("userViewModel", new UserViewModel());
+        modelMap.put("seedRoleList", user.getRoles());
 
         return FORM_PAGE;
     }
 
     @PostMapping("/login/role")
-    public String loginByRole(@Valid @ModelAttribute PersonViewModel personViewModel, BindingResult bindingResult, HttpSession session) {
+    public String loginByRole(@Valid @ModelAttribute UserViewModel userViewModel, BindingResult bindingResult, HttpSession session) {
 
         if (bindingResult.hasErrors()) {
             return FORM_PAGE;
         }
 
-        if (!authenticationService.authenticateByRole(personViewModel, (Person) session.getAttribute("user"))) {
+        if (!authenticationService.authenticateByRole(userViewModel, (User) session.getAttribute("user"))) {
             return FORM_PAGE;
         }
 
-        session.setAttribute("role", personViewModel.getRole());
+        session.setAttribute("role", userViewModel.getRole());
 
-        switch (personViewModel.getRole().getName()) {
+        switch (userViewModel.getRole().getName()) {
             case ADMIN:
                 return ADMIN_DASHBOARD_REDIRECT_PATH;
             case PATIENT:
@@ -149,7 +149,7 @@ public class AuthenticationController {
         session.removeAttribute("role");
 
         setUpReferenceData(modelMap);
-        modelMap.put("personViewModel", new PersonViewModel());
+        modelMap.put("userViewModel", new UserViewModel());
 
         return LOGIN_REDIRECT_PATH;
     }

@@ -36,9 +36,9 @@
         <c:forEach var="patientViewModel" items="${patients}" varStatus="loop">
             <tr>
                 <th scope="row">${loop.index + 1}</th>
-                <td><c:out value="${patientViewModel.patient.person.name}"/></td>
+                <td><c:out value="${patientViewModel.patient.user.name}"/></td>
                 <td><c:out value="${patientViewModel.getAge()}"/></td>
-                <td><c:out value="${patientViewModel.patient.person.gender}"/></td>
+                <td><c:out value="${patientViewModel.patient.user.gender}"/></td>
                 <c:url var="historyViewPage" value="${pageContext.request.contextPath}/patient/history">
                     <c:param name="id" value="${patientViewModel.patient.id}"/>
                 </c:url>

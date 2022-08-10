@@ -4,7 +4,6 @@ import net.therap.dao.InvoiceDao;
 import net.therap.model.Invoice;
 import net.therap.model.Particular;
 import net.therap.model.Patient;
-import net.therap.model.Receptionist;
 import net.therap.viewModel.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,7 +54,7 @@ public class InvoiceService {
         double totalCost = 0;
 
         invoiceViewModel.getDoctors().forEach(doctorItem-> {
-            Particular particular = new Particular("Visiting fee of " + doctorItem.getPerson().getName(),
+            Particular particular = new Particular("Visiting fee of " + doctorItem.getUser().getName(),
                     doctorItem.getFee(),
                     1);
 
