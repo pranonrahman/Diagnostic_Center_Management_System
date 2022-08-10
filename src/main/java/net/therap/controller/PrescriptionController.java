@@ -49,15 +49,15 @@ public class PrescriptionController {
     }
 
     @GetMapping("/view")
-    public String loadViewPage(@ModelAttribute("user") User user, @ModelAttribute("role") Role role, @RequestParam("id") String id, ModelMap modelMap) {
-        modelMap.put("doctorId", role.getName().equals(RoleEnum.DOCTOR) ? user.getDoctor().getId() : 0);
-        setupReferenceData(modelMap, Long.parseLong(id));
+    public String loadViewPage(@ModelAttribute("user") User user, @ModelAttribute("role") Role role, @RequestParam("id") String id, ModelMap model) {
+        model.put("doctorId", role.getName().equals(RoleEnum.DOCTOR) ? user.getDoctor().getId() : 0);
+        setupReferenceData(model, Long.parseLong(id));
 
         return VIEW_PAGE;
     }
 
     @GetMapping("/list")
-    public String loadPrescriptionList(@ModelAttribute("user") User user, ModelMap modelMap) {
+    public String loadPrescriptionList(@ModelAttribute("user") User user, ModelMap model) {
         Patient patient = user.getPatient();
         List<PrescriptionViewModel> prescriptionViewModels = new ArrayList<>();
         Set<Prescription> prescriptions = patient.getPrescriptions();
@@ -68,39 +68,39 @@ public class PrescriptionController {
 
         Collections.sort(prescriptionViewModels);
 
-        modelMap.put("patientName", user.getName());
-        modelMap.put("prescriptionViewModels", prescriptionViewModels);
+        model.put("patientName", user.getName());
+        model.put("prescriptionViewModels", prescriptionViewModels);
 
         return PRESCRIPTION_LIST_VIEW_PAGE;
     }
 
     @GetMapping("/save")
-    public String loadEditPage(@RequestParam("id") String id, ModelMap modelMap) {
-        modelMap.put("action", "edit");
-        setupReferenceData(modelMap, Long.parseLong(id));
+    public String loadEditPage(@RequestParam("id") String id, ModelMap model) {
+        model.put("action", "edit");
+        setupReferenceData(model, Long.parseLong(id));
 
         return VIEW_PAGE;
     }
 
     @PostMapping("/save")
-    public String processEdit(@ModelAttribute("prescription") Prescription prescription, ModelMap modelMap) {
+    public String processEdit(@ModelAttribute("prescription") Prescription prescription, ModelMap model) {
         prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
         prescription.setDoctor(doctorService.findById(prescription.getDoctor().getId()));
         prescription.setDateOfVisit(new Date());
 
         prescriptionService.saveOrUpdate(prescription);
-        setupReferenceData(modelMap, 0);
+        setupReferenceData(model, 0);
 
         return "redirect:/prescription/view?id=" + prescription.getId();
     }
 
-    private void setupReferenceData(ModelMap modelMap, long prescriptionId) {
-        modelMap.put("facilities", facilityService.findAll());
+    private void setupReferenceData(ModelMap model, long prescriptionId) {
+        model.put("facilities", facilityService.findAll());
 
         if (prescriptionId == 0) {
-            modelMap.put("prescription", new Prescription());
+            model.put("prescription", new Prescription());
         } else {
-            modelMap.put("prescription", prescriptionService.findById(prescriptionId));
+            model.put("prescription", prescriptionService.findById(prescriptionId));
         }
     }
 }

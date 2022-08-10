@@ -4,6 +4,7 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,8 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class CustomErrorController implements ErrorController {
 
+    private static final String INVALID_PAGE = "invalidPage";
+    private static final String ERROR_PAGE = "errorPage";
+
     @GetMapping("/error")
-    public String showErrorPage(HttpServletRequest httpServletRequest, ModelMap modelMap) {
+    public String showErrorPage(HttpServletRequest httpServletRequest, ModelMap model) {
         String errorMessage = "";
         int httpErrorCode = (Integer) httpServletRequest.getAttribute("javax.servlet.error.status_code");
 
@@ -38,9 +42,14 @@ public class CustomErrorController implements ErrorController {
             }
         }
 
-        modelMap.put("httpErrorCode", httpErrorCode);
-        modelMap.put("errorMessage", errorMessage);
+        model.put("httpErrorCode", httpErrorCode);
+        model.put("errorMessage", errorMessage);
 
-        return "errorPage";
+        return ERROR_PAGE;
+    }
+
+    @RequestMapping("invalidPage")
+    public String showInvalidErrorPage() {
+        return INVALID_PAGE;
     }
 }

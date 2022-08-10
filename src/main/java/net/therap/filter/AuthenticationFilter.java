@@ -24,16 +24,22 @@ public class AuthenticationFilter implements Filter {
     private static final String LOGIN_REDIRECT_PATH = "/login";
     private static final String INVALID_ACCESS_REDIRECT_PATH = "/invalidPage";
 
+    private Role adminRole;
+    private Role doctorRole;
+    private Role patientRole;
+    private Role receptionistRole;
+
     @Autowired
     private RoleService roleService;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
 
-        Role adminRole = roleService.findByRole(ADMIN);
-        Role doctorRole = roleService.findByRole(DOCTOR);
-        Role patientRole = roleService.findByRole(PATIENT);
-        Role receptionistRole = roleService.findByRole(RECEPTIONIST);
+        adminRole = roleService.findByRole(ADMIN);
+        doctorRole = roleService.findByRole(DOCTOR);
+        patientRole = roleService.findByRole(PATIENT);
+        receptionistRole = roleService.findByRole(RECEPTIONIST);
 
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
@@ -42,97 +48,76 @@ public class AuthenticationFilter implements Filter {
         httpServletResponse.setHeader("Pragma", "no-cache");
         httpServletResponse.setDateHeader("Expires", 0);
 
-        if ((isNull(httpServletRequest.getSession().getAttribute("user"))
-                || isNull(httpServletRequest.getSession().getAttribute("role")))
-                && !httpServletRequest.getRequestURI().contains(LOGIN)
-                && !httpServletRequest.getRequestURI().contains(HOME)
-                && !httpServletRequest.getRequestURI().contains(LOGIN_ROLE)
-                && !httpServletRequest.getRequestURI().contains(LOGOUT)
-                && !httpServletRequest.getRequestURI().contains(ASSETS)
-                && !httpServletRequest.getRequestURI().contains(FAV_ICON)
-        ) {
-
+        if (!sessionLoggedInFilter(httpServletRequest)) {
             httpServletResponse.sendRedirect(LOGIN_REDIRECT_PATH);
-
             return;
         }
 
         Role role = (Role) httpServletRequest.getSession().getAttribute("role");
 
-        if (httpServletRequest.getRequestURI().contains(INVOICE_VIEW)
-                && !receptionistRole.equals(role)
-                && !patientRole.equals(role)) {
-
-            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
-
-            return;
-        }
-
-        if(httpServletRequest.getRequestURI().contains(PATIENT_LIST)
-            && !doctorRole.equals(role)) {
-
-            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
-
-            return;
-        }
-
-        if(httpServletRequest.getRequestURI().contains(INVOICE_LIST)
-            && !receptionistRole.equals(role)
-            && !patientRole.equals(role)) {
-
-            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
-
-            return;
-        }
-
-        if ((httpServletRequest.getRequestURI().equals(INVOICE_SAVE)
-                || httpServletRequest.getRequestURI().contains(INVOICE_DOCTOR)
-                || httpServletRequest.getRequestURI().contains(INVOICE_FACILITY)
-                || httpServletRequest.getRequestURI().contains(INVOICE_MEDICINE))
-                && !receptionistRole.equals(role)) {
-
-            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
-
-            return;
-        }
-
-        if ((httpServletRequest.getRequestURI().contains(PRESCRIPTION_VIEW)
-                || httpServletRequest.getRequestURI().contains(PRESCRIPTION_LIST))
-                && !doctorRole.equals(role)
-                && !patientRole.equals(role)) {
-
-            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
-
-            return;
-        }
-
-        if (httpServletRequest.getRequestURI().contains(PRESCRIPTION_SAVE) && !doctorRole.equals(role)) {
-
-            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
-
-            return;
-        }
-
-        if (httpServletRequest.getRequestURI().contains(PATIENT_HISTORY)
-                && !doctorRole.equals(role)
-                && !patientRole.equals(role)) {
-
-            httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
-
-            return;
-        }
-
-        if ((httpServletRequest.getRequestURI().contains(PERSON_LIST)
-                || httpServletRequest.getRequestURI().contains(PERSON_SAVE)
-                || httpServletRequest.getRequestURI().contains(PERSON_DELETE)
-                || httpServletRequest.getRequestURI().contains(PERSON_VIEW))
-                && !adminRole.equals(role)) {
-
+        if (!invoiceAccessFilter(httpServletRequest, role)
+                || !patientAccessFilter(httpServletRequest, role)
+                || !userAccessFilter(httpServletRequest, role)
+                || !prescriptionAccessFilter(httpServletRequest, role)) {
             httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
 
             return;
         }
 
         chain.doFilter(request, response);
+    }
+
+    private boolean sessionLoggedInFilter(HttpServletRequest request) {
+        return (!isNull(request.getSession().getAttribute("user"))
+                && !isNull(request.getSession().getAttribute("role")))
+                || request.getRequestURI().contains(LOGIN)
+                || request.getRequestURI().contains(HOME)
+                || request.getRequestURI().contains(LOGIN_ROLE)
+                || request.getRequestURI().contains(LOGOUT)
+                || request.getRequestURI().contains(ASSETS)
+                || request.getRequestURI().contains(FAV_ICON);
+    }
+
+    private boolean invoiceAccessFilter(HttpServletRequest request, Role role) {
+
+        if ((request.getRequestURI().contains(INVOICE_VIEW)
+                || request.getRequestURI().contains(INVOICE_LIST))
+                && !receptionistRole.equals(role)
+                && !patientRole.equals(role)) {
+            return false;
+        }
+
+        return (!request.getRequestURI().equals(INVOICE_SAVE)
+                && !request.getRequestURI().contains(INVOICE_DOCTOR)
+                && !request.getRequestURI().contains(INVOICE_FACILITY)
+                && !request.getRequestURI().contains(INVOICE_MEDICINE))
+                || receptionistRole.equals(role);
+    }
+
+    private boolean userAccessFilter(HttpServletRequest request, Role role) {
+        return (!request.getRequestURI().contains(USER_LIST)
+                && !request.getRequestURI().contains(USER_SAVE)
+                && !request.getRequestURI().contains(USER_DELETE)
+                && !request.getRequestURI().contains(USER_VIEW))
+                || adminRole.equals(role);
+    }
+
+    private boolean patientAccessFilter(HttpServletRequest request, Role role) {
+        if (request.getRequestURI().contains(PATIENT_LIST) && !doctorRole.equals(role)) {
+            return false;
+        }
+
+        return !request.getRequestURI().contains(PATIENT_HISTORY) || doctorRole.equals(role) || patientRole.equals(role);
+    }
+
+    private boolean prescriptionAccessFilter(HttpServletRequest request, Role role) {
+        if ((request.getRequestURI().contains(PRESCRIPTION_VIEW)
+                || request.getRequestURI().contains(PRESCRIPTION_LIST))
+                && !doctorRole.equals(role)
+                && !patientRole.equals(role)) {
+            return false;
+        }
+
+        return !request.getRequestURI().contains(PRESCRIPTION_SAVE) || doctorRole.equals(role);
     }
 }

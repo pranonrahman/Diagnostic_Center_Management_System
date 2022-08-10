@@ -77,19 +77,19 @@ public class UserController {
     }
 
     @GetMapping("/save")
-    public String showForm(@RequestParam(value = "id", required = false) Long id, ModelMap modelMap) {
-        modelMap.put("readOnly", false);
-        modelMap.put("genderList", Gender.values());
+    public String showForm(@RequestParam(value = "id", required = false) Long id, ModelMap model) {
+        model.put("readOnly", false);
+        model.put("genderList", Gender.values());
 
-        modelMap.put("userData", isNull(id) ? new User() : userService.findById(id));
+        model.put("userData", isNull(id) ? new User() : userService.findById(id));
 
         return FORM_PAGE;
     }
 
     @PostMapping("/save")
-    public String processPersonForm(@Valid @ModelAttribute("userData") User user, BindingResult bindingResult, ModelMap modelMap) {
-        modelMap.put("readOnly", false);
-        modelMap.put("genderList", Gender.values());
+    public String processPersonForm(@Valid @ModelAttribute("userData") User user, BindingResult bindingResult, ModelMap model) {
+        model.put("readOnly", false);
+        model.put("genderList", Gender.values());
 
         if (bindingResult.hasErrors()) {
             return FORM_PAGE;
@@ -101,9 +101,9 @@ public class UserController {
     }
 
     @GetMapping("/view")
-    public String showView(@RequestParam(value = "id") Long id, ModelMap modelMap) {
-        modelMap.put("readOnly", true);
-        modelMap.put("genderList", Gender.values());
+    public String showView(@RequestParam(value = "id") Long id, ModelMap model) {
+        model.put("readOnly", true);
+        model.put("genderList", Gender.values());
 
         if (isNull(id)) {
             return LIST_REDIRECT_PATH;
@@ -115,16 +115,16 @@ public class UserController {
             throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
         }
 
-        modelMap.addAttribute("userData", user);
+        model.addAttribute("userData", user);
 
         return FORM_PAGE;
     }
 
     @RequestMapping("/list")
-    public String showList(@RequestParam(value = "filterBy", required = false) String filterBy, ModelMap modelMap) {
+    public String showList(@RequestParam(value = "filterBy", required = false) String filterBy, ModelMap model) {
 
         if (isNull(filterBy)) {
-            modelMap.put("users", userService.findAll());
+            model.put("users", userService.findAll());
         } else {
             Role role = roleService.findByRole(RoleEnum.valueOf(filterBy));
             List<User> userList = new ArrayList<>();
@@ -132,7 +132,8 @@ public class UserController {
                     .stream()
                     .filter(user -> user.getRoles().contains(role))
                     .forEach(userList::add);
-            modelMap.put("users", userList);
+
+            model.put("users", userList);
         }
         return LIST_PAGE;
     }
@@ -151,18 +152,18 @@ public class UserController {
     }
 
     @GetMapping("/updateRole")
-    public String showUpdateRoleForm(@RequestParam(value = "id") Long id, ModelMap modelMap) {
+    public String showUpdateRoleForm(@RequestParam(value = "id") Long id, ModelMap model) {
         User user = userService.findById(id);
 
         if (isNull(user)) {
             throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
         }
 
-        modelMap.put("userData", user);
+        model.put("userData", user);
 
         RoleUpdateViewModel roleUpdateViewModel = roleUpdateViewModelService.getRoleUpdateViewModel(user);
 
-        modelMap.put("roleUpdateViewModel", roleUpdateViewModel);
+        model.put("roleUpdateViewModel", roleUpdateViewModel);
 
         return ROLE_UPDATE_PAGE;
     }

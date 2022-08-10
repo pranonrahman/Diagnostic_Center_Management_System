@@ -2,10 +2,10 @@ package net.therap.constant;
 
 public class UriConstant {
 
-    public static String PERSON_SAVE = "/user/save";
-    public static String PERSON_VIEW = "/user/view";
-    public static String PERSON_LIST = "/user/list";
-    public static String PERSON_DELETE = "/user/delete";
+    public static String USER_SAVE = "/user/save";
+    public static String USER_VIEW = "/user/view";
+    public static String USER_LIST = "/user/list";
+    public static String USER_DELETE = "/user/delete";
 
     public static String PATIENT_HISTORY = "/patient/history";
     public static String PATIENT_LIST = "/patient/list";

@@ -56,9 +56,12 @@ public class AuthenticationController {
     }
 
     @GetMapping({"/login","/"})
-    public String showLoginForm(ModelMap modelMap, HttpSession session) {
+    public String showLoginForm(ModelMap model, HttpSession session) {
+        if (nonNull(session.getAttribute("user"))) {
+            if(isNull(session.getAttribute("role"))) {
+                return LOGIN_ROLE_REDIRECT_PATH;
+            }
 
-        if (nonNull(session.getAttribute("user")) || nonNull(session.getAttribute("role"))) {
             switch (((Role) session.getAttribute("role")).getName()) {
                 case ADMIN:
                     return ADMIN_DASHBOARD_REDIRECT_PATH;
@@ -73,32 +76,33 @@ public class AuthenticationController {
             }
         }
 
-        modelMap.put("userViewModel", new UserViewModel());
+        model.put("userViewModel", new UserViewModel());
 
         return FORM_PAGE;
     }
 
     @PostMapping("/login")
-    public String processLoginForm(@ModelAttribute("userViewModel") UserViewModel userViewModel, BindingResult result, ModelMap modelMap, HttpSession session) {
+    public String processLoginForm(@ModelAttribute("userViewModel") UserViewModel userViewModel,
+                                   BindingResult result, ModelMap model, HttpSession session) {
 
         if (result.hasErrors()) {
             return FORM_PAGE;
         }
 
         if (!authenticationService.authenticateByPassword(userViewModel)) {
-            modelMap.put("message", INVALID_CREDENTIALS_PROVIDED);
+            model.put("message", INVALID_CREDENTIALS_PROVIDED);
             return FORM_PAGE;
         }
 
         session.setAttribute("user", userService.findByUserName(userViewModel.getUserName()));
 
-        modelMap.put("seedRoleList", userService.findByUserName(userViewModel.getUserName()).getRoles());
+        model.put("seedRoleList", userService.findByUserName(userViewModel.getUserName()).getRoles());
 
         return LOGIN_ROLE_REDIRECT_PATH;
     }
 
     @GetMapping("/login/role")
-    public String showRoleForm(ModelMap modelMap, HttpSession session) {
+    public String showRoleForm(ModelMap model, HttpSession session) {
 
         if (nonNull(session.getAttribute("user")) && nonNull(session.getAttribute("role"))) {
             return LOGIN_REDIRECT_PATH;
@@ -110,14 +114,15 @@ public class AuthenticationController {
 
         User user = (User) session.getAttribute("user");
 
-        modelMap.put("userViewModel", new UserViewModel());
-        modelMap.put("seedRoleList", user.getRoles());
+        model.put("userViewModel", new UserViewModel());
+        model.put("seedRoleList", user.getRoles());
 
         return FORM_PAGE;
     }
 
     @PostMapping("/login/role")
-    public String loginByRole(@Valid @ModelAttribute UserViewModel userViewModel, BindingResult bindingResult, HttpSession session) {
+    public String loginByRole(@Valid @ModelAttribute UserViewModel userViewModel,
+                              BindingResult bindingResult, HttpSession session) {
 
         if (bindingResult.hasErrors()) {
             return FORM_PAGE;
@@ -144,17 +149,17 @@ public class AuthenticationController {
     }
 
     @RequestMapping("/logout")
-    public String logout(HttpSession session, ModelMap modelMap) {
+    public String logout(HttpSession session, ModelMap model) {
         session.removeAttribute("user");
         session.removeAttribute("role");
 
-        setUpReferenceData(modelMap);
-        modelMap.put("userViewModel", new UserViewModel());
+        setUpReferenceData(model);
+        model.put("userViewModel", new UserViewModel());
 
         return LOGIN_REDIRECT_PATH;
     }
 
-    private void setUpReferenceData(ModelMap modelMap) {
-        modelMap.put("seedRoleList", roleService.findAll());
+    private void setUpReferenceData(ModelMap model) {
+        model.put("seedRoleList", roleService.findAll());
     }
 }
