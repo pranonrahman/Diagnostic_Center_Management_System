@@ -132,6 +132,7 @@ public class UserController {
                     .stream()
                     .filter(user -> user.getRoles().contains(role))
                     .forEach(userList::add);
+
             model.put("users", userList);
         }
         return LIST_PAGE;
