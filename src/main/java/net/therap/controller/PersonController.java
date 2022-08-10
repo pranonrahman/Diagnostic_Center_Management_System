@@ -78,7 +78,7 @@ public class PersonController {
     }
 
     @PostMapping("/save")
-    public String processPersonForm(@ModelAttribute Person person, BindingResult bindingResult, ModelMap modelMap) {
+    public String processPersonForm(@Valid @ModelAttribute Person person, BindingResult bindingResult, ModelMap modelMap) {
         modelMap.put("readOnly", false);
         modelMap.put("genderList", Gender.values());
 
