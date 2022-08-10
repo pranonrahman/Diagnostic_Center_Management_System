@@ -30,9 +30,9 @@ public class Particular extends BaseEntity {
 
     @Min(value = 0, message = "{unitPrice.notNegative}")
     @Column(name = "unit_price")
-    private Double unitPrice;
+    private double unitPrice;
 
     @Min(value = 0, message = "{units.notNegative}")
-    private Integer units;
+    private int units;
 }
 

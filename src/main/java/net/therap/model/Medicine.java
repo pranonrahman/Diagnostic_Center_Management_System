@@ -37,7 +37,7 @@ public class Medicine extends BaseEntity {
 
     @Min(value = 0, message = "{unitPrice.notNegative}")
     @Column(name = "unit_price")
-    private Double unitPrice;
+    private double unitPrice;
 
     @Min(value = 0, message = "{availableUnits.notNegative}")
     @Column(name = "available_units")

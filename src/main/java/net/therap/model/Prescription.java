@@ -22,17 +22,18 @@ public class Prescription extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @Size(max = 3000, message = "Cannot exceed 3000 characters")
+    @Size(max = 3000, message = "{size.max}")
     private String symptoms;
 
-    @Size(max = 3000, message = "Cannot exceed 3000 characters")
+    @Size(max = 3000, message = "{size.max}")
     private String diagnosis;
 
-    @Size(max = 3000, message = "Cannot exceed 3000 characters")
+    @Size(max = 3000, message = "{size.max}")
     private String comment;
 
     @Column(name = "date_of_visit")
     @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateOfVisit;
 
     @ManyToOne
@@ -51,23 +52,10 @@ public class Prescription extends BaseEntity {
     )
     private Set<Facility> facilities;
 
-    @Size(max = 3000, message = "Cannot exceed 3000 characters")
+    @Size(max = 3000, message = "{size.max}")
     private String medicines;
 
     public Prescription() {
         facilities = new HashSet<>();
-    }
-
-    public Prescription(String symptoms, String diagnosis, String comment, Date dateOfVisit, Patient patient,
-                        Doctor doctor) {
-
-        this();
-
-        this.symptoms = symptoms;
-        this.diagnosis = diagnosis;
-        this.comment = comment;
-        this.dateOfVisit = dateOfVisit;
-        this.patient = patient;
-        this.doctor = doctor;
     }
 }

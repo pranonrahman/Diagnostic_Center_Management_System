@@ -4,7 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,11 +25,11 @@ public class User extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @NotNull(message = "{name.notNull}")
-    @Size(min = 1, max = 30, message = "{name.size}")
+    @Size(min = 3, max = 30, message = "{name.size}")
     private String name;
 
     @NotNull(message = "{phone.notNull}")
-    @Size(min = 11, max = 36, message = "{phone.size}")
+    @Size(min = 8, max = 36, message = "{phone.size}")
     private String phone;
 
     @Email
@@ -71,17 +74,5 @@ public class User extends BaseEntity {
 
     public User() {
         roles = new HashSet<>();
-    }
-
-    public User(String name, String phone, String email, Gender gender, Date dateOfBirth, String userName, String password) {
-        this();
-
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.gender = gender;
-        this.dateOfBirth = dateOfBirth;
-        this.userName = userName;
-        this.password = password;
     }
 }
