@@ -3,6 +3,7 @@ package net.therap.service;
 import net.therap.dao.InvoiceDao;
 import net.therap.model.Invoice;
 import net.therap.model.Particular;
+import net.therap.model.Patient;
 import net.therap.model.Receptionist;
 import net.therap.viewModel.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,10 @@ public class InvoiceService {
 
     public List<Invoice> findAll() {
         return invoiceDao.findAll();
+    }
+
+    public List<Invoice> findAllByPatient(Patient patient) {
+        return invoiceDao.findAllByPatient(patient);
     }
 
     public Invoice findById(long id) {

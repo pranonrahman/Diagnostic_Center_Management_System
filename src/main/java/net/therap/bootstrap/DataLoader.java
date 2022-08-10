@@ -180,9 +180,11 @@ public class DataLoader implements CommandLineRunner {
             }
         }
         person.getRoles().add(receptionistRole);
-        Person savedPerson = personService.saveOrUpdate(person);
-        Receptionist receptionist = new Receptionist(savedPerson);
-        receptionistService.saveOrUpdate(receptionist);
+        person = personService.saveOrUpdate(person);
+        Receptionist receptionist = new Receptionist(person);
+        receptionist = receptionistService.saveOrUpdate(receptionist);
+        person.setReceptionist(receptionist);
+        personService.saveOrUpdate(person);
 
         Person person2 = new Person();
         person2.setName("Fulbanu");
@@ -193,8 +195,11 @@ public class DataLoader implements CommandLineRunner {
         person2.setPhone("01234567890");
         person2.setGender(Gender.FEMALE);
         person2.getRoles().add(receptionistRole);
-        Person savedPerson2 = personService.saveOrUpdate(person2);
-        receptionistService.saveOrUpdate(new Receptionist(savedPerson2));
+        person2 = personService.saveOrUpdate(person2);
+        Receptionist receptionist2 = new Receptionist(person2);
+        receptionist2 = receptionistService.saveOrUpdate(receptionist2);
+        person2.setReceptionist(receptionist2);
+        personService.saveOrUpdate(person2);
     }
 
     private void createSeedMedicine() {
