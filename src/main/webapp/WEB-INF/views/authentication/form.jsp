@@ -9,7 +9,7 @@
 
 <html>
 <head>
-    <title>Prescription</title>
+    <title> <fmt:message key="authentication.title"/> </title>
 
     <link type="text/css" href="<c:url value="../../../assets/css/bootstrap.min.css"/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
@@ -25,17 +25,23 @@
         <c:if test="${empty user}">
             <form:form action="/login" method="post" modelAttribute="personViewModel">
                 <div class="mb-3">
-                    <form:label path="userName">Enter user name</form:label>
+                    <form:label path="userName">
+                        <fmt:message key="authentication.form.userName"/>
+                    </form:label>
                     <form:input path="userName" type="text" required="required" cssClass="w-100"/>
                     <form:errors path="userName"/>
                 </div>
 
                 <div class="mb-3">
-                    <form:label path="password">Enter password</form:label>
+                    <form:label path="password">
+                        <fmt:message key="authentication.form.password"/>
+                    </form:label>
                     <form:input path="password" type="password" required="required" cssClass="w-100"/>
                     <form:errors path="password"/>
                 </div>
-                <button type="submit" value="submit" class="btn btn-primary w-100"><fmt:message key="authentication.form.nextPage"/></button>
+                <button type="submit" value="submit" class="btn btn-primary w-100">
+                    <fmt:message key="authentication.form.nextPage"/>
+                </button>
             </form:form>
             <c:if test="${not empty message}">
                 <div class="alert alert-danger">
@@ -47,7 +53,9 @@
         <c:if test="${not empty user and empty role}">
             <form:form action="/login/role" method="post" modelAttribute="personViewModel">
                 <div class="mb-3">
-                    <form:label path="role">Enter role</form:label>
+                    <form:label path="role">
+                        <fmt:message key="authentication.form.role"/>
+                    </form:label>
                     <form:select path="role" cssClass="form-control">
                         <form:option value="">
                             Select
@@ -57,7 +65,9 @@
                     <form:errors path="role"/>
                 </div>
 
-                <button type="submit" value="submit" class="btn btn-primary w-100"><fmt:message key="authentication.form.submit"/></button>
+                <button type="submit" value="submit" class="btn btn-primary w-100">
+                    <fmt:message key="authentication.form.submit"/>
+                </button>
             </form:form>
         </c:if>
     </div>
