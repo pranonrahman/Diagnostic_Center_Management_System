@@ -28,7 +28,10 @@
         </h5>
         <div class="card-body">
             <p class="card-title">
-                <fmt:message key="text.receivedBy"/>: <c:out value="${invoiceView.generatedBy.name}"/>
+                <strong><fmt:message key="text.invoiceId"/>:</strong> <c:out value="${invoiceView.invoiceId}"/>
+            </p>
+            <p class="card-title">
+                <strong><fmt:message key="text.receivedBy"/>:</strong> <c:out value="${invoiceView.generatedBy.name}"/>
             </p>
 
             <table class="table">
