@@ -8,7 +8,7 @@
 
 <html>
 <head>
-    <title> Invalid access page </title>
+    <title> <fmt:message key="title.invalidAccessPage"/> </title>
     <link type="text/css" href="<c:url value="../../assets/css/bootstrap.min.css"/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value="../../assets/css/style.css"/>" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value="../../assets/js/jquery-3.6.0.min.js"/>"></script>
@@ -20,10 +20,10 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12 text-center">
-                <h1 class="display-1 d-block">Invalid access request</h1>
+                <h1 class="display-1 d-block"><fmt:message key="text.invalidAccessRequest"/> </h1>
                 <h4 class="mb-4 lead">Tried to access page without proper privilege.</h4>
                 <h6 class="mb-4 lead">If you think it is a mistake, please contact to system admin.</h6>
-                <a href="${pageContext.request.contextPath}/" class="btn btn-danger">Back to Home</a>
+                <a href="${pageContext.request.contextPath}/" class="btn btn-danger"><fmt:message key="button.label.backToHome"/> </a>
             </div>
         </div>
     </div>

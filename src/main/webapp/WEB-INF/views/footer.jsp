@@ -6,7 +6,7 @@
 <footer class="card-footer w-100 text-center">
     <div class="container">
         <span class="text-muted">
-            Copyright &copy; Diagnostic Center Management System 2022
+            <fmt:message key="footer.text.copyright"/>
         </span>
     </div>
 </footer>

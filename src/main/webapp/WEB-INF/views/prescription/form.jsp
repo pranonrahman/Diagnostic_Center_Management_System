@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--
   * @author amimul.ehsan
   * @since 02/08/2022
@@ -8,7 +9,7 @@
 
 <html>
 <head>
-    <title>Prescription</title>
+    <title><fmt:message key="title.prescription"/></title>
 
     <link type="text/css" href="<c:url value="../../../assets/css/bootstrap.min.css"/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
@@ -20,7 +21,7 @@
 
 <div class="container-fluid bg-primary-custom h-100">
 
-    <h2 class="text-center py-3"> Prescription of ${prescription.patient.person.name} </h2>
+    <h2 class="text-center py-3"> <fmt:message key="text.prescriptionOf"/> <c:out value="${prescription.patient.person.name}"/> </h2>
     <div class="w-50 mx-auto">
 
         <%--@elvariable id="prescription" type="net.therap.model.Prescription"--%>
@@ -35,7 +36,7 @@
             <p><strong>Consulting doctor:</strong> <c:out value="${prescription.doctor.person.name}"/></p>
 
             <div class="mb-3">
-                <form:label path="symptoms" cssClass="form-label">Symptoms</form:label>
+                <form:label path="symptoms" cssClass="form-label"><fmt:message key="label.symptoms"/></form:label>
 
                 <form:textarea rows="3"
                                cssClass="form-control"
@@ -47,7 +48,7 @@
             </div>
 
             <fieldset class="form-group mb-3">
-                <label class="col-form-label col-sm-2">Recommendations</label>
+                <label class="col-form-label col-sm-2"><fmt:message key="label.recommendations"/></label>
                 <div class="col-sm-10">
                     <form:checkboxes path="facilities"
                                      items="${facilities}"
@@ -62,7 +63,7 @@
             </fieldset>
 
             <div class="mb-3">
-                <form:label path="diagnosis" cssClass="form-label">Diagnosis</form:label>
+                <form:label path="diagnosis" cssClass="form-label"><fmt:message key="label.diagnosis"/></form:label>
 
                 <form:textarea rows="3"
                                cssClass="form-control"
@@ -74,7 +75,7 @@
             </div>
 
             <div class="mb-3">
-                <form:label path="medicines" cssClass="form-label">Medicines</form:label>
+                <form:label path="medicines" cssClass="form-label"><fmt:message key="label.medicines"/></form:label>
 
                 <form:textarea rows="3"
                                cssClass="form-control"
@@ -89,7 +90,7 @@
             </div>
 
             <div class="mb-3">
-                <form:label path="comment" cssClass="form-label">Comments</form:label>
+                <form:label path="comment" cssClass="form-label"><fmt:message key="label.comments"/></form:label>
 
                 <form:textarea rows="3"
                                cssClass="form-control"
@@ -105,10 +106,8 @@
                 <c:choose>
                     <c:when test="${!readonly}">
                         <button type="submit"
-                                class="btn btn-primary mb-2"
-                                name="action"
-                                value="UPDATE">
-                            UPDATE
+                                class="btn btn-primary mb-2">
+                            <fmt:message key="button.label.update"/>
                         </button>
                     </c:when>
 
@@ -116,7 +115,7 @@
                         <c:url var="prescriptionEditPage" value="/prescription/save">
                             <c:param name="id" value="${prescription.id}"/>
                         </c:url>
-                        <a href="${prescriptionEditPage}" class="btn btn-primary">EDIT</a>
+                        <a href="${prescriptionEditPage}" class="btn btn-primary"><fmt:message key="button.label.edit"/></a>
                     </c:when>
                 </c:choose>
             </div>
