@@ -49,7 +49,7 @@ public class Person extends BaseEntity {
     private String userName;
 
     @NotNull(message = "{password.notNull}")
-    @Size(min = 3, max=255, message = "{password.size}")
+    @Size(min = 3, max = 255, message = "{password.size}")
     private String password;
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
