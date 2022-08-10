@@ -27,15 +27,15 @@
 
         <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">Invoice Id</th>
-            <th scope="col">
-                ${role.getName().equals(RoleEnum.RECEPTIONIST) ?
-                        'Customer Name' :
-                        'Received By'}
-            </th>
-            <th scope="col">Date</th>
-            <th scope="col">Total bill</th>
+<%--            <th scope="col">#</th>--%>
+<%--            <th scope="col">Invoice Id</th>--%>
+<%--            <th scope="col">--%>
+<%--                ${role.getName().equals(RoleEnum.RECEPTIONIST) ?--%>
+<%--                        'Customer Name' :--%>
+<%--                        'Received By'}--%>
+<%--            </th>--%>
+<%--            <th scope="col">Date</th>--%>
+<%--            <th scope="col">Total bill</th>--%>
             <th scope="col"><fmt:message key="column.table.invoiceId"/> </th>
             <th scope="col"> <fmt:message key="column.table.customerName"/> </th>
             <th scope="col"> <fmt:message key="column.table.date"/> </th>
@@ -53,15 +53,15 @@
                 <td><c:out value="${invoice.patient.person.name}"/></td>
                 <td> <fmt:formatDate value="${invoice.generationDate}"/> </td>
                 <td> <fmt:formatNumber value="${invoice.totalCost}"/> </td>
-                <td><c:out value="${invoice.invoiceId}"/></td>
-                <td>
-                    <c:out value="${role.getName().equals(RoleEnum.RECEPTIONIST) ?
-                        invoice.patient.person.name :
-                        invoice.generatedBy.name}"
-                    />
-                </td>
-                <td><fmt:formatDate value="${invoice.generationDate}"/></td>
-                <td><fmt:formatNumber value="${invoice.totalCost}"/></td>
+<%--                <td><c:out value="${invoice.invoiceId}"/></td>--%>
+<%--                <td>--%>
+<%--                    <c:out value="${role.getName().equals(RoleEnum.RECEPTIONIST) ?--%>
+<%--                        invoice.patient.person.name :--%>
+<%--                        invoice.generatedBy.name}"--%>
+<%--                    />--%>
+<%--                </td>--%>
+<%--                <td><fmt:formatDate value="${invoice.generationDate}"/></td>--%>
+<%--                <td><fmt:formatNumber value="${invoice.totalCost}"/></td>--%>
                 <c:url var="invoiceLink" value="/invoice/view">
                     <c:param name="id" value="${invoice.id}"/>
                 </c:url>
