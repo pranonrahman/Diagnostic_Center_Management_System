@@ -39,10 +39,6 @@ public class InvoiceService {
         return invoiceDao.findById(id);
     }
 
-    public Invoice findByInvoiceId(String invoiceId) {
-        return invoiceDao.findByInvoiceId(invoiceId);
-    }
-
     @Transactional
     public Invoice saveOrUpdate(Invoice invoice) {
         return invoiceDao.saveOrUpdate(invoice);

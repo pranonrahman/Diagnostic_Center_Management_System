@@ -14,33 +14,20 @@ import java.util.List;
 @Repository
 public class InvoiceDao extends Dao<Invoice> {
 
-    private static final String FIND_ALL_QUERY = "FROM Invoice";
-    private static final String FIND_BY_INVOICE_ID = "FROM Invoice where invoice_id = :invoiceId";
-    private static final String FIND_ALL_BY_PATIENT = "FROM Invoice where patient.id = :patientId";
-
     public InvoiceDao() {
         super(Invoice.class);
     }
 
     public List<Invoice> findAll() {
-        return entityManager.createQuery(FIND_ALL_QUERY, Invoice.class).getResultList();
-    }
-
-    public Invoice findByInvoiceId(String invoiceId) {
-        try{
-            return entityManager.createQuery(FIND_BY_INVOICE_ID, Invoice.class)
-                    .setParameter("invoiceId", invoiceId)
-                    .getSingleResult();
-        } catch (NoResultException exception) {
-            return null;
-        }
+        return entityManager.createNamedQuery("Invoice.findAll", Invoice.class).getResultList();
     }
 
     public List<Invoice> findAllByPatient(Patient patient) {
         try{
-            return entityManager.createQuery(FIND_ALL_BY_PATIENT, Invoice.class)
+            return entityManager.createNamedQuery("Invoice.findByPatientId", Invoice.class)
                     .setParameter("patientId", patient.getId())
                     .getResultList();
+
         } catch (NoResultException exception) {
             return null;
         }

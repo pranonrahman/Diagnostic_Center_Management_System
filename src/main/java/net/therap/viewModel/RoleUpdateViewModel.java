@@ -7,7 +7,7 @@ public class RoleUpdateViewModel {
     private Boolean patient;
     private Boolean receptionist;
     private Boolean admin;
-    private Double fee;
+    private double fee;
 
     public RoleUpdateViewModel() {
     }
@@ -61,11 +61,11 @@ public class RoleUpdateViewModel {
         this.admin = admin;
     }
 
-    public Double getFee() {
+    public double getFee() {
         return fee;
     }
 
-    public void setFee(Double fee) {
+    public void setFee(double fee) {
         this.fee = fee;
     }
 }

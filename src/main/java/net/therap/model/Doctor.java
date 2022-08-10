@@ -15,6 +15,7 @@ import java.util.Set;
 @Table(name = "doctor")
 @Getter
 @Setter
+@NamedQuery(name = "Doctor.findAll", query = "FROM Doctor")
 public class Doctor extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

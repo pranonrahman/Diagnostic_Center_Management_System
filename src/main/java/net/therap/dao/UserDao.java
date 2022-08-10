@@ -13,22 +13,20 @@ import java.util.List;
 @Repository
 public class UserDao extends Dao<User> {
 
-    private static final String FIND_ALL = "FROM User";
-    private static final String FIND_BY_USER_NAME = "FROM User WHERE userName = :userName";
-
     public UserDao() {
         super(User.class);
     }
 
     public List<User> findAll() {
-        return entityManager.createQuery(FIND_ALL, User.class).getResultList();
+        return entityManager.createNamedQuery("User.findAll", User.class).getResultList();
     }
 
     public User findByUserName(String userName) {
         try {
-            return entityManager.createQuery(FIND_BY_USER_NAME, User.class)
+            return entityManager.createNamedQuery("User.findByUserName", User.class)
                     .setParameter("userName", userName)
                     .getSingleResult();
+
         } catch (NoResultException noResultException) {
             return null;
         }
