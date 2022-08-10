@@ -26,11 +26,19 @@
         <form:form action="/person/save" method="POST" modelAttribute="person">
             <div class="mb-3">
                 <form:input hidden="hidden" path="id" type="text" value="${person.id}" cssClass="form-control"/>
-                <form:label path="userName" cssClass="form-label">Username</form:label>
 
-                <form:input readonly="${readOnly}" path="userName" type="text" value="${person.userName}"
-                            cssClass="form-control"/>
-                <form:errors path="userName" cssClass="invalid-feedback d-block"/>
+                <c:choose>
+                    <c:when test="${person.isNew()}">
+                        <form:label path="userName" cssClass="form-label">Username</form:label>
+                        <form:input readonly="${readOnly}" path="userName" type="text" value="${person.userName}"
+                                    cssClass="form-control"/>
+                        <form:errors path="userName" cssClass="invalid-feedback d-block"/>
+                    </c:when>
+                    <c:otherwise>
+                        <form:input hidden="hidden" readonly="${readOnly}" path="userName" type="text" value="${person.userName}"
+                                    cssClass="form-control"/>
+                    </c:otherwise>
+                </c:choose>
             </div>
 
             <c:if test="${not readOnly}">
