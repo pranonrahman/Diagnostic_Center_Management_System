@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author raian.rahman
@@ -22,6 +23,7 @@ public class Role extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private RoleEnum name;
 

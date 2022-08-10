@@ -18,7 +18,7 @@ public class InvoiceViewModel {
     private long id;
     private Receptionist generatedBy;
     private long invoiceId;
-    private Double totalCost;
+    private double totalCost;
     private Patient patient;
     private List<Doctor> doctors;
     private List<MedicineItem> medicines;

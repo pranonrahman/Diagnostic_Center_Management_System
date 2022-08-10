@@ -2,9 +2,9 @@ package net.therap.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,16 +22,19 @@ public class Invoice extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @NotNull
     @Column(name = "invoice_id")
     private String invoiceId;
 
+    @NotNull
     @Column(name = "generation_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date generationDate = new Date();
+    private Date generationDate;
 
     @Column(name = "total_cost")
-    private Double totalCost;
+    private double totalCost;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "receptionist_id",
@@ -39,6 +42,7 @@ public class Invoice extends BaseEntity {
     )
     private User generatedBy;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "patient_id",
@@ -57,5 +61,6 @@ public class Invoice extends BaseEntity {
     public Invoice() {
         particulars = new HashSet<>();
         invoiceId = UUID.randomUUID().toString();
+        generationDate = new Date();
     }
 }

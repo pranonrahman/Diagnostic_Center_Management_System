@@ -31,7 +31,7 @@ public class Doctor extends BaseEntity {
         prescriptions = new HashSet<>();
     }
 
-    public Doctor(Double fee, User user) {
+    public Doctor(double fee, User user) {
         this();
 
         this.fee = fee;
