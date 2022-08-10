@@ -44,6 +44,11 @@ public class Prescription extends BaseEntity {
     private Doctor doctor;
 
     @ManyToMany
+    @JoinTable(
+            name = "prescription_facility",
+            joinColumns = {@JoinColumn(name = "prescription_id")},
+            inverseJoinColumns = {@JoinColumn(name = "facility_id")}
+    )
     private Set<Facility> facilities;
 
     @Size(max = 3000, message = "Cannot exceed 3000 characters")

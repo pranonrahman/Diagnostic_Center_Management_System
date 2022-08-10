@@ -48,7 +48,7 @@ public class Invoice extends BaseEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "invoice_particular_join_table",
+            name = "invoice_particular",
             joinColumns = {@JoinColumn(name = "invoice_id")},
             inverseJoinColumns = {@JoinColumn(name = "particular_id")}
     )
