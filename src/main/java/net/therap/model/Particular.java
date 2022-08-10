@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * @author raian.rahman
@@ -21,11 +24,15 @@ public class Particular extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @NotNull(message = "{name.notNull}")
+    @Size(min = 1, max = 30, message = "{name.size}")
     private String name;
 
+    @Min(value = 0, message = "{unitPrice.notNegative}")
     @Column(name = "unit_price")
     private Double unitPrice;
 
+    @Min(value = 0, message = "{units.notNegative}")
     private Integer units;
 }
 
