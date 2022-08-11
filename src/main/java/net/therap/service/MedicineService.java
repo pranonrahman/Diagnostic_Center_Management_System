@@ -18,12 +18,12 @@ public class MedicineService {
     @Autowired
     private MedicineDao medicineDao;
 
-    public List<Medicine> findAll() {
-        return medicineDao.findAll();
-    }
-
     public Medicine findById(long id) {
         return medicineDao.findById(id);
+    }
+
+    public List<Medicine> findAll() {
+        return medicineDao.findAll();
     }
 
     @Transactional

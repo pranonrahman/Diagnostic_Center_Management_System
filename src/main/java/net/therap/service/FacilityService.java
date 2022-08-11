@@ -18,12 +18,12 @@ public class FacilityService {
     @Autowired
     private FacilityDao facilityDao;
 
-    public List<Facility> findAll() {
-        return facilityDao.findAll();
-    }
-
     public Facility findById(long id) {
         return facilityDao.findById(id);
+    }
+
+    public List<Facility> findAll() {
+        return facilityDao.findAll();
     }
 
     @Transactional

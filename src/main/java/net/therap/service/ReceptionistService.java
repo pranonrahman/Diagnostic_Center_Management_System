@@ -18,12 +18,12 @@ public class ReceptionistService {
     @Autowired
     private ReceptionistDao receptionistDao;
 
-    public List<Receptionist> findAll() {
-        return receptionistDao.findAll();
-    }
-
     public Receptionist findById(long id) {
         return receptionistDao.findById(id);
+    }
+
+    public List<Receptionist> findAll() {
+        return receptionistDao.findAll();
     }
 
     @Transactional
