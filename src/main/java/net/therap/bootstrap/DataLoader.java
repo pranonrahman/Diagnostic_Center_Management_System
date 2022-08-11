@@ -36,10 +36,10 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        createSeedRole();
-        createSeedFacility();
-        createSeedPerson();
-        createSeedMedicine();
+//        createSeedRole();
+//        createSeedFacility();
+//        createSeedPerson();
+//        createSeedMedicine();
     }
 
     private void createSeedFacility() {
