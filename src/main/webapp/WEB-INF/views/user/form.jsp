@@ -161,14 +161,9 @@
                         <form:radiobutton disabled="${readOnly}"
                                           cssClass="form-check-input"
                                           value="${gender}"
+                                          label="${gender.displayName}"
                                           path="gender"
                         />
-
-                        <form:label path="gender"
-                                    cssClass="form-check-label text-capitalize">
-
-                            <c:out value="${gender}"/>
-                        </form:label>
                     </div>
                 </c:forEach>
 

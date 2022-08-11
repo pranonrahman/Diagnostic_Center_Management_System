@@ -69,7 +69,7 @@
                     </td>
 
                     <td>
-                        <c:out value="${user.gender}"/>
+                        <c:out value="${user.gender.displayName}"/>
                     </td>
                 </tr>
             </c:forEach>

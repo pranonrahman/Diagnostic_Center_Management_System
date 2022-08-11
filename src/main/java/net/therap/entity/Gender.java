@@ -6,6 +6,16 @@ package net.therap.entity;
  */
 public enum Gender {
 
-    MALE,
-    FEMALE
+    MALE("Male"),
+    FEMALE("Female");
+
+    Gender(String displayName) {
+        this.displayName = displayName;
+    }
+
+    private final String displayName;
+
+    public String getDisplayName() {
+        return displayName;
+    }
 }
