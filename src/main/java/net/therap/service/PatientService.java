@@ -18,12 +18,12 @@ public class PatientService {
     @Autowired
     private PatientDao patientDao;
 
-    public List<Patient> findAll() {
-        return patientDao.findAll();
-    }
-
     public Patient findById(long id) {
         return patientDao.findById(id);
+    }
+
+    public List<Patient> findAll() {
+        return patientDao.findAll();
     }
 
     @Transactional

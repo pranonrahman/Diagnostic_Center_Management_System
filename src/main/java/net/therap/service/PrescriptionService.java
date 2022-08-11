@@ -18,12 +18,12 @@ public class PrescriptionService {
     @Autowired
     private PrescriptionDao prescriptionDao;
 
-    public List<Prescription> findAll() {
-        return prescriptionDao.findAll();
-    }
-
     public Prescription findById(long id) {
         return prescriptionDao.findById(id);
+    }
+
+    public List<Prescription> findAll() {
+        return prescriptionDao.findAll();
     }
 
     @Transactional
