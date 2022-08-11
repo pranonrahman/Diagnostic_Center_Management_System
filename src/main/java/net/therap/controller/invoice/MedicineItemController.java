@@ -4,7 +4,7 @@ import net.therap.command.MedicineItemCmd;
 import net.therap.editor.MedicineEditor;
 import net.therap.model.*;
 import net.therap.service.MedicineService;
-import net.therap.validator.MedicineItemValidator;
+import net.therap.validator.MedicineItemCmdValidator;
 import net.therap.command.InvoiceCmd;
 import net.therap.command.RemoveCmd;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +43,12 @@ public class MedicineItemController {
     private MedicineEditor medicineEditor;
 
     @Autowired
-    private MedicineItemValidator medicineItemValidator;
+    private MedicineItemCmdValidator medicineItemCmdValidator;
 
-    @InitBinder("medicineItem")
+    @InitBinder("medicineItemCmd")
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Medicine.class, medicineEditor);
-        binder.addValidators(medicineItemValidator);
+        binder.addValidators(medicineItemCmdValidator);
     }
 
     @GetMapping
