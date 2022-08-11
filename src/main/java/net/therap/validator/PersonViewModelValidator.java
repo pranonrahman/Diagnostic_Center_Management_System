@@ -6,7 +6,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 /**
  * @author raian.rahman
@@ -14,6 +13,9 @@ import static java.util.Objects.nonNull;
  */
 @Component
 public class PersonViewModelValidator implements Validator {
+
+    private static final String USER_NAME_NOT_NULL_MESSAGE = "Must provide a username";
+    private static final String PASSWORD_NOT_NULL_MESSAGE = "Must provide a password";
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -26,21 +28,11 @@ public class PersonViewModelValidator implements Validator {
         UserViewModel userViewModel = (UserViewModel) target;
 
         if (isNull(userViewModel.getUserName())) {
-            errors.rejectValue("userName", "{user.userName.notNull}", "{user.userName.notNull}");
-        } else if (nonNull(userViewModel.getUserName()) && userViewModel.getUserName().isBlank()) {
-            errors.rejectValue("userName", "{user.userName.notBlank}", "{user.userName.notBlank}");
+            errors.rejectValue("userName", "{user.userName.notNull}", USER_NAME_NOT_NULL_MESSAGE);
         }
 
         if (isNull(userViewModel.getPassword())) {
-            errors.rejectValue("password", "{user.password.notNull}", "{user.password.notNull}");
-        } else if (nonNull(userViewModel.getUserName()) && userViewModel.getUserName().isBlank()) {
-            errors.rejectValue("password", "{user.password.notBlank}", "{user.password.notBlank}");
-        }
-
-        if (isNull(userViewModel.getUserName())) {
-            errors.rejectValue("role", "{user.role.notNull}", "{user.role.notNull}");
-        } else if (nonNull(userViewModel.getUserName()) && userViewModel.getUserName().isBlank()) {
-            errors.rejectValue("role", "{user.role.notBlank}", "{user.role.notBlank}");
+            errors.rejectValue("password", "{user.password.notNull}", PASSWORD_NOT_NULL_MESSAGE);
         }
     }
 }
