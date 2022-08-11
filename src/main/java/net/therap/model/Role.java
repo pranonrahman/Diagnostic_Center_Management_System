@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
         @NamedQuery(name = "Role.findAll", query = "FROM Role"),
         @NamedQuery(name = "Role.findByName", query = "FROM Role WHERE name = :role"),
 })
-public class Role extends BaseEntity {
+public class Role extends Persistent {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,18 +34,16 @@ public class Role extends BaseEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Role role = (Role) o;
 
-        return name.getValue().equals(role.name.getValue());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + name.hashCode();
-        return result;
+        return getName() == role.getName();
     }
 }

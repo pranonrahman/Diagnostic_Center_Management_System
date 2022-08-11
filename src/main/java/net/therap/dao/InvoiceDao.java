@@ -22,14 +22,9 @@ public class InvoiceDao extends Dao<Invoice> {
         return em.createNamedQuery("Invoice.findAll", Invoice.class).getResultList();
     }
 
-    public List<Invoice> findAllByPatient(Patient patient) {
-        try{
-            return em.createNamedQuery("Invoice.findByPatientId", Invoice.class)
-                    .setParameter("patientId", patient.getId())
-                    .getResultList();
-
-        } catch (NoResultException exception) {
-            return null;
-        }
+    public List<Invoice> findByPatient(Patient patient) {
+        return em.createNamedQuery("Invoice.findByPatientId", Invoice.class)
+                .setParameter("patientId", patient.getId())
+                .getResultList();
     }
 }

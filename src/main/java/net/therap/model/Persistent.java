@@ -14,7 +14,7 @@ import java.util.Objects;
 @MappedSuperclass
 @Getter
 @Setter
-public class BaseEntity implements Serializable {
+public class Persistent implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idSequence")
@@ -22,14 +22,21 @@ public class BaseEntity implements Serializable {
     private long id;
 
     public boolean isNew() {
-        return id == 0;
+        return getId() == 0;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BaseEntity)) return false;
-        BaseEntity that = (BaseEntity) o;
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Persistent)) {
+            return false;
+        }
+
+        Persistent that = (Persistent) o;
+        
         return getId() == that.getId();
     }
 

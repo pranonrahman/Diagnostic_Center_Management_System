@@ -8,6 +8,7 @@ import net.therap.service.DoctorService;
 import net.therap.service.PatientService;
 import net.therap.command.InvoiceCmd;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -50,6 +51,7 @@ public class DoctorVisitController {
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Patient.class, patientEditor);
         binder.registerCustomEditor(Doctor.class, doctorEditor);
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
     @GetMapping

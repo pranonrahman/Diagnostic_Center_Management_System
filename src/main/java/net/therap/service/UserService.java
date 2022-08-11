@@ -62,10 +62,10 @@ public class UserService {
     @Transactional
     public User updateRole(User user, RoleUpdateCmd roleUpdateCmd) {
 
-        Role doctorRole = roleDao.findByRole(RoleEnum.valueOf("DOCTOR"));
-        Role adminRole = roleDao.findByRole(RoleEnum.valueOf("ADMIN"));
-        Role receptionistRole = roleDao.findByRole(RoleEnum.valueOf("RECEPTIONIST"));
-        Role patientRole = roleDao.findByRole(RoleEnum.valueOf("PATIENT"));
+        Role doctorRole = roleDao.findByName(RoleEnum.valueOf("DOCTOR"));
+        Role adminRole = roleDao.findByName(RoleEnum.valueOf("ADMIN"));
+        Role receptionistRole = roleDao.findByName(RoleEnum.valueOf("RECEPTIONIST"));
+        Role patientRole = roleDao.findByName(RoleEnum.valueOf("PATIENT"));
 
         if (nonNull(user.getDoctor()) && roleUpdateCmd.getDoctor()) {
             user.getDoctor().setFee(roleUpdateCmd.getFee());

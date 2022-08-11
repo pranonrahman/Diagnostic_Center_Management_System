@@ -27,8 +27,8 @@ public class RoleService {
         return roleDao.findById(id);
     }
 
-    public Role findByRole(RoleEnum role) {
-        return roleDao.findByRole(role);
+    public Role findByName(RoleEnum role) {
+        return roleDao.findByName(role);
     }
 
     @Transactional

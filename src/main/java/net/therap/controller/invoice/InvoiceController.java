@@ -83,7 +83,7 @@ public class InvoiceController {
         if (userRole.getName().equals(RoleEnum.PATIENT)) {
             User user = (User) request.getSession().getAttribute("user");
             Patient patient = user.getPatient();
-            invoices = invoiceService.findAllByPatient(patient);
+            invoices = invoiceService.findByPatient(patient);
         } else {
             invoices = invoiceService.findAll();
         }
@@ -145,8 +145,8 @@ public class InvoiceController {
         }
     }
 
-    private void updateMedicineQuantity(InvoiceCmd invoiceViewModel) {
-        for (MedicineItemCmd medicineItem : invoiceViewModel.getMedicines()) {
+    private void updateMedicineQuantity(InvoiceCmd invoiceCmd) {
+        for (MedicineItemCmd medicineItem : invoiceCmd.getMedicines()) {
             Medicine updatedMedicine = medicineItem.getMedicine();
             updatedMedicine.setAvailableUnits(updatedMedicine.getAvailableUnits() - medicineItem.getQuantity());
             medicineService.saveOrUpdate(updatedMedicine);
