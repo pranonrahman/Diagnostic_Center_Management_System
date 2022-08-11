@@ -1,10 +1,13 @@
 package net.therap.controller.invoice;
 
+import net.therap.command.InvoiceCmd;
 import net.therap.command.MedicineItemCmd;
 import net.therap.model.*;
-import net.therap.service.*;
-import net.therap.command.InvoiceCmd;
+import net.therap.service.InvoiceService;
+import net.therap.service.MedicineService;
+import net.therap.service.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +16,13 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static java.util.Objects.isNull;
 import static net.therap.controller.invoice.InvoiceController.INVOICE_CMD;
-import static net.therap.model.Action.*;
+import static net.therap.model.Action.REVIEW;
+import static net.therap.model.Action.VIEW;
 import static net.therap.model.RoleEnum.ADMIN;
 import static net.therap.model.RoleEnum.RECEPTIONIST;
 
@@ -49,10 +51,12 @@ public class InvoiceController {
     @Autowired
     private MedicineService medicineService;
 
+    @Autowired
+    private MessageSourceAccessor msa;
+
     @GetMapping("/view")
     public String view(@RequestParam Long id, ModelMap model) {
-        model.addAttribute(INVOICE_VIEW_CMD,invoiceService.findById(id));
-        model.put("action", VIEW);
+        setUpReferenceData(model, invoiceService.findById(id));
 
         return VIEW_PAGE;
     }
@@ -61,12 +65,11 @@ public class InvoiceController {
     public String review(ModelMap model) {
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
 
-        if(isNull(invoice) || isNull(invoice.getPatient())) {
+        if (isNull(invoice) || isNull(invoice.getPatient())) {
             return REDIRECT_DOCTOR_PAGE;
         }
 
-        model.put(INVOICE_VIEW_CMD, invoiceService.getInvoiceFromViewModel(invoice));
-        model.put("action", REVIEW);
+        setUpReferenceData(model, invoice);
 
         return VIEW_PAGE;
     }
@@ -75,65 +78,53 @@ public class InvoiceController {
     public String list(HttpServletRequest request, ModelMap model) {
         Role userRole = (Role) request.getSession().getAttribute("role");
 
-        List<Invoice> invoices = new ArrayList<>();
+        List<Invoice> invoices;
 
-        if(userRole.getName().equals(RoleEnum.PATIENT)){
+        if (userRole.getName().equals(RoleEnum.PATIENT)) {
             User user = (User) request.getSession().getAttribute("user");
             Patient patient = user.getPatient();
             invoices = invoiceService.findAllByPatient(patient);
-        }else {
+        } else {
             invoices = invoiceService.findAll();
         }
 
-        model.addAttribute("invoices", invoiceService.findAll());
+        setUpReferenceData(model, invoices);
 
         return LIST_VIEW_PAGE;
     }
 
     @PostMapping
-    public String save(@SessionAttribute(INVOICE_CMD) InvoiceCmd invoice,
+    public String save(@SessionAttribute(INVOICE_CMD) InvoiceCmd invoiceCmd,
                        RedirectAttributes ra,
                        WebRequest webRequest,
                        SessionStatus status,
                        HttpServletRequest request,
                        ModelMap model) {
 
-        Invoice readyToSaveInvoice = invoiceService.getInvoiceFromViewModel(invoice);
-
-        if(readyToSaveInvoice.getParticulars().isEmpty()) {
-            model.put("errorMessage", "No Service or product selected!");
-
-            return VIEW_PAGE;
-        }
-
         User user = (User) request.getSession().getAttribute("user");
         Role userRole = (Role) request.getSession().getAttribute("role");
 
-        if(isNull(user) || !(userRole.getName().equals(RECEPTIONIST) || userRole.getName().equals(ADMIN))){
-            model.put("errorMessage", "User is not authorized");
+        if (isNull(user) || !(userRole.getName().equals(RECEPTIONIST) || userRole.getName().equals(ADMIN))) {
+            model.put("errorMessage", msa.getMessage("error.unAuthorized"));
 
             return VIEW_PAGE;
         }
 
-        for (Doctor doctor : invoice.getDoctors()) {
-            Prescription prescription = new Prescription();
-            prescription.setPatient(invoice.getPatient());
-            prescription.setDoctor(doctor);
-            prescription.setDateOfVisit(new Date());
+        Invoice invoice = invoiceService.getInvoiceFromViewModel(invoiceCmd);
 
-            prescriptionService.saveOrUpdate(prescription);
+        if (invoice.getParticulars().isEmpty()) {
+            model.put("errorMessage", "error.notSelected");
+
+            return VIEW_PAGE;
         }
 
-        for (MedicineItemCmd medicineItemCmd : invoice.getMedicines()) {
-            Medicine updatedMedicine = medicineItemCmd.getMedicine();
-            updatedMedicine.setAvailableUnits(updatedMedicine.getAvailableUnits() - medicineItemCmd.getQuantity());
-            medicineService.saveOrUpdate(updatedMedicine);
-        }
+        createEmptyPrescriptions(invoiceCmd);
+        updateMedicineQuantity(invoiceCmd);
 
-        readyToSaveInvoice.setGeneratedBy(user);
-        Invoice savedInvoice = invoiceService.saveOrUpdate(readyToSaveInvoice);
+        invoice.setGeneratedBy(user);
+        Invoice savedInvoice = invoiceService.saveOrUpdate(invoice);
 
-        if(model.containsAttribute(INVOICE_CMD)) {
+        if (model.containsAttribute(INVOICE_CMD)) {
             status.setComplete();
             webRequest.removeAttribute(INVOICE_CMD, WebRequest.SCOPE_SESSION);
         }
@@ -141,5 +132,38 @@ public class InvoiceController {
         ra.addAttribute("id", savedInvoice.getId());
 
         return REDIRECT_VIEW_PAGE;
+    }
+
+    private void createEmptyPrescriptions(InvoiceCmd invoiceCmd) {
+        for (Doctor doctor : invoiceCmd.getDoctors()) {
+            Prescription prescription = new Prescription();
+            prescription.setPatient(invoiceCmd.getPatient());
+            prescription.setDoctor(doctor);
+            prescription.setDateOfVisit(new Date());
+
+            prescriptionService.saveOrUpdate(prescription);
+        }
+    }
+
+    private void updateMedicineQuantity(InvoiceCmd invoiceViewModel) {
+        for (MedicineItemCmd medicineItem : invoiceViewModel.getMedicines()) {
+            Medicine updatedMedicine = medicineItem.getMedicine();
+            updatedMedicine.setAvailableUnits(updatedMedicine.getAvailableUnits() - medicineItem.getQuantity());
+            medicineService.saveOrUpdate(updatedMedicine);
+        }
+    }
+
+    private void setUpReferenceData(ModelMap model, Invoice invoice) {
+        model.addAttribute(INVOICE_VIEW_CMD, invoice);
+        model.put("action", VIEW);
+    }
+
+    private void setUpReferenceData(ModelMap model, InvoiceCmd invoice) {
+        model.put(INVOICE_VIEW_CMD, invoiceService.getInvoiceFromViewModel(invoice));
+        model.put("action", REVIEW);
+    }
+
+    private void setUpReferenceData(ModelMap model, List<Invoice> invoices) {
+        model.addAttribute("invoices", invoices);
     }
 }

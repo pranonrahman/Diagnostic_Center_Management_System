@@ -6,6 +6,7 @@ import net.therap.model.Particular;
 import net.therap.model.Patient;
 import net.therap.command.InvoiceCmd;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,6 +27,9 @@ public class InvoiceService {
 
     @Autowired
     ParticularService particularService;
+
+    @Autowired
+    MessageSourceAccessor msa;
 
     public List<Invoice> findAll() {
         return invoiceDao.findAll();
