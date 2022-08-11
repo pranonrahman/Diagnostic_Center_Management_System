@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-@NamedQuery(name = "Admin.findAll", query = "FROM Admin")
+@NamedQuery(name = "Admin.findAll", query = "FROM Admin ORDER BY id DESC")
 public class Admin extends Persistent {
 
     private static final long serialVersionUID = 1L;

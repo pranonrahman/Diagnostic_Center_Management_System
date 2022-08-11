@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "patient")
 @Getter
 @Setter
-@NamedQuery(name = "Patient.findAll", query = "FROM Patient")
+@NamedQuery(name = "Patient.findAll", query = "FROM Patient ORDER BY id DESC")
 public class Patient extends Persistent {
 
     private static final long serialVersionUID = 1L;

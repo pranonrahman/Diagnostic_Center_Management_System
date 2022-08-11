@@ -21,8 +21,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NamedQueries({
-        @NamedQuery(name = "User.findAll", query = "FROM User"),
-        @NamedQuery(name = "User.findByUserName", query = "FROM User WHERE userName = :userName")
+        @NamedQuery(name = "User.findAll", query = "FROM User ORDER BY id DESC"),
+        @NamedQuery(name = "User.findByUserName", query = "FROM User WHERE userName = :userName ORDER BY id DESC")
 })
 public class User extends Persistent {
 
