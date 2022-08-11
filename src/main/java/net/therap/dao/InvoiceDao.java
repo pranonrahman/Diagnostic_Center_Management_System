@@ -4,6 +4,7 @@ import net.therap.model.Invoice;
 import net.therap.model.Patient;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 /**
@@ -18,11 +19,11 @@ public class InvoiceDao extends Dao<Invoice> {
     }
 
     public List<Invoice> findAll() {
-        return entityManager.createNamedQuery("Invoice.findAll", Invoice.class).getResultList();
+        return em.createNamedQuery("Invoice.findAll", Invoice.class).getResultList();
     }
 
     public List<Invoice> findByPatient(Patient patient) {
-        return entityManager.createNamedQuery("Invoice.findByPatientId", Invoice.class)
+        return em.createNamedQuery("Invoice.findByPatientId", Invoice.class)
                 .setParameter("patientId", patient.getId())
                 .getResultList();
     }

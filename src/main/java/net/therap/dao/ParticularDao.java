@@ -17,6 +17,6 @@ public class ParticularDao extends Dao<Particular> {
     }
 
     public List<Particular> findAll() {
-        return entityManager.createNamedQuery("Particular.findAll", Particular.class).getResultList();
+        return em.createNamedQuery("Particular.findAll", Particular.class).getResultList();
     }
 }

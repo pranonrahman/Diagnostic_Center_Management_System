@@ -18,12 +18,12 @@ public class UserDao extends Dao<User> {
     }
 
     public List<User> findAll() {
-        return entityManager.createNamedQuery("User.findAll", User.class).getResultList();
+        return em.createNamedQuery("User.findAll", User.class).getResultList();
     }
 
     public User findByUserName(String userName) {
         try {
-            return entityManager.createNamedQuery("User.findByUserName", User.class)
+            return em.createNamedQuery("User.findByUserName", User.class)
                     .setParameter("userName", userName)
                     .getSingleResult();
 

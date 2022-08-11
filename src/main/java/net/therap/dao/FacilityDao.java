@@ -17,6 +17,6 @@ public class FacilityDao extends Dao<Facility> {
     }
 
     public List<Facility> findAll() {
-        return entityManager.createNamedQuery("Facility.findAll", Facility.class).getResultList();
+        return em.createNamedQuery("Facility.findAll", Facility.class).getResultList();
     }
 }
