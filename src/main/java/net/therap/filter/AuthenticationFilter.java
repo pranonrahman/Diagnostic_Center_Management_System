@@ -18,7 +18,7 @@ import static net.therap.entity.RoleEnum.*;
  * @author raian.rahman
  * @since 8/7/22
  */
-@Component
+//@Component
 public class AuthenticationFilter implements Filter {
 
     private static final String LOGIN_REDIRECT_PATH = "/login";
