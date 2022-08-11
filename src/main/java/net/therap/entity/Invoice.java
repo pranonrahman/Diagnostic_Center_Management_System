@@ -5,7 +5,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author raian.rahman
@@ -51,7 +54,7 @@ public class Invoice extends Persistent {
     )
     private Patient patient;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "invoice_particular",
             joinColumns = {@JoinColumn(name = "invoice_id")},
