@@ -21,17 +21,23 @@
 
 <div class="container-fluid bg-primary-custom h-100">
 
-    <%--@elvariable id="invoiceView" type="net.therap.model.Invoice"--%>
     <div class="card">
         <h5 class="card-header">
-            <fmt:message key="text.invoiceOf"/> <c:out value="${invoiceView.patient.user.name}"/>
+            <fmt:message key="text.invoiceOf"/> <
+            c:out value="${invoiceView.patient.user.name}"/>
         </h5>
         <div class="card-body">
             <p class="card-title">
-                <strong><fmt:message key="text.invoiceId"/>:</strong> <c:out value="${invoiceView.invoiceId}"/>
+                <strong>
+                    <fmt:message key="text.invoiceId"/>:
+                </strong>
+                <c:out value="${invoiceView.invoiceId}"/>
             </p>
             <p class="card-title">
-                <strong><fmt:message key="text.receivedBy"/>:</strong> <c:out value="${invoiceView.generatedBy.name}"/>
+                <strong>
+                    <fmt:message key="text.receivedBy"/>:
+                </strong>
+                <c:out value="${invoiceView.generatedBy.name}"/>
             </p>
 
             <table class="table">
@@ -54,7 +60,9 @@
                             <td><c:out value="${particular.name}"/></td>
                             <td><fmt:formatNumber value="${particular.unitPrice}"/></td>
                             <td><fmt:formatNumber value="${particular.units}"/></td>
-                            <td class="text-end"><fmt:formatNumber value="${particular.units * particular.unitPrice}"/></td>
+                            <td class="text-end">
+                                <fmt:formatNumber value="${particular.units * particular.unitPrice}"/>
+                            </td>
                         </tr>
                     </p>
                 </c:forEach>

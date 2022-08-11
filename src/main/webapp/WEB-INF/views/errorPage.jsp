@@ -20,9 +20,15 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12 text-center">
-                <h1 class="display-1 d-block"><c:out value="${httpErrorCode}"/></h1>
-                <h4 class="mb-4 lead"><c:out value="${errorMessage}"/></h4>
-                <a href="${pageContext.request.contextPath}/" class="btn btn-danger"><fmt:message key="button.label.backToHome"/> </a>
+                <h1 class="display-1 d-block">
+                    <c:out value="${httpErrorCode}"/>
+                </h1>
+                <h4 class="mb-4 lead">
+                    <c:out value="${errorMessage}"/>
+                </h4>
+                <a href="${pageContext.request.contextPath}/" class="btn btn-danger">
+                    <fmt:message key="button.label.backToHome"/>
+                </a>
             </div>
         </div>
     </div>

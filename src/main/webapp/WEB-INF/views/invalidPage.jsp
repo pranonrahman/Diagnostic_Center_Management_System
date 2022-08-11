@@ -21,9 +21,16 @@
         <div class="row justify-content-center">
             <div class="col-md-12 text-center">
                 <h1 class="display-1 d-block"><fmt:message key="text.invalidAccessRequest"/> </h1>
-                <h4 class="mb-4 lead">Tried to access page without proper privilege.</h4>
-                <h6 class="mb-4 lead">If you think it is a mistake, please contact to system admin.</h6>
-                <a href="${pageContext.request.contextPath}/" class="btn btn-danger"><fmt:message key="button.label.backToHome"/> </a>
+                <h4 class="mb-4 lead">
+                    <fmt:message key="invalidPage.message"/>
+                </h4>
+                <h6 class="mb-4 lead">
+                    <fmt:message key="invalidPage.mistake"/>
+                </h6>
+
+                <a href="${pageContext.request.contextPath}/"
+                   class="btn btn-danger"><fmt:message key="button.label.backToHome"/>
+                </a>
             </div>
         </div>
     </div>
