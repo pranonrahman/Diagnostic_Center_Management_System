@@ -1,11 +1,11 @@
 package net.therap.controller.invoice;
 
+import net.therap.command.InvoiceCmd;
+import net.therap.command.MedicineItemCmd;
 import net.therap.model.*;
 import net.therap.service.InvoiceService;
 import net.therap.service.MedicineService;
 import net.therap.service.PrescriptionService;
-import net.therap.viewModel.InvoiceViewModel;
-import net.therap.viewModel.MedicineItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
@@ -63,7 +63,7 @@ public class InvoiceController {
 
     @GetMapping
     public String review(ModelMap model) {
-        InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
+        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
 
         if (isNull(invoice) || isNull(invoice.getPatient())) {
             return REDIRECT_DOCTOR_PAGE;
@@ -94,7 +94,7 @@ public class InvoiceController {
     }
 
     @PostMapping
-    public String save(@SessionAttribute(INVOICE_CMD) InvoiceViewModel invoiceViewModel,
+    public String save(@SessionAttribute(INVOICE_CMD) InvoiceCmd invoiceCmd,
                        RedirectAttributes ra,
                        WebRequest webRequest,
                        SessionStatus status,
@@ -110,7 +110,7 @@ public class InvoiceController {
             return VIEW_PAGE;
         }
 
-        Invoice invoice = invoiceService.getInvoiceFromViewModel(invoiceViewModel);
+        Invoice invoice = invoiceService.getInvoiceFromViewModel(invoiceCmd);
 
         if (invoice.getParticulars().isEmpty()) {
             model.put("errorMessage", "error.notSelected");
@@ -118,8 +118,8 @@ public class InvoiceController {
             return VIEW_PAGE;
         }
 
-        createEmptyPrescriptions(invoiceViewModel);
-        updateMedicineQuantity(invoiceViewModel);
+        createEmptyPrescriptions(invoiceCmd);
+        updateMedicineQuantity(invoiceCmd);
 
         invoice.setGeneratedBy(user);
         Invoice savedInvoice = invoiceService.saveOrUpdate(invoice);
@@ -134,10 +134,10 @@ public class InvoiceController {
         return REDIRECT_VIEW_PAGE;
     }
 
-    private void createEmptyPrescriptions(InvoiceViewModel invoiceViewModel) {
-        for (Doctor doctor : invoiceViewModel.getDoctors()) {
+    private void createEmptyPrescriptions(InvoiceCmd invoiceCmd) {
+        for (Doctor doctor : invoiceCmd.getDoctors()) {
             Prescription prescription = new Prescription();
-            prescription.setPatient(invoiceViewModel.getPatient());
+            prescription.setPatient(invoiceCmd.getPatient());
             prescription.setDoctor(doctor);
             prescription.setDateOfVisit(new Date());
 
@@ -145,8 +145,8 @@ public class InvoiceController {
         }
     }
 
-    private void updateMedicineQuantity(InvoiceViewModel invoiceViewModel) {
-        for (MedicineItem medicineItem : invoiceViewModel.getMedicines()) {
+    private void updateMedicineQuantity(InvoiceCmd invoiceViewModel) {
+        for (MedicineItemCmd medicineItem : invoiceViewModel.getMedicines()) {
             Medicine updatedMedicine = medicineItem.getMedicine();
             updatedMedicine.setAvailableUnits(updatedMedicine.getAvailableUnits() - medicineItem.getQuantity());
             medicineService.saveOrUpdate(updatedMedicine);
@@ -158,7 +158,7 @@ public class InvoiceController {
         model.put("action", VIEW);
     }
 
-    private void setUpReferenceData(ModelMap model, InvoiceViewModel invoice) {
+    private void setUpReferenceData(ModelMap model, InvoiceCmd invoice) {
         model.put(INVOICE_VIEW_CMD, invoiceService.getInvoiceFromViewModel(invoice));
         model.put("action", REVIEW);
     }
