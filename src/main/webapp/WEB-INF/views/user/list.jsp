@@ -51,7 +51,13 @@
             <c:forEach items="${users}" var="user">
                 <tr>
                     <td>
-                        <a href="${pageContext.request.contextPath}/user/view?id=${user.id}">
+                        <c:url var="userForm"
+                               value="${pageContext.request.contextPath}/user/">
+
+                            <c:param name="id"
+                                     value="${user.id}"/>
+                        </c:url>
+                        <a href="${userForm}">
                             <c:out value="${user.userName}"/>
                         </a>
                     </td>

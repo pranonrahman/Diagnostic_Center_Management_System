@@ -9,14 +9,13 @@ import org.springframework.validation.Validator;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static org.springframework.util.Assert.notNull;
 
 /**
  * @author raian.rahman
  * @since 8/10/22
  */
 @Component
-public class PersonValidator implements Validator {
+public class UserValidator implements Validator {
 
     private static final String USER_NAME_ALREADY_EXISTS_MESSAGE = "username already exists";
     private static final String USER_NAME_NOT_EXIST_MESSAGE = "username does not exist";

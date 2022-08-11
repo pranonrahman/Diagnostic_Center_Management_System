@@ -1,16 +1,14 @@
 package net.therap.controller;
 
-import net.therap.command.RoleUpdateCmd;
 import net.therap.editor.DateEditor;
+import net.therap.editor.RoleEditor;
 import net.therap.entity.Gender;
 import net.therap.entity.Role;
 import net.therap.entity.RoleEnum;
 import net.therap.entity.User;
 import net.therap.service.RoleService;
-import net.therap.service.RoleUpdateCmdService;
 import net.therap.service.UserService;
-import net.therap.validator.PersonValidator;
-import net.therap.validator.RoleUpdateCmdValidator;
+import net.therap.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
@@ -37,9 +35,8 @@ public class UserController {
 
     private static final String FORM_PAGE = "user/form";
     private static final String LIST_PAGE = "user/list";
-    private static final String ROLE_UPDATE_PAGE = "user/role";
 
-    private static final String VIEW_REDIRECT_PATH = "redirect:/user/view?id=";
+    private static final String VIEW_REDIRECT_PATH = "redirect:/user?id=";
     private static final String LIST_REDIRECT_PATH = "redirect:/user/list";
 
     private static final String USER = "user";
@@ -48,19 +45,16 @@ public class UserController {
     private DateEditor dateEditor;
 
     @Autowired
-    private UserService userService;
+    private RoleEditor roleEditor;
 
     @Autowired
-    private RoleUpdateCmdService roleUpdateCmdService;
+    private UserService userService;
 
     @Autowired
     private RoleService roleService;
 
     @Autowired
-    private RoleUpdateCmdValidator roleUpdateCmdValidator;
-
-    @Autowired
-    private PersonValidator userValidator;
+    private UserValidator userValidator;
 
     @Autowired
     private MessageSourceAccessor msa;
@@ -72,61 +66,36 @@ public class UserController {
 
     @InitBinder("userData")
     private void userInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.registerCustomEditor(Role.class, roleEditor);
         webDataBinder.addValidators(userValidator);
     }
 
-    @InitBinder("roleUpdateCmd")
-    private void roleUpdateCmdInitBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(roleUpdateCmdValidator);
-    }
-
-    @GetMapping("/save")
+    @GetMapping
     public String showForm(@RequestParam(value = "id", required = false) Long id, ModelMap model) {
-        model.put("readOnly", false);
         model.put("genderList", Gender.values());
-
+        model.put("seedRoleList", roleService.findAll());
         model.put("userData", isNull(id) ? new User() : userService.findById(id));
 
         return FORM_PAGE;
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public String processPersonForm(@Valid @ModelAttribute("userData") User user,
+                                    @RequestParam(value = "fee", required = false) String fee,
                                     BindingResult bindingResult,
                                     ModelMap model) {
 
-        model.put("readOnly", false);
-        model.put("genderList", Gender.values());
-
         if (bindingResult.hasErrors()) {
+            model.put("genderList", Gender.values());
+            model.put("seedRoleList", roleService.findAll());
             return FORM_PAGE;
         }
+
+        user = userService.updateRole(user, Double.parseDouble(fee));
 
         user = userService.saveOrUpdate(user);
 
         return VIEW_REDIRECT_PATH + user.getId();
-    }
-
-    @GetMapping("/view")
-    public String showView(@RequestParam(value = "id") Long id,
-                           ModelMap model) {
-
-        model.put("readOnly", true);
-        model.put("genderList", Gender.values());
-
-        if (isNull(id)) {
-            return LIST_REDIRECT_PATH;
-        }
-
-        User user = userService.findById(id);
-
-        if (isNull(user)) {
-            throw new RuntimeException(msa.getMessage("user.notFound.message"));
-        }
-
-        model.addAttribute("userData", user);
-
-        return FORM_PAGE;
     }
 
     @RequestMapping("/list")
@@ -165,41 +134,5 @@ public class UserController {
         userService.delete(user);
 
         return LIST_REDIRECT_PATH;
-    }
-
-    @GetMapping("/updateRole")
-    public String showUpdateRoleForm(@RequestParam(value = "id") Long id, ModelMap model) {
-        User user = userService.findById(id);
-
-        if (isNull(user)) {
-            throw new RuntimeException(msa.getMessage("user.notFound.message"));
-        }
-
-        model.put("userData", user);
-
-        RoleUpdateCmd roleUpdateCmd = roleUpdateCmdService.getRoleUpdateCmd(user);
-
-        model.put("roleUpdateCmd", roleUpdateCmd);
-
-        return ROLE_UPDATE_PAGE;
-    }
-
-    @PostMapping("/updateRole")
-    public String processUpdateRoleForm(@Valid @ModelAttribute RoleUpdateCmd roleUpdateCmd,
-                                        BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            return ROLE_UPDATE_PAGE;
-        }
-
-        User user = userService.findById(roleUpdateCmd.getId());
-
-        if (isNull(user)) {
-            throw new RuntimeException(msa.getMessage("user.notFound.message"));
-        }
-
-        user = userService.updateRole(user, roleUpdateCmd);
-
-        return VIEW_REDIRECT_PATH + user.getId();
     }
 }
