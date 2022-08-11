@@ -18,7 +18,7 @@ public class AuthenticationService {
     @Autowired
     private UserDao userDao;
 
-    public boolean authenticateByPassword(UserCmd userCmd) {
+    public boolean isValidCredential(UserCmd userCmd) {
         User user = userDao.findByUserName(userCmd.getUserName());
 
         if (isNull(user)) {
@@ -26,13 +26,5 @@ public class AuthenticationService {
         }
 
         return user.getPassword().equals(userCmd.getPassword());
-    }
-
-    public boolean authenticateByRole(UserCmd userCmd, User user) {
-        if (isNull(userCmd)) {
-            return false;
-        }
-
-        return user.getRoles().contains(userCmd.getRole());
     }
 }

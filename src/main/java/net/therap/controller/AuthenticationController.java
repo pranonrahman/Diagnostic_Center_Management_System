@@ -2,13 +2,13 @@ package net.therap.controller;
 
 import net.therap.command.UserCmd;
 import net.therap.editor.RoleEditor;
-import net.therap.entity.User;
 import net.therap.entity.Role;
 import net.therap.service.AuthenticationService;
 import net.therap.service.UserService;
 import net.therap.service.RoleService;
 import net.therap.validator.UserCmdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 /**
@@ -28,15 +27,14 @@ import static java.util.Objects.nonNull;
 @Controller
 public class AuthenticationController {
 
-    private static final String ADMIN_DASHBOARD_REDIRECT_PATH = "redirect:/user/list";
-    private static final String DOCTOR_DASHBOARD_REDIRECT_PATH = "redirect:/patient/list";
-    private static final String PATIENT_DASHBOARD_REDIRECT_PATH = "redirect:/prescription/list";
-    private static final String RECEPTIONIST_DASHBOARD_REDIRECT_PATH = "redirect:/invoice/doctor";
     private static final String LOGIN_REDIRECT_PATH = "redirect:/login";
-    private static final String LOGIN_ROLE_REDIRECT_PATH = "redirect:/login/role";
-    private static final String USER_CMD = "userCmd";
+    private static final String DASHBOARD_REDIRECT_PATH = "redirect:/home";
     private static final String FORM_PAGE = "/authentication/form";
-    private static final String INVALID_CREDENTIALS_PROVIDED = "Invalid credentials provided";
+    private static final String USER_CMD = "userCmd";
+    private static final String ROLE = "role";
+    private static final String USER = "user";
+    private static final String SEED_ROLE_LIST = "seedRoleList";
+    private static final String MESSAGE = "message";
 
     @Autowired
     private RoleService roleService;
@@ -53,6 +51,9 @@ public class AuthenticationController {
     @Autowired
     private UserCmdValidator userCmdValidator;
 
+    @Autowired
+    private MessageSourceAccessor msa;
+
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Role.class, roleEditor);
@@ -63,25 +64,10 @@ public class AuthenticationController {
         binder.addValidators(userCmdValidator);
     }
 
-    @GetMapping({"/login","/"})
+    @GetMapping({"/login"})
     public String showLoginForm(ModelMap model, HttpSession session) {
-        if (nonNull(session.getAttribute("user"))) {
-            if(isNull(session.getAttribute("role"))) {
-                return LOGIN_ROLE_REDIRECT_PATH;
-            }
-
-            switch (((Role) session.getAttribute("role")).getName()) {
-                case ADMIN:
-                    return ADMIN_DASHBOARD_REDIRECT_PATH;
-                case PATIENT:
-                    return PATIENT_DASHBOARD_REDIRECT_PATH;
-                case DOCTOR:
-                    return DOCTOR_DASHBOARD_REDIRECT_PATH;
-                case RECEPTIONIST:
-                    return RECEPTIONIST_DASHBOARD_REDIRECT_PATH;
-                default:
-                    return FORM_PAGE;
-            }
+        if (nonNull(session.getAttribute(USER)) || nonNull(session.getAttribute(ROLE))) {
+            return DASHBOARD_REDIRECT_PATH;
         }
 
         model.put(USER_CMD, new UserCmd());
@@ -99,78 +85,23 @@ public class AuthenticationController {
             return FORM_PAGE;
         }
 
-        if (!authenticationService.authenticateByPassword(userCmd)) {
-            model.put("message", INVALID_CREDENTIALS_PROVIDED);
+        if (!authenticationService.isValidCredential(userCmd)) {
+            model.put(MESSAGE, msa.getMessage("login.invalidCredentials"));
             return FORM_PAGE;
         }
 
-        session.setAttribute("user", userService.findByUserName(userCmd.getUserName()));
+        session.setAttribute(USER, userService.findByUserName(userCmd.getUserName()));
 
-        model.put("seedRoleList", userService.findByUserName(userCmd.getUserName()).getRoles());
-
-        return LOGIN_ROLE_REDIRECT_PATH;
-    }
-
-    @GetMapping("/login/role")
-    public String showRoleForm(HttpSession session, ModelMap model) {
-
-        if (nonNull(session.getAttribute("user")) && nonNull(session.getAttribute("role"))) {
-            return LOGIN_REDIRECT_PATH;
-        }
-
-        if (isNull(session.getAttribute("user"))) {
-            return LOGIN_REDIRECT_PATH;
-        }
-
-        User user = (User) session.getAttribute("user");
-
-        model.put(USER_CMD, new UserCmd());
-        model.put("seedRoleList", user.getRoles());
-
-        return FORM_PAGE;
-    }
-
-    @PostMapping("/login/role")
-    public String loginByRole(@ModelAttribute UserCmd userCmd,
-                              BindingResult bindingResult,
-                              HttpSession session) {
-
-        if (bindingResult.hasErrors()) {
-            return FORM_PAGE;
-        }
-
-        if (!authenticationService.authenticateByRole(userCmd, (User) session.getAttribute("user"))) {
-            return FORM_PAGE;
-        }
-
-        session.setAttribute("role", userCmd.getRole());
-
-        switch (userCmd.getRole().getName()) {
-            case ADMIN:
-                return ADMIN_DASHBOARD_REDIRECT_PATH;
-            case PATIENT:
-                return PATIENT_DASHBOARD_REDIRECT_PATH;
-            case DOCTOR:
-                return DOCTOR_DASHBOARD_REDIRECT_PATH;
-            case RECEPTIONIST:
-                return RECEPTIONIST_DASHBOARD_REDIRECT_PATH;
-            default:
-                return FORM_PAGE;
-        }
+        return DASHBOARD_REDIRECT_PATH;
     }
 
     @RequestMapping("/logout")
     public String logout(HttpSession session, ModelMap model) {
-        session.removeAttribute("user");
-        session.removeAttribute("role");
+        session.invalidate();
 
-        setUpReferenceData(model);
+        model.put(SEED_ROLE_LIST, roleService.findAll());
         model.put(USER_CMD, new UserCmd());
 
         return LOGIN_REDIRECT_PATH;
-    }
-
-    private void setUpReferenceData(ModelMap model) {
-        model.put("seedRoleList", roleService.findAll());
     }
 }
