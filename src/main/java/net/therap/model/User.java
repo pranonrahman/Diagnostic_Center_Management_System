@@ -59,7 +59,7 @@ public class User extends Persistent {
     private String password;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH},
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
