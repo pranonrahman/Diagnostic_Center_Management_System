@@ -35,19 +35,19 @@
         </thead>
 
         <tbody>
-        <c:forEach var="patientViewModel"
+        <c:forEach var="patientCmd"
                    items="${patients}"
                    varStatus="loop">
             <tr>
                 <th scope="row">${loop.index + 1}</th>
-                <td><c:out value="${patientViewModel.patient.user.name}"/></td>
-                <td><c:out value="${patientViewModel.getAge()}"/></td>
-                <td><c:out value="${patientViewModel.patient.user.gender}"/></td>
+                <td><c:out value="${patientCmd.patient.user.name}"/></td>
+                <td><c:out value="${patientCmd.getAge()}"/></td>
+                <td><c:out value="${patientCmd.patient.user.gender}"/></td>
                 <c:url var="historyViewPage"
                        value="${pageContext.request.contextPath}/patient/history">
 
                     <c:param name="id"
-                             value="${patientViewModel.patient.id}"/>
+                             value="${patientCmd.patient.id}"/>
                 </c:url>
                 <td><a href="${historyViewPage}"><fmt:message key="text.view"/></a></td>
             </tr>

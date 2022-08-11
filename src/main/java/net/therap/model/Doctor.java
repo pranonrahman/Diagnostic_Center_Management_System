@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,7 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NamedQuery(name = "Doctor.findAll", query = "FROM Doctor")
-public class Doctor extends BaseEntity {
+public class Doctor extends Persistent {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,10 +28,10 @@ public class Doctor extends BaseEntity {
     private User user;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor")
-    private Set<Prescription> prescriptions;
+    private List<Prescription> prescriptions;
 
     public Doctor() {
-        prescriptions = new HashSet<>();
+        prescriptions = new ArrayList<>();
     }
 
     public Doctor(double fee, User user) {

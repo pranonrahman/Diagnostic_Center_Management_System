@@ -22,7 +22,7 @@ public class RoleDao extends Dao<Role> {
         return entityManager.createNamedQuery("Role.findAll", Role.class).getResultList();
     }
 
-    public Role findByRole(RoleEnum role) {
+    public Role findByName(RoleEnum role) {
         try {
             return entityManager.createNamedQuery("Role.findByName", Role.class)
                     .setParameter("role", role)

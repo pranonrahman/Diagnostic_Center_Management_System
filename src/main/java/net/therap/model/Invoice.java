@@ -5,10 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author raian.rahman
@@ -22,7 +19,7 @@ import java.util.UUID;
         @NamedQuery(name = "Invoice.findAll", query = "FROM Invoice"),
         @NamedQuery(name = "Invoice.findByPatientId", query = "FROM Invoice where patient.id = :patientId"),
 })
-public class Invoice extends BaseEntity {
+public class Invoice extends Persistent {
 
     private static final long serialVersionUID = 1L;
 
@@ -60,10 +57,10 @@ public class Invoice extends BaseEntity {
             joinColumns = {@JoinColumn(name = "invoice_id")},
             inverseJoinColumns = {@JoinColumn(name = "particular_id")}
     )
-    private Set<Particular> particulars;
+    private List<Particular> particulars;
 
     public Invoice() {
-        particulars = new HashSet<>();
+        particulars = new ArrayList<>();
         invoiceId = UUID.randomUUID().toString();
         generationDate = new Date();
     }

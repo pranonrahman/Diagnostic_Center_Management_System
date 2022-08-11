@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Setter
 @NoArgsConstructor
 @NamedQuery(name = "Receptionist.findAll", query = "FROM Receptionist")
-public class Receptionist extends BaseEntity {
+public class Receptionist extends Persistent {
 
     private static final long serialVersionUID = 1L;
 
