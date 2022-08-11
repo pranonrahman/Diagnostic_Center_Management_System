@@ -1,5 +1,7 @@
 package net.therap.dao;
 
+import net.therap.model.Persistent;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -7,7 +9,7 @@ import javax.persistence.PersistenceContext;
  * @author raian.rahman
  * @since 8/1/22
  */
-public class Dao<T> {
+public class Dao<T extends Persistent> {
 
     private final Class<T> clazz;
 
@@ -23,7 +25,12 @@ public class Dao<T> {
     }
 
     public T saveOrUpdate(T object) {
-        object = em.merge(object);
+        if(object.isNew()) {
+            em.persist(object);
+        } else {
+            object = em.merge(object);
+        }
+
         em.flush();
         return object;
     }
