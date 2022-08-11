@@ -1,8 +1,9 @@
 package net.therap.service;
 
+import net.therap.command.RoleUpdateCmd;
 import net.therap.dao.*;
 import net.therap.entity.*;
-import net.therap.command.RoleUpdateCmd;
+import net.therap.exception.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,13 @@ public class UserService {
     private RoleDao roleDao;
 
     public User findById(long id) {
-        return userDao.findById(id);
+        User user = userDao.findById(id);
+
+        if (isNull(user)) {
+            throw new RecordNotFoundException();
+        }
+
+        return user;
     }
 
     public List<User> findAll() {
