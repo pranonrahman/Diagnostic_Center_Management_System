@@ -35,8 +35,8 @@ public class InvoiceService {
         return invoiceDao.findAll();
     }
 
-    public List<Invoice> findAllByPatient(Patient patient) {
-        return invoiceDao.findAllByPatient(patient);
+    public List<Invoice> findByPatient(Patient patient) {
+        return invoiceDao.findByPatient(patient);
     }
 
     public Invoice findById(long id) {

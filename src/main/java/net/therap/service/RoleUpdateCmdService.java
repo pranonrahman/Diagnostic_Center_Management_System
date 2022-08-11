@@ -11,9 +11,9 @@ import static java.util.Objects.nonNull;
  * @since 8/7/22
  */
 @Service
-public class RoleUpdateViewModelService {
+public class RoleUpdateCmdService {
 
-    public RoleUpdateCmd getRoleUpdateViewModel(User user) {
+    public RoleUpdateCmd getRoleUpdateCmd(User user) {
 
         RoleUpdateCmd roleUpdateCmd = new RoleUpdateCmd();
 

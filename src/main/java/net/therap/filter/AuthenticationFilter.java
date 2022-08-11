@@ -36,10 +36,10 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        adminRole = roleService.findByRole(ADMIN);
-        doctorRole = roleService.findByRole(DOCTOR);
-        patientRole = roleService.findByRole(PATIENT);
-        receptionistRole = roleService.findByRole(RECEPTIONIST);
+        adminRole = roleService.findByName(ADMIN);
+        doctorRole = roleService.findByName(DOCTOR);
+        patientRole = roleService.findByName(PATIENT);
+        receptionistRole = roleService.findByName(RECEPTIONIST);
 
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;

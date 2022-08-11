@@ -22,7 +22,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @NamedQuery(name = "Particular.findAll", query = "FROM Particular")
-public class Particular extends BaseEntity {
+public class Particular extends Persistent {
 
     private static final long serialVersionUID = 1L;
 

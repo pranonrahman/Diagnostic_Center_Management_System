@@ -64,7 +64,7 @@ public class PrescriptionController {
     public String loadPrescriptionList(@ModelAttribute("user") User user, ModelMap model) {
         Patient patient = user.getPatient();
         List<PrescriptionCmd> prescriptionCmds = new ArrayList<>();
-        Set<Prescription> prescriptions = patient.getPrescriptions();
+        List<Prescription> prescriptions = patient.getPrescriptions();
 
         for (Prescription prescription : prescriptions) {
             prescriptionCmds.add(new PrescriptionCmd(prescription));
