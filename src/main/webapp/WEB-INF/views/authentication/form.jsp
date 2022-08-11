@@ -22,82 +22,45 @@
 
     <h2 class="text-center py-3"> Login </h2>
     <div class="w-50 mx-auto">
-        <c:if test="${empty user}">
-            <form:form action="/login"
-                       method="post"
-                       modelAttribute="userCmd">
-
-                <div class="mb-3">
-                    <form:label path="userName">
-                        <fmt:message key="authentication.form.userName"/>
-                    </form:label>
-
-                    <form:input path="userName"
-                                type="text"
-                                required="required"
-                                cssClass="w-100"/>
-
-                    <form:errors path="userName"/>
-                </div>
-
-                <div class="mb-3">
-                    <form:label path="password">
-                        <fmt:message key="authentication.form.password"/>
-                    </form:label>
-                    <form:input path="password"
-                                type="password"
-                                required="required"
-                                cssClass="w-100"/>
-
-                    <form:errors path="password"/>
-                </div>
-                <button type="submit"
-                        value="submit"
-                        class="btn btn-primary w-100">
-
-                    <fmt:message key="authentication.form.nextPage"/>
-                </button>
-            </form:form>
-            <c:if test="${not empty message}">
-                <div class="alert alert-danger">
-                    <c:out value="${message}"/>
-                </div>
-            </c:if>
+        <c:if test="${not empty message}">
+            <div class="alert alert-danger">
+                <c:out value="${message}"/>
+            </div>
         </c:if>
 
-        <c:if test="${not empty user and empty role}">
-            <form:form action="/login/role"
-                       method="post"
-                       modelAttribute="userCmd">
+        <form:form action="/login"
+                   method="post"
+                   modelAttribute="userCmd">
 
-                <div class="mb-3">
-                    <form:label path="role">
-                        <fmt:message key="authentication.form.role"/>
-                    </form:label>
+            <div class="mb-3">
+                <form:label path="userName">
+                    <fmt:message key="authentication.form.userName"/>
+                </form:label>
 
-                    <form:select path="role"
-                                 cssClass="form-control">
+                <form:input path="userName"
+                            type="text"
+                            cssClass="w-100"/>
 
-                        <form:option value="">
-                            <fmt:message key="label.select"/>
-                        </form:option>
+                <form:errors path="userName"/>
+            </div>
 
-                        <form:options items="${seedRoleList}"
-                                      itemLabel="name.value"
-                                      itemValue="id"/>
-                    </form:select>
+            <div class="mb-3">
+                <form:label path="password">
+                    <fmt:message key="authentication.form.password"/>
+                </form:label>
+                <form:input path="password"
+                            type="password"
+                            cssClass="w-100"/>
 
-                    <form:errors path="role"/>
-                </div>
+                <form:errors path="password"/>
+            </div>
+            <button type="submit"
+                    value="submit"
+                    class="btn btn-primary w-100">
 
-                <button type="submit"
-                        value="submit"
-                        class="btn btn-primary w-100">
-
-                    <fmt:message key="authentication.form.submit"/>
-                </button>
-            </form:form>
-        </c:if>
+                <fmt:message key="authentication.form.nextPage"/>
+            </button>
+        </form:form>
     </div>
 </div>
 <jsp:include page="../footer.jsp"/>
