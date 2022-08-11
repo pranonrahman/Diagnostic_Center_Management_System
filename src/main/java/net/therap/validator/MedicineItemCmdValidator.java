@@ -12,7 +12,7 @@ import static java.util.Objects.isNull;
  * @since 8/6/22
  */
 @Component
-public class MedicineItemValidator implements Validator {
+public class MedicineItemCmdValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
