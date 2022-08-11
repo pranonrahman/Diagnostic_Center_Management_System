@@ -1,12 +1,12 @@
 package net.therap.controller.invoice;
 
+import net.therap.command.DoctorVisitCmd;
 import net.therap.editor.DoctorEditor;
 import net.therap.editor.PatientEditor;
 import net.therap.model.*;
 import net.therap.service.DoctorService;
 import net.therap.service.PatientService;
-import net.therap.viewModel.DoctorVisit;
-import net.therap.viewModel.InvoiceViewModel;
+import net.therap.command.InvoiceCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -60,9 +60,9 @@ public class DoctorVisitController {
     }
 
     @PostMapping
-    public String save(@Valid @ModelAttribute(DOCTOR_VISIT_CMD) DoctorVisit doctorVisit,
+    public String save(@Valid @ModelAttribute(DOCTOR_VISIT_CMD) DoctorVisitCmd doctorVisitCmd,
                              BindingResult result,
-                             @SessionAttribute(INVOICE_CMD) InvoiceViewModel invoice,
+                             @SessionAttribute(INVOICE_CMD) InvoiceCmd invoice,
                              ModelMap model) {
 
         if(result.hasErrors()) {
@@ -70,8 +70,8 @@ public class DoctorVisitController {
             return ADD_DOCTOR_PAGE;
         }
 
-        invoice.setDoctors(doctorVisit.getDoctors());
-        invoice.setPatient(doctorVisit.getPatient());
+        invoice.setDoctors(doctorVisitCmd.getDoctors());
+        invoice.setPatient(doctorVisitCmd.getPatient());
 
         return REDIRECT_MEDICINE_PAGE;
     }
@@ -79,10 +79,10 @@ public class DoctorVisitController {
     private void setUpReferenceData(ModelMap model, Action action) {
         if(action.equals(VIEW)) {
             if(!model.containsAttribute(INVOICE_CMD)) {
-                model.put(INVOICE_CMD, new InvoiceViewModel());
+                model.put(INVOICE_CMD, new InvoiceCmd());
             }
-            InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
-            model.put(DOCTOR_VISIT_CMD, new DoctorVisit(invoice.getPatient(), invoice.getDoctors()));
+            InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
+            model.put(DOCTOR_VISIT_CMD, new DoctorVisitCmd(invoice.getPatient(), invoice.getDoctors()));
 
         }
 

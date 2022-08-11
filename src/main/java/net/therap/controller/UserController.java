@@ -1,5 +1,6 @@
 package net.therap.controller;
 
+import net.therap.command.RoleUpdateCmd;
 import net.therap.editor.DateEditor;
 import net.therap.model.Gender;
 import net.therap.model.User;
@@ -10,7 +11,6 @@ import net.therap.service.RoleService;
 import net.therap.service.RoleUpdateViewModelService;
 import net.therap.validator.PersonValidator;
 import net.therap.validator.RoleUpdateViewModelValidator;
-import net.therap.viewModel.RoleUpdateViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -166,28 +166,28 @@ public class UserController {
 
         model.put("userData", user);
 
-        RoleUpdateViewModel roleUpdateViewModel = roleUpdateViewModelService.getRoleUpdateViewModel(user);
+        RoleUpdateCmd roleUpdateCmd = roleUpdateViewModelService.getRoleUpdateViewModel(user);
 
-        model.put("roleUpdateViewModel", roleUpdateViewModel);
+        model.put("roleUpdateViewModel", roleUpdateCmd);
 
         return ROLE_UPDATE_PAGE;
     }
 
     @PostMapping("/updateRole")
-    public String processUpdateRoleForm(@Valid @ModelAttribute RoleUpdateViewModel roleUpdateViewModel,
+    public String processUpdateRoleForm(@Valid @ModelAttribute RoleUpdateCmd roleUpdateCmd,
                                         BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return ROLE_UPDATE_PAGE;
         }
 
-        User user = userService.findById(roleUpdateViewModel.getId());
+        User user = userService.findById(roleUpdateCmd.getId());
 
         if (isNull(user)) {
             throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
         }
 
-        user = userService.updateRole(user, roleUpdateViewModel);
+        user = userService.updateRole(user, roleUpdateCmd);
 
         return VIEW_REDIRECT_PATH + user.getId();
     }

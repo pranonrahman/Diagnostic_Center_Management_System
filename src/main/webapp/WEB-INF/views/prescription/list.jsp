@@ -25,7 +25,7 @@
     </h2>
 
     <div class="list-group">
-        <c:forEach items="${prescriptionViewModels}"
+        <c:forEach items="${prescriptionCmds}"
                    var="prescriptionViewModel">
 
             <c:url var="prescriptionViewPage"

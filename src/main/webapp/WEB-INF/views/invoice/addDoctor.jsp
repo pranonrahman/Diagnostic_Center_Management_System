@@ -25,7 +25,7 @@
     <h2 class="text-center py-3"> <fmt:message key="title.invoice"/> </h2>
 
     <div class="w-50 mx-auto">
-        <form:form method="post" modelAttribute="doctorVisit">
+        <form:form method="post" modelAttribute="doctorVisitCmd">
 
             <div class="mb-3">
                 <form:label path="patient" cssClass="form-label"> <fmt:message key="label.patient"/> </form:label>

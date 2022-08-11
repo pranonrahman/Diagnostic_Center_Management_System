@@ -30,7 +30,7 @@
     <div class="w-50 mx-auto">
         <form:form action="/user/updateRole"
                    method="POST"
-                   modelAttribute="roleUpdateViewModel">
+                   modelAttribute="roleUpdateCmd">
 
             <form:input hidden="hidden"
                         path="id"

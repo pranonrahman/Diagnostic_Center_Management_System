@@ -1,6 +1,6 @@
 package net.therap.validator;
 
-import net.therap.viewModel.UserViewModel;
+import net.therap.command.UserCmd;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -19,18 +19,18 @@ public class UserViewModelValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return UserViewModel.class.equals(clazz);
+        return UserCmd.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        UserViewModel userViewModel = (UserViewModel) target;
+        UserCmd userCmd = (UserCmd) target;
 
-        if (isNull(userViewModel.getUserName())) {
+        if (isNull(userCmd.getUserName())) {
             errors.rejectValue("userName", "{user.userName.notNull}", USER_NAME_NOT_NULL_MESSAGE);
         }
 
-        if (isNull(userViewModel.getPassword())) {
+        if (isNull(userCmd.getPassword())) {
             errors.rejectValue("password", "{user.password.notNull}", PASSWORD_NOT_NULL_MESSAGE);
         }
     }

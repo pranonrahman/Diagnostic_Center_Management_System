@@ -1,4 +1,4 @@
-package net.therap.viewModel;
+package net.therap.command;
 
 import net.therap.model.Prescription;
 
@@ -8,11 +8,11 @@ import java.util.Date;
  * @author amimul.ehsan
  * @since 04/08/2022
  */
-public class PrescriptionViewModel implements Comparable<PrescriptionViewModel> {
+public class PrescriptionCmd implements Comparable<PrescriptionCmd> {
 
     private final Prescription prescription;
 
-    public PrescriptionViewModel(Prescription prescription) {
+    public PrescriptionCmd(Prescription prescription) {
         this.prescription = prescription;
     }
 
@@ -28,7 +28,7 @@ public class PrescriptionViewModel implements Comparable<PrescriptionViewModel> 
 
 
     @Override
-    public int compareTo(PrescriptionViewModel o) {
+    public int compareTo(PrescriptionCmd o) {
         return (int) (this.getDaysElapsed()-o.getDaysElapsed());
     }
 }

@@ -28,7 +28,7 @@
 
     <div class="w-50 mx-auto">
         <form:form method="post"
-                   modelAttribute="facilityItem">
+                   modelAttribute="facilityItemCmd">
 
         <div class="mb-3">
             <form:label path="facility"
@@ -131,7 +131,7 @@
                             <td><c:out value="${item.facility.price * item.quantity}"/></td>
                             <td>
 
-                                <form:form method="post" modelAttribute="removeModel" action="/invoice/facility/remove">
+                                <form:form method="post" modelAttribute="removeCmd" action="/invoice/facility/remove">
                                     <input type="hidden" name="id" value="${item.facility.id}">
                                     <button type="submit"
                                             class="btn btn-primary flex-grow-1 mx-3"

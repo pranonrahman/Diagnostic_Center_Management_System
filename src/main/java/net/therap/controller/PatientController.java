@@ -1,10 +1,10 @@
 package net.therap.controller;
 
+import net.therap.command.PrescriptionCmd;
 import net.therap.model.*;
 import net.therap.service.DoctorService;
 import net.therap.service.PatientService;
-import net.therap.viewModel.PatientViewModel;
-import net.therap.viewModel.PrescriptionViewModel;
+import net.therap.command.PatientCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -41,10 +41,10 @@ public class PatientController {
 
         long doctorId = user.getDoctor().getId();
         Set<Prescription> prescriptions = doctorService.findById(doctorId).getPrescriptions();
-        List<PatientViewModel> patients = new ArrayList<>();
+        List<PatientCmd> patients = new ArrayList<>();
 
         for(Prescription prescription : prescriptions) {
-            patients.add(new PatientViewModel(prescription.getPatient()));
+            patients.add(new PatientCmd(prescription.getPatient()));
         }
 
         model.put("doctorId", doctorId);
@@ -62,23 +62,23 @@ public class PatientController {
         Doctor doctor = doctorService.findById(doctorId);
         Patient patient = patientService.findById(Long.parseLong(id));
 
-        List<PrescriptionViewModel> allPrescriptionViewModels = new ArrayList<>();
-        List<PrescriptionViewModel> doctorSpecificPrescriptions = new ArrayList<>();
+        List<PrescriptionCmd> allPrescriptionCmds = new ArrayList<>();
+        List<PrescriptionCmd> doctorSpecificPrescriptions = new ArrayList<>();
         Set<Prescription> allPrescriptions = patient.getPrescriptions();
 
         for (Prescription prescription : allPrescriptions) {
             if (prescription.getDoctor().equals(doctor)) {
-                doctorSpecificPrescriptions.add(new PrescriptionViewModel(prescription));
+                doctorSpecificPrescriptions.add(new PrescriptionCmd(prescription));
             } else {
-                allPrescriptionViewModels.add(new PrescriptionViewModel(prescription));
+                allPrescriptionCmds.add(new PrescriptionCmd(prescription));
             }
         }
 
-        Collections.sort(allPrescriptionViewModels);
+        Collections.sort(allPrescriptionCmds);
         Collections.sort(doctorSpecificPrescriptions);
 
         model.put("patientName", patient.getUser().getName());
-        model.put("prescriptionViewModels", allPrescriptionViewModels);
+        model.put("prescriptionViewModels", allPrescriptionCmds);
         model.put("doctorSpecificPrescriptions", doctorSpecificPrescriptions);
 
         return HISTORY_PAGE;

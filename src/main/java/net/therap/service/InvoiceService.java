@@ -4,7 +4,7 @@ import net.therap.dao.InvoiceDao;
 import net.therap.model.Invoice;
 import net.therap.model.Particular;
 import net.therap.model.Patient;
-import net.therap.viewModel.InvoiceViewModel;
+import net.therap.command.InvoiceCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,12 +44,12 @@ public class InvoiceService {
         return invoiceDao.saveOrUpdate(invoice);
     }
 
-    public Invoice getInvoiceFromViewModel(InvoiceViewModel invoiceViewModel) {
+    public Invoice getInvoiceFromViewModel(InvoiceCmd invoiceCmd) {
         Invoice invoice = new Invoice();
-        invoice.setPatient(invoiceViewModel.getPatient());
+        invoice.setPatient(invoiceCmd.getPatient());
         double totalCost = 0;
 
-        invoiceViewModel.getDoctors().forEach(doctorItem-> {
+        invoiceCmd.getDoctors().forEach(doctorItem-> {
             Particular particular = new Particular("Visiting fee of " + doctorItem.getUser().getName(),
                     doctorItem.getFee(),
                     1);
@@ -57,7 +57,7 @@ public class InvoiceService {
             invoice.getParticulars().add(particularService.saveOrUpdate(particular));
         });
 
-        invoiceViewModel.getFacilities().forEach(facilityItem -> {
+        invoiceCmd.getFacilities().forEach(facilityItem -> {
             Particular particular = new Particular(facilityItem.getFacility().getName(),
                     facilityItem.getFacility().getPrice(),
                     facilityItem.getQuantity());
@@ -65,7 +65,7 @@ public class InvoiceService {
             invoice.getParticulars().add(particularService.saveOrUpdate(particular));
         });
 
-        invoiceViewModel.getMedicines().forEach(medicineItem -> {
+        invoiceCmd.getMedicines().forEach(medicineItem -> {
             Particular particular = new Particular(medicineItem.getMedicine().getName(),
                     medicineItem.getMedicine().getUnitPrice(),
                     medicineItem.getQuantity());

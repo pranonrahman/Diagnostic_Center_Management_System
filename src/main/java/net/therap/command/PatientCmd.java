@@ -1,4 +1,4 @@
-package net.therap.viewModel;
+package net.therap.command;
 
 import lombok.Getter;
 import net.therap.model.Patient;
@@ -10,11 +10,11 @@ import java.util.Date;
  * @since 08/08/2022
  */
 @Getter
-public class PatientViewModel {
+public class PatientCmd {
 
     private Patient patient;
 
-    public PatientViewModel(Patient patient) {
+    public PatientCmd(Patient patient) {
         this.patient = patient;
     }
 

@@ -1,7 +1,6 @@
 package net.therap.validator;
 
-import net.therap.viewModel.MedicineItem;
-import org.springframework.beans.factory.annotation.Autowired;
+import net.therap.command.MedicineItemCmd;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -17,25 +16,25 @@ public class MedicineItemValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return MedicineItem.class.equals(clazz);
+        return MedicineItemCmd.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        MedicineItem medicineItem = (MedicineItem) target;
+        MedicineItemCmd medicineItemCmd = (MedicineItemCmd) target;
 
-        if(isNull(medicineItem.getMedicine())){
+        if(isNull(medicineItemCmd.getMedicine())){
             errors.rejectValue("medicine", "", "Must select a medicine");
             return;
         }
 
-        if(medicineItem.getQuantity() < 1) {
+        if(medicineItemCmd.getQuantity() < 1) {
             errors.rejectValue("quantity", "", "Must be a positive value");
             return;
         }
 
-        int availableUnits = medicineItem.getMedicine().getAvailableUnits();
-        if(medicineItem.getQuantity() > availableUnits) {
+        int availableUnits = medicineItemCmd.getMedicine().getAvailableUnits();
+        if(medicineItemCmd.getQuantity() > availableUnits) {
             errors.rejectValue("quantity", "", "Not enough items available. Only "
                     + availableUnits + " left in stock.");
         }

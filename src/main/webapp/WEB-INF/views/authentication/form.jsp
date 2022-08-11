@@ -25,7 +25,7 @@
         <c:if test="${empty user}">
             <form:form action="/login"
                        method="post"
-                       modelAttribute="userViewModel">
+                       modelAttribute="userCmd">
 
                 <div class="mb-3">
                     <form:label path="userName">
@@ -68,7 +68,7 @@
         <c:if test="${not empty user and empty role}">
             <form:form action="/login/role"
                        method="post"
-                       modelAttribute="userViewModel">
+                       modelAttribute="userCmd">
 
                 <div class="mb-3">
                     <form:label path="role">
