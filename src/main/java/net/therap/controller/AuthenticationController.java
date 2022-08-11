@@ -91,7 +91,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public String processLoginForm(@Valid @ModelAttribute("userViewModel") UserCmd userCmd,
+    public String processLoginForm(@Valid @ModelAttribute("userCmd") UserCmd userCmd,
                                    BindingResult result,
                                    ModelMap model,
                                    HttpSession session) {
