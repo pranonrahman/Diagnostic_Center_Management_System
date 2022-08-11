@@ -6,6 +6,7 @@ import net.therap.model.Particular;
 import net.therap.model.Patient;
 import net.therap.viewModel.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,6 +27,9 @@ public class InvoiceService {
 
     @Autowired
     ParticularService particularService;
+
+    @Autowired
+    MessageSourceAccessor msa;
 
     public List<Invoice> findAll() {
         return invoiceDao.findAll();
@@ -50,7 +54,7 @@ public class InvoiceService {
         double totalCost = 0;
 
         invoiceViewModel.getDoctors().forEach(doctorItem-> {
-            Particular particular = new Particular("Visiting fee of " + doctorItem.getUser().getName(),
+            Particular particular = new Particular(msa.getMessage("text.visitingFeeOf") + doctorItem.getUser().getName(),
                     doctorItem.getFee(),
                     1);
 
