@@ -107,7 +107,9 @@ public class AuthenticationFilter implements Filter {
             return false;
         }
 
-        return !request.getRequestURI().contains(PATIENT_HISTORY) || doctorRole.equals(role) || patientRole.equals(role);
+        return !request.getRequestURI().contains(PATIENT_HISTORY)
+                || doctorRole.equals(role)
+                || patientRole.equals(role);
     }
 
     private boolean prescriptionAccessFilter(HttpServletRequest request, Role role) {
@@ -118,6 +120,7 @@ public class AuthenticationFilter implements Filter {
             return false;
         }
 
-        return !request.getRequestURI().contains(PRESCRIPTION_SAVE) || doctorRole.equals(role);
+        return !request.getRequestURI().contains(PRESCRIPTION_SAVE)
+                || doctorRole.equals(role);
     }
 }
