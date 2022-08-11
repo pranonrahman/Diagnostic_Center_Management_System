@@ -39,6 +39,34 @@
                             cssClass="form-control"
                 />
 
+                <form:input hidden="hidden"
+                            path="doctor"
+                            type="text"
+                            value="${userData.doctor.id}"
+                            cssClass="form-control"
+                />
+
+                <form:input hidden="hidden"
+                            path="patient"
+                            type="text"
+                            value="${userData.patient.id}"
+                            cssClass="form-control"
+                />
+
+                <form:input hidden="hidden"
+                            path="receptionist"
+                            type="text"
+                            value="${userData.receptionist.id}"
+                            cssClass="form-control"
+                />
+
+                <form:input hidden="hidden"
+                            path="admin"
+                            type="text"
+                            value="${userData.admin.id}"
+                            cssClass="form-control"
+                />
+
                 <c:set var="existingUser" scope="page" value="${not userData.isNew()}"/>
 
                 <form:label path="userName"
