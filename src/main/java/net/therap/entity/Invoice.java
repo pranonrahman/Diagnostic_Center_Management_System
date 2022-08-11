@@ -19,8 +19,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @NamedQueries({
-        @NamedQuery(name = "Invoice.findAll", query = "FROM Invoice"),
-        @NamedQuery(name = "Invoice.findByPatientId", query = "FROM Invoice where patient.id = :patientId"),
+        @NamedQuery(name = "Invoice.findAll", query = "FROM Invoice ORDER BY generationDate DESC"),
+        @NamedQuery(name = "Invoice.findByPatientId", query = "FROM Invoice where patient.id = :patientId ORDER BY generationDate DESC"),
 })
 public class Invoice extends Persistent {
 

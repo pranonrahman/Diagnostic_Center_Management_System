@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-@NamedQuery(name = "Receptionist.findAll", query = "FROM Receptionist")
+@NamedQuery(name = "Receptionist.findAll", query = "FROM Receptionist ORDER BY id DESC")
 public class Receptionist extends Persistent {
 
     private static final long serialVersionUID = 1L;
