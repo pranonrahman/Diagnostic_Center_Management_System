@@ -12,12 +12,14 @@ import net.therap.service.UserService;
 import net.therap.validator.PersonValidator;
 import net.therap.validator.RoleUpdateCmdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,7 +42,7 @@ public class UserController {
     private static final String VIEW_REDIRECT_PATH = "redirect:/user/view?id=";
     private static final String LIST_REDIRECT_PATH = "redirect:/user/list";
 
-    private static final String PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE = "User not found";
+    private static final String USER = "user";
 
     @Autowired
     private DateEditor dateEditor;
@@ -59,6 +61,9 @@ public class UserController {
 
     @Autowired
     private PersonValidator userValidator;
+
+    @Autowired
+    private MessageSourceAccessor msa;
 
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
@@ -116,7 +121,7 @@ public class UserController {
         User user = userService.findById(id);
 
         if (isNull(user)) {
-            throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
+            throw new RuntimeException(msa.getMessage("user.notFound.message"));
         }
 
         model.addAttribute("userData", user);
@@ -143,12 +148,18 @@ public class UserController {
         return LIST_PAGE;
     }
 
-    @PostMapping("/delete")
-    public String deletePerson(@RequestParam(value = "id") Long id) {
+    @PostMapping(value = "/delete")
+    public String deletePerson(@RequestParam(value = "id") Long id, HttpSession session) throws RuntimeException {
         User user = userService.findById(id);
 
         if (isNull(user)) {
-            throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
+            throw new RuntimeException(msa.getMessage("user.notFound.message"));
+        }
+
+        User sessionUser = (User) session.getAttribute(USER);
+
+        if(sessionUser.getId() == user.getId()) {
+            throw new RuntimeException(msa.getMessage("user.selfDelete.message"));
         }
 
         userService.delete(user);
@@ -161,7 +172,7 @@ public class UserController {
         User user = userService.findById(id);
 
         if (isNull(user)) {
-            throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
+            throw new RuntimeException(msa.getMessage("user.notFound.message"));
         }
 
         model.put("userData", user);
@@ -184,7 +195,7 @@ public class UserController {
         User user = userService.findById(roleUpdateCmd.getId());
 
         if (isNull(user)) {
-            throw new RuntimeException(PERSON_NOT_FOUND_EXCEPTION_ERROR_MESSAGE);
+            throw new RuntimeException(msa.getMessage("user.notFound.message"));
         }
 
         user = userService.updateRole(user, roleUpdateCmd);
