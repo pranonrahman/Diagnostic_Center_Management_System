@@ -2,11 +2,14 @@ package net.therap.service;
 
 import net.therap.dao.PrescriptionDao;
 import net.therap.entity.Prescription;
+import net.therap.exception.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+
+import static java.util.Objects.isNull;
 
 /**
  * @author raian.rahman
@@ -19,7 +22,13 @@ public class PrescriptionService {
     private PrescriptionDao prescriptionDao;
 
     public Prescription findById(long id) {
-        return prescriptionDao.findById(id);
+        Prescription prescription = prescriptionDao.findById(id);
+
+        if (isNull(prescription)) {
+            throw new RecordNotFoundException();
+        }
+
+        return prescription;
     }
 
     public List<Prescription> findAll() {
