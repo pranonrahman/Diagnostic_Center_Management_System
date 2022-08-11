@@ -1,4 +1,4 @@
-package net.therap.viewModel;
+package net.therap.command;
 
 import net.therap.model.Role;
 
@@ -6,16 +6,16 @@ import net.therap.model.Role;
  * @author raian.rahman
  * @since 8/4/22
  */
-public class UserViewModel {
+public class UserCmd {
 
     private String userName;
     private String password;
     private Role role;
 
-    public UserViewModel() {
+    public UserCmd() {
     }
 
-    public UserViewModel(String userName, String password, Role role) {
+    public UserCmd(String userName, String password, Role role) {
         this.userName = userName;
         this.password = password;
         this.role = role;

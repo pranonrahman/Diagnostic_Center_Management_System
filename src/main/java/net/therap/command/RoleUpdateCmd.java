@@ -1,6 +1,6 @@
-package net.therap.viewModel;
+package net.therap.command;
 
-public class RoleUpdateViewModel {
+public class RoleUpdateCmd {
 
     private long id;
     private Boolean doctor;
@@ -9,10 +9,10 @@ public class RoleUpdateViewModel {
     private Boolean admin;
     private double fee;
 
-    public RoleUpdateViewModel() {
+    public RoleUpdateCmd() {
     }
 
-    public RoleUpdateViewModel(long id, Boolean doctor, Boolean patient, Boolean receptionist, Boolean admin, Double fee) {
+    public RoleUpdateCmd(long id, Boolean doctor, Boolean patient, Boolean receptionist, Boolean admin, Double fee) {
         this.id = id;
         this.doctor = doctor;
         this.patient = patient;

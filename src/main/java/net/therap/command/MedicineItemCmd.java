@@ -1,4 +1,4 @@
-package net.therap.viewModel;
+package net.therap.command;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import net.therap.model.Medicine;
  */
 @Getter
 @Setter
-public class MedicineItem {
+public class MedicineItemCmd {
 
     private Medicine medicine;
     private int quantity;

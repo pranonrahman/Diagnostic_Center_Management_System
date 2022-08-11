@@ -1,4 +1,4 @@
-package net.therap.viewModel;
+package net.therap.command;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class InvoiceViewModel {
+public class InvoiceCmd {
 
     private long id;
     private Receptionist generatedBy;
@@ -21,10 +21,10 @@ public class InvoiceViewModel {
     private double totalCost;
     private Patient patient;
     private List<Doctor> doctors;
-    private List<MedicineItem> medicines;
-    private List<FacilityItem> facilities;
+    private List<MedicineItemCmd> medicines;
+    private List<FacilityItemCmd> facilities;
 
-    public InvoiceViewModel() {
+    public InvoiceCmd() {
         doctors = new ArrayList<>();
         medicines = new ArrayList<>();
         facilities = new ArrayList<>();

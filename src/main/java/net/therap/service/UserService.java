@@ -2,7 +2,7 @@ package net.therap.service;
 
 import net.therap.dao.*;
 import net.therap.model.*;
-import net.therap.viewModel.RoleUpdateViewModel;
+import net.therap.command.RoleUpdateCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,33 +60,33 @@ public class UserService {
     }
 
     @Transactional
-    public User updateRole(User user, RoleUpdateViewModel roleUpdateViewModel) {
+    public User updateRole(User user, RoleUpdateCmd roleUpdateCmd) {
 
         Role doctorRole = roleDao.findByRole(RoleEnum.valueOf("DOCTOR"));
         Role adminRole = roleDao.findByRole(RoleEnum.valueOf("ADMIN"));
         Role receptionistRole = roleDao.findByRole(RoleEnum.valueOf("RECEPTIONIST"));
         Role patientRole = roleDao.findByRole(RoleEnum.valueOf("PATIENT"));
 
-        if (nonNull(user.getDoctor()) && roleUpdateViewModel.getDoctor()) {
-            user.getDoctor().setFee(roleUpdateViewModel.getFee());
+        if (nonNull(user.getDoctor()) && roleUpdateCmd.getDoctor()) {
+            user.getDoctor().setFee(roleUpdateCmd.getFee());
         }
 
-        if (isNull(user.getDoctor()) && roleUpdateViewModel.getDoctor()) {
-            Doctor doctor = new Doctor(roleUpdateViewModel.getFee(), user);
+        if (isNull(user.getDoctor()) && roleUpdateCmd.getDoctor()) {
+            Doctor doctor = new Doctor(roleUpdateCmd.getFee(), user);
             doctor = doctorDao.saveOrUpdate(doctor);
 
             user.setDoctor(doctor);
             user.getRoles().add(doctorRole);
         }
 
-        if (nonNull(user.getDoctor()) && !roleUpdateViewModel.getDoctor()) {
+        if (nonNull(user.getDoctor()) && !roleUpdateCmd.getDoctor()) {
             doctorDao.delete(user.getDoctor());
 
             user.setDoctor(null);
             user.getRoles().remove(doctorRole);
         }
 
-        if (isNull(user.getPatient()) && roleUpdateViewModel.getPatient()) {
+        if (isNull(user.getPatient()) && roleUpdateCmd.getPatient()) {
             Patient patient = new Patient(user);
             patient = patientDao.saveOrUpdate(patient);
 
@@ -94,14 +94,14 @@ public class UserService {
             user.getRoles().add(patientRole);
         }
 
-        if (nonNull(user.getPatient()) && !roleUpdateViewModel.getPatient()) {
+        if (nonNull(user.getPatient()) && !roleUpdateCmd.getPatient()) {
             patientDao.delete(user.getPatient());
 
             user.setPatient(null);
             user.getRoles().remove(patientRole);
         }
 
-        if (isNull(user.getAdmin()) && roleUpdateViewModel.getAdmin()) {
+        if (isNull(user.getAdmin()) && roleUpdateCmd.getAdmin()) {
             Admin admin = new Admin(user);
             admin = adminDao.saveOrUpdate(admin);
 
@@ -109,14 +109,14 @@ public class UserService {
             user.getRoles().add(adminRole);
         }
 
-        if (nonNull(user.getAdmin()) && !roleUpdateViewModel.getAdmin()) {
+        if (nonNull(user.getAdmin()) && !roleUpdateCmd.getAdmin()) {
             adminDao.delete(user.getAdmin());
 
             user.setAdmin(null);
             user.getRoles().remove(adminRole);
         }
 
-        if (isNull(user.getReceptionist()) && roleUpdateViewModel.getReceptionist()) {
+        if (isNull(user.getReceptionist()) && roleUpdateCmd.getReceptionist()) {
             Receptionist receptionist = new Receptionist(user);
             receptionist = receptionistDao.saveOrUpdate(receptionist);
 
@@ -124,7 +124,7 @@ public class UserService {
             user.getRoles().add(receptionistRole);
         }
 
-        if (nonNull(user.getReceptionist()) && !roleUpdateViewModel.getReceptionist()) {
+        if (nonNull(user.getReceptionist()) && !roleUpdateCmd.getReceptionist()) {
             receptionistDao.delete(user.getReceptionist());
 
             user.setReceptionist(null);

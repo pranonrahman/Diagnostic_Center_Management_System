@@ -1,9 +1,9 @@
 package net.therap.controller.invoice;
 
+import net.therap.command.MedicineItemCmd;
 import net.therap.model.*;
 import net.therap.service.*;
-import net.therap.viewModel.InvoiceViewModel;
-import net.therap.viewModel.MedicineItem;
+import net.therap.command.InvoiceCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -59,7 +59,7 @@ public class InvoiceController {
 
     @GetMapping
     public String review(ModelMap model) {
-        InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
+        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
 
         if(isNull(invoice) || isNull(invoice.getPatient())) {
             return REDIRECT_DOCTOR_PAGE;
@@ -91,7 +91,7 @@ public class InvoiceController {
     }
 
     @PostMapping
-    public String save(@SessionAttribute(INVOICE_CMD) InvoiceViewModel invoice,
+    public String save(@SessionAttribute(INVOICE_CMD) InvoiceCmd invoice,
                        RedirectAttributes ra,
                        WebRequest webRequest,
                        SessionStatus status,
@@ -124,9 +124,9 @@ public class InvoiceController {
             prescriptionService.saveOrUpdate(prescription);
         }
 
-        for (MedicineItem medicineItem : invoice.getMedicines()) {
-            Medicine updatedMedicine = medicineItem.getMedicine();
-            updatedMedicine.setAvailableUnits(updatedMedicine.getAvailableUnits() - medicineItem.getQuantity());
+        for (MedicineItemCmd medicineItemCmd : invoice.getMedicines()) {
+            Medicine updatedMedicine = medicineItemCmd.getMedicine();
+            updatedMedicine.setAvailableUnits(updatedMedicine.getAvailableUnits() - medicineItemCmd.getQuantity());
             medicineService.saveOrUpdate(updatedMedicine);
         }
 

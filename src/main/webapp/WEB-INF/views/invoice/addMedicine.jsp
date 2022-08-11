@@ -28,7 +28,7 @@
 
     <div class="w-50 mx-auto">
         <form:form method="post"
-                   modelAttribute="medicineItem">
+                   modelAttribute="medicineItemCmd">
 
         <div class="mb-3">
             <form:label path="medicine"
@@ -130,7 +130,7 @@
                             <td>
 
                                 <form:form method="post"
-                                           modelAttribute="removeModel"
+                                           modelAttribute="removeCmd"
                                            action="/invoice/medicine/remove">
 
                                     <input type="hidden"

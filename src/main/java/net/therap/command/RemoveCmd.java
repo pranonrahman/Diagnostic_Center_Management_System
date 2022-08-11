@@ -1,4 +1,4 @@
-package net.therap.viewModel;
+package net.therap.command;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class RemoveModel {
+public class RemoveCmd {
 
     private long id;
 }
