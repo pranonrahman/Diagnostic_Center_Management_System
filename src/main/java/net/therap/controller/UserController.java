@@ -1,11 +1,7 @@
 package net.therap.controller;
 
-import net.therap.editor.DateEditor;
-import net.therap.editor.RoleEditor;
-import net.therap.entity.Gender;
-import net.therap.entity.Role;
-import net.therap.entity.RoleEnum;
-import net.therap.entity.User;
+import net.therap.editor.*;
+import net.therap.entity.*;
 import net.therap.service.RoleService;
 import net.therap.service.UserService;
 import net.therap.validator.UserValidator;
@@ -14,11 +10,11 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,6 +53,18 @@ public class UserController {
     private UserValidator userValidator;
 
     @Autowired
+    private AdminEditor adminEditor;
+
+    @Autowired
+    private ReceptionistEditor receptionistEditor;
+
+    @Autowired
+    private PatientEditor patientEditor;
+
+    @Autowired
+    private DoctorEditor doctorEditor;
+
+    @Autowired
     private MessageSourceAccessor msa;
 
     @InitBinder
@@ -67,6 +75,10 @@ public class UserController {
     @InitBinder("userData")
     private void userInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Role.class, roleEditor);
+        webDataBinder.registerCustomEditor(Admin.class, adminEditor);
+        webDataBinder.registerCustomEditor(Receptionist.class, receptionistEditor);
+        webDataBinder.registerCustomEditor(Doctor.class, doctorEditor);
+        webDataBinder.registerCustomEditor(Patient.class, patientEditor);
         webDataBinder.addValidators(userValidator);
     }
 
@@ -80,9 +92,9 @@ public class UserController {
     }
 
     @PostMapping
-    public String processPersonForm(@Valid @ModelAttribute("userData") User user,
-                                    @RequestParam(value = "fee", required = false) String fee,
+    public String processPersonForm(@Validated @ModelAttribute("userData") User user,
                                     BindingResult bindingResult,
+                                    @RequestParam(value = "fee", required = false) String fee,
                                     ModelMap model) {
 
         if (bindingResult.hasErrors()) {
@@ -91,9 +103,11 @@ public class UserController {
             return FORM_PAGE;
         }
 
-        user = userService.updateRole(user, Double.parseDouble(fee));
+        if(user.isNew()) {
+            user = userService.saveOrUpdate(user);
+        }
 
-        user = userService.saveOrUpdate(user);
+        user = userService.updateRole(user, Double.parseDouble(fee));
 
         return VIEW_REDIRECT_PATH + user.getId();
     }
