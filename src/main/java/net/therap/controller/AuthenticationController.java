@@ -6,6 +6,7 @@ import net.therap.model.Role;
 import net.therap.service.AuthenticationService;
 import net.therap.service.UserService;
 import net.therap.service.RoleService;
+import net.therap.validator.UserViewModelValidator;
 import net.therap.viewModel.UserViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,9 +51,17 @@ public class AuthenticationController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserViewModelValidator userViewModelValidator;
+
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Role.class, roleEditor);
+    }
+
+    @InitBinder("userViewModel")
+    private void userViewModelInitBinder(WebDataBinder binder) {
+        binder.addValidators(userViewModelValidator);
     }
 
     @GetMapping({"/login","/"})
@@ -82,8 +91,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public String processLoginForm(@ModelAttribute("userViewModel") UserViewModel userViewModel,
-                                   BindingResult result, ModelMap model, HttpSession session) {
+    public String processLoginForm(@Valid @ModelAttribute("userViewModel") UserViewModel userViewModel,
+                                   BindingResult result,
+                                   ModelMap model,
+                                   HttpSession session) {
 
         if (result.hasErrors()) {
             return FORM_PAGE;
@@ -121,8 +132,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login/role")
-    public String loginByRole(@Valid @ModelAttribute UserViewModel userViewModel,
-                              BindingResult bindingResult, HttpSession session) {
+    public String loginByRole(@ModelAttribute UserViewModel userViewModel,
+                              BindingResult bindingResult,
+                              HttpSession session) {
 
         if (bindingResult.hasErrors()) {
             return FORM_PAGE;

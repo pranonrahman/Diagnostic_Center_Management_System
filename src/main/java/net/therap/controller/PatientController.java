@@ -35,7 +35,10 @@ public class PatientController {
     private DoctorService doctorService;
 
     @GetMapping("/list")
-    public String loadPatientListPage(@ModelAttribute("role") Role role, @ModelAttribute("user") User user, ModelMap model) {
+    public String loadPatientListPage(@ModelAttribute("role") Role role,
+                                      @ModelAttribute("user") User user,
+                                      ModelMap model) {
+
         long doctorId = user.getDoctor().getId();
         Set<Prescription> prescriptions = doctorService.findById(doctorId).getPrescriptions();
         List<PatientViewModel> patients = new ArrayList<>();
@@ -51,7 +54,10 @@ public class PatientController {
     }
 
     @GetMapping("/history")
-    public String loadList(@ModelAttribute("user") User user, @RequestParam("id") String id, ModelMap model) {
+    public String loadList(@ModelAttribute("user") User user,
+                           @RequestParam("id") String id,
+                           ModelMap model) {
+
         long doctorId = user.getDoctor().getId();
         Doctor doctor = doctorService.findById(doctorId);
         Patient patient = patientService.findById(Long.parseLong(id));

@@ -17,11 +17,12 @@ public class CustomErrorController implements ErrorController {
 
     private static final String INVALID_PAGE = "invalidPage";
     private static final String ERROR_PAGE = "errorPage";
+    private static final String ERROR_STATUS_CODE_ATTRIBUTE = "javax.servlet.error.status_code";
 
     @GetMapping("/error")
     public String showErrorPage(HttpServletRequest httpServletRequest, ModelMap model) {
         String errorMessage = "";
-        int httpErrorCode = (Integer) httpServletRequest.getAttribute("javax.servlet.error.status_code");
+        int httpErrorCode = (Integer) httpServletRequest.getAttribute(ERROR_STATUS_CODE_ATTRIBUTE);
 
         switch (httpErrorCode) {
             case 400: {

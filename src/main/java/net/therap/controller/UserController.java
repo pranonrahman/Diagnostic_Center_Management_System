@@ -48,7 +48,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
     @Autowired
     private RoleUpdateViewModelService roleUpdateViewModelService;
 
@@ -87,7 +86,10 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public String processPersonForm(@Valid @ModelAttribute("userData") User user, BindingResult bindingResult, ModelMap model) {
+    public String processPersonForm(@Valid @ModelAttribute("userData") User user,
+                                    BindingResult bindingResult,
+                                    ModelMap model) {
+
         model.put("readOnly", false);
         model.put("genderList", Gender.values());
 
@@ -101,7 +103,9 @@ public class UserController {
     }
 
     @GetMapping("/view")
-    public String showView(@RequestParam(value = "id") Long id, ModelMap model) {
+    public String showView(@RequestParam(value = "id") Long id,
+                           ModelMap model) {
+
         model.put("readOnly", true);
         model.put("genderList", Gender.values());
 
@@ -121,7 +125,8 @@ public class UserController {
     }
 
     @RequestMapping("/list")
-    public String showList(@RequestParam(value = "filterBy", required = false) String filterBy, ModelMap model) {
+    public String showList(@RequestParam(value = "filterBy", required = false) String filterBy,
+                           ModelMap model) {
 
         if (isNull(filterBy)) {
             model.put("users", userService.findAll());
