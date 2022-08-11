@@ -49,7 +49,11 @@ public class PrescriptionController {
     }
 
     @GetMapping("/view")
-    public String loadViewPage(@ModelAttribute("user") User user, @ModelAttribute("role") Role role, @RequestParam("id") String id, ModelMap model) {
+    public String loadViewPage(@ModelAttribute("user") User user,
+                               @ModelAttribute("role") Role role,
+                               @RequestParam("id") String id,
+                               ModelMap model) {
+
         model.put("doctorId", role.getName().equals(RoleEnum.DOCTOR) ? user.getDoctor().getId() : 0);
         setupReferenceData(model, Long.parseLong(id));
 

@@ -83,7 +83,9 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public String processLoginForm(@ModelAttribute("userViewModel") UserViewModel userViewModel,
-                                   BindingResult result, ModelMap model, HttpSession session) {
+                                   BindingResult result,
+                                   ModelMap model,
+                                   HttpSession session) {
 
         if (result.hasErrors()) {
             return FORM_PAGE;
@@ -122,7 +124,8 @@ public class AuthenticationController {
 
     @PostMapping("/login/role")
     public String loginByRole(@Valid @ModelAttribute UserViewModel userViewModel,
-                              BindingResult bindingResult, HttpSession session) {
+                              BindingResult bindingResult,
+                              HttpSession session) {
 
         if (bindingResult.hasErrors()) {
             return FORM_PAGE;
