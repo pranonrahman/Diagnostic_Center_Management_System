@@ -83,7 +83,7 @@
                         </form:option>
 
                         <form:options items="${seedRoleList}"
-                                      itemLabel="name"
+                                      itemLabel="name.value"
                                       itemValue="id"/>
                     </form:select>
 

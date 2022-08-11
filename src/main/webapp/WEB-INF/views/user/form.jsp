@@ -234,7 +234,7 @@
                                    items="${userData.roles}">
 
                             <li>
-                                <c:out value="${role.name}"/>
+                                <c:out value="${role.name.value}"/>
                             </li>
                         </c:forEach>
                     </ul>
