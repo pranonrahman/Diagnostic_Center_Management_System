@@ -26,13 +26,13 @@
 
     <div class="list-group">
         <c:forEach items="${prescriptionCmds}"
-                   var="prescriptionViewModel">
+                   var="prescriptionCmd">
 
             <c:url var="prescriptionViewPage"
                    value="${pageContext.request.contextPath}/prescription/view">
 
                 <c:param name="id"
-                         value="${prescriptionViewModel.prescription.id}"/>
+                         value="${prescriptionCmd.prescription.id}"/>
 
             </c:url>
 
@@ -41,15 +41,15 @@
 
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="card-title">
-                        <c:out value="${prescriptionViewModel.prescription.diagnosis}"/>
+                        <c:out value="${prescriptionCmd.prescription.diagnosis}"/>
                     </h5>
                     <small>
-                        <c:out value="${prescriptionViewModel.getDaysElapsed()}"/>
+                        <c:out value="${prescriptionCmd.getDaysElapsed()}"/>
                         <fmt:message key="text.daysAgo"/>
                     </small>
                 </div>
                 <p class="card-text">
-                    <c:out value="${prescriptionViewModel.prescription.symptoms}"/>
+                    <c:out value="${prescriptionCmd.prescription.symptoms}"/>
                 </p>
             </a>
         </c:forEach>

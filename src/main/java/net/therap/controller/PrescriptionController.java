@@ -73,7 +73,7 @@ public class PrescriptionController {
         Collections.sort(prescriptionCmds);
 
         model.put("patientName", user.getName());
-        model.put("prescriptionViewModels", prescriptionCmds);
+        model.put("prescriptionCmds", prescriptionCmds);
 
         return PRESCRIPTION_LIST_VIEW_PAGE;
     }
