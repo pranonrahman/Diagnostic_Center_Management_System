@@ -18,12 +18,12 @@ public class ParticularService {
     @Autowired
     private ParticularDao particularDao;
 
-    public List<Particular> findAll() {
-        return particularDao.findAll();
-    }
-
     public Particular findById(long id) {
         return particularDao.findById(id);
+    }
+
+    public List<Particular> findAll() {
+        return particularDao.findAll();
     }
 
     @Transactional

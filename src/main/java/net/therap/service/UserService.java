@@ -37,12 +37,12 @@ public class UserService {
     @Autowired
     private RoleDao roleDao;
 
-    public List<User> findAll() {
-        return userDao.findAll();
-    }
-
     public User findById(long id) {
         return userDao.findById(id);
+    }
+
+    public List<User> findAll() {
+        return userDao.findAll();
     }
 
     @Transactional

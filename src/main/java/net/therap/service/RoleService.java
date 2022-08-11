@@ -19,12 +19,12 @@ public class RoleService {
     @Autowired
     private RoleDao roleDao;
 
-    public List<Role> findAll() {
-        return roleDao.findAll();
-    }
-
     public Role findById(long id) {
         return roleDao.findById(id);
+    }
+
+    public List<Role> findAll() {
+        return roleDao.findAll();
     }
 
     public Role findByName(RoleEnum role) {

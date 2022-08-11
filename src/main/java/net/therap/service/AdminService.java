@@ -18,12 +18,12 @@ public class AdminService {
     @Autowired
     private AdminDao adminDao;
 
-    public List<Admin> findAll() {
-        return adminDao.findAll();
-    }
-
     public Admin findById(long id) {
         return adminDao.findById(id);
+    }
+
+    public List<Admin> findAll() {
+        return adminDao.findAll();
     }
 
     @Transactional
