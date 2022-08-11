@@ -56,7 +56,7 @@ public class DoctorVisitController {
 
     @GetMapping
     public String view(ModelMap model) {
-        setUpReferenceData(model, VIEW);
+        setUpReferenceData(VIEW, model);
 
         return ADD_DOCTOR_PAGE;
     }
@@ -68,7 +68,7 @@ public class DoctorVisitController {
                              ModelMap model) {
 
         if(result.hasErrors()) {
-            setUpReferenceData(model, SAVE);
+            setUpReferenceData(SAVE, model);
             return ADD_DOCTOR_PAGE;
         }
 
@@ -78,7 +78,7 @@ public class DoctorVisitController {
         return REDIRECT_MEDICINE_PAGE;
     }
 
-    private void setUpReferenceData(ModelMap model, Action action) {
+    private void setUpReferenceData(Action action, ModelMap model) {
         if(action.equals(VIEW)) {
             if(!model.containsAttribute(INVOICE_CMD)) {
                 model.put(INVOICE_CMD, new InvoiceCmd());

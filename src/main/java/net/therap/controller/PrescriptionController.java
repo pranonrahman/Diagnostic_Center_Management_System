@@ -55,7 +55,7 @@ public class PrescriptionController {
                                ModelMap model) {
 
         model.put("doctorId", role.getName().equals(RoleEnum.DOCTOR) ? user.getDoctor().getId() : 0);
-        setupReferenceData(model, Long.parseLong(id));
+        setupReferenceData(Long.parseLong(id), model);
 
         return VIEW_PAGE;
     }
@@ -81,7 +81,7 @@ public class PrescriptionController {
     @GetMapping("/save")
     public String loadEditPage(@RequestParam("id") String id, ModelMap model) {
         model.put("action", "edit");
-        setupReferenceData(model, Long.parseLong(id));
+        setupReferenceData(Long.parseLong(id), model);
 
         return VIEW_PAGE;
     }
@@ -93,12 +93,12 @@ public class PrescriptionController {
         prescription.setDateOfVisit(new Date());
 
         prescriptionService.saveOrUpdate(prescription);
-        setupReferenceData(model, 0);
+        setupReferenceData(0, model);
 
         return "redirect:/prescription/view?id=" + prescription.getId();
     }
 
-    private void setupReferenceData(ModelMap model, long prescriptionId) {
+    private void setupReferenceData(long prescriptionId, ModelMap model) {
         model.put("facilities", facilityService.findAll());
 
         if (prescriptionId == 0) {

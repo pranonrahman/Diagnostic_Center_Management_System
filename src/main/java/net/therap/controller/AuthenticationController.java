@@ -34,9 +34,8 @@ public class AuthenticationController {
     private static final String RECEPTIONIST_DASHBOARD_REDIRECT_PATH = "redirect:/invoice/doctor";
     private static final String LOGIN_REDIRECT_PATH = "redirect:/login";
     private static final String LOGIN_ROLE_REDIRECT_PATH = "redirect:/login/role";
-
+    private static final String USER_CMD = "userCmd";
     private static final String FORM_PAGE = "/authentication/form";
-
     private static final String INVALID_CREDENTIALS_PROVIDED = "Invalid credentials provided";
 
     @Autowired
@@ -59,7 +58,7 @@ public class AuthenticationController {
         webDataBinder.registerCustomEditor(Role.class, roleEditor);
     }
 
-    @InitBinder("userCmd")
+    @InitBinder(USER_CMD)
     private void userCmdInitBinder(WebDataBinder binder) {
         binder.addValidators(userCmdValidator);
     }
@@ -85,16 +84,16 @@ public class AuthenticationController {
             }
         }
 
-        model.put("userCmd", new UserCmd());
+        model.put(USER_CMD, new UserCmd());
 
         return FORM_PAGE;
     }
 
     @PostMapping("/login")
-    public String processLoginForm(@Valid @ModelAttribute("userCmd") UserCmd userCmd,
+    public String processLoginForm(@Valid @ModelAttribute(USER_CMD) UserCmd userCmd,
                                    BindingResult result,
-                                   ModelMap model,
-                                   HttpSession session) {
+                                   HttpSession session,
+                                   ModelMap model) {
 
         if (result.hasErrors()) {
             return FORM_PAGE;
@@ -113,7 +112,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/login/role")
-    public String showRoleForm(ModelMap model, HttpSession session) {
+    public String showRoleForm(HttpSession session, ModelMap model) {
 
         if (nonNull(session.getAttribute("user")) && nonNull(session.getAttribute("role"))) {
             return LOGIN_REDIRECT_PATH;
@@ -125,7 +124,7 @@ public class AuthenticationController {
 
         User user = (User) session.getAttribute("user");
 
-        model.put("userCmd", new UserCmd());
+        model.put(USER_CMD, new UserCmd());
         model.put("seedRoleList", user.getRoles());
 
         return FORM_PAGE;
@@ -166,7 +165,7 @@ public class AuthenticationController {
         session.removeAttribute("role");
 
         setUpReferenceData(model);
-        model.put("userCmd", new UserCmd());
+        model.put(USER_CMD, new UserCmd());
 
         return LOGIN_REDIRECT_PATH;
     }

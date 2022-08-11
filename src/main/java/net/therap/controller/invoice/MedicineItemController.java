@@ -59,7 +59,7 @@ public class MedicineItemController {
             return REDIRECT_DOCTOR_PAGE;
         }
 
-        setUpReferenceData(model, VIEW);
+        setUpReferenceData(VIEW, model);
 
         return ADD_MEDICINE_PAGE;
     }
@@ -75,7 +75,7 @@ public class MedicineItemController {
         }
 
         if(result.hasErrors()) {
-            setUpReferenceData(model, SAVE);
+            setUpReferenceData(SAVE, model);
 
             return ADD_MEDICINE_PAGE;
         }
@@ -99,7 +99,7 @@ public class MedicineItemController {
         return REDIRECT_MEDICINE_PAGE;
     }
 
-    private void setUpReferenceData(ModelMap model, Action action) {
+    private void setUpReferenceData(Action action, ModelMap model) {
         if(action.equals(VIEW)) {
             model.put(MEDICINE_CMD, new MedicineItemCmd());
         }

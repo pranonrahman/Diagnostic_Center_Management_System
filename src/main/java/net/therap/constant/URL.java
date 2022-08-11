@@ -1,6 +1,6 @@
 package net.therap.constant;
 
-public class UriConstant {
+public class URL {
 
     public static String USER_SAVE = "/user/save";
     public static String USER_VIEW = "/user/view";
