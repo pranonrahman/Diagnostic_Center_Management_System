@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedQuery(name = "Medicine.findAll", query = "FROM Medicine")
+@NamedQuery(name = "Medicine.findAll", query = "FROM Medicine  ORDER BY id DESC")
 public class Medicine extends Persistent {
 
     private static final long serialVersionUID = 1L;

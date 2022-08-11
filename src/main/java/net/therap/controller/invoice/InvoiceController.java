@@ -23,7 +23,6 @@ import static java.util.Objects.isNull;
 import static net.therap.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.entity.Action.REVIEW;
 import static net.therap.entity.Action.VIEW;
-import static net.therap.entity.RoleEnum.ADMIN;
 import static net.therap.entity.RoleEnum.RECEPTIONIST;
 
 /**
@@ -78,15 +77,15 @@ public class InvoiceController {
     public String list(HttpServletRequest request, ModelMap model) {
         Role userRole = (Role) request.getSession().getAttribute("role");
 
-        List<Invoice> invoices;
+        List<Invoice> invoices = invoiceService.findAll();
 
-        if (userRole.getName().equals(RoleEnum.PATIENT)) {
-            User user = (User) request.getSession().getAttribute("user");
-            Patient patient = user.getPatient();
-            invoices = invoiceService.findByPatient(patient);
-        } else {
-            invoices = invoiceService.findAll();
-        }
+//        if (userRole.getName().equals(RoleEnum.PATIENT)) {
+//            User user = (User) request.getSession().getAttribute("user");
+//            Patient patient = user.getPatient();
+//            invoices = invoiceService.findByPatient(patient);
+//        } else {
+//            invoices = invoiceService.findAll();
+//        }
 
         setUpReferenceData(invoices, model);
 
@@ -102,9 +101,9 @@ public class InvoiceController {
                        ModelMap model) {
 
         User user = (User) request.getSession().getAttribute("user");
-        Role userRole = (Role) request.getSession().getAttribute("role");
+//        Role userRole = (Role) request.getSession().getAttribute("role");
 
-        if (isNull(user) || !(userRole.getName().equals(RECEPTIONIST) || userRole.getName().equals(ADMIN))) {
+        if (isNull(user) || user.getRoles().stream().noneMatch(role -> role.getName().equals(RECEPTIONIST))) {
             model.put("errorMessage", msa.getMessage("error.unAuthorized"));
 
             return VIEW_PAGE;

@@ -20,7 +20,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @NoArgsConstructor
-@NamedQuery(name = "Facility.findAll", query = "FROM Facility")
+@NamedQuery(name = "Facility.findAll", query = "FROM Facility ORDER BY id DESC")
 public class Facility extends Persistent {
 
     private static final long serialVersionUID = 1L;
