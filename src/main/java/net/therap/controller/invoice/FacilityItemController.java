@@ -8,6 +8,7 @@ import net.therap.model.Facility;
 import net.therap.service.FacilityService;
 import net.therap.command.InvoiceCmd;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -45,6 +46,7 @@ public class FacilityItemController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Facility.class, facilityEditor);
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
     @GetMapping
