@@ -23,13 +23,20 @@
     <h2 class="text-center py-3"> Login </h2>
     <div class="w-50 mx-auto">
         <c:if test="${empty user}">
-            <%--@elvariable id="userViewModel" type="net.therap.viewModel.UserViewModel"--%>
-            <form:form action="/login" method="post" modelAttribute="userViewModel">
+            <form:form action="/login"
+                       method="post"
+                       modelAttribute="userCmd">
+
                 <div class="mb-3">
                     <form:label path="userName">
                         <fmt:message key="authentication.form.userName"/>
                     </form:label>
-                    <form:input path="userName" type="text" required="required" cssClass="w-100"/>
+
+                    <form:input path="userName"
+                                type="text"
+                                required="required"
+                                cssClass="w-100"/>
+
                     <form:errors path="userName"/>
                 </div>
 
@@ -37,10 +44,17 @@
                     <form:label path="password">
                         <fmt:message key="authentication.form.password"/>
                     </form:label>
-                    <form:input path="password" type="password" required="required" cssClass="w-100"/>
+                    <form:input path="password"
+                                type="password"
+                                required="required"
+                                cssClass="w-100"/>
+
                     <form:errors path="password"/>
                 </div>
-                <button type="submit" value="submit" class="btn btn-primary w-100">
+                <button type="submit"
+                        value="submit"
+                        class="btn btn-primary w-100">
+
                     <fmt:message key="authentication.form.nextPage"/>
                 </button>
             </form:form>
@@ -52,21 +66,34 @@
         </c:if>
 
         <c:if test="${not empty user and empty role}">
-            <form:form action="/login/role" method="post" modelAttribute="userViewModel">
+            <form:form action="/login/role"
+                       method="post"
+                       modelAttribute="userCmd">
+
                 <div class="mb-3">
                     <form:label path="role">
                         <fmt:message key="authentication.form.role"/>
                     </form:label>
-                    <form:select path="role" cssClass="form-control">
+
+                    <form:select path="role"
+                                 cssClass="form-control">
+
                         <form:option value="">
-                            Select
+                            <fmt:message key="label.select"/>
                         </form:option>
-                        <form:options items="${seedRoleList}" itemLabel="name" itemValue="id"/>
+
+                        <form:options items="${seedRoleList}"
+                                      itemLabel="name"
+                                      itemValue="id"/>
                     </form:select>
+
                     <form:errors path="role"/>
                 </div>
 
-                <button type="submit" value="submit" class="btn btn-primary w-100">
+                <button type="submit"
+                        value="submit"
+                        class="btn btn-primary w-100">
+
                     <fmt:message key="authentication.form.submit"/>
                 </button>
             </form:form>
@@ -74,5 +101,6 @@
     </div>
 </div>
 <jsp:include page="../footer.jsp"/>
+
 </body>
 </html>

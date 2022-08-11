@@ -16,9 +16,9 @@
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value="../../../assets/js/jquery-3.6.0.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="../../../assets/js/bootstrap.bundle.min.js"/>"></script>
-    <jsp:include page="../header.jsp"/>
 </head>
 <body>
+<jsp:include page="../header.jsp"/>
 
 <div class="container-fluid bg-primary-custom h-100">
 
@@ -47,7 +47,7 @@
             </tr>
             </thead>
             <tbody>
-            <%--@elvariable id="users" type="java.util.List"--%>
+
             <c:forEach items="${users}" var="user">
                 <tr>
                     <td>
@@ -78,5 +78,6 @@
     </div>
 </div>
 <jsp:include page="../footer.jsp"/>
+
 </body>
 </html>

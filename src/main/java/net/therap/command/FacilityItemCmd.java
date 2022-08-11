@@ -1,4 +1,4 @@
-package net.therap.viewModel;
+package net.therap.command;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class FacilityItem {
+public class FacilityItemCmd {
 
     @NotNull
     private Facility facility;

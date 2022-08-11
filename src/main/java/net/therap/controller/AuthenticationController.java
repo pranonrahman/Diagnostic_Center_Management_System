@@ -1,5 +1,6 @@
 package net.therap.controller;
 
+import net.therap.command.UserCmd;
 import net.therap.editor.RoleEditor;
 import net.therap.model.User;
 import net.therap.model.Role;
@@ -7,7 +8,6 @@ import net.therap.service.AuthenticationService;
 import net.therap.service.UserService;
 import net.therap.service.RoleService;
 import net.therap.validator.UserViewModelValidator;
-import net.therap.viewModel.UserViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -85,13 +85,13 @@ public class AuthenticationController {
             }
         }
 
-        model.put("userViewModel", new UserViewModel());
+        model.put("userViewModel", new UserCmd());
 
         return FORM_PAGE;
     }
 
     @PostMapping("/login")
-    public String processLoginForm(@Valid @ModelAttribute("userViewModel") UserViewModel userViewModel,
+    public String processLoginForm(@Valid @ModelAttribute("userViewModel") UserCmd userCmd,
                                    BindingResult result,
                                    ModelMap model,
                                    HttpSession session) {
@@ -100,14 +100,14 @@ public class AuthenticationController {
             return FORM_PAGE;
         }
 
-        if (!authenticationService.authenticateByPassword(userViewModel)) {
+        if (!authenticationService.authenticateByPassword(userCmd)) {
             model.put("message", INVALID_CREDENTIALS_PROVIDED);
             return FORM_PAGE;
         }
 
-        session.setAttribute("user", userService.findByUserName(userViewModel.getUserName()));
+        session.setAttribute("user", userService.findByUserName(userCmd.getUserName()));
 
-        model.put("seedRoleList", userService.findByUserName(userViewModel.getUserName()).getRoles());
+        model.put("seedRoleList", userService.findByUserName(userCmd.getUserName()).getRoles());
 
         return LOGIN_ROLE_REDIRECT_PATH;
     }
@@ -125,14 +125,14 @@ public class AuthenticationController {
 
         User user = (User) session.getAttribute("user");
 
-        model.put("userViewModel", new UserViewModel());
+        model.put("userViewModel", new UserCmd());
         model.put("seedRoleList", user.getRoles());
 
         return FORM_PAGE;
     }
 
     @PostMapping("/login/role")
-    public String loginByRole(@ModelAttribute UserViewModel userViewModel,
+    public String loginByRole(@ModelAttribute UserCmd userCmd,
                               BindingResult bindingResult,
                               HttpSession session) {
 
@@ -140,13 +140,13 @@ public class AuthenticationController {
             return FORM_PAGE;
         }
 
-        if (!authenticationService.authenticateByRole(userViewModel, (User) session.getAttribute("user"))) {
+        if (!authenticationService.authenticateByRole(userCmd, (User) session.getAttribute("user"))) {
             return FORM_PAGE;
         }
 
-        session.setAttribute("role", userViewModel.getRole());
+        session.setAttribute("role", userCmd.getRole());
 
-        switch (userViewModel.getRole().getName()) {
+        switch (userCmd.getRole().getName()) {
             case ADMIN:
                 return ADMIN_DASHBOARD_REDIRECT_PATH;
             case PATIENT:
@@ -166,7 +166,7 @@ public class AuthenticationController {
         session.removeAttribute("role");
 
         setUpReferenceData(model);
-        model.put("userViewModel", new UserViewModel());
+        model.put("userViewModel", new UserCmd());
 
         return LOGIN_REDIRECT_PATH;
     }

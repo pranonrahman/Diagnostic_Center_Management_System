@@ -1,12 +1,12 @@
 package net.therap.controller.invoice;
 
+import net.therap.command.FacilityItemCmd;
+import net.therap.command.RemoveCmd;
 import net.therap.editor.FacilityEditor;
 import net.therap.model.Action;
 import net.therap.model.Facility;
 import net.therap.service.FacilityService;
-import net.therap.viewModel.FacilityItem;
-import net.therap.viewModel.InvoiceViewModel;
-import net.therap.viewModel.RemoveModel;
+import net.therap.command.InvoiceCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -49,7 +49,7 @@ public class FacilityItemController {
 
     @GetMapping
     public String view(ModelMap model) {
-        InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
+        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
 
         if(isNull(invoice) || isNull(invoice.getPatient())) {
             return REDIRECT_DOCTOR_PAGE;
@@ -61,7 +61,7 @@ public class FacilityItemController {
     }
 
     @PostMapping
-    public String save(@Valid @ModelAttribute(FACILITY_CMD) FacilityItem facilityItem,
+    public String save(@Valid @ModelAttribute(FACILITY_CMD) FacilityItemCmd facilityItemCmd,
                                BindingResult result,
                                @RequestParam("action") Action action,
                                ModelMap model) {
@@ -76,9 +76,9 @@ public class FacilityItemController {
             return ADD_FACILITY_PAGE;
         }
 
-        InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
-        invoice.getFacilities().removeIf(facility -> facility.getFacility().getId() == facilityItem.getFacility().getId());
-        invoice.getFacilities().add(facilityItem);
+        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
+        invoice.getFacilities().removeIf(facility -> facility.getFacility().getId() == facilityItemCmd.getFacility().getId());
+        invoice.getFacilities().add(facilityItemCmd);
 
         if(action.equals(ADD)) {
             return REDIRECT_FACILITY_PAGE;
@@ -88,16 +88,16 @@ public class FacilityItemController {
     }
 
     @PostMapping("/remove")
-    public String remove(@ModelAttribute("removeModel") RemoveModel removeModel, ModelMap model) {
-        InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
-        invoice.getFacilities().removeIf(medicineItem -> medicineItem.getFacility().getId() == removeModel.getId());
+    public String remove(@ModelAttribute("removeModel") RemoveCmd removeCmd, ModelMap model) {
+        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
+        invoice.getFacilities().removeIf(medicineItem -> medicineItem.getFacility().getId() == removeCmd.getId());
 
         return REDIRECT_FACILITY_PAGE;
     }
 
     private void setUpReferenceData(ModelMap model, Action action) {
         if(action.equals(VIEW)) {
-            model.put(FACILITY_CMD, new FacilityItem());
+            model.put(FACILITY_CMD, new FacilityItemCmd());
         }
 
         model.put("facilities", facilityService.findAll());

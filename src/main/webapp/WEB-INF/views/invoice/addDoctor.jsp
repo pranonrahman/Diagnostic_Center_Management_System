@@ -15,17 +15,17 @@
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value="../../../assets/js/jquery-3.6.0.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="../../../assets/js/bootstrap.bundle.min.js"/>"></script>
-    <jsp:include page="../header.jsp"/>
 </head>
 
 <body>
+<jsp:include page="../header.jsp"/>
+
 <div class="container-fluid bg-primary-custom h-100">
 
     <h2 class="text-center py-3"> <fmt:message key="title.invoice"/> </h2>
 
     <div class="w-50 mx-auto">
-        <%--@elvariable id="doctorVisit" type="net.therap.viewModel.DoctorVisit"--%>
-        <form:form method="post" modelAttribute="doctorVisit">
+        <form:form method="post" modelAttribute="doctorVisitCmd">
 
             <div class="mb-3">
                 <form:label path="patient" cssClass="form-label"> <fmt:message key="label.patient"/> </form:label>
@@ -37,28 +37,35 @@
 
                     <form:options items="${patients}"
                                   itemValue="id"
-                                  itemLabel="user.name"/>
+                                  itemLabel="user.name"
+                    />
                 </form:select>
 
                 <form:errors path="patient" cssClass="invalid-feedback d-block"/>
             </div>
 
             <div class="mb-3">
-                <form:label path="doctors"> <fmt:message key="label.selectDoctors"/> </form:label>
+                <form:label path="doctors">
+                    <fmt:message key="label.selectDoctors"/>
+                </form:label>
 
                 <div class="form-check d-grid">
                     <form:checkboxes class="form-check-input"
                                      items="${doctors}"
                                      itemValue="id"
                                      itemLabel="user.name"
-                                     path="doctors"/>
+                                     path="doctors"
+                    />
                 </div>
 
-                <form:errors path="doctors" cssClass="invalid-feedback d-block"/>
+                <form:errors path="doctors"
+                             cssClass="invalid-feedback d-block"
+                />
             </div>
 
             <button type="submit"
                     class="btn btn-primary">
+
                 <fmt:message key="button.label.next"/>
             </button>
         </form:form>

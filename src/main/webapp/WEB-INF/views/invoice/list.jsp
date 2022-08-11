@@ -19,6 +19,7 @@
 
 <body>
 <jsp:include page="../header.jsp"/>
+
 <div class="container-fluid bg-primary-custom h-100 w-75">
     <c:set var="isPatient" value="${role.getName().equals(RoleEnum.PATIENT)}"/>
 
@@ -51,10 +52,16 @@
                 <td hidden="${isPatient}"><c:out value="${invoice.patient.user.name}"/></td>
                 <td> <fmt:formatDate value="${invoice.generationDate}"/> </td>
                 <td> <fmt:formatNumber value="${invoice.totalCost}"/> </td>
-                <c:url var="invoiceLink" value="/invoice/view">
-                    <c:param name="id" value="${invoice.id}"/>
+
+                <c:url var="invoiceLink"
+                       value="/invoice/view">
+                    <c:param name="id"
+                             value="${invoice.id}"
+                    />
                 </c:url>
-                <td><a href="${invoiceLink}"> <fmt:message key="button.label.details"/> </a></td>
+                <td>
+                    <a href="${invoiceLink}"><fmt:message key="button.label.details"/> </a>
+                </td>
             </tr>
         </c:forEach>
         </tbody>

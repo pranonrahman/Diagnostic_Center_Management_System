@@ -1,12 +1,12 @@
 package net.therap.controller;
 
+import net.therap.command.PrescriptionCmd;
 import net.therap.editor.FacilityEditor;
 import net.therap.model.*;
 import net.therap.service.DoctorService;
 import net.therap.service.FacilityService;
 import net.therap.service.PatientService;
 import net.therap.service.PrescriptionService;
-import net.therap.viewModel.PrescriptionViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -63,17 +63,17 @@ public class PrescriptionController {
     @GetMapping("/list")
     public String loadPrescriptionList(@ModelAttribute("user") User user, ModelMap model) {
         Patient patient = user.getPatient();
-        List<PrescriptionViewModel> prescriptionViewModels = new ArrayList<>();
+        List<PrescriptionCmd> prescriptionCmds = new ArrayList<>();
         Set<Prescription> prescriptions = patient.getPrescriptions();
 
         for (Prescription prescription : prescriptions) {
-            prescriptionViewModels.add(new PrescriptionViewModel(prescription));
+            prescriptionCmds.add(new PrescriptionCmd(prescription));
         }
 
-        Collections.sort(prescriptionViewModels);
+        Collections.sort(prescriptionCmds);
 
         model.put("patientName", user.getName());
-        model.put("prescriptionViewModels", prescriptionViewModels);
+        model.put("prescriptionViewModels", prescriptionCmds);
 
         return PRESCRIPTION_LIST_VIEW_PAGE;
     }

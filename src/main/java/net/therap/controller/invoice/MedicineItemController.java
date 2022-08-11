@@ -1,12 +1,12 @@
 package net.therap.controller.invoice;
 
+import net.therap.command.MedicineItemCmd;
 import net.therap.editor.MedicineEditor;
 import net.therap.model.*;
 import net.therap.service.MedicineService;
 import net.therap.validator.MedicineItemValidator;
-import net.therap.viewModel.InvoiceViewModel;
-import net.therap.viewModel.MedicineItem;
-import net.therap.viewModel.RemoveModel;
+import net.therap.command.InvoiceCmd;
+import net.therap.command.RemoveCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -53,7 +53,7 @@ public class MedicineItemController {
 
     @GetMapping
     public String view(ModelMap model) {
-        InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
+        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
 
         if(isNull(invoice) || isNull(invoice.getPatient())) {
             return REDIRECT_DOCTOR_PAGE;
@@ -65,7 +65,7 @@ public class MedicineItemController {
     }
 
     @PostMapping
-    public String save(@Valid @ModelAttribute(MEDICINE_CMD) MedicineItem medicineItem,
+    public String save(@Valid @ModelAttribute(MEDICINE_CMD) MedicineItemCmd medicineItemCmd,
                                BindingResult result,
                                @RequestParam Action action,
                                ModelMap model) {
@@ -80,9 +80,9 @@ public class MedicineItemController {
             return ADD_MEDICINE_PAGE;
         }
 
-        InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
-        invoice.getMedicines().removeIf(facility -> facility.getMedicine().getId() == medicineItem.getMedicine().getId());
-        invoice.getMedicines().add(medicineItem);
+        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
+        invoice.getMedicines().removeIf(facility -> facility.getMedicine().getId() == medicineItemCmd.getMedicine().getId());
+        invoice.getMedicines().add(medicineItemCmd);
 
         if(action.equals(ADD)) {
             return REDIRECT_MEDICINE_PAGE;
@@ -92,16 +92,16 @@ public class MedicineItemController {
     }
 
     @PostMapping("/remove")
-    public String remove(@ModelAttribute("removeModel") RemoveModel removeModel, ModelMap model) {
-        InvoiceViewModel invoice = (InvoiceViewModel) model.get(INVOICE_CMD);
-        invoice.getMedicines().removeIf(medicineItem -> medicineItem.getMedicine().getId() == removeModel.getId());
+    public String remove(@ModelAttribute("removeModel") RemoveCmd removeCmd, ModelMap model) {
+        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
+        invoice.getMedicines().removeIf(medicineItemCmd -> medicineItemCmd.getMedicine().getId() == removeCmd.getId());
 
         return REDIRECT_MEDICINE_PAGE;
     }
 
     private void setUpReferenceData(ModelMap model, Action action) {
         if(action.equals(VIEW)) {
-            model.put(MEDICINE_CMD, new MedicineItem());
+            model.put(MEDICINE_CMD, new MedicineItemCmd());
         }
 
         model.put("medicines", medicineService.findAll());

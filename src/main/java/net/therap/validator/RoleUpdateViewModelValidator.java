@@ -1,6 +1,6 @@
 package net.therap.validator;
 
-import net.therap.viewModel.RoleUpdateViewModel;
+import net.therap.command.RoleUpdateCmd;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -18,15 +18,15 @@ public class RoleUpdateViewModelValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return RoleUpdateViewModel.class.equals(clazz);
+        return RoleUpdateCmd.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        RoleUpdateViewModel roleUpdateViewModel = (RoleUpdateViewModel) target;
+        RoleUpdateCmd roleUpdateCmd = (RoleUpdateCmd) target;
 
-        if (roleUpdateViewModel.getDoctor()
-                && (isNull(roleUpdateViewModel.getFee()) || roleUpdateViewModel.getFee() == 0)) {
+        if (roleUpdateCmd.getDoctor()
+                && (isNull(roleUpdateCmd.getFee()) || roleUpdateCmd.getFee() == 0)) {
 
             errors.rejectValue("fee",
                     "{roleUpdateViewModel.doctor.feeNull}",

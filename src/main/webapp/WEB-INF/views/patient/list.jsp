@@ -13,13 +13,15 @@
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value="../../../assets/js/jquery-3.6.0.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="../../../assets/js/bootstrap.bundle.min.js"/>"></script>
-    <jsp:include page="../header.jsp"/>
 </head>
 <body>
+<jsp:include page="../header.jsp"/>
 
 <div class="container-fluid bg-primary-custom h-100 w-75">
 
-    <h2 class="text-center py-3"> <fmt:message key="text.listOfPatients"/> </h2>
+    <h2 class="text-center py-3">
+        <fmt:message key="text.listOfPatients"/>
+    </h2>
 
     <table class="table text-center">
         <thead>
@@ -33,14 +35,19 @@
         </thead>
 
         <tbody>
-        <c:forEach var="patientViewModel" items="${patients}" varStatus="loop">
+        <c:forEach var="patientViewModel"
+                   items="${patients}"
+                   varStatus="loop">
             <tr>
                 <th scope="row">${loop.index + 1}</th>
                 <td><c:out value="${patientViewModel.patient.user.name}"/></td>
                 <td><c:out value="${patientViewModel.getAge()}"/></td>
                 <td><c:out value="${patientViewModel.patient.user.gender}"/></td>
-                <c:url var="historyViewPage" value="${pageContext.request.contextPath}/patient/history">
-                    <c:param name="id" value="${patientViewModel.patient.id}"/>
+                <c:url var="historyViewPage"
+                       value="${pageContext.request.contextPath}/patient/history">
+
+                    <c:param name="id"
+                             value="${patientViewModel.patient.id}"/>
                 </c:url>
                 <td><a href="${historyViewPage}"><fmt:message key="text.view"/></a></td>
             </tr>
@@ -49,6 +56,7 @@
     </table>
 </div>
 <jsp:include page="../footer.jsp"/>
+
 </body>
 </html>
 

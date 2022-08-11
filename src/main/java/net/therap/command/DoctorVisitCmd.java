@@ -1,4 +1,4 @@
-package net.therap.viewModel;
+package net.therap.command;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,13 +17,13 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class DoctorVisit {
+public class DoctorVisitCmd {
 
     @NotNull
     private Patient patient;
     private List<Doctor> doctors;
 
-    public DoctorVisit() {
+    public DoctorVisitCmd() {
         doctors = new ArrayList<>();
     }
 }
