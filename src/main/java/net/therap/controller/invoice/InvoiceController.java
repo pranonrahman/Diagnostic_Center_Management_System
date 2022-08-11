@@ -110,7 +110,7 @@ public class InvoiceController {
             return VIEW_PAGE;
         }
 
-        Invoice invoice = invoiceService.getInvoiceFromViewModel(invoiceCmd);
+        Invoice invoice = invoiceService.getInvoiceFromCmd(invoiceCmd);
 
         if (invoice.getParticulars().isEmpty()) {
             model.put("errorMessage", "error.notSelected");
@@ -159,7 +159,7 @@ public class InvoiceController {
     }
 
     private void setUpReferenceData(ModelMap model, InvoiceCmd invoice) {
-        model.put(INVOICE_VIEW_CMD, invoiceService.getInvoiceFromViewModel(invoice));
+        model.put(INVOICE_VIEW_CMD, invoiceService.getInvoiceFromCmd(invoice));
         model.put("action", REVIEW);
     }
 

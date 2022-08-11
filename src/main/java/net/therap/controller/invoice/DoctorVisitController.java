@@ -30,7 +30,7 @@ import static net.therap.model.Action.VIEW;
 public class DoctorVisitController {
 
     private static final String ADD_DOCTOR_PAGE = "/invoice/addDoctor";
-    private static final String DOCTOR_VISIT_CMD = "doctorVisit";
+    private static final String DOCTOR_VISIT_CMD = "doctorVisitCmd";
     public static final String INVOICE_CMD = "invoice";
     public static final String REDIRECT_MEDICINE_PAGE = "redirect:/invoice/medicine";
 
