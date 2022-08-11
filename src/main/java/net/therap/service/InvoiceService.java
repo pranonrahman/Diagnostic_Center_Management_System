@@ -8,6 +8,7 @@ import net.therap.entity.Doctor;
 import net.therap.entity.Invoice;
 import net.therap.entity.Particular;
 import net.therap.entity.Patient;
+import net.therap.exception.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 /**
  * @author raian.rahman
@@ -36,7 +39,13 @@ public class InvoiceService {
     MessageSourceAccessor msa;
 
     public Invoice findById(long id) {
-        return invoiceDao.findById(id);
+        Invoice invoice = invoiceDao.findById(id);
+
+        if (isNull(invoice)) {
+            throw new RecordNotFoundException();
+        }
+
+        return invoice;
     }
 
     public List<Invoice> findByPatient(Patient patient) {
