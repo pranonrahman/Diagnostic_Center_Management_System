@@ -12,7 +12,7 @@ import static java.util.Objects.isNull;
  * @since 8/4/22
  */
 @Component
-public class UserViewModelValidator implements Validator {
+public class UserCmdValidator implements Validator {
 
     private static final String USER_NAME_NOT_NULL_MESSAGE = "Must provide a username";
     private static final String PASSWORD_NOT_NULL_MESSAGE = "Must provide a password";

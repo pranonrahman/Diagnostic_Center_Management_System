@@ -12,7 +12,7 @@ import static java.util.Objects.isNull;
  * @since 8/7/22
  */
 @Component
-public class RoleUpdateViewModelValidator implements Validator {
+public class RoleUpdateCmdValidator implements Validator {
 
     private static final String FEE_NOT_PROVIDED_MESSAGE = "Doctor must have a fee";
 

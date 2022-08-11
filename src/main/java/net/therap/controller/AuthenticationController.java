@@ -7,7 +7,7 @@ import net.therap.model.Role;
 import net.therap.service.AuthenticationService;
 import net.therap.service.UserService;
 import net.therap.service.RoleService;
-import net.therap.validator.UserViewModelValidator;
+import net.therap.validator.UserCmdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -52,16 +52,16 @@ public class AuthenticationController {
     private UserService userService;
 
     @Autowired
-    private UserViewModelValidator userViewModelValidator;
+    private UserCmdValidator userCmdValidator;
 
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Role.class, roleEditor);
     }
 
-    @InitBinder("userViewModel")
-    private void userViewModelInitBinder(WebDataBinder binder) {
-        binder.addValidators(userViewModelValidator);
+    @InitBinder("userCmd")
+    private void userCmdInitBinder(WebDataBinder binder) {
+        binder.addValidators(userCmdValidator);
     }
 
     @GetMapping({"/login","/"})
