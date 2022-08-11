@@ -10,7 +10,7 @@ import net.therap.service.UserService;
 import net.therap.service.RoleService;
 import net.therap.service.RoleUpdateViewModelService;
 import net.therap.validator.PersonValidator;
-import net.therap.validator.RoleUpdateViewModelValidator;
+import net.therap.validator.RoleUpdateCmdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -55,7 +55,7 @@ public class UserController {
     private RoleService roleService;
 
     @Autowired
-    private RoleUpdateViewModelValidator roleUpdateViewModelValidator;
+    private RoleUpdateCmdValidator roleUpdateCmdValidator;
 
     @Autowired
     private PersonValidator userValidator;
@@ -70,9 +70,9 @@ public class UserController {
         webDataBinder.addValidators(userValidator);
     }
 
-    @InitBinder("roleUpdateViewModel")
-    private void roleUpdateViewModelInitBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(roleUpdateViewModelValidator);
+    @InitBinder("roleUpdateCmd")
+    private void roleUpdateCmdInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(roleUpdateCmdValidator);
     }
 
     @GetMapping("/save")
