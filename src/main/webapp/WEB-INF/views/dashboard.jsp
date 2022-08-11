@@ -7,7 +7,10 @@
 --%>
 <html>
 <head>
-    <title><fmt:message key="dashboard.title"/> </title>
+    <title>
+<%--        <fmt:message key="dashboard.title"/>--%>
+        Dashboard
+    </title>
 
     <link type="text/css" href="<c:url value="../../assets/css/bootstrap.min.css"/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value="../../assets/css/style.css"/>" rel="stylesheet"/>
@@ -16,15 +19,19 @@
 </head>
 <body>
 
+<jsp:include page="header.jsp"/>
 <div class="container-fluid bg-primary-custom h-100 w-75">
 
     <h2 class="text-center py-3">
-        <fmt:message key="dashboard.head"/>
+<%--        <fmt:message key="dashboard.head"/>--%>
+        Welcome to Diagnostic Center Management
     </h2>
 
 
 </div>
+<div class="container-fluid h-100 bg-primary-custom w-50 mx-auto">
+    <a href="" class="btn btn-primary"></a>
+</div>
 <jsp:include page="footer.jsp"/>
-
 </body>
 </html>
