@@ -85,7 +85,7 @@ public class AuthenticationController {
             }
         }
 
-        model.put("userViewModel", new UserCmd());
+        model.put("userCmd", new UserCmd());
 
         return FORM_PAGE;
     }
@@ -125,7 +125,7 @@ public class AuthenticationController {
 
         User user = (User) session.getAttribute("user");
 
-        model.put("userViewModel", new UserCmd());
+        model.put("userCmd", new UserCmd());
         model.put("seedRoleList", user.getRoles());
 
         return FORM_PAGE;
@@ -166,7 +166,7 @@ public class AuthenticationController {
         session.removeAttribute("role");
 
         setUpReferenceData(model);
-        model.put("userViewModel", new UserCmd());
+        model.put("userCmd", new UserCmd());
 
         return LOGIN_REDIRECT_PATH;
     }

@@ -48,7 +48,7 @@ public class InvoiceService {
         return invoiceDao.saveOrUpdate(invoice);
     }
 
-    public Invoice getInvoiceFromViewModel(InvoiceCmd invoiceCmd) {
+    public Invoice getInvoiceFromCmd(InvoiceCmd invoiceCmd) {
         Invoice invoice = new Invoice();
         invoice.setPatient(invoiceCmd.getPatient());
         double totalCost = 0;

@@ -30,7 +30,7 @@ import static net.therap.model.Action.*;
 public class FacilityItemController {
 
     public static final String INVOICE_CMD = "invoice";
-    public static final String FACILITY_CMD = "facilityItem";
+    public static final String FACILITY_CMD = "facilityItemCmd";
     private static final String ADD_FACILITY_PAGE = "/invoice/addFacility";
     private static final String REDIRECT_FACILITY_PAGE = "redirect:/invoice/facility";
     private static final String REDIRECT_DOCTOR_PAGE = "redirect:/invoice/doctor";
@@ -51,7 +51,7 @@ public class FacilityItemController {
     public String view(ModelMap model) {
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
 
-        if(isNull(invoice) || isNull(invoice.getPatient())) {
+        if (isNull(invoice) || isNull(invoice.getPatient())) {
             return REDIRECT_DOCTOR_PAGE;
         }
 
@@ -62,15 +62,15 @@ public class FacilityItemController {
 
     @PostMapping
     public String save(@Valid @ModelAttribute(FACILITY_CMD) FacilityItemCmd facilityItemCmd,
-                               BindingResult result,
-                               @RequestParam("action") Action action,
-                               ModelMap model) {
+                       BindingResult result,
+                       @RequestParam("action") Action action,
+                       ModelMap model) {
 
-        if(action.equals(NEXT)) {
+        if (action.equals(NEXT)) {
             return REDIRECT_INVOICE_REVIEW_PAGE;
         }
 
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             setUpReferenceData(model, SAVE);
 
             return ADD_FACILITY_PAGE;
@@ -80,7 +80,7 @@ public class FacilityItemController {
         invoice.getFacilities().removeIf(facility -> facility.getFacility().getId() == facilityItemCmd.getFacility().getId());
         invoice.getFacilities().add(facilityItemCmd);
 
-        if(action.equals(ADD)) {
+        if (action.equals(ADD)) {
             return REDIRECT_FACILITY_PAGE;
         }
 
@@ -96,7 +96,7 @@ public class FacilityItemController {
     }
 
     private void setUpReferenceData(ModelMap model, Action action) {
-        if(action.equals(VIEW)) {
+        if (action.equals(VIEW)) {
             model.put(FACILITY_CMD, new FacilityItemCmd());
         }
 

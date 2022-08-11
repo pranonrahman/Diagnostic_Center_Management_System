@@ -168,7 +168,7 @@ public class UserController {
 
         RoleUpdateCmd roleUpdateCmd = roleUpdateViewModelService.getRoleUpdateViewModel(user);
 
-        model.put("roleUpdateViewModel", roleUpdateCmd);
+        model.put("roleUpdateCmd", roleUpdateCmd);
 
         return ROLE_UPDATE_PAGE;
     }
