@@ -1,7 +1,7 @@
 package net.therap.service;
 
 import net.therap.dao.*;
-import net.therap.model.*;
+import net.therap.entity.*;
 import net.therap.command.RoleUpdateCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

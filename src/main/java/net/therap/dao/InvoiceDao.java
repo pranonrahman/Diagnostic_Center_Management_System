@@ -1,10 +1,9 @@
 package net.therap.dao;
 
-import net.therap.model.Invoice;
-import net.therap.model.Patient;
+import net.therap.entity.Invoice;
+import net.therap.entity.Patient;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.NoResultException;
 import java.util.List;
 
 /**

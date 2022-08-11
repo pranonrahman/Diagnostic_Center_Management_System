@@ -1,57 +1,48 @@
-package net.therap.model;
+package net.therap.entity;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author raian.rahman
  * @since 8/1/22
  */
 @Entity
-@Table(name = "patient")
+@Table(name = "doctor")
 @Getter
 @Setter
-@NamedQuery(name = "Patient.findAll", query = "FROM Patient")
-public class Patient extends Persistent {
+@NamedQuery(name = "Doctor.findAll", query = "FROM Doctor")
+public class Doctor extends Persistent {
 
     private static final long serialVersionUID = 1L;
+
+    private double fee;
 
     @OneToOne
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
     private List<Prescription> prescriptions;
 
-    @OneToMany
-    private List<Invoice> invoices;
-
-    public Patient() {
+    public Doctor() {
         prescriptions = new ArrayList<>();
-        invoices = new ArrayList<>();
     }
 
-    public Patient(User user) {
+    public Doctor(double fee, User user) {
         this();
 
+        this.fee = fee;
         this.user = user;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (!(o instanceof Patient)) {
-            return false;
-        }
-
+        if (this == o) return true;
+        if (!(o instanceof Doctor)) return false;
         return super.equals(o);
     }
 

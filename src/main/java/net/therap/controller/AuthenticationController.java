@@ -2,8 +2,8 @@ package net.therap.controller;
 
 import net.therap.command.UserCmd;
 import net.therap.editor.RoleEditor;
-import net.therap.model.User;
-import net.therap.model.Role;
+import net.therap.entity.User;
+import net.therap.entity.Role;
 import net.therap.service.AuthenticationService;
 import net.therap.service.UserService;
 import net.therap.service.RoleService;

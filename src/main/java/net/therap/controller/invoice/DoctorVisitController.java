@@ -3,7 +3,7 @@ package net.therap.controller.invoice;
 import net.therap.command.DoctorVisitCmd;
 import net.therap.editor.DoctorEditor;
 import net.therap.editor.PatientEditor;
-import net.therap.model.*;
+import net.therap.entity.*;
 import net.therap.service.DoctorService;
 import net.therap.service.PatientService;
 import net.therap.command.InvoiceCmd;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import static net.therap.controller.invoice.DoctorVisitController.INVOICE_CMD;
-import static net.therap.model.Action.SAVE;
-import static net.therap.model.Action.VIEW;
+import static net.therap.entity.Action.SAVE;
+import static net.therap.entity.Action.VIEW;
 
 /**
  * @author khandaker.maruf

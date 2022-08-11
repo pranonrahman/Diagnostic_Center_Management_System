@@ -2,7 +2,7 @@ package net.therap.service;
 
 import net.therap.command.UserCmd;
 import net.therap.dao.UserDao;
-import net.therap.model.User;
+import net.therap.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

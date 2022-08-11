@@ -1,6 +1,6 @@
 package net.therap.dao;
 
-import net.therap.model.Admin;
+import net.therap.entity.Admin;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

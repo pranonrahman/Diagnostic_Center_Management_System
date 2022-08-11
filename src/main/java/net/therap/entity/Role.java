@@ -1,4 +1,4 @@
-package net.therap.model;
+package net.therap.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

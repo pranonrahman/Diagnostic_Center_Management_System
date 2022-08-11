@@ -1,7 +1,7 @@
 package net.therap.service;
 
 import net.therap.dao.PrescriptionDao;
-import net.therap.model.Prescription;
+import net.therap.entity.Prescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

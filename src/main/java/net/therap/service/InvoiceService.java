@@ -1,9 +1,9 @@
 package net.therap.service;
 
 import net.therap.dao.InvoiceDao;
-import net.therap.model.Invoice;
-import net.therap.model.Particular;
-import net.therap.model.Patient;
+import net.therap.entity.Invoice;
+import net.therap.entity.Particular;
+import net.therap.entity.Patient;
 import net.therap.command.InvoiceCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;

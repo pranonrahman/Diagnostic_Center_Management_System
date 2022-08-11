@@ -2,7 +2,7 @@ package net.therap.controller;
 
 import net.therap.command.PrescriptionCmd;
 import net.therap.editor.FacilityEditor;
-import net.therap.model.*;
+import net.therap.entity.*;
 import net.therap.service.DoctorService;
 import net.therap.service.FacilityService;
 import net.therap.service.PatientService;

@@ -1,7 +1,7 @@
 package net.therap.service;
 
 import net.therap.dao.AdminDao;
-import net.therap.model.Admin;
+import net.therap.entity.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

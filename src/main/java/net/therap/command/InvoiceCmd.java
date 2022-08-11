@@ -2,7 +2,7 @@ package net.therap.command;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.therap.model.*;
+import net.therap.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;

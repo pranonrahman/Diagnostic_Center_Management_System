@@ -1,7 +1,7 @@
 package net.therap.dao;
 
-import net.therap.model.Role;
-import net.therap.model.RoleEnum;
+import net.therap.entity.Role;
+import net.therap.entity.RoleEnum;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;

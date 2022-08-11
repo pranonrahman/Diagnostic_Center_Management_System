@@ -2,7 +2,7 @@ package net.therap.command;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.therap.model.Facility;
+import net.therap.entity.Facility;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

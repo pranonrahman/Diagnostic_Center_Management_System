@@ -1,8 +1,8 @@
 package net.therap.service;
 
 import net.therap.dao.RoleDao;
-import net.therap.model.Role;
-import net.therap.model.RoleEnum;
+import net.therap.entity.Role;
+import net.therap.entity.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

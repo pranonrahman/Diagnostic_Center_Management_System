@@ -1,6 +1,6 @@
 package net.therap.filter;
 
-import net.therap.model.Role;
+import net.therap.entity.Role;
 import net.therap.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import static java.util.Objects.isNull;
 import static net.therap.constant.URL.*;
-import static net.therap.model.RoleEnum.*;
+import static net.therap.entity.RoleEnum.*;
 
 /**
  * @author raian.rahman
