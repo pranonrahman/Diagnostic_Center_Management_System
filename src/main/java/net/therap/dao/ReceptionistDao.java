@@ -17,6 +17,6 @@ public class ReceptionistDao extends Dao<Receptionist> {
     }
 
     public List<Receptionist> findAll() {
-        return entityManager.createNamedQuery("Receptionist.findAll", Receptionist.class).getResultList();
+        return em.createNamedQuery("Receptionist.findAll", Receptionist.class).getResultList();
     }
 }

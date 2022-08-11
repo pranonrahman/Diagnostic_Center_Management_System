@@ -19,12 +19,12 @@ public class RoleDao extends Dao<Role> {
     }
 
     public List<Role> findAll() {
-        return entityManager.createNamedQuery("Role.findAll", Role.class).getResultList();
+        return em.createNamedQuery("Role.findAll", Role.class).getResultList();
     }
 
     public Role findByRole(RoleEnum role) {
         try {
-            return entityManager.createNamedQuery("Role.findByName", Role.class)
+            return em.createNamedQuery("Role.findByName", Role.class)
                     .setParameter("role", role)
                     .getSingleResult();
 

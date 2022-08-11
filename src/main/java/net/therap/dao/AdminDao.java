@@ -17,6 +17,6 @@ public class AdminDao extends Dao<Admin> {
     }
 
     public List<Admin> findAll() {
-        return entityManager.createNamedQuery("Admin.findAll", Admin.class).getResultList();
+        return em.createNamedQuery("Admin.findAll", Admin.class).getResultList();
     }
 }
