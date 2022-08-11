@@ -21,7 +21,7 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 @NamedQuery(name = "Facility.findAll", query = "FROM Facility")
-public class Facility extends BaseEntity {
+public class Facility extends Persistent {
 
     private static final long serialVersionUID = 1L;
 

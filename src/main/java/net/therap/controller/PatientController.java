@@ -40,7 +40,7 @@ public class PatientController {
                                       ModelMap model) {
 
         long doctorId = user.getDoctor().getId();
-        Set<Prescription> prescriptions = doctorService.findById(doctorId).getPrescriptions();
+        List<Prescription> prescriptions = doctorService.findById(doctorId).getPrescriptions();
         List<PatientCmd> patients = new ArrayList<>();
 
         for(Prescription prescription : prescriptions) {
@@ -64,7 +64,7 @@ public class PatientController {
 
         List<PrescriptionCmd> allPrescriptionCmds = new ArrayList<>();
         List<PrescriptionCmd> doctorSpecificPrescriptions = new ArrayList<>();
-        Set<Prescription> allPrescriptions = patient.getPrescriptions();
+        List<Prescription> allPrescriptions = patient.getPrescriptions();
 
         for (Prescription prescription : allPrescriptions) {
             if (prescription.getDoctor().equals(doctor)) {
@@ -78,7 +78,7 @@ public class PatientController {
         Collections.sort(doctorSpecificPrescriptions);
 
         model.put("patientName", patient.getUser().getName());
-        model.put("prescriptionViewModels", allPrescriptionCmds);
+        model.put("prescriptionCmds", allPrescriptionCmds);
         model.put("doctorSpecificPrescriptions", doctorSpecificPrescriptions);
 
         return HISTORY_PAGE;

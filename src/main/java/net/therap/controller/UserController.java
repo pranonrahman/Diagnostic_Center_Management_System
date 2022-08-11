@@ -8,7 +8,7 @@ import net.therap.model.Role;
 import net.therap.model.RoleEnum;
 import net.therap.service.UserService;
 import net.therap.service.RoleService;
-import net.therap.service.RoleUpdateViewModelService;
+import net.therap.service.RoleUpdateCmdService;
 import net.therap.validator.PersonValidator;
 import net.therap.validator.RoleUpdateCmdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private RoleUpdateViewModelService roleUpdateViewModelService;
+    private RoleUpdateCmdService roleUpdateCmdService;
 
     @Autowired
     private RoleService roleService;
@@ -131,7 +131,7 @@ public class UserController {
         if (isNull(filterBy)) {
             model.put("users", userService.findAll());
         } else {
-            Role role = roleService.findByRole(RoleEnum.valueOf(filterBy));
+            Role role = roleService.findByName(RoleEnum.valueOf(filterBy));
             List<User> userList = new ArrayList<>();
             userService.findAll()
                     .stream()
@@ -166,7 +166,7 @@ public class UserController {
 
         model.put("userData", user);
 
-        RoleUpdateCmd roleUpdateCmd = roleUpdateViewModelService.getRoleUpdateViewModel(user);
+        RoleUpdateCmd roleUpdateCmd = roleUpdateCmdService.getRoleUpdateCmd(user);
 
         model.put("roleUpdateCmd", roleUpdateCmd);
 

@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,7 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NamedQuery(name = "Patient.findAll", query = "FROM Patient")
-public class Patient extends BaseEntity {
+public class Patient extends Persistent {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,14 +26,14 @@ public class Patient extends BaseEntity {
     private User user;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
-    private Set<Prescription> prescriptions;
+    private List<Prescription> prescriptions;
 
     @OneToMany
-    private Set<Invoice> invoices;
+    private List<Invoice> invoices;
 
     public Patient() {
-        prescriptions = new HashSet<>();
-        invoices = new HashSet<>();
+        prescriptions = new ArrayList<>();
+        invoices = new ArrayList<>();
     }
 
     public Patient(User user) {
@@ -42,8 +44,14 @@ public class Patient extends BaseEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Patient)) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Patient)) {
+            return false;
+        }
+
         return super.equals(o);
     }
 

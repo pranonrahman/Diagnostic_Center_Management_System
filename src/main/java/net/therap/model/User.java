@@ -24,7 +24,7 @@ import java.util.Set;
         @NamedQuery(name = "User.findAll", query = "FROM User"),
         @NamedQuery(name = "User.findByUserName", query = "FROM User WHERE userName = :userName")
 })
-public class User extends BaseEntity {
+public class User extends Persistent {
 
     private static final long serialVersionUID = 1L;
 

@@ -29,7 +29,7 @@ public class RoleUpdateCmdValidator implements Validator {
                 && (isNull(roleUpdateCmd.getFee()) || roleUpdateCmd.getFee() == 0)) {
 
             errors.rejectValue("fee",
-                    "{roleUpdateViewModel.doctor.feeNull}",
+                    "{roleUpdateCmd.doctor.feeNull}",
                     FEE_NOT_PROVIDED_MESSAGE);
         }
     }

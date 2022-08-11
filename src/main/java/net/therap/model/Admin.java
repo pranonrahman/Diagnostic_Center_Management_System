@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Setter
 @NoArgsConstructor
 @NamedQuery(name = "Admin.findAll", query = "FROM Admin")
-public class Admin extends BaseEntity {
+public class Admin extends Persistent {
 
     private static final long serialVersionUID = 1L;
 
