@@ -56,7 +56,7 @@ public class InvoiceController {
 
     @GetMapping("/view")
     public String view(@RequestParam Long id, ModelMap model) {
-        setUpReferenceData(model, invoiceService.findById(id));
+        setUpReferenceData(invoiceService.findById(id), model);
 
         return VIEW_PAGE;
     }
@@ -69,7 +69,7 @@ public class InvoiceController {
             return REDIRECT_DOCTOR_PAGE;
         }
 
-        setUpReferenceData(model, invoice);
+        setUpReferenceData(invoice, model);
 
         return VIEW_PAGE;
     }
@@ -88,7 +88,7 @@ public class InvoiceController {
             invoices = invoiceService.findAll();
         }
 
-        setUpReferenceData(model, invoices);
+        setUpReferenceData(invoices, model);
 
         return LIST_VIEW_PAGE;
     }
@@ -153,17 +153,17 @@ public class InvoiceController {
         }
     }
 
-    private void setUpReferenceData(ModelMap model, Invoice invoice) {
+    private void setUpReferenceData(Invoice invoice, ModelMap model) {
         model.addAttribute(INVOICE_VIEW_CMD, invoice);
         model.put("action", VIEW);
     }
 
-    private void setUpReferenceData(ModelMap model, InvoiceCmd invoice) {
+    private void setUpReferenceData(InvoiceCmd invoice, ModelMap model) {
         model.put(INVOICE_VIEW_CMD, invoiceService.getInvoiceFromCmd(invoice));
         model.put("action", REVIEW);
     }
 
-    private void setUpReferenceData(ModelMap model, List<Invoice> invoices) {
+    private void setUpReferenceData(List<Invoice> invoices, ModelMap model) {
         model.addAttribute("invoices", invoices);
     }
 }

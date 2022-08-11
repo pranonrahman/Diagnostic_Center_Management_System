@@ -57,7 +57,7 @@ public class FacilityItemController {
             return REDIRECT_DOCTOR_PAGE;
         }
 
-        setUpReferenceData(model, VIEW);
+        setUpReferenceData(VIEW, model);
 
         return ADD_FACILITY_PAGE;
     }
@@ -73,7 +73,7 @@ public class FacilityItemController {
         }
 
         if (result.hasErrors()) {
-            setUpReferenceData(model, SAVE);
+            setUpReferenceData(SAVE, model);
 
             return ADD_FACILITY_PAGE;
         }
@@ -97,7 +97,7 @@ public class FacilityItemController {
         return REDIRECT_FACILITY_PAGE;
     }
 
-    private void setUpReferenceData(ModelMap model, Action action) {
+    private void setUpReferenceData(Action action, ModelMap model) {
         if (action.equals(VIEW)) {
             model.put(FACILITY_CMD, new FacilityItemCmd());
         }

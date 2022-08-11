@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static java.util.Objects.isNull;
-import static net.therap.constant.UriConstant.*;
+import static net.therap.constant.URL.*;
 import static net.therap.model.RoleEnum.*;
 
 /**
