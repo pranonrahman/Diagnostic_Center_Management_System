@@ -1,16 +1,20 @@
 package net.therap.service;
 
+import net.therap.command.FacilityItemCmd;
+import net.therap.command.InvoiceCmd;
+import net.therap.command.MedicineItemCmd;
 import net.therap.dao.InvoiceDao;
+import net.therap.entity.Doctor;
 import net.therap.entity.Invoice;
 import net.therap.entity.Particular;
 import net.therap.entity.Patient;
-import net.therap.command.InvoiceCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author raian.rahman
@@ -31,16 +35,16 @@ public class InvoiceService {
     @Autowired
     MessageSourceAccessor msa;
 
-    public List<Invoice> findAll() {
-        return invoiceDao.findAll();
+    public Invoice findById(long id) {
+        return invoiceDao.findById(id);
     }
 
     public List<Invoice> findByPatient(Patient patient) {
         return invoiceDao.findByPatient(patient);
     }
 
-    public Invoice findById(long id) {
-        return invoiceDao.findById(id);
+    public List<Invoice> findAll() {
+        return invoiceDao.findAll();
     }
 
     @Transactional
@@ -51,32 +55,12 @@ public class InvoiceService {
     public Invoice getInvoiceFromCmd(InvoiceCmd invoiceCmd) {
         Invoice invoice = new Invoice();
         invoice.setPatient(invoiceCmd.getPatient());
+
+        invoice.getParticulars().addAll(getDoctorVisitParticulars(invoiceCmd.getDoctors()));
+        invoice.getParticulars().addAll(getMedicineParticulars(invoiceCmd.getMedicines()));
+        invoice.getParticulars().addAll(getFacilityParticulars(invoiceCmd.getFacilities()));
+
         double totalCost = 0;
-
-        invoiceCmd.getDoctors().forEach(doctorItem-> {
-            Particular particular = new Particular("Visiting fee of " + doctorItem.getUser().getName(),
-                    doctorItem.getFee(),
-                    1);
-
-            invoice.getParticulars().add(particularService.saveOrUpdate(particular));
-        });
-
-        invoiceCmd.getFacilities().forEach(facilityItem -> {
-            Particular particular = new Particular(facilityItem.getFacility().getName(),
-                    facilityItem.getFacility().getPrice(),
-                    facilityItem.getQuantity());
-
-            invoice.getParticulars().add(particularService.saveOrUpdate(particular));
-        });
-
-        invoiceCmd.getMedicines().forEach(medicineItem -> {
-            Particular particular = new Particular(medicineItem.getMedicine().getName(),
-                    medicineItem.getMedicine().getUnitPrice(),
-                    medicineItem.getQuantity());
-
-            invoice.getParticulars().add(particularService.saveOrUpdate(particular));
-        });
-
         for (Particular particular : invoice.getParticulars()) {
             totalCost += particular.getUnitPrice() * particular.getUnits();
         }
@@ -84,6 +68,33 @@ public class InvoiceService {
         invoice.setTotalCost(totalCost);
 
         return invoice;
+    }
+
+    private List<Particular> getDoctorVisitParticulars(List<Doctor> doctorVisits) {
+        return doctorVisits
+                .stream()
+                .map(doctor -> new Particular("Visiting fee of " + doctor.getUser().getName(),
+                        doctor.getFee(),
+                        1))
+                .collect(Collectors.toList());
+    }
+
+    private List<Particular> getMedicineParticulars(List<MedicineItemCmd> medicines) {
+        return medicines
+                .stream()
+                .map(medicineItem -> new Particular(medicineItem.getMedicine().getName(),
+                        medicineItem.getMedicine().getUnitPrice(),
+                        medicineItem.getQuantity()))
+                .collect(Collectors.toList());
+    }
+
+    private List<Particular> getFacilityParticulars(List<FacilityItemCmd> facilityItems) {
+        return facilityItems
+                .stream()
+                .map(facilityItem -> new Particular(facilityItem.getFacility().getName(),
+                        facilityItem.getFacility().getPrice(),
+                        facilityItem.getQuantity()))
+                .collect(Collectors.toList());
     }
 
     @Transactional
