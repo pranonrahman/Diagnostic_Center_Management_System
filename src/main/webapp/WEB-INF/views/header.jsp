@@ -1,7 +1,7 @@
-<%@ page import="net.therap.model.Role" %>
+<%@ page import="net.therap.entity.Role" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="net.therap.model.RoleEnum" %>
+<%@ page import="net.therap.entity.RoleEnum" %>
 <%--
   @author: khandaker.maruf
   @since: 6/20/22

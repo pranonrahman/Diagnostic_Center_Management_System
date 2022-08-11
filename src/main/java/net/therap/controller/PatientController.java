@@ -1,7 +1,7 @@
 package net.therap.controller;
 
 import net.therap.command.PrescriptionCmd;
-import net.therap.model.*;
+import net.therap.entity.*;
 import net.therap.service.DoctorService;
 import net.therap.service.PatientService;
 import net.therap.command.PatientCmd;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author amimul.ehsan

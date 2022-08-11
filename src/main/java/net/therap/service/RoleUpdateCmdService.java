@@ -1,6 +1,6 @@
 package net.therap.service;
 
-import net.therap.model.User;
+import net.therap.entity.User;
 import net.therap.command.RoleUpdateCmd;
 import org.springframework.stereotype.Service;
 

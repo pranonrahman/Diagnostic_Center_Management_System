@@ -1,6 +1,6 @@
 package net.therap.dao;
 
-import net.therap.model.Persistent;
+import net.therap.entity.Persistent;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

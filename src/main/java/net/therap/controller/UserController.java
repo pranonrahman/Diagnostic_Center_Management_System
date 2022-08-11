@@ -2,10 +2,10 @@ package net.therap.controller;
 
 import net.therap.command.RoleUpdateCmd;
 import net.therap.editor.DateEditor;
-import net.therap.model.Gender;
-import net.therap.model.User;
-import net.therap.model.Role;
-import net.therap.model.RoleEnum;
+import net.therap.entity.Gender;
+import net.therap.entity.User;
+import net.therap.entity.Role;
+import net.therap.entity.RoleEnum;
 import net.therap.service.UserService;
 import net.therap.service.RoleService;
 import net.therap.service.RoleUpdateCmdService;

@@ -1,6 +1,6 @@
 package net.therap.dao;
 
-import net.therap.model.User;
+import net.therap.entity.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;

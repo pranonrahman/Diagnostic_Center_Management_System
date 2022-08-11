@@ -3,8 +3,8 @@ package net.therap.command;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.therap.model.Doctor;
-import net.therap.model.Patient;
+import net.therap.entity.Doctor;
+import net.therap.entity.Patient;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;

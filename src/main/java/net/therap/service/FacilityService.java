@@ -1,7 +1,7 @@
 package net.therap.service;
 
 import net.therap.dao.FacilityDao;
-import net.therap.model.Facility;
+import net.therap.entity.Facility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

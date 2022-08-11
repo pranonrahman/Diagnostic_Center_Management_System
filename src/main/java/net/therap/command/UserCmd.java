@@ -1,6 +1,6 @@
 package net.therap.command;
 
-import net.therap.model.Role;
+import net.therap.entity.Role;
 
 /**
  * @author raian.rahman

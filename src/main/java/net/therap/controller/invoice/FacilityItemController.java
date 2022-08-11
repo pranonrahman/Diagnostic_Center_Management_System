@@ -3,8 +3,8 @@ package net.therap.controller.invoice;
 import net.therap.command.FacilityItemCmd;
 import net.therap.command.RemoveCmd;
 import net.therap.editor.FacilityEditor;
-import net.therap.model.Action;
-import net.therap.model.Facility;
+import net.therap.entity.Action;
+import net.therap.entity.Facility;
 import net.therap.service.FacilityService;
 import net.therap.command.InvoiceCmd;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import javax.validation.Valid;
 
 import static java.util.Objects.isNull;
 import static net.therap.controller.invoice.InvoiceController.INVOICE_CMD;
-import static net.therap.model.Action.*;
+import static net.therap.entity.Action.*;
 
 /**
  * @author khandaker.maruf

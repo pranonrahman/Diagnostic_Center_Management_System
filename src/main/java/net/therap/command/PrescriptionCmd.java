@@ -1,6 +1,6 @@
 package net.therap.command;
 
-import net.therap.model.Prescription;
+import net.therap.entity.Prescription;
 
 import java.util.Date;
 

@@ -1,6 +1,6 @@
 package net.therap.validator;
 
-import net.therap.model.User;
+import net.therap.entity.User;
 import net.therap.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

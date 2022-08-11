@@ -1,6 +1,6 @@
 package net.therap.bootstrap;
 
-import net.therap.model.*;
+import net.therap.entity.*;
 import net.therap.service.FacilityService;
 import net.therap.service.MedicineService;
 import net.therap.service.UserService;
@@ -13,7 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static net.therap.model.RoleEnum.*;
+import static net.therap.entity.RoleEnum.*;
 
 /**
  * @author raian.rahman

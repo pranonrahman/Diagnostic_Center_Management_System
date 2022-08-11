@@ -2,7 +2,7 @@ package net.therap.controller.invoice;
 
 import net.therap.command.MedicineItemCmd;
 import net.therap.editor.MedicineEditor;
-import net.therap.model.*;
+import net.therap.entity.*;
 import net.therap.service.MedicineService;
 import net.therap.validator.MedicineItemCmdValidator;
 import net.therap.command.InvoiceCmd;
@@ -18,7 +18,7 @@ import javax.validation.Valid;
 
 import static java.util.Objects.isNull;
 import static net.therap.controller.invoice.InvoiceController.INVOICE_CMD;
-import static net.therap.model.Action.*;
+import static net.therap.entity.Action.*;
 
 /**
  * @author khandaker.maruf

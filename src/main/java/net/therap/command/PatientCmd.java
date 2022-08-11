@@ -1,7 +1,7 @@
 package net.therap.command;
 
 import lombok.Getter;
-import net.therap.model.Patient;
+import net.therap.entity.Patient;
 
 import java.util.Date;
 

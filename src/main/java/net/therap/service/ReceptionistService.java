@@ -1,7 +1,7 @@
 package net.therap.service;
 
 import net.therap.dao.ReceptionistDao;
-import net.therap.model.Receptionist;
+import net.therap.entity.Receptionist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

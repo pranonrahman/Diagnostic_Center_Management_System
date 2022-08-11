@@ -1,6 +1,6 @@
 package net.therap.dao;
 
-import net.therap.model.Medicine;
+import net.therap.entity.Medicine;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

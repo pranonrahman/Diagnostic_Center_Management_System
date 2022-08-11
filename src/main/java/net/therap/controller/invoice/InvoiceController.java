@@ -2,7 +2,7 @@ package net.therap.controller.invoice;
 
 import net.therap.command.InvoiceCmd;
 import net.therap.command.MedicineItemCmd;
-import net.therap.model.*;
+import net.therap.entity.*;
 import net.therap.service.InvoiceService;
 import net.therap.service.MedicineService;
 import net.therap.service.PrescriptionService;
@@ -21,10 +21,10 @@ import java.util.List;
 
 import static java.util.Objects.isNull;
 import static net.therap.controller.invoice.InvoiceController.INVOICE_CMD;
-import static net.therap.model.Action.REVIEW;
-import static net.therap.model.Action.VIEW;
-import static net.therap.model.RoleEnum.ADMIN;
-import static net.therap.model.RoleEnum.RECEPTIONIST;
+import static net.therap.entity.Action.REVIEW;
+import static net.therap.entity.Action.VIEW;
+import static net.therap.entity.RoleEnum.ADMIN;
+import static net.therap.entity.RoleEnum.RECEPTIONIST;
 
 /**
  * @author khandaker.maruf
