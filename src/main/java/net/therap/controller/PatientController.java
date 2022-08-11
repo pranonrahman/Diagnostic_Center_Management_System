@@ -1,10 +1,13 @@
 package net.therap.controller;
 
+import net.therap.command.PatientCmd;
 import net.therap.command.PrescriptionCmd;
-import net.therap.entity.*;
+import net.therap.entity.Doctor;
+import net.therap.entity.Patient;
+import net.therap.entity.Prescription;
+import net.therap.entity.User;
 import net.therap.service.DoctorService;
 import net.therap.service.PatientService;
-import net.therap.command.PatientCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static net.therap.controller.PatientController.ROLE_CMD;
 import static net.therap.controller.PatientController.USER_CMD;
 
 /**
@@ -22,14 +24,13 @@ import static net.therap.controller.PatientController.USER_CMD;
  * @since 03/08/2022
  */
 @Controller
-@SessionAttributes({USER_CMD, ROLE_CMD})
+@SessionAttributes(USER_CMD)
 @RequestMapping("/patient")
 public class PatientController {
 
     private static final String HISTORY_PAGE = "patient/history";
     private static final String LIST_VIEW_PAGE = "patient/list";
     public static final String USER_CMD = "user";
-    public static final String ROLE_CMD = "role";
 
     @Autowired
     private PatientService patientService;
@@ -38,8 +39,7 @@ public class PatientController {
     private DoctorService doctorService;
 
     @GetMapping("/list")
-    public String showList(@ModelAttribute(ROLE_CMD) Role role,
-                           @ModelAttribute(USER_CMD) User user,
+    public String showList(@ModelAttribute(USER_CMD) User user,
                            ModelMap model) {
 
         long doctorId = user.getDoctor().getId();
