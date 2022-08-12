@@ -14,24 +14,22 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
-import static java.util.Objects.nonNull;
 
 /**
  * @author raian.rahman
  * @since 8/3/22
  */
 @Controller
+@SessionAttributes({"user"})
 public class AuthenticationController {
 
     private static final String LOGIN_REDIRECT_PATH = "redirect:/login";
     private static final String DASHBOARD_REDIRECT_PATH = "redirect:/home";
     private static final String FORM_PAGE = "/authentication/form";
     private static final String USER_CMD = "userCmd";
-    private static final String ROLE = "role";
     private static final String USER = "user";
     private static final String SEED_ROLE_LIST = "seedRoleList";
     private static final String MESSAGE = "message";
@@ -65,10 +63,7 @@ public class AuthenticationController {
     }
 
     @GetMapping({"/login"})
-    public String showLoginForm(ModelMap model, HttpSession session) {
-        if (nonNull(session.getAttribute(USER)) || nonNull(session.getAttribute(ROLE))) {
-            return DASHBOARD_REDIRECT_PATH;
-        }
+    public String showLoginForm(ModelMap model) {
 
         model.put(USER_CMD, new UserCmd());
 
@@ -78,7 +73,6 @@ public class AuthenticationController {
     @PostMapping("/login")
     public String processLoginForm(@Valid @ModelAttribute(USER_CMD) UserCmd userCmd,
                                    BindingResult result,
-                                   HttpSession session,
                                    ModelMap model) {
 
         if (result.hasErrors()) {
@@ -90,14 +84,14 @@ public class AuthenticationController {
             return FORM_PAGE;
         }
 
-        session.setAttribute(USER, userService.findByUserName(userCmd.getUserName()));
+        model.put(USER, userService.findByUserName(userCmd.getUserName()));
 
         return DASHBOARD_REDIRECT_PATH;
     }
 
     @RequestMapping("/logout")
-    public String logout(HttpSession session, ModelMap model) {
-        session.invalidate();
+    public String logout(SessionStatus status, ModelMap model) {
+        status.setComplete();
 
         model.put(SEED_ROLE_LIST, roleService.findAll());
         model.put(USER_CMD, new UserCmd());
