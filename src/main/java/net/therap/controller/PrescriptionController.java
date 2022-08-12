@@ -1,7 +1,12 @@
 package net.therap.controller;
 
 import net.therap.editor.FacilityEditor;
-import net.therap.entity.*;
+import net.therap.entity.Facility;
+import net.therap.entity.Patient;
+import net.therap.entity.Prescription;
+import net.therap.entity.User;
+import net.therap.exception.InsufficientAccessException;
+import net.therap.exception.RecordNotFoundException;
 import net.therap.service.DoctorService;
 import net.therap.service.FacilityService;
 import net.therap.service.PatientService;
@@ -16,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static java.util.Objects.isNull;
+import static net.therap.entity.RoleEnum.DOCTOR;
 
 /**
  * @author amimul.ehsan
@@ -50,13 +58,24 @@ public class PrescriptionController {
         webDataBinder.registerCustomEditor(Facility.class, facilityEditor);
     }
 
-    @GetMapping("/view")
+    @GetMapping
     public String loadViewPage(@ModelAttribute("user") User user,
                                @RequestParam("id") String id,
                                ModelMap model) {
 
-        model.put("doctorId", RoleUtil.userContains(user, RoleEnum.DOCTOR) ? user.getDoctor().getId() : 0);
-        setupReferenceData(Long.parseLong(id), model);
+        Prescription prescription = prescriptionService.findById(Long.parseLong(id));
+
+        if (isNull(prescription)) {
+            throw new RecordNotFoundException();
+        }
+
+        if (!prescription.getDoctor().getUser().getUserName().equals(user.getUserName()) &&
+                !prescription.getPatient().getUser().getUserName().equals(user.getUserName())) {
+            throw new InsufficientAccessException();
+        }
+
+        setupReferenceData(prescription, model);
+        model.put("doctorId", RoleUtil.userContains(user, DOCTOR) ? user.getDoctor().getId() : 0);
 
         return VIEW_PAGE;
     }
@@ -74,33 +93,25 @@ public class PrescriptionController {
         return PRESCRIPTION_LIST_VIEW_PAGE;
     }
 
-    @GetMapping("/save")
-    public String loadEditPage(@RequestParam("id") String id, ModelMap model) {
-        model.put("action", "edit");
-        setupReferenceData(Long.parseLong(id), model);
-
-        return VIEW_PAGE;
-    }
-
-    @PostMapping("/save")
+    @PostMapping
     public String processEdit(@ModelAttribute("prescription") Prescription prescription, ModelMap model) {
         prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
         prescription.setDoctor(doctorService.findById(prescription.getDoctor().getId()));
         prescription.setDateOfVisit(new Date());
 
         prescriptionService.saveOrUpdate(prescription);
-        setupReferenceData(0, model);
+        setupReferenceData(null, model);
 
-        return "redirect:/prescription/view?id=" + prescription.getId();
+        return "redirect:/prescription?id=" + prescription.getId();
     }
 
-    private void setupReferenceData(long prescriptionId, ModelMap model) {
+    private void setupReferenceData(Prescription prescription, ModelMap model) {
         model.put("facilities", facilityService.findAll());
 
-        if (prescriptionId == 0) {
+        if (isNull(prescription)) {
             model.put("prescription", new Prescription());
         } else {
-            model.put("prescription", prescriptionService.findById(prescriptionId));
+            model.put("prescription", prescription);
         }
     }
 }

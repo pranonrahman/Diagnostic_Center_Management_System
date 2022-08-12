@@ -32,7 +32,7 @@
                    modelAttribute="prescription">
 
             <c:set var="readonly"
-                   value="${(action != null && action == 'edit') ? false : true}"/>
+                   value="${(doctorId != null && prescription.doctor.id == doctorId) ? false : true}"/>
 
             <form:input path="patient.id"
                         value="${prescription.patient.id}"
@@ -148,20 +148,6 @@
                                 class="btn btn-primary mb-2">
                             <fmt:message key="button.label.update"/>
                         </button>
-                    </c:when>
-
-                    <c:when test="${prescription.doctor.id == doctorId}">
-                        <c:url var="prescriptionEditPage"
-                               value="/prescription/save">
-
-                            <c:param name="id"
-                                     value="${prescription.id}"/>
-                        </c:url>
-                        <a href="${prescriptionEditPage}"
-                           class="btn btn-primary">
-
-                            <fmt:message key="button.label.edit"/>
-                        </a>
                     </c:when>
                 </c:choose>
             </div>

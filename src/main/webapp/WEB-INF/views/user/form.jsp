@@ -219,28 +219,27 @@
                 />
             </div>
 
-            <c:choose>
-                <c:when test="${not empty userData.doctor}">
-                    <c:set var="fee" value="${userData.doctor.fee}"/>
-                </c:when>
-                <c:otherwise>
-                    <c:set var="fee" value="${0}"/>
-                </c:otherwise>
-            </c:choose>
+            <c:if test="${not empty userData.doctor}">
+                <div class="mb-3">
+                    <form:label path="doctor.fee"
+                                cssClass="form-label w-100">
 
-            <div class="mb-3">
-                <form:label path="doctor.fee"
-                            cssClass="form-label w-100">
+                        <fmt:message key="user.form.fee"/>
+                    </form:label>
 
-                    <fmt:message key="user.form.fee"/>
-                </form:label>
+                    <form:input path="doctor.fee"
+                                type="number"
+                                name="fee"
+                                step="0.1"
+                                value="${userData.doctor.fee}"
+                    />
+                    <form:errors path="doctor.fee"
+                                 cssClass="invalid-feedback d-block"
+                    />
+                </div>
+            </c:if>
 
-                <input type="number"
-                       name="fee"
-                       min="0"
-                       step="0.1"
-                       value="${fee}">
-            </div>
+
 
             <button type="submit"
                     value="submit"
@@ -257,20 +256,22 @@
             </button>
         </form:form>
 
-        <div class="mb-3">
-            <form action="/user/delete" method="post">
-                <input name="id"
-                       hidden="hidden"
-                       value="${userData.id}">
+        <c:if test="${user.userName!=userData.userName and not userData.isNew()}">
+            <div class="mb-3">
+                <form action="/user/delete" method="post">
+                    <input name="id"
+                           hidden="hidden"
+                           value="${userData.id}">
 
-                <button type="submit"
-                        value="submit"
-                        class="btn btn-danger w-100">
+                    <button type="submit"
+                            value="submit"
+                            class="btn btn-danger w-100">
 
-                    <fmt:message key="user.form.delete"/>
-                </button>
-            </form>
-        </div>
+                        <fmt:message key="user.form.delete"/>
+                    </button>
+                </form>
+            </div>
+        </c:if>
     </div>
 </div>
 </body>
