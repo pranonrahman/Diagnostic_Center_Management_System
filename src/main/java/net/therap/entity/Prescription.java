@@ -19,7 +19,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NamedQuery(name = "Prescription.findAll", query = "FROM Prescription")
-public class Prescription extends Persistent {
+public class Prescription extends Persistent implements Comparable<Prescription>{
 
     private static final long serialVersionUID = 1L;
 
@@ -58,5 +58,10 @@ public class Prescription extends Persistent {
 
     public Prescription() {
         facilities = new HashSet<>();
+    }
+
+    @Override
+    public int compareTo(Prescription o) {
+        return (int) (o.getDateOfVisit().getTime() - this.getDateOfVisit().getTime());
     }
 }

@@ -1,6 +1,5 @@
 package net.therap.controller;
 
-import net.therap.command.PrescriptionCmd;
 import net.therap.editor.FacilityEditor;
 import net.therap.entity.*;
 import net.therap.service.DoctorService;
@@ -14,7 +13,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author amimul.ehsan
@@ -63,17 +64,12 @@ public class PrescriptionController {
     @GetMapping("/list")
     public String loadPrescriptionList(@ModelAttribute("user") User user, ModelMap model) {
         Patient patient = user.getPatient();
-        List<PrescriptionCmd> prescriptionCmds = new ArrayList<>();
         List<Prescription> prescriptions = patient.getPrescriptions();
 
-        for (Prescription prescription : prescriptions) {
-            prescriptionCmds.add(new PrescriptionCmd(prescription));
-        }
-
-        Collections.sort(prescriptionCmds);
+        Collections.sort(prescriptions);
 
         model.put("patientName", user.getName());
-        model.put("prescriptionCmds", prescriptionCmds);
+        model.put("prescriptions", prescriptions);
 
         return PRESCRIPTION_LIST_VIEW_PAGE;
     }
