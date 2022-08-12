@@ -58,7 +58,7 @@ public class User extends Persistent {
     @Size(min = 3, max = 255, message = "{password.size}")
     private String password;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH},
+    @ManyToMany(cascade = {CascadeType.MERGE},
             fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
