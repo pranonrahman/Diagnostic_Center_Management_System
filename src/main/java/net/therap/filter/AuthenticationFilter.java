@@ -118,8 +118,8 @@ public class AuthenticationFilter implements Filter {
         }
 
         return !request.getRequestURI().contains(PATIENT_HISTORY)
-                || !user.getRoles().contains(doctorRole)
-                || !user.getRoles().contains(patientRole);
+                || user.getRoles().contains(doctorRole)
+                || user.getRoles().contains(patientRole);
     }
 
     private boolean hasPrescriptionAccess(HttpServletRequest request, User user) {
