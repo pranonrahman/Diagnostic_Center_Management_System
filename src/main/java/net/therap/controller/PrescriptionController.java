@@ -5,6 +5,7 @@ import net.therap.entity.Facility;
 import net.therap.entity.Patient;
 import net.therap.entity.Prescription;
 import net.therap.entity.User;
+import net.therap.exception.InsufficientAccessException;
 import net.therap.exception.RecordNotFoundException;
 import net.therap.service.DoctorService;
 import net.therap.service.FacilityService;
@@ -68,10 +69,10 @@ public class PrescriptionController {
             throw new RecordNotFoundException();
         }
 
-//        if (prescription.getDoctor().getUser().getId() != user.getId() &&
-//                prescription.getPatient().getUser().getId() != user.getId()) {
-//            throw new InsufficientAccessException();
-//        }
+        if (!prescription.getDoctor().getUser().getUserName().equals(user.getUserName()) &&
+                !prescription.getPatient().getUser().getUserName().equals(user.getUserName())) {
+            throw new InsufficientAccessException();
+        }
 
         setupReferenceData(prescription, model);
         model.put("doctorId", RoleUtil.userContains(user, DOCTOR) ? user.getDoctor().getId() : 0);

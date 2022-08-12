@@ -29,23 +29,25 @@
                    var="prescription">
 
             <c:url var="prescriptionViewPage"
-                   value="${pageContext.request.contextPath}/prescription/view">
+                   value="${pageContext.request.contextPath}/prescription">
 
                 <c:param name="id"
-                         value="${prescription.prescription.id}"/>
+                         value="${prescription.id}"/>
             </c:url>
             <a href="${prescriptionViewPage}"
                class="list-group-item list-group-item-dark mb-2 ">
 
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="card-title">
-                            ${prescription.diagnosis == null ? 'N/A' : prescription.diagnosis}
+                        <fmt:message key="text.diagnosis"/>:
+                        <c:out value="${prescription.diagnosis == null ? 'N/A' : prescription.diagnosis}"/>
                     </h5>
                     <small>
                         <fmt:formatDate value="${prescription.dateOfVisit}"/>
                     </small>
                 </div>
                 <p class="card-text">
+                    <fmt:message key="text.symptoms"/>:
                     <c:out value="${prescription.symptoms == null ? 'N/A' : prescription.symptoms}"/>
                 </p>
             </a>
@@ -59,7 +61,7 @@
                    var="prescription">
 
             <c:url var="prescriptionViewPage"
-                   value="${pageContext.request.contextPath}/prescription/view">
+                   value="${pageContext.request.contextPath}/prescription">
 
                 <c:param name="id"
                          value="${prescription.id}"/>
@@ -69,6 +71,7 @@
                class="list-group-item list-group-item-dark mb-2 ">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="card-title">
+                        <fmt:message key="text.diagnosis"/>:
                         <c:out value="${prescription.diagnosis == null ? 'N/A' : prescription.diagnosis}"/>
                     </h5>
                     <small>
@@ -76,6 +79,7 @@
                     </small>
                 </div>
                 <p class="card-text">
+                    <fmt:message key="text.symptoms"/>:
                     <c:out value="${prescription.symptoms == null ? 'N/A' : prescription.symptoms}"/>
                 </p>
             </a>
