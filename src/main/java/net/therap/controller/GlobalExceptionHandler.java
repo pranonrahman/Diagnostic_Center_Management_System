@@ -1,5 +1,6 @@
 package net.therap.controller;
 
+import net.therap.exception.InsufficientAccessException;
 import net.therap.exception.RecordNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,6 +31,15 @@ public class GlobalExceptionHandler {
     public ModelAndView handleNumberFormatException(NumberFormatException exception) {
         ModelAndView mav = new ModelAndView(ERROR_VIEW);
         setUpReferenceData(mav, HttpStatus.BAD_REQUEST, exception.getMessage());
+
+        return mav;
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(InsufficientAccessException.class)
+    public ModelAndView handleInsufficientAccessException(InsufficientAccessException exception) {
+        ModelAndView mav = new ModelAndView(ERROR_VIEW);
+        setUpReferenceData(mav, HttpStatus.UNAUTHORIZED, exception.getMessage());
 
         return mav;
     }

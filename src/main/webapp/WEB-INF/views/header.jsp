@@ -130,7 +130,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="${pageContext.request.contextPath}/user/save" class="nav-link active">
+                                <a href="${pageContext.request.contextPath}/user/" class="nav-link active">
                                     <fmt:message key="navbar.link.createUser"/>
                                 </a>
                             </li>

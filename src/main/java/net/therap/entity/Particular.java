@@ -21,7 +21,7 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedQuery(name = "Particular.findAll", query = "FROM Particular")
+@NamedQuery(name = "Particular.findAll", query = "FROM Particular ORDER BY id DESC")
 public class Particular extends Persistent {
 
     private static final long serialVersionUID = 1L;

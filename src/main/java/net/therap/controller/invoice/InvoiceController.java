@@ -3,9 +3,11 @@ package net.therap.controller.invoice;
 import net.therap.command.InvoiceCmd;
 import net.therap.command.MedicineItemCmd;
 import net.therap.entity.*;
+import net.therap.exception.InsufficientAccessException;
 import net.therap.service.InvoiceService;
 import net.therap.service.MedicineService;
 import net.therap.service.PrescriptionService;
+import net.therap.util.RoleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
@@ -23,7 +25,7 @@ import static java.util.Objects.isNull;
 import static net.therap.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.entity.Action.REVIEW;
 import static net.therap.entity.Action.VIEW;
-import static net.therap.entity.RoleEnum.ADMIN;
+import static net.therap.entity.RoleEnum.PATIENT;
 import static net.therap.entity.RoleEnum.RECEPTIONIST;
 
 /**
@@ -55,8 +57,17 @@ public class InvoiceController {
     private MessageSourceAccessor msa;
 
     @GetMapping("/view")
-    public String view(@RequestParam Long id, ModelMap model) {
-        setUpReferenceData(invoiceService.findById(id), model);
+    public String view(@RequestParam Long id, HttpServletRequest request, ModelMap model) {
+        User user = (User) request.getSession().getAttribute("user");
+
+        Invoice invoice = invoiceService.findById(id);
+        if (!(RoleUtil.userContains(user, RECEPTIONIST) ||
+                (RoleUtil.userContains(user, PATIENT) && invoice.getPatient().getUser().getId() == user.getId()))) {
+
+            throw new InsufficientAccessException();
+        }
+
+        setUpReferenceData(invoice, model);
 
         return VIEW_PAGE;
     }
@@ -76,16 +87,20 @@ public class InvoiceController {
 
     @GetMapping("/list")
     public String list(HttpServletRequest request, ModelMap model) {
-        Role userRole = (Role) request.getSession().getAttribute("role");
+        User user = (User) request.getSession().getAttribute("user");
+
+        if (!(RoleUtil.userContains(user, RECEPTIONIST) || RoleUtil.userContains(user, PATIENT))) {
+            throw new InsufficientAccessException();
+        }
 
         List<Invoice> invoices;
 
-        if (userRole.getName().equals(RoleEnum.PATIENT)) {
-            User user = (User) request.getSession().getAttribute("user");
+        if (RoleUtil.userContains(user, RECEPTIONIST)) {
+            invoices = invoiceService.findAll();
+
+        } else {
             Patient patient = user.getPatient();
             invoices = invoiceService.findByPatient(patient);
-        } else {
-            invoices = invoiceService.findAll();
         }
 
         setUpReferenceData(invoices, model);
@@ -102,9 +117,9 @@ public class InvoiceController {
                        ModelMap model) {
 
         User user = (User) request.getSession().getAttribute("user");
-        Role userRole = (Role) request.getSession().getAttribute("role");
+//        Role userRole = (Role) request.getSession().getAttribute("role");
 
-        if (isNull(user) || !(userRole.getName().equals(RECEPTIONIST) || userRole.getName().equals(ADMIN))) {
+        if (isNull(user) || user.getRoles().stream().noneMatch(role -> role.getName().equals(RECEPTIONIST))) {
             model.put("errorMessage", msa.getMessage("error.unAuthorized"));
 
             return VIEW_PAGE;
