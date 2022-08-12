@@ -73,8 +73,10 @@ public class UserService {
         Role receptionistRole = roleDao.findByName(RoleEnum.valueOf("RECEPTIONIST"));
         Role patientRole = roleDao.findByName(RoleEnum.valueOf("PATIENT"));
 
+        User existingUser = userDao.findById(user.getId());
+
         if (isNull(user.getDoctor()) && user.getRoles().contains(doctorRole)) {
-            Doctor doctor = new Doctor(user);
+            Doctor doctor = new Doctor(existingUser);
             doctor = doctorDao.saveOrUpdate(doctor);
 
             user.setDoctor(doctor);
@@ -82,14 +84,14 @@ public class UserService {
         }
 
         if (nonNull(user.getDoctor()) && !user.getRoles().contains(doctorRole)) {
-            doctorDao.delete(user.getDoctor());
+            doctorDao.delete(existingUser.getDoctor());
 
             user.setDoctor(null);
             user.getRoles().remove(doctorRole);
         }
 
         if (isNull(user.getPatient()) && user.getRoles().contains(patientRole)) {
-            Patient patient = new Patient(user);
+            Patient patient = new Patient(existingUser);
             patient = patientDao.saveOrUpdate(patient);
 
             user.setPatient(patient);
@@ -97,14 +99,14 @@ public class UserService {
         }
 
         if (nonNull(user.getPatient()) && !user.getRoles().contains(patientRole)) {
-            patientDao.delete(user.getPatient());
+            patientDao.delete(existingUser.getPatient());
 
             user.setPatient(null);
             user.getRoles().remove(patientRole);
         }
 
         if (isNull(user.getAdmin()) && user.getRoles().contains(adminRole)) {
-            Admin admin = new Admin(user);
+            Admin admin = new Admin(existingUser);
             admin = adminDao.saveOrUpdate(admin);
 
             user.setAdmin(admin);
@@ -112,14 +114,14 @@ public class UserService {
         }
 
         if (nonNull(user.getAdmin()) && !user.getRoles().contains(adminRole)) {
-            adminDao.delete(user.getAdmin());
+            adminDao.delete(existingUser.getAdmin());
 
             user.setAdmin(null);
             user.getRoles().remove(adminRole);
         }
 
         if (isNull(user.getReceptionist()) && user.getRoles().contains(receptionistRole)) {
-            Receptionist receptionist = new Receptionist(user);
+            Receptionist receptionist = new Receptionist(existingUser);
             receptionist = receptionistDao.saveOrUpdate(receptionist);
 
             user.setReceptionist(receptionist);
@@ -127,7 +129,7 @@ public class UserService {
         }
 
         if (nonNull(user.getReceptionist()) && !user.getRoles().contains(receptionistRole)) {
-            receptionistDao.delete(user.getReceptionist());
+            receptionistDao.delete(existingUser.getReceptionist());
 
             user.setReceptionist(null);
             user.getRoles().remove(receptionistRole);

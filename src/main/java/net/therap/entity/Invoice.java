@@ -44,7 +44,7 @@ public class Invoice extends Persistent {
             name = "receptionist_id",
             nullable = false
     )
-    private User generatedBy;
+    private Receptionist receptionist;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

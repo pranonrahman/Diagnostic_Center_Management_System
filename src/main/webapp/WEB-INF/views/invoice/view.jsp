@@ -37,7 +37,7 @@
                 <strong>
                     <fmt:message key="text.receivedBy"/>:
                 </strong>
-                <c:out value="${invoiceView.generatedBy.name}"/>
+                <c:out value="${invoiceView.receptionist.user.name}"/>
             </p>
 
             <table class="table">

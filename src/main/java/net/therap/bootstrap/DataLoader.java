@@ -1,17 +1,12 @@
 package net.therap.bootstrap;
 
 import net.therap.entity.*;
-import net.therap.service.FacilityService;
-import net.therap.service.MedicineService;
-import net.therap.service.UserService;
-import net.therap.service.RoleService;
+import net.therap.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static net.therap.entity.RoleEnum.*;
 
@@ -107,17 +102,16 @@ public class DataLoader implements CommandLineRunner {
         user3.setDateOfBirth(d1);
 
         List<Role> roles = roleService.findAll();
-        for (Role role : roles) {
-            if(role.getName().equals(ADMIN)){
-                user1.getRoles().add(role);
-                user2.getRoles().add(role);
-                user3.getRoles().add(role);
-            }
-        }
+//        for (Role role : roles) {
+//            if(role.getName().equals(ADMIN)){
+//                user1.getRoles().add(role);
+//                user2.getRoles().add(role);
+//                user3.getRoles().add(role);
+//            }
+//        }
 
+        user1.getRoles().add(roleService.findByName(ADMIN));
         userService.saveOrUpdate(user1);
-        userService.saveOrUpdate(user2);
-        userService.saveOrUpdate(user3);
     }
 
     private void createSeedMedicine() {

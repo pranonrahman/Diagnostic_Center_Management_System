@@ -18,7 +18,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -87,7 +86,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/list")
-    public String list(HttpServletRequest request, @RequestParam(defaultValue = "0") String patientId, ModelMap model) {
+    public String list(HttpServletRequest request, @RequestParam(defaultValue = "0") long patientId, ModelMap model) {
         User user = (User) request.getSession().getAttribute("user");
 
         if (!(RoleUtil.userContains(user, RECEPTIONIST) || RoleUtil.userContains(user, PATIENT))) {
@@ -96,22 +95,15 @@ public class InvoiceController {
 
         List<Invoice> invoices;
 
-//        if (RoleUtil.userContains(user, RECEPTIONIST)) {
-//            invoices = invoiceService.findAll();
-//
-//        } else {
-//            Patient patient = user.getPatient();
-//            invoices = invoiceService.findByPatient(patient);
-//        }
-        if (patientId.equals("0")) {
+        if (patientId == 0) {
             invoices = invoiceService.findAll();
 
-        } else if (Long.parseLong(patientId) == user.getPatient().getId()) {
+        } else if (patientId == user.getPatient().getId()) {
             Patient patient = user.getPatient();
             invoices = invoiceService.findByPatient(patient);
+
         } else {
-            invoices = new ArrayList<>();
-            //todo: invalid access to other patient's invoices
+            throw new InsufficientAccessException();
         }
 
         setUpReferenceData(invoices, model);
@@ -128,7 +120,6 @@ public class InvoiceController {
                        ModelMap model) {
 
         User user = (User) request.getSession().getAttribute("user");
-//        Role userRole = (Role) request.getSession().getAttribute("role");
 
         if (isNull(user) || user.getRoles().stream().noneMatch(role -> role.getName().equals(RECEPTIONIST))) {
             model.put("errorMessage", msa.getMessage("error.unAuthorized"));
@@ -147,7 +138,7 @@ public class InvoiceController {
         createEmptyPrescriptions(invoiceCmd);
         updateMedicineQuantity(invoiceCmd);
 
-        invoice.setGeneratedBy(user);
+        invoice.setReceptionist(user.getReceptionist());
         Invoice savedInvoice = invoiceService.saveOrUpdate(invoice);
 
         if (model.containsAttribute(INVOICE_CMD)) {
