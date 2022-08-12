@@ -3,6 +3,7 @@ package net.therap.validator;
 import net.therap.entity.User;
 import net.therap.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -23,6 +24,9 @@ public class UserValidator implements Validator {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private MessageSourceAccessor msa;
+
     @Override
     public boolean supports(Class<?> clazz) {
         return User.class.equals(clazz);
@@ -38,6 +42,10 @@ public class UserValidator implements Validator {
 
         if(!user.isNew() && isNull(userService.findByUserName(user.getUserName()))) {
             errors.rejectValue("userName", "{userName.notExist}", USER_NAME_NOT_EXIST_MESSAGE);
+        }
+
+        if(nonNull(user.getDoctor()) && user.getDoctor().getFee()<0) {
+            errors.rejectValue("doctor.fee", "{fee.notNegative}", msa.getMessage("fee.notNegative"));
         }
     }
 }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class Doctor extends Persistent {
 
     private static final long serialVersionUID = 1L;
 
+    @Min(value = 0, message = "{fee.notNegative}")
     private double fee;
 
     @OneToOne
@@ -30,6 +32,13 @@ public class Doctor extends Persistent {
 
     public Doctor() {
         prescriptions = new ArrayList<>();
+    }
+
+    public Doctor(User user) {
+        this();
+
+        this.fee=0;
+        this.user = user;
     }
 
     public Doctor(double fee, User user) {
