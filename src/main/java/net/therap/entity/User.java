@@ -80,4 +80,10 @@ public class User extends Persistent {
     public User() {
         roles = new HashSet<>();
     }
+
+    public int getAge(){
+         Date date = new Date();
+
+        return (int) ((date.getTime() - this.getDateOfBirth().getTime()) / 31536000000L);
+    }
 }

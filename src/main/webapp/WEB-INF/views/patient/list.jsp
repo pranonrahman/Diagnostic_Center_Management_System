@@ -28,26 +28,26 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col"><fmt:message key="text.name"/> </th>
-            <th scope="col"><fmt:message key="text.age"/></th>
+            <th scope="col"><fmt:message key="user.list.age"/></th>
             <th scope="col"><fmt:message key="text.sex"/></th>
             <th scope="col"><fmt:message key="text.history"/></th>
         </tr>
         </thead>
 
         <tbody>
-        <c:forEach var="patientCmd"
+        <c:forEach var="patient"
                    items="${patients}"
                    varStatus="loop">
             <tr>
                 <th scope="row">${loop.index + 1}</th>
-                <td><c:out value="${patientCmd.patient.user.name}"/></td>
-                <td><c:out value="${patientCmd.getAge()}"/></td>
-                <td><c:out value="${patientCmd.patient.user.gender}"/></td>
+                <td><c:out value="${patient.user.name}"/></td>
+                <td><c:out value="${patient.user.getAge()}"/></td>
+                <td><c:out value="${patient.user.gender}"/></td>
                 <c:url var="historyViewPage"
                        value="${pageContext.request.contextPath}/patient/history">
 
                     <c:param name="id"
-                             value="${patientCmd.patient.id}"/>
+                             value="${patient.id}"/>
                 </c:url>
                 <td><a href="${historyViewPage}"><fmt:message key="text.view"/></a></td>
             </tr>

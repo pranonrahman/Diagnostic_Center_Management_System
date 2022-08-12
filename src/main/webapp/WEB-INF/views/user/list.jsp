@@ -23,7 +23,7 @@
 <div class="container-fluid bg-primary-custom h-100">
 
     <h2 class="text-center py-3">
-         <fmt:message key="user.list.header"/>
+        <fmt:message key="user.list.header"/>
     </h2>
     <div class="w-50 mx-auto">
         <table class="table text-center">
@@ -34,6 +34,9 @@
                 </th>
                 <th scope="col">
                     <fmt:message key="user.list.name"/>
+                </th>
+                <th scope="col">
+                    <fmt:message key="user.list.age"/>
                 </th>
                 <th scope="col">
                     <fmt:message key="user.list.phone"/>
@@ -64,6 +67,10 @@
 
                     <td>
                         <c:out value="${user.name}"/>
+                    </td>
+
+                    <td>
+                        <c:out value="${user.getAge()}"/>
                     </td>
 
                     <td>

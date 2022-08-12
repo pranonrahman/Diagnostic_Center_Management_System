@@ -1,7 +1,5 @@
 package net.therap.controller;
 
-import net.therap.command.PatientCmd;
-import net.therap.command.PrescriptionCmd;
 import net.therap.entity.Doctor;
 import net.therap.entity.Patient;
 import net.therap.entity.Prescription;
@@ -44,10 +42,10 @@ public class PatientController {
 
         long doctorId = user.getDoctor().getId();
         List<Prescription> prescriptions = doctorService.findById(doctorId).getPrescriptions();
-        List<PatientCmd> patients = new ArrayList<>();
+        List<Patient> patients = new ArrayList<>();
 
         for(Prescription prescription : prescriptions) {
-            patients.add(new PatientCmd(prescription.getPatient()));
+            patients.add(prescription.getPatient());
         }
 
         model.put("doctorId", doctorId);
@@ -65,23 +63,23 @@ public class PatientController {
         Doctor doctor = doctorService.findById(doctorId);
         Patient patient = patientService.findById(Long.parseLong(id));
 
-        List<PrescriptionCmd> allPrescriptionCmds = new ArrayList<>();
-        List<PrescriptionCmd> doctorSpecificPrescriptions = new ArrayList<>();
+        List<Prescription> otherPrescriptions = new ArrayList<>();
+        List<Prescription> doctorSpecificPrescriptions = new ArrayList<>();
         List<Prescription> allPrescriptions = patient.getPrescriptions();
 
         for (Prescription prescription : allPrescriptions) {
             if (prescription.getDoctor().equals(doctor)) {
-                doctorSpecificPrescriptions.add(new PrescriptionCmd(prescription));
+                doctorSpecificPrescriptions.add(prescription);
             } else {
-                allPrescriptionCmds.add(new PrescriptionCmd(prescription));
+                otherPrescriptions.add(prescription);
             }
         }
 
-        Collections.sort(allPrescriptionCmds);
+        Collections.sort(otherPrescriptions);
         Collections.sort(doctorSpecificPrescriptions);
 
         model.put("patientName", patient.getUser().getName());
-        model.put("prescriptionCmds", allPrescriptionCmds);
+        model.put("otherPrescriptions", otherPrescriptions);
         model.put("doctorSpecificPrescriptions", doctorSpecificPrescriptions);
 
         return HISTORY_PAGE;
