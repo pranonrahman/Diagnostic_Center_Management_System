@@ -220,7 +220,6 @@
             </div>
 
             <c:if test="${not empty userData.doctor}">
-<%--                <c:set var="fee" value="${userData.doctor.fee}"/>--%>
                 <div class="mb-3">
                     <form:label path="doctor.fee"
                                 cssClass="form-label w-100">
