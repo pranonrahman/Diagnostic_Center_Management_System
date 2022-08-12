@@ -66,19 +66,15 @@ public class UserService {
     }
 
     @Transactional
-    public User updateRole(User user, double fee) {
+    public User updateRole(User user) {
 
         Role doctorRole = roleDao.findByName(RoleEnum.valueOf("DOCTOR"));
         Role adminRole = roleDao.findByName(RoleEnum.valueOf("ADMIN"));
         Role receptionistRole = roleDao.findByName(RoleEnum.valueOf("RECEPTIONIST"));
         Role patientRole = roleDao.findByName(RoleEnum.valueOf("PATIENT"));
 
-        if (nonNull(user.getDoctor()) && user.getRoles().contains(doctorRole)) {
-            user.getDoctor().setFee(fee);
-        }
-
         if (isNull(user.getDoctor()) && user.getRoles().contains(doctorRole)) {
-            Doctor doctor = new Doctor(fee, user);
+            Doctor doctor = new Doctor(user);
             doctor = doctorDao.saveOrUpdate(doctor);
 
             user.setDoctor(doctor);
