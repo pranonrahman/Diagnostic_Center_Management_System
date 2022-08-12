@@ -25,7 +25,7 @@ public class Doctor extends Persistent {
     @OneToOne
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor", orphanRemoval = true)
     private List<Prescription> prescriptions;
 
     public Doctor() {

@@ -23,10 +23,10 @@ public class Patient extends Persistent {
     @OneToOne
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient", orphanRemoval = true)
     private List<Prescription> prescriptions;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient", orphanRemoval = true)
     private List<Invoice> invoices;
 
     public Patient() {
