@@ -117,7 +117,6 @@ public class InvoiceController {
                        ModelMap model) {
 
         User user = (User) request.getSession().getAttribute("user");
-//        Role userRole = (Role) request.getSession().getAttribute("role");
 
         if (isNull(user) || user.getRoles().stream().noneMatch(role -> role.getName().equals(RECEPTIONIST))) {
             model.put("errorMessage", msa.getMessage("error.unAuthorized"));
@@ -136,7 +135,7 @@ public class InvoiceController {
         createEmptyPrescriptions(invoiceCmd);
         updateMedicineQuantity(invoiceCmd);
 
-        invoice.setGeneratedBy(user);
+        invoice.setReceptionist(user.getReceptionist());
         Invoice savedInvoice = invoiceService.saveOrUpdate(invoice);
 
         if (model.containsAttribute(INVOICE_CMD)) {

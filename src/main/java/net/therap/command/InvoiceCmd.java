@@ -16,7 +16,7 @@ import java.util.List;
 public class InvoiceCmd {
 
     private long id;
-    private Receptionist generatedBy;
+    private Receptionist receptionist;
     private long invoiceId;
     private double totalCost;
     private Patient patient;

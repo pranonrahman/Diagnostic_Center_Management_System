@@ -23,6 +23,8 @@ public class Doctor extends Persistent {
     private double fee;
 
     @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
     private User user;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor", orphanRemoval = true)

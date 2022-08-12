@@ -21,6 +21,8 @@ public class Patient extends Persistent {
     private static final long serialVersionUID = 1L;
 
     @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
     private User user;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient", orphanRemoval = true)

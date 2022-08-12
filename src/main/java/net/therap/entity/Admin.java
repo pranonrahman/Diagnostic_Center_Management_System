@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author raian.rahman
@@ -24,6 +21,8 @@ public class Admin extends Persistent {
     private static final long serialVersionUID = 1L;
 
     @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
     private User user;
 
     public Admin(User user) {
