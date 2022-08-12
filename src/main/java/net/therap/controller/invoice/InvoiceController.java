@@ -18,6 +18,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -86,7 +87,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/list")
-    public String list(HttpServletRequest request, ModelMap model) {
+    public String list(HttpServletRequest request, @RequestParam(defaultValue = "0") String patientId, ModelMap model) {
         User user = (User) request.getSession().getAttribute("user");
 
         if (!(RoleUtil.userContains(user, RECEPTIONIST) || RoleUtil.userContains(user, PATIENT))) {
@@ -95,12 +96,22 @@ public class InvoiceController {
 
         List<Invoice> invoices;
 
-        if (RoleUtil.userContains(user, RECEPTIONIST)) {
+//        if (RoleUtil.userContains(user, RECEPTIONIST)) {
+//            invoices = invoiceService.findAll();
+//
+//        } else {
+//            Patient patient = user.getPatient();
+//            invoices = invoiceService.findByPatient(patient);
+//        }
+        if (patientId.equals("0")) {
             invoices = invoiceService.findAll();
 
-        } else {
+        } else if (Long.parseLong(patientId) == user.getPatient().getId()) {
             Patient patient = user.getPatient();
             invoices = invoiceService.findByPatient(patient);
+        } else {
+            invoices = new ArrayList<>();
+            //todo: invalid access to other patient's invoices
         }
 
         setUpReferenceData(invoices, model);
