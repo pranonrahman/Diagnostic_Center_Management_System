@@ -25,7 +25,7 @@
                         <c:when test="${role.getName().equals(RoleEnum.DOCTOR)}">
                             <li class="nav-item">
                                 <a href="${pageContext.request.contextPath}/patient/list" class="nav-link active">
-                                    <fmt:message key="navbar.link.viewPatients"/>
+                                    <fmt:message key="navbar.link.yourPatients"/>
                                 </a>
                             </li>
                         </c:when>
@@ -33,12 +33,15 @@
                         <c:when test="${role.getName().equals(RoleEnum.PATIENT)}">
                             <li class="nav-item">
                                 <a href="${pageContext.request.contextPath}/prescription/list" class="nav-link active">
-                                    <fmt:message key="navbar.link.viewPrescriptions"/>
+                                    <fmt:message key="navbar.link.yourPrescriptions"/>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="${pageContext.request.contextPath}/invoice/list" class="nav-link active">
-                                    <fmt:message key="navbar.link.viewInvoices"/>
+                                <c:url var="patientInvoiceList" value="${pageContext.request.contextPath}/invoice/list">
+                                    <c:param name="patientId" value="${user.patient.id}"/>
+                                </c:url>
+                                <a href="${patientInvoiceList}" class="nav-link active">
+                                    <fmt:message key="navbar.link.yourInvoices"/>
                                 </a>
                             </li>
                         </c:when>
@@ -55,7 +58,7 @@
                                 <a href="${pageContext.request.contextPath}/invoice/list"
                                    class="nav-link active">
 
-                                    <fmt:message key="navbar.link.viewInvoices"/>
+                                    <fmt:message key="navbar.link.viewAllInvoices"/>
                                 </a>
                             </li>
                         </c:when>
@@ -136,6 +139,7 @@
                             </li>
                         </c:when>
                     </c:choose>
+                    <li class="my-auto">|</li>
                 </c:forEach>
             </ul>
             <a href="${pageContext.request.contextPath}/logout"
