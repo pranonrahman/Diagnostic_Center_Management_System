@@ -256,7 +256,7 @@
             </button>
         </form:form>
 
-        <c:if test="${user.userName!=userData.userName}">
+        <c:if test="${user.userName!=userData.userName and not userData.isNew()}">
             <div class="mb-3">
                 <form action="/user/delete" method="post">
                     <input name="id"

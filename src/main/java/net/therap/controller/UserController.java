@@ -14,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +26,7 @@ import static java.util.Objects.isNull;
  */
 @Controller
 @RequestMapping("/user")
+@SessionAttributes({"user"})
 public class UserController {
 
     private static final String FORM_PAGE = "user/form";
@@ -72,7 +72,7 @@ public class UserController {
         webDataBinder.registerCustomEditor(Date.class, dateEditor);
     }
 
-    @InitBinder("userData")
+    @InitBinder({"userData", "user"})
     private void userInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Role.class, roleEditor);
         webDataBinder.registerCustomEditor(Admin.class, adminEditor);
@@ -93,42 +93,38 @@ public class UserController {
 
     @PostMapping
     public String processPersonForm(@Validated @ModelAttribute("userData") User user,
-                                    BindingResult bindingResult,
-                                    HttpSession session,
+                                    BindingResult userResult,
                                     ModelMap model) {
 
-        if (bindingResult.hasErrors()) {
+        if (userResult.hasErrors()) {
             model.put("genderList", Gender.values());
             model.put("seedRoleList", roleService.findAll());
             return FORM_PAGE;
         }
 
-        if(user.isNew()) {
+        if (user.isNew()) {
             user = userService.saveOrUpdate(user);
         }
 
         user = userService.updateRole(user);
+        User sessionUser = (User) model.get("user");
 
-        if(((User)session.getAttribute("user")).getUserName().equals(user.getUserName())) {
-            session.setAttribute("user", user);
+        if (sessionUser.getUserName().equals(user.getUserName())) {
+            model.replace(USER, user);
         }
 
         return VIEW_REDIRECT_PATH + user.getId();
     }
 
     @RequestMapping("/list")
-    public String showList(@RequestParam(value = "filterBy", required = false) String filterBy,
-                           ModelMap model) {
+    public String showList(@RequestParam(value = "filterBy", required = false) String filterBy, ModelMap model) {
 
         if (isNull(filterBy)) {
             model.put("users", userService.findAll());
         } else {
             Role role = roleService.findByName(RoleEnum.valueOf(filterBy));
             List<User> userList = new ArrayList<>();
-            userService.findAll()
-                    .stream()
-                    .filter(user -> user.getRoles().contains(role))
-                    .forEach(userList::add);
+            userService.findAll().stream().filter(user -> user.getRoles().contains(role)).forEach(userList::add);
 
             model.put("users", userList);
         }
@@ -136,16 +132,15 @@ public class UserController {
     }
 
     @PostMapping(value = "/delete")
-    public String deletePerson(@RequestParam(value = "id") Long id, HttpSession session) throws RuntimeException {
+    public String deletePerson(@RequestParam(value = "id") Long id,
+                               @ModelAttribute("user") User sessionUser) throws RuntimeException {
         User user = userService.findById(id);
 
         if (isNull(user)) {
             throw new RuntimeException(msa.getMessage("user.notFound.message"));
         }
 
-        User sessionUser = (User) session.getAttribute(USER);
-
-        if(sessionUser.getId() == user.getId()) {
+        if (sessionUser.getUserName().equals(user.getUserName())) {
             throw new RuntimeException(msa.getMessage("user.selfDelete.message"));
         }
 

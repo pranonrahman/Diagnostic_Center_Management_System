@@ -23,7 +23,7 @@ import javax.validation.Valid;
  * @since 8/3/22
  */
 @Controller
-@SessionAttributes("user")
+@SessionAttributes({"user"})
 public class AuthenticationController {
 
     private static final String LOGIN_REDIRECT_PATH = "redirect:/login";
