@@ -1,26 +1,28 @@
 package net.therap.controller;
 
-import net.therap.command.PrescriptionCmd;
 import net.therap.editor.FacilityEditor;
 import net.therap.entity.*;
 import net.therap.service.DoctorService;
 import net.therap.service.FacilityService;
 import net.therap.service.PatientService;
 import net.therap.service.PrescriptionService;
+import net.therap.util.RoleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author amimul.ehsan
  * @since 02/08/2022
  */
 @Controller
-@SessionAttributes({"role", "user"})
+@SessionAttributes("user")
 @RequestMapping("/prescription")
 public class PrescriptionController {
 
@@ -50,11 +52,10 @@ public class PrescriptionController {
 
     @GetMapping("/view")
     public String loadViewPage(@ModelAttribute("user") User user,
-                               @ModelAttribute("role") Role role,
                                @RequestParam("id") String id,
                                ModelMap model) {
 
-        model.put("doctorId", role.getName().equals(RoleEnum.DOCTOR) ? user.getDoctor().getId() : 0);
+        model.put("doctorId", RoleUtil.userContains(user, RoleEnum.DOCTOR) ? user.getDoctor().getId() : 0);
         setupReferenceData(Long.parseLong(id), model);
 
         return VIEW_PAGE;
@@ -63,17 +64,12 @@ public class PrescriptionController {
     @GetMapping("/list")
     public String loadPrescriptionList(@ModelAttribute("user") User user, ModelMap model) {
         Patient patient = user.getPatient();
-        List<PrescriptionCmd> prescriptionCmds = new ArrayList<>();
         List<Prescription> prescriptions = patient.getPrescriptions();
 
-        for (Prescription prescription : prescriptions) {
-            prescriptionCmds.add(new PrescriptionCmd(prescription));
-        }
-
-        Collections.sort(prescriptionCmds);
+        Collections.sort(prescriptions);
 
         model.put("patientName", user.getName());
-        model.put("prescriptionCmds", prescriptionCmds);
+        model.put("prescriptions", prescriptions);
 
         return PRESCRIPTION_LIST_VIEW_PAGE;
     }

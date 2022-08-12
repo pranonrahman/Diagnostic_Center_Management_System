@@ -19,7 +19,7 @@
         <div class="collapse navbar-collapse justify-content-end"
              id="navbarNavDropdown">
 
-            <ul class="navbar-nav mx-3">
+            <ul class="navbar-nav mx-3" ${param.isDashboard}>
                 <c:forEach items="${user.roles}" var="role">
                     <c:choose>
                         <c:when test="${role.getName().equals(RoleEnum.DOCTOR)}">
@@ -142,12 +142,12 @@
                     <li class="my-auto">|</li>
                 </c:forEach>
             </ul>
-            <a href="${pageContext.request.contextPath}/logout"
-               class="btn btn-danger">
-
-                <fmt:message key="navbar.link.logout"/>
-            </a>
         </div>
+        <a href="${pageContext.request.contextPath}/logout"
+           class="btn btn-danger">
+
+            <fmt:message key="navbar.link.logout"/>
+        </a>
     </nav>
     <hr class="my-0"/>
 </header>

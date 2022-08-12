@@ -7,7 +7,7 @@
 --%>
 <html>
 <head>
-    <title><fmt:message key="title.history"/> </title>
+    <title><fmt:message key="title.history"/></title>
 
     <link type="text/css" href="<c:url value="../../../assets/css/bootstrap.min.css"/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value="../../../assets/css/style.css"/>" rel="stylesheet"/>
@@ -26,28 +26,27 @@
 
     <div class="list-group">
         <c:forEach items="${doctorSpecificPrescriptions}"
-                   var="prescriptionCmd">
+                   var="prescription">
 
             <c:url var="prescriptionViewPage"
                    value="${pageContext.request.contextPath}/prescription/view">
 
                 <c:param name="id"
-                         value="${prescriptionCmd.prescription.id}"/>
+                         value="${prescription.prescription.id}"/>
             </c:url>
             <a href="${prescriptionViewPage}"
                class="list-group-item list-group-item-dark mb-2 ">
 
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="card-title">
-                            ${prescriptionCmd.prescription.diagnosis}
+                            ${prescription.diagnosis == null ? 'N/A' : prescription.diagnosis}
                     </h5>
                     <small>
-                        <c:out value="${prescriptionCmd.getDaysElapsed()}"/>
-                        <fmt:message key="text.daysAgo"/>
+                        <fmt:formatDate value="${prescription.dateOfVisit}"/>
                     </small>
                 </div>
                 <p class="card-text">
-                    <c:out value="${prescriptionCmd.prescription.symptoms}"/>
+                    <c:out value="${prescription.symptoms == null ? 'N/A' : prescription.symptoms}"/>
                 </p>
             </a>
         </c:forEach>
@@ -56,29 +55,28 @@
     <hr/>
 
     <div class="list-group">
-        <c:forEach items="${prescriptionCmds}"
-                   var="prescriptionCmd">
+        <c:forEach items="${otherPrescriptions}"
+                   var="prescription">
 
             <c:url var="prescriptionViewPage"
                    value="${pageContext.request.contextPath}/prescription/view">
 
                 <c:param name="id"
-                         value="${prescriptionCmd.prescription.id}"/>
+                         value="${prescription.id}"/>
             </c:url>
 
             <a href="${prescriptionViewPage}"
                class="list-group-item list-group-item-dark mb-2 ">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="card-title">
-                        <c:out value="${prescriptionCmd.prescription.diagnosis}"/>
+                        <c:out value="${prescription.diagnosis == null ? 'N/A' : prescription.diagnosis}"/>
                     </h5>
                     <small>
-                        <c:out value="${prescriptionCmd.getDaysElapsed()}"/>
-                        <fmt:message key="text.daysAgo"/>
+                        <fmt:formatDate value="${prescription.dateOfVisit}"/>
                     </small>
                 </div>
                 <p class="card-text">
-                    <c:out value="${prescriptionCmd.prescription.symptoms}"/>
+                    <c:out value="${prescription.symptoms == null ? 'N/A' : prescription.symptoms}"/>
                 </p>
             </a>
         </c:forEach>
