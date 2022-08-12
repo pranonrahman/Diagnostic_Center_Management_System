@@ -94,7 +94,6 @@ public class UserController {
     @PostMapping
     public String processPersonForm(@Validated @ModelAttribute("userData") User user,
                                     BindingResult bindingResult,
-                                    @RequestParam(value = "fee", required = false) String fee,
                                     ModelMap model) {
 
         if (bindingResult.hasErrors()) {
@@ -107,7 +106,7 @@ public class UserController {
             user = userService.saveOrUpdate(user);
         }
 
-        user = userService.updateRole(user, Double.parseDouble(fee));
+        user = userService.updateRole(user);
 
         return VIEW_REDIRECT_PATH + user.getId();
     }
