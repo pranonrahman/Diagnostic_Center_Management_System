@@ -7,6 +7,7 @@ import net.therap.service.DoctorService;
 import net.therap.service.FacilityService;
 import net.therap.service.PatientService;
 import net.therap.service.PrescriptionService;
+import net.therap.util.RoleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,7 +21,7 @@ import java.util.*;
  * @since 02/08/2022
  */
 @Controller
-@SessionAttributes({"role", "user"})
+@SessionAttributes("user")
 @RequestMapping("/prescription")
 public class PrescriptionController {
 
@@ -50,11 +51,10 @@ public class PrescriptionController {
 
     @GetMapping("/view")
     public String loadViewPage(@ModelAttribute("user") User user,
-                               @ModelAttribute("role") Role role,
                                @RequestParam("id") String id,
                                ModelMap model) {
 
-        model.put("doctorId", role.getName().equals(RoleEnum.DOCTOR) ? user.getDoctor().getId() : 0);
+        model.put("doctorId", RoleUtil.userContains(user, RoleEnum.DOCTOR) ? user.getDoctor().getId() : 0);
         setupReferenceData(Long.parseLong(id), model);
 
         return VIEW_PAGE;
