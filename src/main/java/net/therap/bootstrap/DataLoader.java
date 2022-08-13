@@ -1,12 +1,17 @@
 package net.therap.bootstrap;
 
 import net.therap.entity.*;
-import net.therap.service.*;
+import net.therap.service.FacilityService;
+import net.therap.service.MedicineService;
+import net.therap.service.RoleService;
+import net.therap.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import static net.therap.entity.RoleEnum.*;
 

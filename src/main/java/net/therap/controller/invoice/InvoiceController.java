@@ -73,12 +73,15 @@ public class InvoiceController {
     }
 
     @GetMapping
-    public String review(ModelMap model) {
+    public String review(ModelMap model, HttpServletRequest request) {
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
 
         if (isNull(invoice) || isNull(invoice.getPatient())) {
             return REDIRECT_DOCTOR_PAGE;
         }
+
+        User user = (User) request.getSession().getAttribute("user");
+        invoice.setReceptionist(user.getReceptionist());
 
         setUpReferenceData(invoice, model);
 
@@ -94,6 +97,7 @@ public class InvoiceController {
         }
 
         List<Invoice> invoices;
+        boolean isPatient = false;
 
         if (patientId == 0) {
             invoices = invoiceService.findAll();
@@ -101,12 +105,13 @@ public class InvoiceController {
         } else if (patientId == user.getPatient().getId()) {
             Patient patient = user.getPatient();
             invoices = invoiceService.findByPatient(patient);
+            isPatient = true;
 
         } else {
             throw new InsufficientAccessException();
         }
 
-        setUpReferenceData(invoices, model);
+        setUpReferenceData(invoices, isPatient, model);
 
         return LIST_VIEW_PAGE;
     }
@@ -127,6 +132,7 @@ public class InvoiceController {
             return VIEW_PAGE;
         }
 
+        invoiceCmd.setReceptionist(user.getReceptionist());
         Invoice invoice = invoiceService.getInvoiceFromCmd(invoiceCmd);
 
         if (invoice.getParticulars().isEmpty()) {
@@ -138,7 +144,6 @@ public class InvoiceController {
         createEmptyPrescriptions(invoiceCmd);
         updateMedicineQuantity(invoiceCmd);
 
-        invoice.setReceptionist(user.getReceptionist());
         Invoice savedInvoice = invoiceService.saveOrUpdate(invoice);
 
         if (model.containsAttribute(INVOICE_CMD)) {
@@ -180,7 +185,8 @@ public class InvoiceController {
         model.put("action", REVIEW);
     }
 
-    private void setUpReferenceData(List<Invoice> invoices, ModelMap model) {
+    private void setUpReferenceData(List<Invoice> invoices, boolean isPatient, ModelMap model) {
         model.addAttribute("invoices", invoices);
+        model.addAttribute("isPatient", isPatient);
     }
 }

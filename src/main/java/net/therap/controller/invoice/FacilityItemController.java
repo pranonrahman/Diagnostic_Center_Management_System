@@ -1,12 +1,12 @@
 package net.therap.controller.invoice;
 
 import net.therap.command.FacilityItemCmd;
+import net.therap.command.InvoiceCmd;
 import net.therap.command.RemoveCmd;
 import net.therap.editor.FacilityEditor;
 import net.therap.entity.Action;
 import net.therap.entity.Facility;
 import net.therap.service.FacilityService;
-import net.therap.command.InvoiceCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;

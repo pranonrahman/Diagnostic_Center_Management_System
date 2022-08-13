@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="net.therap.entity.RoleEnum" %>
 <%--
   * @author khandaker.maruf
   * @since 03/08/2022
@@ -21,8 +20,6 @@
 <jsp:include page="../header.jsp"/>
 
 <div class="container-fluid bg-primary-custom h-100 w-75">
-    <c:set var="isPatient" value="${role.getName().equals(RoleEnum.PATIENT)}"/>
-
     <h2 class="text-center py-3">
         <fmt:message key="header.table.invoices"/>
         <c:if test="${isPatient}">
@@ -30,42 +27,50 @@
         </c:if>
     </h2>
 
-    <table class="table text-center">
+    <c:choose>
+        <c:when test="${invoices.isEmpty()}">
+            <p class="card text-center">No records found!</p>
+        </c:when>
 
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col"><fmt:message key="table.column.invoiceId"/> </th>
-            <th hidden="${isPatient}" scope="col"> <fmt:message key="table.column.customerName"/> </th>
-            <th scope="col"> <fmt:message key="table.column.date"/> </th>
-            <th scope="col"> <fmt:message key="table.column.totalBill"/> </th>
-        </tr>
-        </thead>
+        <c:otherwise>
+            <table class="table text-center">
 
-        <tbody>
-        <c:forEach var="invoice" items="${invoices}" varStatus="loop">
-            <tr>
-                <th scope="row">${loop.index + 1}</th>
-                <td class="d-inline-block text-truncate" style="max-width: 150px">
-                    <c:out value="${invoice.invoiceId}"/>
-                </td>
-                <td hidden="${isPatient}"><c:out value="${invoice.patient.user.name}"/></td>
-                <td> <fmt:formatDate value="${invoice.generationDate}"/> </td>
-                <td> <fmt:formatNumber value="${invoice.totalCost}"/> </td>
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col"><fmt:message key="table.column.invoiceId"/> </th>
+                    <th hidden="${isPatient}" scope="col"> <fmt:message key="table.column.customerName"/> </th>
+                    <th scope="col"> <fmt:message key="table.column.date"/> </th>
+                    <th scope="col"> <fmt:message key="table.column.totalBill"/> </th>
+                </tr>
+                </thead>
 
-                <c:url var="invoiceLink"
-                       value="/invoice/view">
-                    <c:param name="id"
-                             value="${invoice.id}"
-                    />
-                </c:url>
-                <td>
-                    <a href="${invoiceLink}"><fmt:message key="button.label.details"/> </a>
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+                <tbody>
+                <c:forEach var="invoice" items="${invoices}" varStatus="loop">
+                    <tr>
+                        <th scope="row">${loop.index + 1}</th>
+                        <td class="d-inline-block text-truncate" style="max-width: 150px">
+                            <c:out value="${invoice.invoiceId}"/>
+                        </td>
+                        <td hidden="${isPatient}"><c:out value="${invoice.patient.user.name}"/></td>
+                        <td> <fmt:formatDate value="${invoice.generationDate}"/> </td>
+                        <td> <fmt:formatNumber value="${invoice.totalCost}"/> </td>
+
+                        <c:url var="invoiceLink"
+                               value="/invoice/view">
+                            <c:param name="id"
+                                     value="${invoice.id}"
+                            />
+                        </c:url>
+                        <td>
+                            <a href="${invoiceLink}"><fmt:message key="button.label.details"/> </a>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </c:otherwise>
+    </c:choose>
 
 </div>
 

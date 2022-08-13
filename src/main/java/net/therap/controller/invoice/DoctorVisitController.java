@@ -1,12 +1,14 @@
 package net.therap.controller.invoice;
 
 import net.therap.command.DoctorVisitCmd;
+import net.therap.command.InvoiceCmd;
 import net.therap.editor.DoctorEditor;
 import net.therap.editor.PatientEditor;
-import net.therap.entity.*;
+import net.therap.entity.Action;
+import net.therap.entity.Doctor;
+import net.therap.entity.Patient;
 import net.therap.service.DoctorService;
 import net.therap.service.PatientService;
-import net.therap.command.InvoiceCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
