@@ -19,7 +19,7 @@
         <div class="collapse navbar-collapse justify-content-end"
              id="navbarNavDropdown">
 
-            <ul class="navbar-nav mx-3" ${param.isDashboard}>
+            <ul class="navbar-nav mx-3" ${param.linksStatus}>
                 <c:forEach items="${user.roles}" var="role">
                     <c:choose>
                         <c:when test="${role.getName().equals(RoleEnum.DOCTOR)}">

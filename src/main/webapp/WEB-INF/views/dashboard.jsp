@@ -19,7 +19,7 @@
 </head>
 <body>
 <jsp:include page="header.jsp">
-    <jsp:param name="isDashboard" value="hidden"/>
+    <jsp:param name="linksStatus" value="hidden"/>
 </jsp:include>
 
 <div class="container-fluid bg-primary-custom h-100">
