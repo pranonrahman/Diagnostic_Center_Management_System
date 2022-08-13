@@ -61,6 +61,7 @@ public class InvoiceController {
         User user = (User) request.getSession().getAttribute("user");
 
         Invoice invoice = invoiceService.findById(id);
+
         if (!(RoleUtil.userContains(user, RECEPTIONIST) ||
                 (RoleUtil.userContains(user, PATIENT) && invoice.getPatient().getUser().getId() == user.getId()))) {
 

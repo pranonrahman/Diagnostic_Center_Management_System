@@ -87,9 +87,9 @@ public class DoctorVisitController {
             if(!model.containsAttribute(INVOICE_CMD)) {
                 model.put(INVOICE_CMD, new InvoiceCmd());
             }
+
             InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
             model.put(DOCTOR_VISIT_CMD, new DoctorVisitCmd(invoice.getPatient(), invoice.getDoctors()));
-
         }
 
         model.put("patients", patientService.findAll());
