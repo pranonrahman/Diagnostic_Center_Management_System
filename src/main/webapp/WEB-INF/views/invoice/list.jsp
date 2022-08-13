@@ -56,11 +56,8 @@
                         <td> <fmt:formatDate value="${invoice.generationDate}"/> </td>
                         <td> <fmt:formatNumber value="${invoice.totalCost}"/> </td>
 
-                        <c:url var="invoiceLink"
-                               value="/invoice/view">
-                            <c:param name="id"
-                                     value="${invoice.id}"
-                            />
+                        <c:url var="invoiceLink" value="/invoice/view">
+                            <c:param name="id" value="${invoice.id}"/>
                         </c:url>
                         <td>
                             <a href="${invoiceLink}"><fmt:message key="button.label.details"/> </a>
