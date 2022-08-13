@@ -132,8 +132,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/delete")
-    public String deletePerson(@RequestParam(value = "id") Long id,
-                               @ModelAttribute("user") User sessionUser) throws RuntimeException {
+    public String deleteUser(@RequestParam(value = "id") Long id,
+                             @ModelAttribute("user") User sessionUser) throws RuntimeException {
         User user = userService.findById(id);
 
         if (isNull(user)) {

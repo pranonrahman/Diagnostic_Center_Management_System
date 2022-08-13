@@ -2,7 +2,7 @@ package net.therap.constant;
 
 public class URL {
 
-    public static String USER_SAVE = "/user/save";
+    public static String USER_SAVE = "/user";
     public static String USER_VIEW = "/user/view";
     public static String USER_LIST = "/user/list";
     public static String USER_DELETE = "/user/delete";
@@ -22,9 +22,6 @@ public class URL {
     public static String INVOICE_LIST = "/invoice/list";
 
     public static String LOGIN = "/login";
-    public static String LOGIN_ROLE = "/login/role";
-
-    public static String HOME = "/";
 
     public static String LOGOUT = "/logout";
 
