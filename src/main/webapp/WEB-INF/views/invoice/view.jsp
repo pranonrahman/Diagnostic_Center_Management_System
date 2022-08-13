@@ -76,7 +76,9 @@
                 </tbody>
             </table>
 
-            <p class="text-danger text-center py-2">${errorMessage}</p>
+            <p class="text-danger text-center py-2">
+                <c:out value="${errorMessage}"/>
+            </p>
 
             <form:form method="post">
                 <c:choose>

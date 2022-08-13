@@ -29,7 +29,9 @@
 
     <c:choose>
         <c:when test="${invoices.isEmpty()}">
-            <p class="card text-center">No records found!</p>
+            <p class="card text-center">
+                <fmt:message key="text.recordsNotFound"/>
+            </p>
         </c:when>
 
         <c:otherwise>

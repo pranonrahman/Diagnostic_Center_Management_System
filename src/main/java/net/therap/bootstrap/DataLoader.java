@@ -36,10 +36,12 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-//        createSeedRole();
-//        createSeedFacility();
-//        createSeedPerson();
-//        createSeedMedicine();
+        if (roleService.findAll().isEmpty()) {
+            createSeedRole();
+            createSeedFacility();
+            createSeedPerson();
+            createSeedMedicine();
+        }
     }
 
     private void createSeedFacility() {
@@ -123,10 +125,10 @@ public class DataLoader implements CommandLineRunner {
         Medicine napa = new Medicine("Napa", "Peracetamol", 10.5, 100);
         medicineService.saveOrUpdate(napa);
 
-        Medicine dermovet =  new Medicine("Dermovet", "deracetamol", 17.0, 10);
+        Medicine dermovet = new Medicine("Dermovet", "deracetamol", 17.0, 10);
         medicineService.saveOrUpdate(dermovet);
 
-        Medicine reset =  new Medicine("Reset", "reset", 17.0, 20);
+        Medicine reset = new Medicine("Reset", "reset", 17.0, 20);
         medicineService.saveOrUpdate(reset);
     }
 }

@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import static java.util.Objects.isNull;
+import static net.therap.controller.PatientController.USER_CMD;
 import static net.therap.entity.RoleEnum.DOCTOR;
 
 /**
@@ -30,13 +31,15 @@ import static net.therap.entity.RoleEnum.DOCTOR;
  * @since 02/08/2022
  */
 @Controller
-@SessionAttributes("user")
+@SessionAttributes(USER_CMD)
 @RequestMapping("/prescription")
 public class PrescriptionController {
 
     private static final String VIEW_PAGE = "prescription/form";
 
     private static final String PRESCRIPTION_LIST_VIEW_PAGE = "prescription/list";
+
+    private static final String USER_CMD = "user";
 
     @Autowired
     private FacilityService facilityService;
@@ -59,7 +62,7 @@ public class PrescriptionController {
     }
 
     @GetMapping
-    public String loadViewPage(@ModelAttribute("user") User user,
+    public String loadViewPage(@ModelAttribute(USER_CMD) User user,
                                @RequestParam("id") String id,
                                ModelMap model) {
 
@@ -81,7 +84,7 @@ public class PrescriptionController {
     }
 
     @GetMapping("/list")
-    public String loadPrescriptionList(@ModelAttribute("user") User user, ModelMap model) {
+    public String loadPrescriptionList(@ModelAttribute(USER_CMD) User user, ModelMap model) {
         Patient patient = user.getPatient();
         List<Prescription> prescriptions = patient.getPrescriptions();
 
@@ -100,7 +103,7 @@ public class PrescriptionController {
         prescription.setDateOfVisit(new Date());
 
         prescriptionService.saveOrUpdate(prescription);
-        setupReferenceData(null, model);
+//        setupReferenceData(null, model);
 
         return "redirect:/prescription?id=" + prescription.getId();
     }

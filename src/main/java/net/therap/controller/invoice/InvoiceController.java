@@ -136,7 +136,7 @@ public class InvoiceController {
         Invoice invoice = invoiceService.getInvoiceFromCmd(invoiceCmd);
 
         if (invoice.getParticulars().isEmpty()) {
-            model.put("errorMessage", "error.notSelected");
+            model.put("errorMessage", msa.getMessage("error.notSelected"));
 
             return VIEW_PAGE;
         }
