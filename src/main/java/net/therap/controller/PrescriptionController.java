@@ -37,7 +37,7 @@ public class PrescriptionController {
 
     private static final String VIEW_PAGE = "prescription/form";
 
-    private static final String PRESCRIPTION_LIST_VIEW_PAGE = "prescription/list";
+    private static final String LIST_VIEW_PAGE = "prescription/list";
 
     private static final String USER_CMD = "user";
 
@@ -90,10 +90,9 @@ public class PrescriptionController {
 
         Collections.sort(prescriptions);
 
-        model.put("patientName", user.getName());
         model.put("prescriptions", prescriptions);
 
-        return PRESCRIPTION_LIST_VIEW_PAGE;
+        return LIST_VIEW_PAGE;
     }
 
     @PostMapping

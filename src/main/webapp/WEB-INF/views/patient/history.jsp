@@ -25,6 +25,7 @@
     </h2>
 
     <div class="list-group">
+        <h5 class="text-center"><fmt:message key="text.myAppointments"/></h5>
         <c:forEach items="${doctorSpecificPrescriptions}"
                    var="prescription">
 
@@ -57,6 +58,7 @@
     <hr/>
 
     <div class="list-group">
+        <h5 class="text-center"><fmt:message key="text.otherAppointments"/></h5>
         <c:forEach items="${otherPrescriptions}"
                    var="prescription">
 
