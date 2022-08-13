@@ -19,7 +19,7 @@
 <body>
 <jsp:include page="../header.jsp"/>
 
-<div class="container-fluid bg-primary-custom h-100">
+<div class="container-fluid bg-primary-custom h-100 mt-4">
 
     <div class="card">
         <h5 class="card-header">
@@ -68,7 +68,9 @@
                 </c:forEach>
 
                 <tr>
-                    <td colspan="5" class="text-end"><fmt:formatNumber value="${invoiceView.totalCost}"/> </td>
+                    <td colspan="5" class="text-end fw-bold">
+                        <fmt:message key="text.total"/>: <fmt:formatNumber value="${invoiceView.totalCost}"/>
+                    </td>
                 </tr>
 
                 </tbody>

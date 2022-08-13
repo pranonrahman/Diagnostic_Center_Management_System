@@ -1,12 +1,13 @@
 package net.therap.controller.invoice;
 
+import net.therap.command.InvoiceCmd;
 import net.therap.command.MedicineItemCmd;
+import net.therap.command.RemoveCmd;
 import net.therap.editor.MedicineEditor;
-import net.therap.entity.*;
+import net.therap.entity.Action;
+import net.therap.entity.Medicine;
 import net.therap.service.MedicineService;
 import net.therap.validator.MedicineItemCmdValidator;
-import net.therap.command.InvoiceCmd;
-import net.therap.command.RemoveCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

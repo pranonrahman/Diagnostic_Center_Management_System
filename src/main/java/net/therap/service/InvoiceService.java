@@ -64,6 +64,7 @@ public class InvoiceService {
     public Invoice getInvoiceFromCmd(InvoiceCmd invoiceCmd) {
         Invoice invoice = new Invoice();
         invoice.setPatient(invoiceCmd.getPatient());
+        invoice.setReceptionist(invoiceCmd.getReceptionist());
 
         invoice.getParticulars().addAll(getDoctorVisitParticulars(invoiceCmd.getDoctors()));
         invoice.getParticulars().addAll(getMedicineParticulars(invoiceCmd.getMedicines()));
