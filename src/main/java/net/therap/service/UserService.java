@@ -53,10 +53,6 @@ public class UserService {
 
     @Transactional
     public User saveOrUpdate(User user) {
-        if (!user.isNew()) {
-            user.setRoles(userDao.findById(user.getId()).getRoles());
-        }
-
         return userDao.saveOrUpdate(user);
     }
 

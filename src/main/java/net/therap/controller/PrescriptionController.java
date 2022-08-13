@@ -97,13 +97,12 @@ public class PrescriptionController {
     }
 
     @PostMapping
-    public String processEdit(@ModelAttribute("prescription") Prescription prescription, ModelMap model) {
+    public String processEdit(@ModelAttribute("prescription") Prescription prescription) {
         prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
         prescription.setDoctor(doctorService.findById(prescription.getDoctor().getId()));
         prescription.setDateOfVisit(new Date());
 
         prescriptionService.saveOrUpdate(prescription);
-//        setupReferenceData(null, model);
 
         return "redirect:/prescription?id=" + prescription.getId();
     }
