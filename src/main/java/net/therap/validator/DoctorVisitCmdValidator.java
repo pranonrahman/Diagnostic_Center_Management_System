@@ -3,6 +3,7 @@ package net.therap.validator;
 import net.therap.command.DoctorVisitCmd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -10,6 +11,7 @@ import org.springframework.validation.Validator;
  * @author khandaker.maruf
  * @since 8/13/22
  */
+@Component
 public class DoctorVisitCmdValidator implements Validator {
 
     @Autowired

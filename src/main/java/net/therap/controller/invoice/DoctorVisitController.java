@@ -50,12 +50,15 @@ public class DoctorVisitController {
     @Autowired
     private DoctorEditor doctorEditor;
 
+    @Autowired
+    DoctorVisitCmdValidator doctorVisitCmdValidator;
+
     @InitBinder("doctorVisitCmd")
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Patient.class, patientEditor);
         binder.registerCustomEditor(Doctor.class, doctorEditor);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-        binder.addValidators(new DoctorVisitCmdValidator());
+        binder.addValidators(doctorVisitCmdValidator);
     }
 
     @GetMapping
@@ -67,11 +70,11 @@ public class DoctorVisitController {
 
     @PostMapping
     public String save(@Valid @ModelAttribute(DOCTOR_VISIT_CMD) DoctorVisitCmd doctorVisitCmd,
-                             BindingResult result,
-                             @SessionAttribute(INVOICE_CMD) InvoiceCmd invoice,
-                             ModelMap model) {
+                       BindingResult result,
+                       @SessionAttribute(INVOICE_CMD) InvoiceCmd invoice,
+                       ModelMap model) {
 
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             setUpReferenceData(SAVE, model);
             return ADD_DOCTOR_PAGE;
         }
@@ -83,8 +86,8 @@ public class DoctorVisitController {
     }
 
     private void setUpReferenceData(Action action, ModelMap model) {
-        if(action.equals(VIEW)) {
-            if(!model.containsAttribute(INVOICE_CMD)) {
+        if (action.equals(VIEW)) {
+            if (!model.containsAttribute(INVOICE_CMD)) {
                 model.put(INVOICE_CMD, new InvoiceCmd());
             }
 
