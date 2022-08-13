@@ -21,7 +21,7 @@
 
     <h2 class="text-center py-3">
         <fmt:message key="text.prescriptionsOf"/>
-        <c:out value="${patientName}"/>
+        <c:out value="${user.name}"/>
     </h2>
 
     <div class="list-group">
