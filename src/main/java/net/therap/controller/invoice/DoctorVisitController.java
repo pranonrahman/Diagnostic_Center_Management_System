@@ -9,6 +9,7 @@ import net.therap.entity.Doctor;
 import net.therap.entity.Patient;
 import net.therap.service.DoctorService;
 import net.therap.service.PatientService;
+import net.therap.validator.DoctorVisitCmdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -49,11 +50,12 @@ public class DoctorVisitController {
     @Autowired
     private DoctorEditor doctorEditor;
 
-    @InitBinder
+    @InitBinder("doctorVisitCmd")
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Patient.class, patientEditor);
         binder.registerCustomEditor(Doctor.class, doctorEditor);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+        binder.addValidators(new DoctorVisitCmdValidator());
     }
 
     @GetMapping
