@@ -32,11 +32,6 @@ public class Prescription extends Persistent implements Comparable<Prescription>
     @Size(max = 3000, message = "{size.max}")
     private String comment;
 
-    @Column(name = "date_of_visit")
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateOfVisit;
-
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
@@ -62,6 +57,6 @@ public class Prescription extends Persistent implements Comparable<Prescription>
 
     @Override
     public int compareTo(Prescription o) {
-        return (int) (o.getDateOfVisit().getTime() - this.getDateOfVisit().getTime());
+        return (int) (o.getCreated().getTime() - this.getCreated().getTime());
     }
 }

@@ -44,7 +44,13 @@
                         <c:out value="${prescription.diagnosis == null ? 'N/A' : prescription.diagnosis}"/>
                     </h5>
                     <small>
-                        <fmt:formatDate value="${prescription.dateOfVisit}"/>
+                    </small>
+                    <small>
+                        <fmt:message key="label.createdOn"/>:
+                        <fmt:formatDate value="${prescription.created}"/>
+                        <br>
+                        <fmt:message key="label.updatedOn"/>:
+                        <fmt:formatDate value="${prescription.updated}"/>
                     </small>
                 </div>
                 <p class="card-text">
@@ -77,7 +83,11 @@
                         <c:out value="${prescription.diagnosis == null ? 'N/A' : prescription.diagnosis}"/>
                     </h5>
                     <small>
-                        <fmt:formatDate value="${prescription.dateOfVisit}"/>
+                        <fmt:message key="label.createdOn"/>:
+                        <fmt:formatDate value="${prescription.created}"/>
+                        <br>
+                        <fmt:message key="label.updatedOn"/>:
+                        <fmt:formatDate value="${prescription.updated}"/>
                     </small>
                 </div>
                 <p class="card-text">

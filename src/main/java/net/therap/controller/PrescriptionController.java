@@ -89,16 +89,10 @@ public class PrescriptionController {
 
     @PostMapping
     public String processEdit(@ModelAttribute("prescription") Prescription prescription,
-                              @ModelAttribute(USER_CMD) User user,
                               RedirectAttributes attributes) {
-
-        if (prescription.getDoctor().getId() != user.getId()) {
-            throw new InsufficientAccessException();
-        }
 
         prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
         prescription.setDoctor(doctorService.findById(prescription.getDoctor().getId()));
-        prescription.setDateOfVisit(new Date());
 
         prescriptionService.saveOrUpdate(prescription);
 
