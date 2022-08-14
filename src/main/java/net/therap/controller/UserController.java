@@ -145,10 +145,6 @@ public class UserController {
                              @ModelAttribute("user") User sessionUser) throws RuntimeException {
         User user = userService.findById(id);
 
-        if (isNull(user)) {
-            throw new RuntimeException(msa.getMessage("user.notFound.message"));
-        }
-
         if (sessionUser.getUserName().equals(user.getUserName())) {
             throw new RuntimeException(msa.getMessage("user.selfDelete.message"));
         }
