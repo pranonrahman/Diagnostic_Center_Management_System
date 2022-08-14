@@ -6,6 +6,7 @@ import net.therap.entity.Patient;
 import net.therap.entity.Prescription;
 import net.therap.entity.User;
 import net.therap.exception.InsufficientAccessException;
+import net.therap.helper.PrescriptionHelper;
 import net.therap.service.DoctorService;
 import net.therap.service.FacilityService;
 import net.therap.service.PatientService;
@@ -58,6 +59,9 @@ public class PrescriptionController {
     @Autowired
     private FacilityEditor facilityEditor;
 
+    @Autowired
+    private PrescriptionHelper prescriptionHelper;
+
     @InitBinder
     private void InitBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Facility.class, facilityEditor);
@@ -86,10 +90,7 @@ public class PrescriptionController {
     @GetMapping("/list")
     public String showList(ModelMap model) {
         User user = (User) model.getAttribute(USER_CMD);
-        Patient patient = user.getPatient();
-        List<Prescription> prescriptions = patient.getPrescriptions();
-
-        Collections.sort(prescriptions);
+        List<Prescription> prescriptions = prescriptionHelper.getPrescriptionsForPatient(user.getPatient());
 
         setupReferenceData(prescriptions, model);
 
@@ -106,9 +107,10 @@ public class PrescriptionController {
         prescriptionService.saveOrUpdate(prescription);
 
         redirectAttributes.addAttribute("id", prescription.getId());
-        redirectAttributes.addAttribute("success", true);
+//        redirectAttributes.addAttribute("success", true);
 
-        return "redirect:/prescription";
+//        return "redirect:/prescription";
+        return "redirect:/success";
     }
 
     private void setupReferenceData(Prescription prescription, User user, ModelMap model) {

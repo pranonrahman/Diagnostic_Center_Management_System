@@ -1,9 +1,9 @@
 package net.therap.controller;
 
-import net.therap.entity.Doctor;
 import net.therap.entity.Patient;
 import net.therap.entity.Prescription;
 import net.therap.entity.User;
+import net.therap.helper.PatientHelper;
 import net.therap.service.DoctorService;
 import net.therap.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +36,9 @@ public class PatientController {
     @Autowired
     private DoctorService doctorService;
 
+    @Autowired
+    private PatientHelper patientHelper;
+
     @InitBinder
     private void InitBinder(WebDataBinder webDataBinder){
         webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
@@ -45,15 +48,10 @@ public class PatientController {
     public String showList(ModelMap model) {
 
         User user = (User) model.getAttribute(USER_CMD);
-        long doctorId = user.getDoctor().getId();
-        List<Prescription> prescriptions = doctorService.findById(doctorId).getPrescriptions();
-        Set<Patient> patients = new HashSet<>();
 
-        for(Prescription prescription : prescriptions) {
-            patients.add(prescription.getPatient());
-        }
+        Set<Patient> patients = patientHelper.getPatientsForDoctor(user.getDoctor());
 
-        setupReferenceDataForList(patients, doctorId, model);
+        setupReferenceDataForList(patients, model);
 
         return LIST_VIEW_PAGE;
     }
@@ -62,40 +60,23 @@ public class PatientController {
     public String showHistory(@RequestParam(value = "id", defaultValue = "0") long id,
                               ModelMap model) {
 
-        User user = (User) model.getAttribute(USER_CMD);
-        long doctorId = user.getDoctor().getId();
-        Doctor doctor = doctorService.findById(doctorId);
         Patient patient = patientService.findById(id);
 
-        List<Prescription> otherPrescriptions = new ArrayList<>();
-        List<Prescription> doctorSpecificPrescriptions = new ArrayList<>();
-        List<Prescription> allPrescriptions = patient.getPrescriptions();
-
-        for (Prescription prescription : allPrescriptions) {
-            if (prescription.getDoctor().equals(doctor)) {
-                doctorSpecificPrescriptions.add(prescription);
-            } else {
-                otherPrescriptions.add(prescription);
-            }
-        }
-
-        Collections.sort(otherPrescriptions);
-        Collections.sort(doctorSpecificPrescriptions);
-
-        setupReferenceDataForHistory(patient, doctorSpecificPrescriptions, otherPrescriptions, model);
+        setupReferenceDataForHistory(patient, model);
 
         return HISTORY_PAGE;
     }
 
-    private void setupReferenceDataForList(Set<Patient> patients, long doctorId, ModelMap model) {
-        model.put("doctorId", doctorId);
+    private void setupReferenceDataForList(Set<Patient> patients, ModelMap model) {
         model.put("patients", patients);
     }
 
     private void setupReferenceDataForHistory(Patient patient,
-                                              List<Prescription> doctorSpecificPrescriptions,
-                                              List<Prescription> otherPrescriptions,
                                               ModelMap model) {
+        User user = (User) model.getAttribute(USER_CMD);
+        List<Prescription> doctorSpecificPrescriptions = patientHelper.getPrescriptions(patient, user.getDoctor(), true);
+        List<Prescription> otherPrescriptions = patientHelper.getPrescriptions(patient, user.getDoctor(), false);
+
         model.put("patient", patient);
         model.put("otherPrescriptions", otherPrescriptions);
         model.put("doctorSpecificPrescriptions", doctorSpecificPrescriptions);
