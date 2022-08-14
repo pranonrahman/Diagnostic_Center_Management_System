@@ -6,7 +6,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,8 +18,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @NamedQueries({
-        @NamedQuery(name = "Invoice.findAll", query = "FROM Invoice ORDER BY generationDate DESC"),
-        @NamedQuery(name = "Invoice.findByPatientId", query = "FROM Invoice where patient.id = :patientId ORDER BY generationDate DESC"),
+        @NamedQuery(name = "Invoice.findAll", query = "FROM Invoice ORDER BY created DESC"),
+        @NamedQuery(name = "Invoice.findByPatientId", query = "FROM Invoice where patient.id = :patientId ORDER BY created DESC"),
 })
 public class Invoice extends Persistent {
 
@@ -29,11 +28,6 @@ public class Invoice extends Persistent {
     @NotNull
     @Column(name = "invoice_id")
     private String invoiceId;
-
-    @NotNull
-    @Column(name = "generation_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date generationDate;
 
     @Column(name = "total_cost")
     private double totalCost;
@@ -65,6 +59,5 @@ public class Invoice extends Persistent {
     public Invoice() {
         particulars = new ArrayList<>();
         invoiceId = UUID.randomUUID().toString();
-        generationDate = new Date();
     }
 }
