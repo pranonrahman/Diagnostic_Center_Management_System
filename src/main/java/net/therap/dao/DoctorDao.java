@@ -17,6 +17,7 @@ public class DoctorDao extends Dao<Doctor> {
     }
 
     public List<Doctor> findAll() {
-        return em.createNamedQuery("Doctor.findAll", Doctor.class).getResultList();
+        return em.createNamedQuery("Doctor.findAll", Doctor.class)
+                .getResultList();
     }
 }

@@ -32,6 +32,7 @@ public class Dao<T extends Persistent> {
         }
 
         em.flush();
+
         return object;
     }
 

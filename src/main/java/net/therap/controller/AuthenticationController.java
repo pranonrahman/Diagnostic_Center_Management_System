@@ -3,7 +3,7 @@ package net.therap.controller;
 import net.therap.command.UserCmd;
 import net.therap.editor.RoleEditor;
 import net.therap.entity.Role;
-import net.therap.service.AuthenticationService;
+import net.therap.util.AuthenticationUtil;
 import net.therap.service.RoleService;
 import net.therap.service.UserService;
 import net.therap.validator.UserCmdValidator;
@@ -31,7 +31,6 @@ public class AuthenticationController {
     private static final String FORM_PAGE = "/authentication/form";
     private static final String USER_CMD = "userCmd";
     private static final String USER = "user";
-    private static final String SEED_ROLE_LIST = "seedRoleList";
     private static final String MESSAGE = "message";
 
     @Autowired
@@ -41,7 +40,7 @@ public class AuthenticationController {
     private RoleEditor roleEditor;
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private AuthenticationUtil authenticationUtil;
 
     @Autowired
     private UserService userService;
@@ -55,11 +54,7 @@ public class AuthenticationController {
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Role.class, roleEditor);
-    }
-
-    @InitBinder(USER_CMD)
-    private void userCmdInitBinder(WebDataBinder binder) {
-        binder.addValidators(userCmdValidator);
+        webDataBinder.addValidators(userCmdValidator);
     }
 
     @GetMapping({"/login"})
@@ -79,7 +74,7 @@ public class AuthenticationController {
             return FORM_PAGE;
         }
 
-        if (!authenticationService.isValidCredential(userCmd)) {
+        if (!authenticationUtil.isValidCredential(userCmd)) {
             model.put(MESSAGE, msa.getMessage("login.invalidCredentials"));
             return FORM_PAGE;
         }
@@ -93,7 +88,7 @@ public class AuthenticationController {
     public String logout(SessionStatus status, ModelMap model) {
         status.setComplete();
 
-        model.put(SEED_ROLE_LIST, roleService.findAll());
+        model.put("seedRoleList", roleService.findAll());
         model.put(USER_CMD, new UserCmd());
 
         return LOGIN_REDIRECT_PATH;

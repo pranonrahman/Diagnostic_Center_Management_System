@@ -18,7 +18,8 @@ public class InvoiceDao extends Dao<Invoice> {
     }
 
     public List<Invoice> findAll() {
-        return em.createNamedQuery("Invoice.findAll", Invoice.class).getResultList();
+        return em.createNamedQuery("Invoice.findAll", Invoice.class)
+                .getResultList();
     }
 
     public List<Invoice> findByPatient(Patient patient) {

@@ -86,8 +86,8 @@ public class User extends Persistent {
     }
 
     public int getAge(){
-         Date date = new Date();
+         Date now = new Date();
 
-        return (int) ((date.getTime() - this.getDateOfBirth().getTime()) / 31536000000L);
+        return (int) ((now.getTime() - this.getDateOfBirth().getTime()) / 31536000000L);
     }
 }
