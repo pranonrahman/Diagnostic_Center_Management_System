@@ -13,7 +13,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.*;
 
 import static net.therap.controller.PatientController.USER_CMD;
@@ -43,9 +42,9 @@ public class PatientController {
     }
 
     @GetMapping("/list")
-    public String showList(@ModelAttribute(USER_CMD) User user,
-                           ModelMap model) {
+    public String showList(ModelMap model) {
 
+        User user = (User) model.getAttribute(USER_CMD);
         long doctorId = user.getDoctor().getId();
         List<Prescription> prescriptions = doctorService.findById(doctorId).getPrescriptions();
         Set<Patient> patients = new HashSet<>();
@@ -54,8 +53,7 @@ public class PatientController {
             patients.add(prescription.getPatient());
         }
 
-        model.put("doctorId", doctorId);
-        model.put("patients", patients);
+        setupReferenceDataForList(patients, doctorId, model);
 
         return LIST_VIEW_PAGE;
     }
@@ -84,10 +82,22 @@ public class PatientController {
         Collections.sort(otherPrescriptions);
         Collections.sort(doctorSpecificPrescriptions);
 
+        setupReferenceDataForHistory(patient, doctorSpecificPrescriptions, otherPrescriptions, model);
+
+        return HISTORY_PAGE;
+    }
+
+    private void setupReferenceDataForList(Set<Patient> patients, long doctorId, ModelMap model) {
+        model.put("doctorId", doctorId);
+        model.put("patients", patients);
+    }
+
+    private void setupReferenceDataForHistory(Patient patient,
+                                              List<Prescription> doctorSpecificPrescriptions,
+                                              List<Prescription> otherPrescriptions,
+                                              ModelMap model) {
         model.put("patient", patient);
         model.put("otherPrescriptions", otherPrescriptions);
         model.put("doctorSpecificPrescriptions", doctorSpecificPrescriptions);
-
-        return HISTORY_PAGE;
     }
 }

@@ -36,9 +36,6 @@
         <form:form method="post"
                    modelAttribute="prescription">
 
-            <c:set var="readonly"
-                   value="${(doctorId != null && prescription.doctor.id == doctorId) ? false : true}"/>
-
             <form:input path="patient.id"
                         value="${prescription.patient.id}"
                         hidden="true"/>

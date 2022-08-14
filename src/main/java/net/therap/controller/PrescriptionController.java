@@ -74,12 +74,11 @@ public class PrescriptionController {
         if (nonNull(user) &&
                 RoleUtil.userContains(user, PATIENT) &&
                 prescription.getPatient().getId() != user.getId()) {
-            
+
             throw new InsufficientAccessException();
         }
 
-        setupReferenceData(prescription, model);
-        model.put("doctorId", RoleUtil.userContains(user, DOCTOR) ? user.getDoctor().getId() : 0);
+        setupReferenceData(prescription, user, model);
 
         return VIEW_PAGE;
     }
@@ -92,7 +91,7 @@ public class PrescriptionController {
 
         Collections.sort(prescriptions);
 
-        model.put("prescriptions", prescriptions);
+        setupReferenceData(prescriptions, model);
 
         return LIST_VIEW_PAGE;
     }
@@ -112,8 +111,14 @@ public class PrescriptionController {
         return "redirect:/prescription";
     }
 
-    private void setupReferenceData(Prescription prescription, ModelMap model) {
+    private void setupReferenceData(Prescription prescription, User user, ModelMap model) {
         model.put("facilities", facilityService.findAll());
         model.put("prescription", isNull(prescription) ? new Prescription() : prescription);
+        model.put("readonly", !RoleUtil.userContains(user, DOCTOR) ||
+                (user.getDoctor().getId() != prescription.getDoctor().getId()));
+    }
+
+    private void setupReferenceData(List<Prescription> prescriptions, ModelMap model) {
+        model.put("prescriptions", prescriptions);
     }
 }

@@ -107,8 +107,8 @@ public class UserController {
                           ModelMap model) {
 
         if (result.hasErrors()) {
-            model.put("genderList", Gender.values());
-            model.put("seedRoleList", roleService.findAll());
+            setupReferenceData(model);
+
             return FORM_PAGE;
         }
 
@@ -134,13 +134,13 @@ public class UserController {
                            ModelMap model) {
 
         if (isNull(filterBy)) {
-            model.put("users", userService.findAll());
+            setupReferenceData(userService.findAll(), model);
         } else {
             Role role = roleService.findByName(RoleEnum.valueOf(filterBy));
             List<User> userList = new ArrayList<>();
             userService.findAll().stream().filter(user -> user.getRoles().contains(role)).forEach(userList::add);
 
-            model.put(USERS, userList);
+            setupReferenceData(userList, model);
         }
         return LIST_PAGE;
     }
@@ -157,5 +157,14 @@ public class UserController {
         userService.delete(user);
 
         return LIST_REDIRECT_PATH;
+    }
+
+    private void setupReferenceData(ModelMap model) {
+        model.put("genderList", Gender.values());
+        model.put("seedRoleList", roleService.findAll());
+    }
+
+    private void setupReferenceData(List<User> users, ModelMap model) {
+        model.put("users", users);
     }
 }
