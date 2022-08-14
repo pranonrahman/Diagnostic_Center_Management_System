@@ -2,9 +2,12 @@ package net.therap.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -20,6 +23,15 @@ public class Persistent implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idSequence")
     @SequenceGenerator(name = "idSequence", sequenceName = "id_sequence", allocationSize = 1)
     private long id;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(updatable = false)
+    private Date created;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated;
 
     public boolean isNew() {
         return getId() == 0;
