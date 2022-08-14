@@ -47,5 +47,9 @@ public class UserValidator implements Validator {
         if(nonNull(user.getDoctor()) && user.getDoctor().getFee()<0) {
             errors.rejectValue("doctor.fee", "{fee.notNegative}", msa.getMessage("fee.notNegative"));
         }
+
+        if(!user.isNew() && !userService.findById(user.getId()).getUserName().equals(user.getUserName())) {
+            errors.rejectValue("userName", "{userName.notChange}", msa.getMessage("userName.notChange"));
+        }
     }
 }
