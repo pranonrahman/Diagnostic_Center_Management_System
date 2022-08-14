@@ -1,4 +1,4 @@
-package net.therap.service;
+package net.therap.util;
 
 import net.therap.command.UserCmd;
 import net.therap.dao.UserDao;
@@ -13,7 +13,7 @@ import static java.util.Objects.isNull;
  * @since 8/4/22
  */
 @Service
-public class AuthenticationService {
+public class AuthenticationUtil {
 
     @Autowired
     private UserDao userDao;
