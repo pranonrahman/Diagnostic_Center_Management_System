@@ -6,7 +6,6 @@ import net.therap.entity.Patient;
 import net.therap.entity.Prescription;
 import net.therap.entity.User;
 import net.therap.exception.InsufficientAccessException;
-import net.therap.exception.RecordNotFoundException;
 import net.therap.service.DoctorService;
 import net.therap.service.FacilityService;
 import net.therap.service.PatientService;
@@ -20,12 +19,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static net.therap.controller.PatientController.USER_CMD;
 import static net.therap.entity.RoleEnum.DOCTOR;
+import static net.therap.entity.RoleEnum.PATIENT;
 
 /**
  * @author amimul.ehsan
@@ -63,11 +63,18 @@ public class PrescriptionController {
     }
 
     @GetMapping
-    public String loadViewPage(@ModelAttribute(USER_CMD) User user,
-                               @RequestParam("id") String id,
+    public String loadViewPage(@RequestParam("id") String id,
                                ModelMap model) {
 
         Prescription prescription = prescriptionService.findById(Long.parseLong(id));
+        User user = (User) model.getAttribute(USER_CMD);
+
+        if (nonNull(user) &&
+                RoleUtil.userContains(user, PATIENT) &&
+                prescription.getPatient().getId() != user.getId()) {
+            
+            throw new InsufficientAccessException();
+        }
 
         setupReferenceData(prescription, model);
         model.put("doctorId", RoleUtil.userContains(user, DOCTOR) ? user.getDoctor().getId() : 0);
