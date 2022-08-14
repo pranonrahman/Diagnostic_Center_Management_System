@@ -58,7 +58,7 @@
                     value="submit"
                     class="btn btn-primary w-100">
 
-                <fmt:message key="authentication.form.nextPage"/>
+                <fmt:message key="authentication.form.submit"/>
             </button>
         </form:form>
     </div>
