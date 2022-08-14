@@ -2,6 +2,8 @@ package net.therap.controller;
 
 import net.therap.exception.InsufficientAccessException;
 import net.therap.exception.RecordNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,11 +19,14 @@ public class GlobalExceptionHandler {
 
     private final static String ERROR_VIEW = "errorPage";
 
+    @Autowired
+    MessageSourceAccessor msa;
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(RecordNotFoundException.class)
     public ModelAndView handleRecordNotFoundException(RecordNotFoundException exception) {
         ModelAndView mav = new ModelAndView(ERROR_VIEW);
-        setUpReferenceData(mav, HttpStatus.NOT_FOUND, exception.getMessage());
+        setUpReferenceData(mav, HttpStatus.NOT_FOUND, msa.getMessage("error.notFound"));
 
         return mav;
     }
@@ -39,7 +44,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InsufficientAccessException.class)
     public ModelAndView handleInsufficientAccessException(InsufficientAccessException exception) {
         ModelAndView mav = new ModelAndView(ERROR_VIEW);
-        setUpReferenceData(mav, HttpStatus.UNAUTHORIZED, exception.getMessage());
+        setUpReferenceData(mav, HttpStatus.UNAUTHORIZED, msa.getMessage("error.unAuthorized"));
 
         return mav;
     }
