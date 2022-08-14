@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Collections;
 import java.util.Date;
@@ -96,14 +97,17 @@ public class PrescriptionController {
     }
 
     @PostMapping
-    public String processEdit(@ModelAttribute("prescription") Prescription prescription) {
+    public String processEdit(@ModelAttribute("prescription") Prescription prescription, RedirectAttributes attributes) {
         prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
         prescription.setDoctor(doctorService.findById(prescription.getDoctor().getId()));
         prescription.setDateOfVisit(new Date());
 
         prescriptionService.saveOrUpdate(prescription);
 
-        return "redirect:/prescription?id=" + prescription.getId();
+        attributes.addAttribute("id", prescription.getId());
+        attributes.addAttribute("success", true);
+
+        return "redirect:/prescription";
     }
 
     private void setupReferenceData(Prescription prescription, ModelMap model) {
