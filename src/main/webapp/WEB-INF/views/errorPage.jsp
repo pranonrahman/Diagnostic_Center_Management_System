@@ -26,7 +26,7 @@
                 <h4 class="mb-4 lead">
                     <c:out value="${errorMessage}"/>
                 </h4>
-                <a href="${pageContext.request.contextPath}/" class="btn btn-danger">
+                <a href="/" class="btn btn-danger">
                     <fmt:message key="button.label.backToHome"/>
                 </a>
             </div>

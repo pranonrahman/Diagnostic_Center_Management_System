@@ -55,7 +55,7 @@
                 <tr>
                     <td>
                         <c:url var="userForm"
-                               value="${pageContext.request.contextPath}/user/">
+                               value="/user/">
 
                             <c:param name="id"
                                      value="${user.id}"/>

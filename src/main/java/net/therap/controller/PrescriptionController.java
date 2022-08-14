@@ -12,6 +12,7 @@ import net.therap.service.PatientService;
 import net.therap.service.PrescriptionService;
 import net.therap.util.RoleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
@@ -60,13 +61,14 @@ public class PrescriptionController {
     @InitBinder
     private void InitBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Facility.class, facilityEditor);
+        webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
     @GetMapping
-    public String loadViewPage(@RequestParam("id") String id,
-                               ModelMap model) {
+    public String show(@RequestParam(value = "id", defaultValue = "0") long id,
+                       ModelMap model) {
 
-        Prescription prescription = prescriptionService.findById(Long.parseLong(id));
+        Prescription prescription = prescriptionService.findById(id);
         User user = (User) model.getAttribute(USER_CMD);
 
         if (nonNull(user) &&
@@ -83,7 +85,8 @@ public class PrescriptionController {
     }
 
     @GetMapping("/list")
-    public String loadPrescriptionList(@ModelAttribute(USER_CMD) User user, ModelMap model) {
+    public String showList(ModelMap model) {
+        User user = (User) model.getAttribute(USER_CMD);
         Patient patient = user.getPatient();
         List<Prescription> prescriptions = patient.getPrescriptions();
 
@@ -95,27 +98,22 @@ public class PrescriptionController {
     }
 
     @PostMapping
-    public String processEdit(@ModelAttribute("prescription") Prescription prescription,
-                              RedirectAttributes attributes) {
+    public String process(@ModelAttribute("prescription") Prescription prescription,
+                          RedirectAttributes redirectAttributes) {
 
         prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
         prescription.setDoctor(doctorService.findById(prescription.getDoctor().getId()));
 
         prescriptionService.saveOrUpdate(prescription);
 
-        attributes.addAttribute("id", prescription.getId());
-        attributes.addAttribute("success", true);
+        redirectAttributes.addAttribute("id", prescription.getId());
+        redirectAttributes.addAttribute("success", true);
 
         return "redirect:/prescription";
     }
 
     private void setupReferenceData(Prescription prescription, ModelMap model) {
         model.put("facilities", facilityService.findAll());
-
-        if (isNull(prescription)) {
-            model.put("prescription", new Prescription());
-        } else {
-            model.put("prescription", prescription);
-        }
+        model.put("prescription", isNull(prescription) ? new Prescription() : prescription);
     }
 }

@@ -7,6 +7,7 @@ import net.therap.entity.Doctor;
 import net.therap.entity.Patient;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class DoctorVisitCmd {
+public class DoctorVisitCmd implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @NotNull
     private Patient patient;

@@ -17,14 +17,14 @@ public class InvoiceDao extends Dao<Invoice> {
         super(Invoice.class);
     }
 
-    public List<Invoice> findAll() {
-        return em.createNamedQuery("Invoice.findAll", Invoice.class)
-                .getResultList();
-    }
-
     public List<Invoice> findByPatient(Patient patient) {
         return em.createNamedQuery("Invoice.findByPatientId", Invoice.class)
                 .setParameter("patientId", patient.getId())
+                .getResultList();
+    }
+
+    public List<Invoice> findAll() {
+        return em.createNamedQuery("Invoice.findAll", Invoice.class)
                 .getResultList();
     }
 }

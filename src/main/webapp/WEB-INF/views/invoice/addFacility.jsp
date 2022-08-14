@@ -99,7 +99,7 @@
         </form:form>
     </div>
 
-    <c:if test="${invoice.facilities.size() > 0}">
+    <c:if test="${not empty invoice.facilities.size()}">
         <div class="w-50 mx-auto mt-4 fw-light">
             <hr>
 

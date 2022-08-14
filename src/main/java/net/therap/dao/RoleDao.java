@@ -18,11 +18,6 @@ public class RoleDao extends Dao<Role> {
         super(Role.class);
     }
 
-    public List<Role> findAll() {
-        return em.createNamedQuery("Role.findAll", Role.class)
-                .getResultList();
-    }
-
     public Role findByName(RoleEnum role) {
         try {
             return em.createNamedQuery("Role.findByName", Role.class)
@@ -32,5 +27,10 @@ public class RoleDao extends Dao<Role> {
         } catch (NoResultException noResultException) {
             return null;
         }
+    }
+
+    public List<Role> findAll() {
+        return em.createNamedQuery("Role.findAll", Role.class)
+                .getResultList();
     }
 }

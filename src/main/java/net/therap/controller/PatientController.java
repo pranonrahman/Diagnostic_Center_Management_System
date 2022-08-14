@@ -7,10 +7,13 @@ import net.therap.entity.User;
 import net.therap.service.DoctorService;
 import net.therap.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 import static net.therap.controller.PatientController.USER_CMD;
@@ -34,6 +37,11 @@ public class PatientController {
     @Autowired
     private DoctorService doctorService;
 
+    @InitBinder
+    private void InitBinder(WebDataBinder webDataBinder){
+        webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+    }
+
     @GetMapping("/list")
     public String showList(@ModelAttribute(USER_CMD) User user,
                            ModelMap model) {
@@ -53,13 +61,13 @@ public class PatientController {
     }
 
     @GetMapping("/history")
-    public String loadList(@ModelAttribute(USER_CMD) User user,
-                           @RequestParam("id") String id,
-                           ModelMap model) {
+    public String showHistory(@RequestParam(value = "id", defaultValue = "0") long id,
+                              ModelMap model) {
 
+        User user = (User) model.getAttribute(USER_CMD);
         long doctorId = user.getDoctor().getId();
         Doctor doctor = doctorService.findById(doctorId);
-        Patient patient = patientService.findById(Long.parseLong(id));
+        Patient patient = patientService.findById(id);
 
         List<Prescription> otherPrescriptions = new ArrayList<>();
         List<Prescription> doctorSpecificPrescriptions = new ArrayList<>();
@@ -76,7 +84,7 @@ public class PatientController {
         Collections.sort(otherPrescriptions);
         Collections.sort(doctorSpecificPrescriptions);
 
-        model.put("patientName", patient.getUser().getName());
+        model.put("patient", patient);
         model.put("otherPrescriptions", otherPrescriptions);
         model.put("doctorSpecificPrescriptions", doctorSpecificPrescriptions);
 

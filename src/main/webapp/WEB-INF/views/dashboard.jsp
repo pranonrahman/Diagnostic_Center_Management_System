@@ -33,17 +33,17 @@
             <c:choose>
                 <c:when test="${role.getName().equals(RoleEnum.DOCTOR)}">
                     <h4 class="mt-5 text-center">DOCTOR</h4>
-                    <a href="${pageContext.request.contextPath}/patient/list" class="btn btn-outline-dark w-25">
+                    <a href="/patient/list" class="btn btn-outline-dark w-25">
                         <fmt:message key="navbar.link.yourPatients"/>
                     </a>
                 </c:when>
 
                 <c:when test="${role.getName().equals(RoleEnum.PATIENT)}">
                     <h4 class="mt-5 text-center">PATIENT</h4>
-                    <a href="${pageContext.request.contextPath}/prescription/list" class="btn btn-outline-dark w-25">
+                    <a href="/prescription/list" class="btn btn-outline-dark w-25">
                         <fmt:message key="navbar.link.yourPrescriptions"/>
                     </a>
-                    <c:url var="patientInvoiceList" value="${pageContext.request.contextPath}/invoice/list">
+                    <c:url var="patientInvoiceList" value="/invoice/list">
                         <c:param name="patientId" value="${user.patient.id}"/>
                     </c:url>
                     <a href="${patientInvoiceList}" class="btn btn-outline-dark w-25">
@@ -53,12 +53,12 @@
 
                 <c:when test="${role.getName().equals(RoleEnum.RECEPTIONIST)}">
                     <h4 class="mt-5 text-center">RECEPTIONIST</h4>
-                    <a href="${pageContext.request.contextPath}/invoice/doctor"
+                    <a href="/invoice/doctor"
                        class="btn btn-outline-dark w-25">
 
                         <fmt:message key="navbar.link.createInvoice"/>
                     </a>
-                    <a href="${pageContext.request.contextPath}/invoice/list"
+                    <a href="/invoice/list"
                        class="btn btn-outline-dark w-25">
 
                         <fmt:message key="navbar.link.viewAllInvoices"/>
@@ -68,13 +68,13 @@
                 <c:when test="${role.getName().equals(RoleEnum.ADMIN)}">
                     <h4 class="mt-5 text-center">ADMIN</h4>
 
-                    <a href="<c:url value="${pageContext.request.contextPath}/user/list"/>"
+                    <a href="<c:url value="/user/list"/>"
                        class="btn btn-outline-dark w-25">
 
                         <fmt:message key="button.label.viewAllUsers"/>
                     </a>
 
-                    <a href="${pageContext.request.contextPath}/user/" class="btn btn-outline-dark w-25">
+                    <a href="/user/" class="btn btn-outline-dark w-25">
                         <fmt:message key="navbar.link.createUser"/>
                     </a>
                 </c:when>

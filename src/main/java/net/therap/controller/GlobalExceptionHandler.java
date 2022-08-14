@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     private final static String ERROR_VIEW = "errorPage";
 
     @Autowired
-    MessageSourceAccessor msa;
+    private MessageSourceAccessor msa;
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(RecordNotFoundException.class)

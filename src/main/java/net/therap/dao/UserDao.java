@@ -17,11 +17,6 @@ public class UserDao extends Dao<User> {
         super(User.class);
     }
 
-    public List<User> findAll() {
-        return em.createNamedQuery("User.findAll", User.class)
-                .getResultList();
-    }
-
     public User findByUserName(String userName) {
         try {
             return em.createNamedQuery("User.findByUserName", User.class)
@@ -31,5 +26,10 @@ public class UserDao extends Dao<User> {
         } catch (NoResultException noResultException) {
             return null;
         }
+    }
+
+    public List<User> findAll() {
+        return em.createNamedQuery("User.findAll", User.class)
+                .getResultList();
     }
 }
