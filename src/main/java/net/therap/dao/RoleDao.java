@@ -19,7 +19,8 @@ public class RoleDao extends Dao<Role> {
     }
 
     public List<Role> findAll() {
-        return em.createNamedQuery("Role.findAll", Role.class).getResultList();
+        return em.createNamedQuery("Role.findAll", Role.class)
+                .getResultList();
     }
 
     public Role findByName(RoleEnum role) {

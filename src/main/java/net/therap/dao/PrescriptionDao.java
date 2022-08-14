@@ -17,6 +17,7 @@ public class PrescriptionDao extends Dao<Prescription> {
     }
 
     public List<Prescription> findAll() {
-        return em.createNamedQuery("Prescription.findAll", Prescription.class).getResultList();
+        return em.createNamedQuery("Prescription.findAll", Prescription.class)
+                .getResultList();
     }
 }
