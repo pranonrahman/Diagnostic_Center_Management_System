@@ -39,7 +39,6 @@ public class Doctor extends Persistent {
     public Doctor(User user) {
         this();
 
-        this.fee=0;
         this.user = user;
     }
 
