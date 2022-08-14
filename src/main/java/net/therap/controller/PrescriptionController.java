@@ -69,11 +69,6 @@ public class PrescriptionController {
 
         Prescription prescription = prescriptionService.findById(Long.parseLong(id));
 
-        if (!prescription.getDoctor().getUser().getUserName().equals(user.getUserName()) &&
-                !prescription.getPatient().getUser().getUserName().equals(user.getUserName())) {
-            throw new InsufficientAccessException();
-        }
-
         setupReferenceData(prescription, model);
         model.put("doctorId", RoleUtil.userContains(user, DOCTOR) ? user.getDoctor().getId() : 0);
 
@@ -93,7 +88,14 @@ public class PrescriptionController {
     }
 
     @PostMapping
-    public String processEdit(@ModelAttribute("prescription") Prescription prescription, RedirectAttributes attributes) {
+    public String processEdit(@ModelAttribute("prescription") Prescription prescription,
+                              @ModelAttribute(USER_CMD) User user,
+                              RedirectAttributes attributes) {
+
+        if (prescription.getDoctor().getId() != user.getId()) {
+            throw new InsufficientAccessException();
+        }
+
         prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
         prescription.setDoctor(doctorService.findById(prescription.getDoctor().getId()));
         prescription.setDateOfVisit(new Date());
