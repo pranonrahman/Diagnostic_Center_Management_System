@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,10 +33,14 @@ public class UserController {
     private static final String FORM_PAGE = "user/form";
     private static final String LIST_PAGE = "user/list";
 
-    private static final String VIEW_REDIRECT_PATH = "redirect:/user?id=";
+    private static final String VIEW_REDIRECT_PATH = "redirect:/user";
     private static final String LIST_REDIRECT_PATH = "redirect:/user/list";
 
     private static final String USER = "user";
+    private static final String ID = "id";
+    private static final String SUCCESS = "success";
+    private static final String FILTER_BY = "filterBy";
+    private static final String USERS = "users";
 
     @Autowired
     private DateEditor dateEditor;
@@ -94,6 +99,7 @@ public class UserController {
     @PostMapping
     public String processPersonForm(@Validated @ModelAttribute("userData") User user,
                                     BindingResult userResult,
+                                    RedirectAttributes attributes,
                                     ModelMap model) {
 
         if (userResult.hasErrors()) {
@@ -113,11 +119,14 @@ public class UserController {
             model.replace(USER, user);
         }
 
-        return VIEW_REDIRECT_PATH + user.getId();
+        attributes.addAttribute(ID, user.getId());
+        attributes.addAttribute(SUCCESS, true);
+
+        return VIEW_REDIRECT_PATH;
     }
 
     @RequestMapping("/list")
-    public String showList(@RequestParam(value = "filterBy", required = false) String filterBy, ModelMap model) {
+    public String showList(@RequestParam(value = FILTER_BY, required = false) String filterBy, ModelMap model) {
 
         if (isNull(filterBy)) {
             model.put("users", userService.findAll());
@@ -126,7 +135,7 @@ public class UserController {
             List<User> userList = new ArrayList<>();
             userService.findAll().stream().filter(user -> user.getRoles().contains(role)).forEach(userList::add);
 
-            model.put("users", userList);
+            model.put(USERS, userList);
         }
         return LIST_PAGE;
     }
