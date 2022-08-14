@@ -162,7 +162,6 @@ public class InvoiceController {
             Prescription prescription = new Prescription();
             prescription.setPatient(invoiceCmd.getPatient());
             prescription.setDoctor(doctor);
-            prescription.setDateOfVisit(new Date());
 
             prescriptionService.saveOrUpdate(prescription);
         }
