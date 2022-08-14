@@ -11,9 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static net.therap.controller.PatientController.USER_CMD;
 
@@ -42,7 +40,7 @@ public class PatientController {
 
         long doctorId = user.getDoctor().getId();
         List<Prescription> prescriptions = doctorService.findById(doctorId).getPrescriptions();
-        List<Patient> patients = new ArrayList<>();
+        Set<Patient> patients = new HashSet<>();
 
         for(Prescription prescription : prescriptions) {
             patients.add(prescription.getPatient());
