@@ -69,10 +69,6 @@ public class PrescriptionController {
 
         Prescription prescription = prescriptionService.findById(Long.parseLong(id));
 
-        if (isNull(prescription)) {
-            throw new RecordNotFoundException();
-        }
-
         if (!prescription.getDoctor().getUser().getUserName().equals(user.getUserName()) &&
                 !prescription.getPatient().getUser().getUserName().equals(user.getUserName())) {
             throw new InsufficientAccessException();
