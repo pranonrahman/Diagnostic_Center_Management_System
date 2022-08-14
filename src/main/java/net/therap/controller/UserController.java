@@ -6,6 +6,7 @@ import net.therap.service.RoleService;
 import net.therap.service.UserService;
 import net.therap.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import static java.util.Objects.isNull;
+import static net.therap.controller.UserController.USER_CMD;
 
 /**
  * @author raian.rahman
@@ -27,7 +29,7 @@ import static java.util.Objects.isNull;
  */
 @Controller
 @RequestMapping("/user")
-@SessionAttributes({"user"})
+@SessionAttributes(USER_CMD)
 public class UserController {
 
     private static final String FORM_PAGE = "user/form";
@@ -36,7 +38,7 @@ public class UserController {
     private static final String VIEW_REDIRECT_PATH = "redirect:/user";
     private static final String LIST_REDIRECT_PATH = "redirect:/user/list";
 
-    private static final String USER = "user";
+    public static final String USER_CMD = "user";
     private static final String ID = "id";
     private static final String SUCCESS = "success";
     private static final String FILTER_BY = "filterBy";
@@ -85,24 +87,26 @@ public class UserController {
         webDataBinder.registerCustomEditor(Doctor.class, doctorEditor);
         webDataBinder.registerCustomEditor(Patient.class, patientEditor);
         webDataBinder.addValidators(userValidator);
+        webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
     @GetMapping
-    public String showForm(@RequestParam(value = "id", required = false) Long id, ModelMap model) {
+    public String showForm(@RequestParam(value = "id", required = false, defaultValue = "0") long id,
+                           ModelMap model) {
         model.put("genderList", Gender.values());
         model.put("seedRoleList", roleService.findAll());
-        model.put("userData", isNull(id) ? new User() : userService.findById(id));
+        model.put("userData", id == 0 ? new User() : userService.findById(id));
 
         return FORM_PAGE;
     }
 
     @PostMapping
-    public String processPersonForm(@Validated @ModelAttribute("userData") User user,
-                                    BindingResult userResult,
-                                    RedirectAttributes attributes,
-                                    ModelMap model) {
+    public String process(@Validated @ModelAttribute("userData") User user,
+                          BindingResult result,
+                          RedirectAttributes redirectAttributes,
+                          ModelMap model) {
 
-        if (userResult.hasErrors()) {
+        if (result.hasErrors()) {
             model.put("genderList", Gender.values());
             model.put("seedRoleList", roleService.findAll());
             return FORM_PAGE;
@@ -116,17 +120,18 @@ public class UserController {
         User sessionUser = (User) model.get("user");
 
         if (sessionUser.getUserName().equals(user.getUserName())) {
-            model.replace(USER, user);
+            model.replace(USER_CMD, user);
         }
 
-        attributes.addAttribute(ID, user.getId());
-        attributes.addAttribute(SUCCESS, true);
+        redirectAttributes.addAttribute(ID, user.getId());
+        redirectAttributes.addAttribute(SUCCESS, true);
 
         return VIEW_REDIRECT_PATH;
     }
 
     @RequestMapping("/list")
-    public String showList(@RequestParam(value = FILTER_BY, required = false) String filterBy, ModelMap model) {
+    public String showList(@RequestParam(value = FILTER_BY, required = false) String filterBy,
+                           ModelMap model) {
 
         if (isNull(filterBy)) {
             model.put("users", userService.findAll());
@@ -141,7 +146,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/delete")
-    public String deleteUser(@RequestParam(value = "id") Long id,
+    public String deleteUser(@RequestParam(value = "id", defaultValue = "0") long id,
                              @ModelAttribute("user") User sessionUser) throws RuntimeException {
         User user = userService.findById(id);
 

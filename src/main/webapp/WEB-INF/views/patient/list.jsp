@@ -44,7 +44,7 @@
                 <td><c:out value="${patient.user.getAge()}"/></td>
                 <td><c:out value="${patient.user.gender}"/></td>
                 <c:url var="historyViewPage"
-                       value="${pageContext.request.contextPath}/patient/history">
+                       value="/patient/history">
 
                     <c:param name="id"
                              value="${patient.id}"/>

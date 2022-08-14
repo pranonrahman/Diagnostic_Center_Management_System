@@ -28,7 +28,7 @@
                     <fmt:message key="invalidPage.mistake"/>
                 </h6>
 
-                <a href="${pageContext.request.contextPath}/"
+                <a href="/"
                    class="btn btn-danger"><fmt:message key="button.label.backToHome"/>
                 </a>
             </div>

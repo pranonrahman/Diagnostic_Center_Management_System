@@ -6,6 +6,7 @@ import net.therap.entity.Facility;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * @author khandaker.maruf
@@ -13,7 +14,9 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class FacilityItemCmd {
+public class FacilityItemCmd implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @NotNull
     private Facility facility;

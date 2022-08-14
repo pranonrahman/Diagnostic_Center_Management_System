@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping({"/","/home"})
 public class DashboardController {
 
-    private static final String DASHBOARD = "dashboard";
+    private static final String VIEW_PAGE = "dashboard";
 
     @GetMapping
-    public String showDashboard() {
-        return DASHBOARD;
+    public String show() {
+        return VIEW_PAGE;
     }
 }

@@ -147,14 +147,12 @@
 
 
             <div class="d-grid">
-                <c:choose>
-                    <c:when test="${!readonly}">
-                        <button type="submit"
-                                class="btn btn-primary mb-2">
-                            <fmt:message key="button.label.update"/>
-                        </button>
-                    </c:when>
-                </c:choose>
+                <c:if test="${!readonly}">
+                    <button type="submit"
+                            class="btn btn-primary mb-2">
+                        <fmt:message key="button.label.update"/>
+                    </button>
+                </c:if>
             </div>
         </form:form>
     </div>

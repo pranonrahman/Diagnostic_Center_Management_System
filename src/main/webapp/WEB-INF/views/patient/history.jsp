@@ -21,7 +21,7 @@
 
     <h2 class="text-center py-3">
         <fmt:message key="text.historyOf"/>
-        <c:out value="${patientName}"/>
+        <c:out value="${patient.user.name}"/>
     </h2>
 
     <div class="list-group">
@@ -30,7 +30,7 @@
                    var="prescription">
 
             <c:url var="prescriptionViewPage"
-                   value="${pageContext.request.contextPath}/prescription">
+                   value="/prescription">
 
                 <c:param name="id"
                          value="${prescription.id}"/>
@@ -69,7 +69,7 @@
                    var="prescription">
 
             <c:url var="prescriptionViewPage"
-                   value="${pageContext.request.contextPath}/prescription">
+                   value="/prescription">
 
                 <c:param name="id"
                          value="${prescription.id}"/>

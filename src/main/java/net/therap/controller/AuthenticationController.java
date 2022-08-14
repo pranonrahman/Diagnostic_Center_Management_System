@@ -8,6 +8,7 @@ import net.therap.service.RoleService;
 import net.therap.service.UserService;
 import net.therap.validator.UserCmdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -55,10 +56,11 @@ public class AuthenticationController {
     private void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Role.class, roleEditor);
         webDataBinder.addValidators(userCmdValidator);
+        webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
     @GetMapping({"/login"})
-    public String showLoginForm(ModelMap model) {
+    public String show(ModelMap model) {
 
         model.put(USER_CMD, new UserCmd());
 
@@ -66,9 +68,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public String processLoginForm(@Valid @ModelAttribute(USER_CMD) UserCmd userCmd,
-                                   BindingResult result,
-                                   ModelMap model) {
+    public String process(@Valid @ModelAttribute(USER_CMD) UserCmd userCmd,
+                          BindingResult result,
+                          ModelMap model) {
 
         if (result.hasErrors()) {
             return FORM_PAGE;
@@ -85,8 +87,8 @@ public class AuthenticationController {
     }
 
     @RequestMapping("/logout")
-    public String logout(SessionStatus status, ModelMap model) {
-        status.setComplete();
+    public String logout(SessionStatus sessionStatus, ModelMap model) {
+        sessionStatus.setComplete();
 
         model.put("seedRoleList", roleService.findAll());
         model.put(USER_CMD, new UserCmd());

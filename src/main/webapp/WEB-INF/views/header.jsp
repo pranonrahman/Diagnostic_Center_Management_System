@@ -11,7 +11,7 @@
 <header>
     <nav class="px-4 navbar sticky-top navbar-expand-lg">
         <a class="navbar-brand"
-           href="${pageContext.request.contextPath}/">
+           href="/">
 
             <img src="../../assets/logo.png"
                  alt="" width="55" height="55">
@@ -24,7 +24,7 @@
                     <c:choose>
                         <c:when test="${role.getName().equals(RoleEnum.DOCTOR)}">
                             <li class="nav-item">
-                                <a href="${pageContext.request.contextPath}/patient/list" class="nav-link active">
+                                <a href="/patient/list" class="nav-link active">
                                     <fmt:message key="navbar.link.yourPatients"/>
                                 </a>
                             </li>
@@ -32,12 +32,12 @@
 
                         <c:when test="${role.getName().equals(RoleEnum.PATIENT)}">
                             <li class="nav-item">
-                                <a href="${pageContext.request.contextPath}/prescription/list" class="nav-link active">
+                                <a href="/prescription/list" class="nav-link active">
                                     <fmt:message key="navbar.link.yourPrescriptions"/>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <c:url var="patientInvoiceList" value="${pageContext.request.contextPath}/invoice/list">
+                                <c:url var="patientInvoiceList" value="/invoice/list">
                                     <c:param name="patientId" value="${user.patient.id}"/>
                                 </c:url>
                                 <a href="${patientInvoiceList}" class="nav-link active">
@@ -48,14 +48,14 @@
 
                         <c:when test="${role.getName().equals(RoleEnum.RECEPTIONIST)}">
                             <li class="nav-item">
-                                <a href="${pageContext.request.contextPath}/invoice/doctor"
+                                <a href="/invoice/doctor"
                                    class="nav-link active">
 
                                     <fmt:message key="navbar.link.createInvoice"/>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="${pageContext.request.contextPath}/invoice/list"
+                                <a href="/invoice/list"
                                    class="nav-link active">
 
                                     <fmt:message key="navbar.link.viewAllInvoices"/>
@@ -76,14 +76,14 @@
                                 <div class="dropdown-menu"
                                      aria-labelledby="navbarAdminMenuLink">
 
-                                    <a href="<c:url value="${pageContext.request.contextPath}/user/list"/>"
+                                    <a href="<c:url value="/user/list"/>"
                                        class="dropdown-item">
 
                                         <fmt:message key="navbar.link.viewUsers"/>
                                     </a>
 
                                     <c:url var="adminList"
-                                           value="${pageContext.request.contextPath}/user/list">
+                                           value="/user/list">
 
                                         <c:param name="filterBy"
                                                  value="${RoleEnum.ADMIN}"/>
@@ -95,7 +95,7 @@
                                     </a>
 
                                     <c:url var="doctorList"
-                                           value="${pageContext.request.contextPath}/user/list">
+                                           value="/user/list">
 
                                         <c:param name="filterBy"
                                                  value="${RoleEnum.DOCTOR}"/>
@@ -107,7 +107,7 @@
                                     </a>
 
                                     <c:url var="receptionistList"
-                                           value="${pageContext.request.contextPath}/user/list">
+                                           value="/user/list">
 
                                         <c:param name="filterBy"
                                                  value="${RoleEnum.RECEPTIONIST}"/>
@@ -119,7 +119,7 @@
                                     </a>
 
                                     <c:url var="patientList"
-                                           value="${pageContext.request.contextPath}/user/list">
+                                           value="/user/list">
 
                                         <c:param name="filterBy"
                                                  value="${RoleEnum.PATIENT}"/>
@@ -133,7 +133,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="${pageContext.request.contextPath}/user/" class="nav-link active">
+                                <a href="/user/" class="nav-link active">
                                     <fmt:message key="navbar.link.createUser"/>
                                 </a>
                             </li>
@@ -143,7 +143,7 @@
                 </c:forEach>
             </ul>
         </div>
-        <a href="${pageContext.request.contextPath}/logout"
+        <a href="/logout"
            class="btn btn-danger">
 
             <fmt:message key="navbar.link.logout"/>

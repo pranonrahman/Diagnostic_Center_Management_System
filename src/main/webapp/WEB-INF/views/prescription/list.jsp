@@ -29,7 +29,7 @@
                    var="prescription">
 
             <c:url var="prescriptionViewPage"
-                   value="${pageContext.request.contextPath}/prescription">
+                   value="/prescription">
 
                 <c:param name="id"
                          value="${prescription.id}"/>

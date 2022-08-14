@@ -28,7 +28,7 @@
     </h2>
 
     <c:choose>
-        <c:when test="${invoices.isEmpty()}">
+        <c:when test="${empty invoices}">
             <p class="card text-center">
                 <fmt:message key="text.recordsNotFound"/>
             </p>
