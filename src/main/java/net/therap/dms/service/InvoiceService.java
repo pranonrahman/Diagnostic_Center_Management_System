@@ -4,13 +4,9 @@ import net.therap.dms.command.FacilityItemCmd;
 import net.therap.dms.command.InvoiceCmd;
 import net.therap.dms.command.MedicineItemCmd;
 import net.therap.dms.dao.InvoiceDao;
-import net.therap.dms.entity.Doctor;
-import net.therap.dms.entity.Invoice;
-import net.therap.dms.entity.Particular;
-import net.therap.dms.entity.Patient;
+import net.therap.dms.entity.*;
 import net.therap.dms.exception.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -36,7 +32,10 @@ public class InvoiceService {
     ParticularService particularService;
 
     @Autowired
-    MessageSourceAccessor msa;
+    private PrescriptionService prescriptionService;
+
+    @Autowired
+    private MedicineService medicineService;
 
     public Invoice findById(long id) {
         Invoice invoice = invoiceDao.findById(id);
@@ -110,5 +109,24 @@ public class InvoiceService {
     @Transactional
     public void delete(Invoice invoice) {
         invoiceDao.delete(invoice);
+    }
+
+    public void createEmptyPrescriptions(InvoiceCmd invoiceCmd) {
+        for (Doctor doctor : invoiceCmd.getDoctors()) {
+            Prescription prescription = new Prescription();
+            prescription.setPatient(invoiceCmd.getPatient());
+            prescription.setDoctor(doctor);
+
+            prescriptionService.saveOrUpdate(prescription);
+        }
+    }
+
+    public void updateMedicineQuantity(InvoiceCmd invoiceCmd) {
+        for (MedicineItemCmd medicineItem : invoiceCmd.getMedicines()) {
+            Medicine updatedMedicine = medicineItem.getMedicine();
+            updatedMedicine.setAvailableUnits(updatedMedicine.getAvailableUnits() - medicineItem.getQuantity());
+
+            medicineService.saveOrUpdate(updatedMedicine);
+        }
     }
 }
