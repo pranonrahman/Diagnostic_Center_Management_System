@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import static java.util.Objects.nonNull;
 import static net.therap.entity.RoleEnum.*;
-import static net.therap.util.SessionUserUtil.getSessionUser;
+import static net.therap.util.SessionUtil.getUser;
 
 /**
  * @author raian.rahman
@@ -54,7 +54,7 @@ public class AuthenticationFilter implements Filter, URL {
         httpServletResponse.setDateHeader("Expires", 0);
 
         if(isLoggedIn(httpServletRequest)) {
-            User user = getSessionUser(httpServletRequest);
+            User user = getUser(httpServletRequest);
 
             if(httpServletRequest.getRequestURI().contains(LOGIN)) {
                 httpServletResponse.sendRedirect(HOME_REDIRECT_PATH);
