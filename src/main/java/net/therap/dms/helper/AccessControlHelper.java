@@ -37,11 +37,11 @@ public class AccessControlHelper implements URL {
         receptionistRole = roleService.findByName(RECEPTIONIST);
     }
 
-    private boolean isLoggedIn(HttpServletRequest request) {
+    public boolean isLoggedIn(HttpServletRequest request) {
         return nonNull(request.getSession().getAttribute(USER));
     }
 
-    private boolean hasInvoiceAccess(HttpServletRequest request, User user) {
+    public boolean hasInvoiceAccess(HttpServletRequest request, User user) {
         if ((request.getRequestURI().equals(INVOICE)
                 || request.getRequestURI().contains(INVOICE_LIST))
                 && !user.getRoles().contains(receptionistRole)
@@ -55,14 +55,14 @@ public class AccessControlHelper implements URL {
                 || user.getRoles().contains(receptionistRole);
     }
 
-    private boolean hasUserAccess(HttpServletRequest request, User user) {
+    public boolean hasUserAccess(HttpServletRequest request, User user) {
         return (!request.getRequestURI().contains(USER_LIST)
                 && !request.getRequestURI().contains(USER_VIEW)
                 && !request.getRequestURI().contains(USER_DELETE))
                 || user.getRoles().contains(adminRole);
     }
 
-    private boolean hasPatientAccess(HttpServletRequest request, User user) {
+    public boolean hasPatientAccess(HttpServletRequest request, User user) {
         if (request.getRequestURI().contains(PATIENT_LIST) && !user.getRoles().contains(doctorRole)) {
             return false;
         }
@@ -72,7 +72,7 @@ public class AccessControlHelper implements URL {
                 || user.getRoles().contains(patientRole);
     }
 
-    private boolean hasPrescriptionAccess(HttpServletRequest request, User user) {
+    public boolean hasPrescriptionAccess(HttpServletRequest request, User user) {
         if ((request.getRequestURI().equals(PRESCRIPTION)
                 || request.getRequestURI().contains(PRESCRIPTION_LIST))
                 && !user.getRoles().contains(doctorRole)
