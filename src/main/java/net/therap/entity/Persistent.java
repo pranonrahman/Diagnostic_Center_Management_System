@@ -21,7 +21,7 @@ public class Persistent implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idSequence")
-    @SequenceGenerator(name = "idSequence", sequenceName = "id_sequence", allocationSize = 1)
+    @SequenceGenerator(name = "idSequence", sequenceName = "id_sequence", allocationSize = 1, initialValue = 1000)
     private long id;
 
     @CreationTimestamp
