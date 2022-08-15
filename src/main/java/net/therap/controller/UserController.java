@@ -131,7 +131,7 @@ public class UserController {
     public String showList(@RequestParam(value = FILTER_BY, required = false) String filterBy,
                            ModelMap model) {
 
-        model.put(USERS, userService.findAll(filterBy));
+        setUpReferenceList(filterBy, model);
         return LIST_PAGE;
     }
 
@@ -151,7 +151,11 @@ public class UserController {
         return LIST_REDIRECT_PATH;
     }
 
-    private void setUpReferenceSeedData(Long id,
+    private void setUpReferenceList(String filterBy, ModelMap model) {
+        model.put("users", userService.findAll(filterBy));
+    }
+
+    private void setUpReferenceSeedData(long id,
                                         Action action,
                                         HttpServletRequest request,
                                         ModelMap model) {
