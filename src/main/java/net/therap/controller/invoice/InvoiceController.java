@@ -19,6 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.isNull;
@@ -38,7 +39,7 @@ import static net.therap.entity.RoleEnum.RECEPTIONIST;
 public class InvoiceController {
 
     private static final String VIEW_PAGE = "/invoice/view";
-    private static final String REDIRECT_VIEW_PAGE = "redirect:/invoice/view";
+    private static final String REDIRECT_VIEW_PAGE = "redirect:/invoice";
     private static final String LIST_VIEW_PAGE = "/invoice/list";
     public static final String INVOICE_CMD = "invoice";
     public static final String INVOICE_VIEW_CMD = "invoiceView";
@@ -56,63 +57,35 @@ public class InvoiceController {
     @Autowired
     private MessageSourceAccessor msa;
 
-    @GetMapping("/view")
-    public String view(@RequestParam Long id, HttpServletRequest request, ModelMap model) {
-        User user = SessionUtil.getUser(request);
-
-        Invoice invoice = invoiceService.findById(id);
-
-        if (!(RoleUtil.userContains(user, RECEPTIONIST) ||
-                (RoleUtil.userContains(user, PATIENT) && invoice.getPatient().getUser().getId() == user.getId()))) {
-
-            throw new InsufficientAccessException();
+    @GetMapping
+    public String view(@RequestParam(defaultValue = "0") Long id, HttpServletRequest request, ModelMap model) {
+        if (id == 0) {
+            return review(request, model);
         }
 
-        setUpReferenceData(invoice, model);
+        checkAccessForView(id, request);
+
+        setUpReferenceData(id, model);
 
         return VIEW_PAGE;
     }
 
-    @GetMapping
-    public String review(ModelMap model, HttpServletRequest request) {
-        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
-
-        if (isNull(invoice) || isNull(invoice.getPatient())) {
+    private String review(HttpServletRequest request, ModelMap model) {
+        if (noInvoiceGenerated(model)) {
             return REDIRECT_DOCTOR_PAGE;
         }
 
-        User user = SessionUtil.getUser(request);
-        invoice.setReceptionist(user.getReceptionist());
-
-        setUpReferenceData(invoice, model);
+        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
+        setUpReferenceData(request, invoice, model);
 
         return VIEW_PAGE;
     }
 
     @GetMapping("/list")
     public String list(HttpServletRequest request, @RequestParam(defaultValue = "0") long patientId, ModelMap model) {
-        User user = SessionUtil.getUser(request);
+        checkAccessForList(request, patientId);
 
-        if (!(RoleUtil.userContains(user, RECEPTIONIST) || RoleUtil.userContains(user, PATIENT))) {
-            throw new InsufficientAccessException();
-        }
-
-        List<Invoice> invoices;
-        boolean isPatient = false;
-
-        if (patientId == 0) {
-            invoices = invoiceService.findAll();
-
-        } else if (patientId == user.getPatient().getId()) {
-            Patient patient = user.getPatient();
-            invoices = invoiceService.findByPatient(patient);
-            isPatient = true;
-
-        } else {
-            throw new InsufficientAccessException();
-        }
-
-        setUpReferenceData(invoices, isPatient, model);
+        setUpReferenceData(request, patientId, model);
 
         return LIST_VIEW_PAGE;
     }
@@ -127,7 +100,7 @@ public class InvoiceController {
 
         User user = SessionUtil.getUser(request);
 
-        if (isNull(user) || user.getRoles().stream().noneMatch(role -> role.getName().equals(RECEPTIONIST))) {
+        if (isUnauthorizedToSaveInvoice(user)) {
             model.put("errorMessage", msa.getMessage("error.unAuthorized"));
 
             return VIEW_PAGE;
@@ -157,6 +130,37 @@ public class InvoiceController {
         return REDIRECT_VIEW_PAGE;
     }
 
+    private boolean isUnauthorizedToSaveInvoice(User user) {
+        return isNull(user) || user.getRoles().stream().noneMatch(role -> role.getName().equals(RECEPTIONIST));
+    }
+
+    private boolean noInvoiceGenerated(ModelMap model) {
+        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
+
+        return isNull(invoice) || isNull(invoice.getPatient());
+    }
+
+    private void checkAccessForView(Long id, HttpServletRequest request) {
+        User user = SessionUtil.getUser(request);
+        Invoice invoice = invoiceService.findById(id);
+
+        if (!(RoleUtil.userContains(user, RECEPTIONIST) ||
+                (RoleUtil.userContains(user, PATIENT) && invoice.getPatient().getUser().getId() == user.getId()))) {
+
+            throw new InsufficientAccessException();
+        }
+    }
+
+    private void checkAccessForList(HttpServletRequest request, long patientId) {
+        User user = SessionUtil.getUser(request);
+
+        if (!(RoleUtil.userContains(user, RECEPTIONIST)
+                || (RoleUtil.userContains(user, PATIENT) && user.getId() == patientId))) {
+
+            throw new InsufficientAccessException();
+        }
+    }
+
     private void createEmptyPrescriptions(InvoiceCmd invoiceCmd) {
         for (Doctor doctor : invoiceCmd.getDoctors()) {
             Prescription prescription = new Prescription();
@@ -175,17 +179,33 @@ public class InvoiceController {
         }
     }
 
-    private void setUpReferenceData(Invoice invoice, ModelMap model) {
-        model.addAttribute(INVOICE_VIEW_CMD, invoice);
+    private void setUpReferenceData(long id, ModelMap model) {
+        model.addAttribute(INVOICE_VIEW_CMD, invoiceService.findById(id));
         model.put("action", VIEW);
     }
 
-    private void setUpReferenceData(InvoiceCmd invoice, ModelMap model) {
+    private void setUpReferenceData(HttpServletRequest request, InvoiceCmd invoice, ModelMap model) {
+        User user = SessionUtil.getUser(request);
+        invoice.setReceptionist(user.getReceptionist());
+
         model.put(INVOICE_VIEW_CMD, invoiceService.getInvoiceFromCmd(invoice));
         model.put("action", REVIEW);
     }
 
-    private void setUpReferenceData(List<Invoice> invoices, boolean isPatient, ModelMap model) {
+    private void setUpReferenceData(HttpServletRequest request, long patientId, ModelMap model) {
+        User user = SessionUtil.getUser(request);
+
+        List<Invoice> invoices = new ArrayList<>();
+        boolean isPatient = false;
+
+        if (patientId == 0) {
+            invoices = invoiceService.findAll();
+
+        } else if (patientId == user.getPatient().getId()) {
+            invoices = invoiceService.findByPatient(user.getPatient());
+            isPatient = true;
+        }
+
         model.addAttribute("invoices", invoices);
         model.addAttribute("isPatient", isPatient);
     }
