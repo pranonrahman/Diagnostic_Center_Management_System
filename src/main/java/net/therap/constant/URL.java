@@ -1,5 +1,9 @@
 package net.therap.constant;
 
+/**
+ * @author raian.rahman
+ * @since 15/8/22
+ */
 public interface URL {
 
     String USER_VIEW = "/user";
