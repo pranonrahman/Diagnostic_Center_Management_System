@@ -1,14 +1,13 @@
 package net.therap.dms.controller.invoice;
 
 import net.therap.dms.command.InvoiceCmd;
-import net.therap.dms.command.MedicineItemCmd;
-import net.therap.dms.entity.*;
+import net.therap.dms.entity.Invoice;
+import net.therap.dms.entity.User;
 import net.therap.dms.exception.InsufficientAccessException;
 import net.therap.dms.service.InvoiceService;
-import net.therap.dms.service.MedicineService;
-import net.therap.dms.service.PrescriptionService;
 import net.therap.dms.util.RoleUtil;
 import net.therap.dms.util.SessionUtil;
+import net.therap.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
@@ -16,13 +15,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.isNull;
+import static net.therap.dms.constant.URL.INVOICE_DOCTOR;
+import static net.therap.dms.constant.URL.SUCCESS;
 import static net.therap.dms.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.dms.entity.Action.REVIEW;
 import static net.therap.dms.entity.Action.VIEW;
@@ -38,21 +38,14 @@ import static net.therap.dms.entity.RoleEnum.RECEPTIONIST;
 @SessionAttributes(INVOICE_CMD)
 public class InvoiceController {
 
-    private static final String VIEW_PAGE = "/invoice/view";
-    private static final String REDIRECT_VIEW_PAGE = "redirect:/invoice";
-    private static final String LIST_VIEW_PAGE = "/invoice/list";
     public static final String INVOICE_CMD = "invoice";
     public static final String INVOICE_VIEW_CMD = "invoiceView";
-    private static final String REDIRECT_DOCTOR_PAGE = "redirect:/invoice/doctor";
+
+    private static final String VIEW_PAGE = "/invoice/view";
+    private static final String LIST_VIEW_PAGE = "/invoice/list";
 
     @Autowired
     private InvoiceService invoiceService;
-
-    @Autowired
-    private PrescriptionService prescriptionService;
-
-    @Autowired
-    private MedicineService medicineService;
 
     @Autowired
     private MessageSourceAccessor msa;
@@ -72,7 +65,7 @@ public class InvoiceController {
 
     private String review(HttpServletRequest request, ModelMap model) {
         if (noInvoiceGenerated(model)) {
-            return REDIRECT_DOCTOR_PAGE;
+            return CommonUtil.redirect(INVOICE_DOCTOR);
         }
 
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
@@ -82,7 +75,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/list")
-    public String list(HttpServletRequest request, @RequestParam(defaultValue = "0") long patientId, ModelMap model) {
+    public String list(@RequestParam(defaultValue = "0") long patientId, ModelMap model, HttpServletRequest request) {
         checkAccessForList(request, patientId);
 
         setUpReferenceData(request, patientId, model);
@@ -92,7 +85,6 @@ public class InvoiceController {
 
     @PostMapping
     public String save(@SessionAttribute(INVOICE_CMD) InvoiceCmd invoiceCmd,
-                       RedirectAttributes ra,
                        WebRequest webRequest,
                        SessionStatus status,
                        HttpServletRequest request,
@@ -115,16 +107,13 @@ public class InvoiceController {
             return VIEW_PAGE;
         }
 
-        createEmptyPrescriptions(invoiceCmd);
-        updateMedicineQuantity(invoiceCmd);
-
-        Invoice savedInvoice = invoiceService.saveOrUpdate(invoice);
+        invoiceService.createEmptyPrescriptions(invoiceCmd);
+        invoiceService.updateMedicineQuantity(invoiceCmd);
+        invoiceService.saveOrUpdate(invoice);
 
         SessionUtil.removeInvoice(model, status, webRequest);
 
-        ra.addAttribute("id", savedInvoice.getId());
-
-        return REDIRECT_VIEW_PAGE;
+        return CommonUtil.redirect(SUCCESS);
     }
 
     private boolean isUnauthorizedToSaveInvoice(User user) {
@@ -155,25 +144,6 @@ public class InvoiceController {
                 || (RoleUtil.userContains(user, PATIENT) && user.getId() == patientId))) {
 
             throw new InsufficientAccessException();
-        }
-    }
-
-    private void createEmptyPrescriptions(InvoiceCmd invoiceCmd) {
-        for (Doctor doctor : invoiceCmd.getDoctors()) {
-            Prescription prescription = new Prescription();
-            prescription.setPatient(invoiceCmd.getPatient());
-            prescription.setDoctor(doctor);
-
-            prescriptionService.saveOrUpdate(prescription);
-        }
-    }
-
-    private void updateMedicineQuantity(InvoiceCmd invoiceCmd) {
-        for (MedicineItemCmd medicineItem : invoiceCmd.getMedicines()) {
-            Medicine updatedMedicine = medicineItem.getMedicine();
-            updatedMedicine.setAvailableUnits(updatedMedicine.getAvailableUnits() - medicineItem.getQuantity());
-
-            medicineService.saveOrUpdate(updatedMedicine);
         }
     }
 

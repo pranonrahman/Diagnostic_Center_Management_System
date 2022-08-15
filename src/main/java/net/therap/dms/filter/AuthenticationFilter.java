@@ -91,7 +91,7 @@ public class AuthenticationFilter implements Filter, URL {
     }
 
     private boolean hasInvoiceAccess(HttpServletRequest request, User user) {
-        if ((request.getRequestURI().equals(INVOICE_VIEW)
+        if ((request.getRequestURI().equals(INVOICE)
                 || request.getRequestURI().contains(INVOICE_LIST))
                 && !user.getRoles().contains(receptionistRole)
                 && !user.getRoles().contains(patientRole)) {
