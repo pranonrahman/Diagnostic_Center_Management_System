@@ -10,6 +10,7 @@ import net.therap.dms.entity.Patient;
 import net.therap.dms.service.DoctorService;
 import net.therap.dms.service.PatientService;
 import net.therap.dms.validator.DoctorVisitCmdValidator;
+import net.therap.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static net.therap.dms.constant.URL.INVOICE_MEDICINE;
 import static net.therap.dms.controller.invoice.DoctorVisitController.INVOICE_CMD;
 import static net.therap.dms.entity.Action.SAVE;
 import static net.therap.dms.entity.Action.VIEW;

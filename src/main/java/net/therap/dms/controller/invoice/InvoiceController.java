@@ -1,14 +1,13 @@
 package net.therap.dms.controller.invoice;
 
 import net.therap.dms.command.InvoiceCmd;
-import net.therap.dms.command.MedicineItemCmd;
-import net.therap.dms.entity.*;
+import net.therap.dms.entity.Invoice;
+import net.therap.dms.entity.User;
 import net.therap.dms.exception.InsufficientAccessException;
 import net.therap.dms.service.InvoiceService;
-import net.therap.dms.service.MedicineService;
-import net.therap.dms.service.PrescriptionService;
 import net.therap.dms.util.RoleUtil;
 import net.therap.dms.util.SessionUtil;
+import net.therap.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
@@ -23,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.isNull;
+import static net.therap.dms.constant.URL.INVOICE_DOCTOR;
 import static net.therap.dms.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.dms.entity.Action.REVIEW;
 import static net.therap.dms.entity.Action.VIEW;

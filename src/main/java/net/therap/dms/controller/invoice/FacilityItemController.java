@@ -7,6 +7,7 @@ import net.therap.dms.editor.FacilityEditor;
 import net.therap.dms.entity.Action;
 import net.therap.dms.entity.Facility;
 import net.therap.dms.service.FacilityService;
+import net.therap.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import static java.util.Objects.isNull;
+import static net.therap.dms.constant.URL.*;
 import static net.therap.dms.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.dms.entity.Action.*;
 

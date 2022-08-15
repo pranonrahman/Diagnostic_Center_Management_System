@@ -4,13 +4,9 @@ import net.therap.dms.command.FacilityItemCmd;
 import net.therap.dms.command.InvoiceCmd;
 import net.therap.dms.command.MedicineItemCmd;
 import net.therap.dms.dao.InvoiceDao;
-import net.therap.dms.entity.Doctor;
-import net.therap.dms.entity.Invoice;
-import net.therap.dms.entity.Particular;
-import net.therap.dms.entity.Patient;
+import net.therap.dms.entity.*;
 import net.therap.dms.exception.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -40,9 +36,6 @@ public class InvoiceService {
 
     @Autowired
     private MedicineService medicineService;
-
-    @Autowired
-    private MessageSourceAccessor msa;
 
     public Invoice findById(long id) {
         Invoice invoice = invoiceDao.findById(id);
