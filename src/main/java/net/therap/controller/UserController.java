@@ -42,7 +42,6 @@ public class UserController {
     private static final String ID = "id";
     private static final String SUCCESS = "success";
     private static final String FILTER_BY = "filterBy";
-    private static final String USERS = "users";
 
     @Autowired
     private DateEditor dateEditor;
