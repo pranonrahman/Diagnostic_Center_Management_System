@@ -7,7 +7,7 @@ import net.therap.dms.editor.FacilityEditor;
 import net.therap.dms.entity.Action;
 import net.therap.dms.entity.Facility;
 import net.therap.dms.service.FacilityService;
-import net.therap.util.CommonUtil;
+import net.therap.dms.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;

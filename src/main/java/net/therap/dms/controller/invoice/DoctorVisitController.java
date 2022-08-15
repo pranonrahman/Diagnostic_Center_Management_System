@@ -10,7 +10,7 @@ import net.therap.dms.entity.Patient;
 import net.therap.dms.service.DoctorService;
 import net.therap.dms.service.PatientService;
 import net.therap.dms.validator.DoctorVisitCmdValidator;
-import net.therap.util.CommonUtil;
+import net.therap.dms.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
