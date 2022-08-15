@@ -1,4 +1,4 @@
-package net.therap.dms.util;
+package net.therap.dms.helper;
 
 import net.therap.dms.command.UserCmd;
 import net.therap.dms.dao.UserDao;
@@ -13,7 +13,7 @@ import static java.util.Objects.nonNull;
  * @since 8/4/22
  */
 @Component
-public class AuthenticationUtil {
+public class AuthenticationHelper {
 
     @Autowired
     private UserDao userDao;
