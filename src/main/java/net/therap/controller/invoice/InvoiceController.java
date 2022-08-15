@@ -120,10 +120,7 @@ public class InvoiceController {
 
         Invoice savedInvoice = invoiceService.saveOrUpdate(invoice);
 
-        if (model.containsAttribute(INVOICE_CMD)) {
-            status.setComplete();
-            webRequest.removeAttribute(INVOICE_CMD, WebRequest.SCOPE_SESSION);
-        }
+        SessionUtil.removeInvoice(model, status, webRequest);
 
         ra.addAttribute("id", savedInvoice.getId());
 
@@ -175,6 +172,7 @@ public class InvoiceController {
         for (MedicineItemCmd medicineItem : invoiceCmd.getMedicines()) {
             Medicine updatedMedicine = medicineItem.getMedicine();
             updatedMedicine.setAvailableUnits(updatedMedicine.getAvailableUnits() - medicineItem.getQuantity());
+
             medicineService.saveOrUpdate(updatedMedicine);
         }
     }
