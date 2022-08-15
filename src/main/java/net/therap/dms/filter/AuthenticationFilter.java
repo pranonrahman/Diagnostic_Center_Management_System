@@ -43,9 +43,9 @@ public class AuthenticationFilter implements Filter, URL {
             }
 
             if (!hasInvoiceAccess(httpServletRequest, user)
-                    || !hasPatientAccess(httpServletRequest, user)
-                    || !hasUserAccess(httpServletRequest, user)
-                    || !hasPrescriptionAccess(httpServletRequest, user)) {
+                || !hasPatientAccess(httpServletRequest, user)
+                || !hasUserAccess(httpServletRequest, user)
+                || !hasPrescriptionAccess(httpServletRequest, user)) {
 
                 httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
 
@@ -60,6 +60,7 @@ public class AuthenticationFilter implements Filter, URL {
                 && !httpServletRequest.getRequestURI().contains(FAV_ICON)) {
 
             httpServletResponse.sendRedirect(LOGIN_REDIRECT_PATH);
+
             return;
         }
 
