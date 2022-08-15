@@ -22,6 +22,7 @@ import java.util.Date;
 import static net.therap.dms.controller.UserController.USER_CMD;
 import static net.therap.dms.entity.Action.*;
 import static net.therap.dms.util.SessionUtil.getUser;
+import static net.therap.dms.util.UserUtil.isSessionUser;
 
 /**
  * @author raian.rahman
@@ -35,12 +36,10 @@ public class UserController {
     private static final String FORM_PAGE = "user/form";
     private static final String LIST_PAGE = "user/list";
 
-    private static final String VIEW_REDIRECT_PATH = "redirect:/user";
-    private static final String LIST_REDIRECT_PATH = "redirect:/user/list";
+    private static final String SUCCESS_REDIRECT_PATH = "redirect:/success";
 
     public static final String USER_CMD = "user";
     private static final String ID = "id";
-    private static final String SUCCESS = "success";
     private static final String FILTER_BY = "filterBy";
 
     @Autowired
@@ -121,9 +120,8 @@ public class UserController {
         }
 
         redirectAttributes.addAttribute(ID, user.getId());
-        redirectAttributes.addAttribute(SUCCESS, true);
 
-        return VIEW_REDIRECT_PATH;
+        return SUCCESS_REDIRECT_PATH;
     }
 
     @RequestMapping("/list")
@@ -131,6 +129,7 @@ public class UserController {
                            ModelMap model) {
 
         setUpReferenceList(filterBy, model);
+
         return LIST_PAGE;
     }
 
@@ -139,15 +138,14 @@ public class UserController {
                              HttpServletRequest request) throws RuntimeException {
 
         User user = userService.findById(id);
-        User sessionUser = getUser(request);
 
-        if (sessionUser.getUserName().equals(user.getUserName())) {
+        if (isSessionUser(request, user)) {
             throw new RuntimeException(msa.getMessage("user.selfDelete.message"));
         }
 
         userService.delete(user);
 
-        return LIST_REDIRECT_PATH;
+        return SUCCESS_REDIRECT_PATH;
     }
 
     private void setUpReferenceList(String filterBy, ModelMap model) {

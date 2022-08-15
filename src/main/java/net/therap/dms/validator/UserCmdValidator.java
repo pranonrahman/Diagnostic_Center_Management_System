@@ -1,7 +1,7 @@
 package net.therap.dms.validator;
 
 import net.therap.dms.command.UserCmd;
-import net.therap.dms.util.AuthenticationUtil;
+import net.therap.dms.helper.AuthenticationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 /**
  * @author raian.rahman
@@ -18,14 +17,11 @@ import static java.util.Objects.nonNull;
 @Component
 public class UserCmdValidator implements Validator {
 
-    private static final String USER_NAME_NOT_NULL_MESSAGE = "Must provide a username";
-    private static final String PASSWORD_NOT_NULL_MESSAGE = "Must provide a password";
-
     @Autowired
     private MessageSourceAccessor msa;
 
     @Autowired
-    private AuthenticationUtil authenticationUtil;
+    private AuthenticationHelper authenticationHelper;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -48,7 +44,7 @@ public class UserCmdValidator implements Validator {
                     msa.getMessage("user.password.notnull"));
         }
 
-        if(nonNull(userCmd) &&  !authenticationUtil.isValidCredential(userCmd)) {
+        if(!authenticationHelper.isValidCredential(userCmd)) {
             errors.reject("{login.invalidCredentials}", msa.getMessage("login.invalidCredentials"));
         }
     }
