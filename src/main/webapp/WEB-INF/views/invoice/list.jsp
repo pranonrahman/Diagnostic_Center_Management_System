@@ -58,7 +58,7 @@
                         <td> <fmt:formatDate value="${invoice.created}"/> </td>
                         <td> <fmt:formatNumber value="${invoice.totalCost}"/> </td>
 
-                        <c:url var="invoiceLink" value="/invoice/view">
+                        <c:url var="invoiceLink" value="/invoice">
                             <c:param name="id" value="${invoice.id}"/>
                         </c:url>
                         <td>

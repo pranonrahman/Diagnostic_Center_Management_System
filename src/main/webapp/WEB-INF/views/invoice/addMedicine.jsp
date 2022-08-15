@@ -97,7 +97,7 @@
         </form:form>
     </div>
 
-    <c:if test="${not empty invoice.medicines.size()}">
+    <c:if test="${not empty invoice.medicines}">
         <div class="w-50 mx-auto mt-4 fw-light">
             <hr>
 

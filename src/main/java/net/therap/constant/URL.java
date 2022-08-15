@@ -21,7 +21,7 @@ public interface URL {
     String INVOICE_DOCTOR = "/invoice/doctor";
     String INVOICE_MEDICINE = "/invoice/medicine";
     String INVOICE_FACILITY = "/invoice/facility";
-    String INVOICE_VIEW = "/invoice/view";
+    String INVOICE_VIEW = "/invoice";
     String INVOICE_LIST = "/invoice/list";
 
     String LOGIN = "/login";
