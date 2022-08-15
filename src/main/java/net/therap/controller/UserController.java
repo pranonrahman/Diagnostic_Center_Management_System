@@ -159,7 +159,7 @@ public class UserController {
         model.put("seedRoleList", roleService.findAll());
 
         if(SAVE.equals(action)) {
-            model.put("userData", id == 0 ? new User() : userService.findById(id));
+            model.put(USER_CMD, id == 0 ? new User() : userService.findById(id));
         }
 
         model.put("isDeletable", id!=0 && !getUser(request).getUserName().equals(
