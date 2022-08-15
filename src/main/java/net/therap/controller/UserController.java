@@ -131,6 +131,7 @@ public class UserController {
                            ModelMap model) {
 
         setUpReferenceList(filterBy, model);
+
         return LIST_PAGE;
     }
 
