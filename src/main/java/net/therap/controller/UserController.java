@@ -137,9 +137,10 @@ public class UserController {
 
     @PostMapping(value = "/delete")
     public String deleteUser(@RequestParam(value = "id", defaultValue = "0") long id,
-                             @ModelAttribute("user") User sessionUser) throws RuntimeException {
+                             HttpServletRequest request) throws RuntimeException {
 
         User user = userService.findById(id);
+        User sessionUser = getUser(request);
 
         if (sessionUser.getUserName().equals(user.getUserName())) {
             throw new RuntimeException(msa.getMessage("user.selfDelete.message"));
