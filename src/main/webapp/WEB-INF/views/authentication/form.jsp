@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -22,15 +22,14 @@
 
     <h2 class="text-center py-3"> Login </h2>
     <div class="w-50 mx-auto">
-        <c:if test="${not empty message}">
-            <div class="alert alert-danger">
-                <c:out value="${message}"/>
-            </div>
-        </c:if>
 
         <form:form action="/login"
                    method="post"
                    modelAttribute="userCmd">
+
+            <form:errors path=""
+                             cssClass="alert alert-danger d-block"
+            />
 
             <div class="mb-3">
                 <form:label path="userName">
@@ -41,7 +40,9 @@
                             type="text"
                             cssClass="w-100"/>
 
-                <form:errors path="userName"/>
+                <form:errors path="userName"
+                             cssClass="invalid-feedback d-block"
+                />
             </div>
 
             <div class="mb-3">
@@ -52,7 +53,9 @@
                             type="password"
                             cssClass="w-100"/>
 
-                <form:errors path="password"/>
+                <form:errors path="password"
+                             cssClass="invalid-feedback d-block"
+                />
             </div>
             <button type="submit"
                     value="submit"

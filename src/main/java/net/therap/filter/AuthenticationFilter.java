@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import static java.util.Objects.nonNull;
 import static net.therap.entity.RoleEnum.*;
+import static net.therap.util.SessionUtil.getUser;
 
 /**
  * @author raian.rahman
@@ -25,6 +26,8 @@ public class AuthenticationFilter implements Filter, URL {
     private static final String LOGIN_REDIRECT_PATH = "/login";
     private static final String HOME_REDIRECT_PATH = "/";
     private static final String INVALID_ACCESS_REDIRECT_PATH = "/invalidPage";
+
+    private static final String USER = "user";
 
     private Role adminRole;
     private Role doctorRole;
@@ -51,7 +54,7 @@ public class AuthenticationFilter implements Filter, URL {
         httpServletResponse.setDateHeader("Expires", 0);
 
         if(isLoggedIn(httpServletRequest)) {
-            User user = (User) httpServletRequest.getSession().getAttribute(USER);
+            User user = getUser(httpServletRequest);
 
             if(httpServletRequest.getRequestURI().contains(LOGIN)) {
                 httpServletResponse.sendRedirect(HOME_REDIRECT_PATH);
@@ -70,8 +73,8 @@ public class AuthenticationFilter implements Filter, URL {
         }
 
         if(!isLoggedIn(httpServletRequest)
-            && !httpServletRequest.getRequestURI().contains(LOGIN)
-            && !httpServletRequest.getRequestURI().contains(LOGOUT)
+            && !httpServletRequest.getRequestURI().equals(LOGIN)
+            && !httpServletRequest.getRequestURI().equals(LOGOUT)
             && !httpServletRequest.getRequestURI().contains(ASSETS)
             && !httpServletRequest.getRequestURI().contains(FAV_ICON)) {
 
@@ -105,7 +108,7 @@ public class AuthenticationFilter implements Filter, URL {
 
     private boolean hasUserAccess(HttpServletRequest request, User user) {
         return (!request.getRequestURI().contains(USER_LIST)
-                && !request.getRequestURI().contains(USER)
+                && !request.getRequestURI().contains(USER_VIEW)
                 && !request.getRequestURI().contains(USER_DELETE))
                 || user.getRoles().contains(adminRole);
     }

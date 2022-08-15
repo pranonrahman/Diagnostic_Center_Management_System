@@ -4,15 +4,15 @@ import net.therap.command.UserCmd;
 import net.therap.dao.UserDao;
 import net.therap.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 /**
  * @author raian.rahman
  * @since 8/4/22
  */
-@Service
+@Component
 public class AuthenticationUtil {
 
     @Autowired
@@ -21,10 +21,6 @@ public class AuthenticationUtil {
     public boolean isValidCredential(UserCmd userCmd) {
         User user = userDao.findByUserName(userCmd.getUserName());
 
-        if (isNull(user)) {
-            return false;
-        }
-
-        return user.getPassword().equals(userCmd.getPassword());
+        return nonNull(user) && user.getPassword().equals(userCmd.getPassword());
     }
 }
