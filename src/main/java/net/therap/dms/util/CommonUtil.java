@@ -1,4 +1,4 @@
-package net.therap.util;
+package net.therap.dms.util;
 
 /**
  * @author khandaker.maruf

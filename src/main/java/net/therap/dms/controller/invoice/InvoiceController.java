@@ -7,7 +7,7 @@ import net.therap.dms.exception.InsufficientAccessException;
 import net.therap.dms.service.InvoiceService;
 import net.therap.dms.util.RoleUtil;
 import net.therap.dms.util.SessionUtil;
-import net.therap.util.CommonUtil;
+import net.therap.dms.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
