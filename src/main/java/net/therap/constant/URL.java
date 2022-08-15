@@ -2,7 +2,7 @@ package net.therap.constant;
 
 public interface URL {
 
-    String USER = "/user";
+    String USER_VIEW = "/user";
     String USER_LIST = "/user/list";
     String USER_DELETE = "/user/delete";
 
