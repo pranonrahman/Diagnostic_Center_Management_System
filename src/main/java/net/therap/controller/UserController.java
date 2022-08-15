@@ -16,12 +16,12 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.List;
 
-import static java.util.Objects.isNull;
 import static net.therap.controller.UserController.USER_CMD;
+import static net.therap.entity.Action.*;
+import static net.therap.util.SessionUtil.getUser;
 
 /**
  * @author raian.rahman
@@ -92,10 +92,10 @@ public class UserController {
 
     @GetMapping
     public String showForm(@RequestParam(value = "id", required = false, defaultValue = "0") long id,
+                           HttpServletRequest request,
                            ModelMap model) {
-        model.put("genderList", Gender.values());
-        model.put("seedRoleList", roleService.findAll());
-        model.put("userData", id == 0 ? new User() : userService.findById(id));
+
+        setUpReferenceSeedData(id, SAVE, request, model);
 
         return FORM_PAGE;
     }
@@ -104,20 +104,18 @@ public class UserController {
     public String process(@Validated @ModelAttribute("userData") User user,
                           BindingResult result,
                           RedirectAttributes redirectAttributes,
+                          HttpServletRequest request,
                           ModelMap model) {
 
-        if (result.hasErrors()) {
-            setupReferenceData(model);
+        setUpReferenceSeedData(user.getId(), VIEW, request, model);
 
+        if (result.hasErrors()) {
             return FORM_PAGE;
         }
 
-        if (user.isNew()) {
-            user = userService.saveOrUpdate(user);
-        }
+        user = userService.saveOrUpdate(user);
 
-        user = userService.updateRole(user);
-        User sessionUser = (User) model.get("user");
+        User sessionUser = getUser(request);
 
         if (sessionUser.getUserName().equals(user.getUserName())) {
             model.replace(USER_CMD, user);
@@ -133,21 +131,14 @@ public class UserController {
     public String showList(@RequestParam(value = FILTER_BY, required = false) String filterBy,
                            ModelMap model) {
 
-        if (isNull(filterBy)) {
-            setupReferenceData(userService.findAll(), model);
-        } else {
-            Role role = roleService.findByName(RoleEnum.valueOf(filterBy));
-            List<User> userList = new ArrayList<>();
-            userService.findAll().stream().filter(user -> user.getRoles().contains(role)).forEach(userList::add);
-
-            setupReferenceData(userList, model);
-        }
+        model.put(USERS, userService.findAll(filterBy));
         return LIST_PAGE;
     }
 
     @PostMapping(value = "/delete")
     public String deleteUser(@RequestParam(value = "id", defaultValue = "0") long id,
                              @ModelAttribute("user") User sessionUser) throws RuntimeException {
+
         User user = userService.findById(id);
 
         if (sessionUser.getUserName().equals(user.getUserName())) {
@@ -159,12 +150,19 @@ public class UserController {
         return LIST_REDIRECT_PATH;
     }
 
-    private void setupReferenceData(ModelMap model) {
+    private void setUpReferenceSeedData(Long id,
+                                        Action action,
+                                        HttpServletRequest request,
+                                        ModelMap model) {
+
         model.put("genderList", Gender.values());
         model.put("seedRoleList", roleService.findAll());
-    }
 
-    private void setupReferenceData(List<User> users, ModelMap model) {
-        model.put("users", users);
+        if(SAVE.equals(action)) {
+            model.put("userData", id == 0 ? new User() : userService.findById(id));
+        }
+
+        model.put("isDeletable", id!=0 && !getUser(request).getUserName().equals(
+                                                userService.findById(id).getUserName()));
     }
 }

@@ -1,5 +1,6 @@
 package net.therap.filter;
 
+import net.therap.constant.URL;
 import net.therap.entity.Role;
 import net.therap.entity.User;
 import net.therap.service.RoleService;
@@ -12,19 +13,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static java.util.Objects.nonNull;
-import static net.therap.constant.URL.*;
 import static net.therap.entity.RoleEnum.*;
+import static net.therap.util.SessionUtil.getUser;
 
 /**
  * @author raian.rahman
  * @since 8/7/22
  */
 @Component
-public class AuthenticationFilter implements Filter {
+public class AuthenticationFilter implements Filter, URL {
 
     private static final String LOGIN_REDIRECT_PATH = "/login";
     private static final String HOME_REDIRECT_PATH = "/";
     private static final String INVALID_ACCESS_REDIRECT_PATH = "/invalidPage";
+
     private static final String USER = "user";
 
     private Role adminRole;
@@ -52,7 +54,7 @@ public class AuthenticationFilter implements Filter {
         httpServletResponse.setDateHeader("Expires", 0);
 
         if(isLoggedIn(httpServletRequest)) {
-            User user = (User) httpServletRequest.getSession().getAttribute(USER);
+            User user = getUser(httpServletRequest);
 
             if(httpServletRequest.getRequestURI().contains(LOGIN)) {
                 httpServletResponse.sendRedirect(HOME_REDIRECT_PATH);
@@ -71,8 +73,8 @@ public class AuthenticationFilter implements Filter {
         }
 
         if(!isLoggedIn(httpServletRequest)
-            && !httpServletRequest.getRequestURI().contains(LOGIN)
-            && !httpServletRequest.getRequestURI().contains(LOGOUT)
+            && !httpServletRequest.getRequestURI().equals(LOGIN)
+            && !httpServletRequest.getRequestURI().equals(LOGOUT)
             && !httpServletRequest.getRequestURI().contains(ASSETS)
             && !httpServletRequest.getRequestURI().contains(FAV_ICON)) {
 
@@ -106,9 +108,8 @@ public class AuthenticationFilter implements Filter {
 
     private boolean hasUserAccess(HttpServletRequest request, User user) {
         return (!request.getRequestURI().contains(USER_LIST)
-                && !request.getRequestURI().contains(USER_SAVE)
-                && !request.getRequestURI().contains(USER_DELETE)
-                && !request.getRequestURI().contains(USER_VIEW))
+                && !request.getRequestURI().contains(USER_VIEW)
+                && !request.getRequestURI().contains(USER_DELETE))
                 || user.getRoles().contains(adminRole);
     }
 
@@ -123,7 +124,7 @@ public class AuthenticationFilter implements Filter {
     }
 
     private boolean hasPrescriptionAccess(HttpServletRequest request, User user) {
-        if ((request.getRequestURI().contains(PRESCRIPTION_VIEW)
+        if ((request.getRequestURI().equals(PRESCRIPTION)
                 || request.getRequestURI().contains(PRESCRIPTION_LIST))
                 && !user.getRoles().contains(doctorRole)
                 && !user.getRoles().contains(patientRole)) {
