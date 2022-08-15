@@ -130,7 +130,6 @@
                             <td>
 
                                 <form:form method="post"
-                                           modelAttribute="removeCmd"
                                            action="/invoice/medicine/remove">
 
                                     <input type="hidden"

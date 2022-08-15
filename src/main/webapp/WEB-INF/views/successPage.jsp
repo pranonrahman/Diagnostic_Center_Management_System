@@ -8,7 +8,7 @@
 
 <html>
 <head>
-    <title> <fmt:message key="title.errorPage"/> </title>
+    <title> <fmt:message key="title.successPage"/> </title>
     <link type="text/css" href="<c:url value="../../assets/css/bootstrap.min.css"/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value="../../assets/css/style.css"/>" rel="stylesheet"/>
     <script type="text/javascript" src="<c:url value="../../assets/js/jquery-3.6.0.min.js"/>"></script>

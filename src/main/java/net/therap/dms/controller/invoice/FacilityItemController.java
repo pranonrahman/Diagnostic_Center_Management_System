@@ -2,7 +2,6 @@ package net.therap.dms.controller.invoice;
 
 import net.therap.dms.command.FacilityItemCmd;
 import net.therap.dms.command.InvoiceCmd;
-import net.therap.dms.command.RemoveCmd;
 import net.therap.dms.editor.FacilityEditor;
 import net.therap.dms.entity.Action;
 import net.therap.dms.entity.Facility;
@@ -90,9 +89,9 @@ public class FacilityItemController {
     }
 
     @PostMapping("/remove")
-    public String remove(@ModelAttribute("removeModel") RemoveCmd removeCmd, ModelMap model) {
+    public String remove(@RequestParam("id") long facilityId, ModelMap model) {
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
-        invoice.getFacilities().removeIf(medicineItem -> medicineItem.getFacility().getId() == removeCmd.getId());
+        invoice.getFacilities().removeIf(facilityItem -> facilityItem.getFacility().getId() == facilityId);
 
         return CommonUtil.redirect(INVOICE_FACILITY);
     }

@@ -2,13 +2,12 @@ package net.therap.dms.controller.invoice;
 
 import net.therap.dms.command.InvoiceCmd;
 import net.therap.dms.command.MedicineItemCmd;
-import net.therap.dms.command.RemoveCmd;
 import net.therap.dms.editor.MedicineEditor;
 import net.therap.dms.entity.Action;
 import net.therap.dms.entity.Medicine;
 import net.therap.dms.service.MedicineService;
-import net.therap.dms.validator.MedicineItemCmdValidator;
 import net.therap.dms.util.CommonUtil;
+import net.therap.dms.validator.MedicineItemCmdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -93,9 +92,9 @@ public class MedicineItemController {
     }
 
     @PostMapping("/remove")
-    public String remove(@ModelAttribute("removeModel") RemoveCmd removeCmd, ModelMap model) {
+    public String remove(@RequestParam("id") long medicineId, ModelMap model) {
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
-        invoice.getMedicines().removeIf(medicineItemCmd -> medicineItemCmd.getMedicine().getId() == removeCmd.getId());
+        invoice.getMedicines().removeIf(medicineItemCmd -> medicineItemCmd.getMedicine().getId() == medicineId);
 
         return CommonUtil.redirect(INVOICE_MEDICINE);
     }
