@@ -15,6 +15,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static net.therap.controller.AuthenticationController.USER;
@@ -54,7 +55,7 @@ public class AuthenticationController implements URL {
     @GetMapping(LOGIN)
     public String show(ModelMap model) {
 
-        model.put(USER_CMD, new UserCmd());
+        setUpReferenceData(model);
 
         return FORM_PAGE;
     }
@@ -62,13 +63,13 @@ public class AuthenticationController implements URL {
     @PostMapping(LOGIN)
     public String process(@Valid @ModelAttribute(USER_CMD) UserCmd userCmd,
                           BindingResult result,
-                          ModelMap model) {
+                          HttpServletRequest request) {
 
         if (result.hasErrors()) {
             return FORM_PAGE;
         }
 
-        model.put(USER, userService.findByUserName(userCmd.getUserName()));
+        request.getSession().setAttribute(USER, userService.findByUserName(userCmd.getUserName()));
 
         return DASHBOARD_REDIRECT_PATH;
     }
@@ -76,9 +77,12 @@ public class AuthenticationController implements URL {
     @RequestMapping(LOGOUT)
     public String logout(SessionStatus sessionStatus, ModelMap model) {
         sessionStatus.setComplete();
-
-        model.put(USER_CMD, new UserCmd());
+        setUpReferenceData(model);
 
         return LOGIN_REDIRECT_PATH;
+    }
+
+    private void setUpReferenceData(ModelMap model) {
+        model.put(USER_CMD, new UserCmd());
     }
 }
