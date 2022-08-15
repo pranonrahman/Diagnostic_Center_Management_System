@@ -137,9 +137,10 @@ public class UserController {
 
     @PostMapping(value = "/delete")
     public String deleteUser(@RequestParam(value = "id", defaultValue = "0") long id,
-                             @ModelAttribute("user") User sessionUser) throws RuntimeException {
+                             HttpServletRequest request) throws RuntimeException {
 
         User user = userService.findById(id);
+        User sessionUser = getUser(request);
 
         if (sessionUser.getUserName().equals(user.getUserName())) {
             throw new RuntimeException(msa.getMessage("user.selfDelete.message"));
@@ -159,7 +160,7 @@ public class UserController {
         model.put("seedRoleList", roleService.findAll());
 
         if(SAVE.equals(action)) {
-            model.put(USER_CMD, id == 0 ? new User() : userService.findById(id));
+            model.put("userData", id == 0 ? new User() : userService.findById(id));
         }
 
         model.put("isDeletable", id!=0 && !getUser(request).getUserName().equals(
