@@ -8,7 +8,7 @@ import net.therap.dms.entity.Action;
 import net.therap.dms.entity.Medicine;
 import net.therap.dms.service.MedicineService;
 import net.therap.dms.validator.MedicineItemCmdValidator;
-import net.therap.util.CommonUtil;
+import net.therap.dms.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
