@@ -6,6 +6,7 @@ import net.therap.entity.Patient;
 import net.therap.entity.Prescription;
 import net.therap.entity.User;
 import net.therap.exception.InsufficientAccessException;
+import net.therap.helper.PrescriptionHelper;
 import net.therap.service.DoctorService;
 import net.therap.service.FacilityService;
 import net.therap.service.PatientService;
@@ -58,6 +59,9 @@ public class PrescriptionController {
     @Autowired
     private FacilityEditor facilityEditor;
 
+    @Autowired
+    private PrescriptionHelper prescriptionHelper;
+
     @InitBinder
     private void InitBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Facility.class, facilityEditor);
@@ -74,12 +78,11 @@ public class PrescriptionController {
         if (nonNull(user) &&
                 RoleUtil.userContains(user, PATIENT) &&
                 prescription.getPatient().getId() != user.getId()) {
-            
+
             throw new InsufficientAccessException();
         }
 
-        setupReferenceData(prescription, model);
-        model.put("doctorId", RoleUtil.userContains(user, DOCTOR) ? user.getDoctor().getId() : 0);
+        setupReferenceData(prescription, user, model);
 
         return VIEW_PAGE;
     }
@@ -87,12 +90,9 @@ public class PrescriptionController {
     @GetMapping("/list")
     public String showList(ModelMap model) {
         User user = (User) model.getAttribute(USER_CMD);
-        Patient patient = user.getPatient();
-        List<Prescription> prescriptions = patient.getPrescriptions();
+        List<Prescription> prescriptions = prescriptionHelper.getPrescriptionsForPatient(user.getPatient());
 
-        Collections.sort(prescriptions);
-
-        model.put("prescriptions", prescriptions);
+        setupReferenceData(prescriptions, model);
 
         return LIST_VIEW_PAGE;
     }
@@ -107,13 +107,20 @@ public class PrescriptionController {
         prescriptionService.saveOrUpdate(prescription);
 
         redirectAttributes.addAttribute("id", prescription.getId());
-        redirectAttributes.addAttribute("success", true);
+//        redirectAttributes.addAttribute("success", true);
 
-        return "redirect:/prescription";
+//        return "redirect:/prescription";
+        return "redirect:/success";
     }
 
-    private void setupReferenceData(Prescription prescription, ModelMap model) {
+    private void setupReferenceData(Prescription prescription, User user, ModelMap model) {
         model.put("facilities", facilityService.findAll());
         model.put("prescription", isNull(prescription) ? new Prescription() : prescription);
+        model.put("readonly", !RoleUtil.userContains(user, DOCTOR) ||
+                (user.getDoctor().getId() != prescription.getDoctor().getId()));
+    }
+
+    private void setupReferenceData(List<Prescription> prescriptions, ModelMap model) {
+        model.put("prescriptions", prescriptions);
     }
 }
