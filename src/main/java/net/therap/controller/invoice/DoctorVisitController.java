@@ -9,6 +9,7 @@ import net.therap.entity.Doctor;
 import net.therap.entity.Patient;
 import net.therap.service.DoctorService;
 import net.therap.service.PatientService;
+import net.therap.util.CommonUtil;
 import net.therap.validator.DoctorVisitCmdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static net.therap.constant.URL.INVOICE_MEDICINE;
 import static net.therap.controller.invoice.DoctorVisitController.INVOICE_CMD;
 import static net.therap.entity.Action.SAVE;
 import static net.therap.entity.Action.VIEW;
@@ -33,10 +35,10 @@ import static net.therap.entity.Action.VIEW;
 @SessionAttributes(INVOICE_CMD)
 public class DoctorVisitController {
 
-    private static final String ADD_DOCTOR_PAGE = "/invoice/addDoctor";
-    private static final String DOCTOR_VISIT_CMD = "doctorVisitCmd";
     public static final String INVOICE_CMD = "invoice";
-    public static final String REDIRECT_MEDICINE_PAGE = "redirect:/invoice/medicine";
+    private static final String DOCTOR_VISIT_CMD = "doctorVisitCmd";
+
+    private static final String ADD_DOCTOR_PAGE = "/invoice/addDoctor";
 
     @Autowired
     private PatientService patientService;
@@ -51,7 +53,7 @@ public class DoctorVisitController {
     private DoctorEditor doctorEditor;
 
     @Autowired
-    DoctorVisitCmdValidator doctorVisitCmdValidator;
+    private DoctorVisitCmdValidator doctorVisitCmdValidator;
 
     @InitBinder("doctorVisitCmd")
     public void initBinder(WebDataBinder binder) {
@@ -82,7 +84,7 @@ public class DoctorVisitController {
         invoice.setDoctors(doctorVisitCmd.getDoctors());
         invoice.setPatient(doctorVisitCmd.getPatient());
 
-        return REDIRECT_MEDICINE_PAGE;
+        return CommonUtil.getRedirectUrl(INVOICE_MEDICINE);
     }
 
     private void setUpReferenceData(Action action, ModelMap model) {

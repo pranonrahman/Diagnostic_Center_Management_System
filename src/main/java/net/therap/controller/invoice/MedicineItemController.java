@@ -7,6 +7,7 @@ import net.therap.editor.MedicineEditor;
 import net.therap.entity.Action;
 import net.therap.entity.Medicine;
 import net.therap.service.MedicineService;
+import net.therap.util.CommonUtil;
 import net.therap.validator.MedicineItemCmdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import static java.util.Objects.isNull;
+import static net.therap.constant.URL.*;
 import static net.therap.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.entity.Action.*;
 
@@ -32,10 +34,8 @@ public class MedicineItemController {
 
     public static final String INVOICE_CMD = "invoice";
     public static final String MEDICINE_CMD = "medicineItemCmd";
+
     private static final String ADD_MEDICINE_PAGE = "/invoice/addMedicine";
-    private static final String REDIRECT_MEDICINE_PAGE = "redirect:/invoice/medicine";
-    private static final String REDIRECT_FACILITY_PAGE = "redirect:/invoice/facility";
-    private static final String REDIRECT_DOCTOR_PAGE = "redirect:/invoice/doctor";
 
     @Autowired
     private MedicineService medicineService;
@@ -56,8 +56,8 @@ public class MedicineItemController {
     public String view(ModelMap model) {
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
 
-        if(isNull(invoice) || isNull(invoice.getPatient())) {
-            return REDIRECT_DOCTOR_PAGE;
+        if (isNull(invoice) || isNull(invoice.getPatient())) {
+            return CommonUtil.getRedirectUrl(INVOICE_DOCTOR);
         }
 
         setUpReferenceData(VIEW, model);
@@ -67,15 +67,15 @@ public class MedicineItemController {
 
     @PostMapping
     public String save(@Valid @ModelAttribute(MEDICINE_CMD) MedicineItemCmd medicineItemCmd,
-                               BindingResult result,
-                               @RequestParam Action action,
-                               ModelMap model) {
+                       BindingResult result,
+                       @RequestParam Action action,
+                       ModelMap model) {
 
-        if(action.equals(NEXT)) {
-            return REDIRECT_FACILITY_PAGE;
+        if (action.equals(NEXT)) {
+            return CommonUtil.getRedirectUrl(INVOICE_FACILITY);
         }
 
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             setUpReferenceData(SAVE, model);
 
             return ADD_MEDICINE_PAGE;
@@ -85,11 +85,11 @@ public class MedicineItemController {
         invoice.getMedicines().removeIf(facility -> facility.getMedicine().getId() == medicineItemCmd.getMedicine().getId());
         invoice.getMedicines().add(medicineItemCmd);
 
-        if(action.equals(ADD)) {
-            return REDIRECT_MEDICINE_PAGE;
+        if (action.equals(ADD)) {
+            return CommonUtil.getRedirectUrl(INVOICE_MEDICINE);
         }
 
-        return REDIRECT_FACILITY_PAGE;
+        return CommonUtil.getRedirectUrl(INVOICE_FACILITY);
     }
 
     @PostMapping("/remove")
@@ -97,11 +97,11 @@ public class MedicineItemController {
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
         invoice.getMedicines().removeIf(medicineItemCmd -> medicineItemCmd.getMedicine().getId() == removeCmd.getId());
 
-        return REDIRECT_MEDICINE_PAGE;
+        return CommonUtil.getRedirectUrl(INVOICE_MEDICINE);
     }
 
     private void setUpReferenceData(Action action, ModelMap model) {
-        if(action.equals(VIEW)) {
+        if (action.equals(VIEW)) {
             model.put(MEDICINE_CMD, new MedicineItemCmd());
         }
 

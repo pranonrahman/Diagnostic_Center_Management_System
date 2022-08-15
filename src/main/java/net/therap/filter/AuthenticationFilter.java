@@ -99,7 +99,7 @@ public class AuthenticationFilter implements Filter, URL {
             return false;
         }
 
-        return (!request.getRequestURI().equals(INVOICE_SAVE)
+        return (!request.getRequestURI().equals(INVOICE)
                 && !request.getRequestURI().contains(INVOICE_DOCTOR)
                 && !request.getRequestURI().contains(INVOICE_FACILITY)
                 && !request.getRequestURI().contains(INVOICE_MEDICINE))

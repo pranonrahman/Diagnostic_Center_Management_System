@@ -1,12 +1,11 @@
 package net.therap.controller.invoice;
 
 import net.therap.command.InvoiceCmd;
-import net.therap.command.MedicineItemCmd;
-import net.therap.entity.*;
+import net.therap.entity.Invoice;
+import net.therap.entity.User;
 import net.therap.exception.InsufficientAccessException;
 import net.therap.service.InvoiceService;
-import net.therap.service.MedicineService;
-import net.therap.service.PrescriptionService;
+import net.therap.util.CommonUtil;
 import net.therap.util.RoleUtil;
 import net.therap.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.isNull;
+import static net.therap.constant.URL.INVOICE_DOCTOR;
 import static net.therap.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.entity.Action.REVIEW;
 import static net.therap.entity.Action.VIEW;
@@ -38,21 +38,14 @@ import static net.therap.entity.RoleEnum.RECEPTIONIST;
 @SessionAttributes(INVOICE_CMD)
 public class InvoiceController {
 
-    private static final String VIEW_PAGE = "/invoice/view";
-    private static final String REDIRECT_VIEW_PAGE = "redirect:/invoice";
-    private static final String LIST_VIEW_PAGE = "/invoice/list";
     public static final String INVOICE_CMD = "invoice";
     public static final String INVOICE_VIEW_CMD = "invoiceView";
-    private static final String REDIRECT_DOCTOR_PAGE = "redirect:/invoice/doctor";
+
+    private static final String VIEW_PAGE = "/invoice/view";
+    private static final String LIST_VIEW_PAGE = "/invoice/list";
 
     @Autowired
     private InvoiceService invoiceService;
-
-    @Autowired
-    private PrescriptionService prescriptionService;
-
-    @Autowired
-    private MedicineService medicineService;
 
     @Autowired
     private MessageSourceAccessor msa;
@@ -72,7 +65,7 @@ public class InvoiceController {
 
     private String review(HttpServletRequest request, ModelMap model) {
         if (noInvoiceGenerated(model)) {
-            return REDIRECT_DOCTOR_PAGE;
+            return CommonUtil.getRedirectUrl(INVOICE_DOCTOR);
         }
 
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
@@ -82,7 +75,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/list")
-    public String list(HttpServletRequest request, @RequestParam(defaultValue = "0") long patientId, ModelMap model) {
+    public String list(@RequestParam(defaultValue = "0") long patientId, ModelMap model, HttpServletRequest request) {
         checkAccessForList(request, patientId);
 
         setUpReferenceData(request, patientId, model);
@@ -115,8 +108,8 @@ public class InvoiceController {
             return VIEW_PAGE;
         }
 
-        createEmptyPrescriptions(invoiceCmd);
-        updateMedicineQuantity(invoiceCmd);
+        invoiceService.createEmptyPrescriptions(invoiceCmd);
+        invoiceService.updateMedicineQuantity(invoiceCmd);
 
         Invoice savedInvoice = invoiceService.saveOrUpdate(invoice);
 
@@ -124,7 +117,7 @@ public class InvoiceController {
 
         ra.addAttribute("id", savedInvoice.getId());
 
-        return REDIRECT_VIEW_PAGE;
+        return CommonUtil.getRedirectUrl(VIEW_PAGE);
     }
 
     private boolean isUnauthorizedToSaveInvoice(User user) {
@@ -155,25 +148,6 @@ public class InvoiceController {
                 || (RoleUtil.userContains(user, PATIENT) && user.getId() == patientId))) {
 
             throw new InsufficientAccessException();
-        }
-    }
-
-    private void createEmptyPrescriptions(InvoiceCmd invoiceCmd) {
-        for (Doctor doctor : invoiceCmd.getDoctors()) {
-            Prescription prescription = new Prescription();
-            prescription.setPatient(invoiceCmd.getPatient());
-            prescription.setDoctor(doctor);
-
-            prescriptionService.saveOrUpdate(prescription);
-        }
-    }
-
-    private void updateMedicineQuantity(InvoiceCmd invoiceCmd) {
-        for (MedicineItemCmd medicineItem : invoiceCmd.getMedicines()) {
-            Medicine updatedMedicine = medicineItem.getMedicine();
-            updatedMedicine.setAvailableUnits(updatedMedicine.getAvailableUnits() - medicineItem.getQuantity());
-
-            medicineService.saveOrUpdate(updatedMedicine);
         }
     }
 

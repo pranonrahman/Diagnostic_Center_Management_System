@@ -17,7 +17,7 @@ public interface URL {
     String PRESCRIPTION = "/prescription/";
     String PRESCRIPTION_SAVE = "/prescription/save";
 
-    String INVOICE_SAVE = "/invoice";
+    String INVOICE = "/invoice";
     String INVOICE_DOCTOR = "/invoice/doctor";
     String INVOICE_MEDICINE = "/invoice/medicine";
     String INVOICE_FACILITY = "/invoice/facility";
