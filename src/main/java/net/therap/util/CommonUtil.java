@@ -6,7 +6,7 @@ package net.therap.util;
  */
 public class CommonUtil {
 
-    public static String getRedirectUrl(String url) {
-        return "redirect:/" + url;
+    public static String redirect(String url) {
+        return "redirect:" + url;
     }
 }

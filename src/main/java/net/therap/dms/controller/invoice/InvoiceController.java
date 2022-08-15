@@ -65,7 +65,7 @@ public class InvoiceController {
 
     private String review(HttpServletRequest request, ModelMap model) {
         if (noInvoiceGenerated(model)) {
-            return CommonUtil.getRedirectUrl(INVOICE_DOCTOR);
+            return CommonUtil.redirect(INVOICE_DOCTOR);
         }
 
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
@@ -117,7 +117,7 @@ public class InvoiceController {
 
         ra.addAttribute("id", savedInvoice.getId());
 
-        return CommonUtil.getRedirectUrl(VIEW_PAGE);
+        return CommonUtil.redirect(VIEW_PAGE);
     }
 
     private boolean isUnauthorizedToSaveInvoice(User user) {

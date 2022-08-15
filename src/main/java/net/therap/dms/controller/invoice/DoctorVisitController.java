@@ -84,7 +84,7 @@ public class DoctorVisitController {
         invoice.setDoctors(doctorVisitCmd.getDoctors());
         invoice.setPatient(doctorVisitCmd.getPatient());
 
-        return CommonUtil.getRedirectUrl(INVOICE_MEDICINE);
+        return CommonUtil.redirect(INVOICE_MEDICINE);
     }
 
     private void setUpReferenceData(Action action, ModelMap model) {

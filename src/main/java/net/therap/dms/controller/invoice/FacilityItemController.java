@@ -54,7 +54,7 @@ public class FacilityItemController {
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
 
         if (isNull(invoice) || isNull(invoice.getPatient())) {
-            return CommonUtil.getRedirectUrl(INVOICE_DOCTOR);
+            return CommonUtil.redirect(INVOICE_DOCTOR);
         }
 
         setUpReferenceData(VIEW, model);
@@ -69,7 +69,7 @@ public class FacilityItemController {
                        ModelMap model) {
 
         if (action.equals(NEXT)) {
-            return CommonUtil.getRedirectUrl(INVOICE);
+            return CommonUtil.redirect(INVOICE);
         }
 
         if (result.hasErrors()) {
@@ -83,10 +83,10 @@ public class FacilityItemController {
         invoice.getFacilities().add(facilityItemCmd);
 
         if (action.equals(ADD)) {
-            return CommonUtil.getRedirectUrl(INVOICE_FACILITY);
+            return CommonUtil.redirect(INVOICE_FACILITY);
         }
 
-        return CommonUtil.getRedirectUrl(INVOICE);
+        return CommonUtil.redirect(INVOICE);
     }
 
     @PostMapping("/remove")
@@ -94,7 +94,7 @@ public class FacilityItemController {
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
         invoice.getFacilities().removeIf(medicineItem -> medicineItem.getFacility().getId() == removeCmd.getId());
 
-        return CommonUtil.getRedirectUrl(INVOICE_FACILITY);
+        return CommonUtil.redirect(INVOICE_FACILITY);
     }
 
     private void setUpReferenceData(Action action, ModelMap model) {
