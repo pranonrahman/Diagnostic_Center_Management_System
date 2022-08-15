@@ -80,23 +80,29 @@
                 <c:out value="${errorMessage}"/>
             </p>
 
-            <form:form method="post">
-                <c:choose>
-                    <c:when test="${action == 'VIEW'}">
-                        <a href="/invoice/list" class="btn btn-primary">
-                            <fmt:message key="button.label.invoiceList"/>
-                        </a>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="/invoice/facility" class="btn btn-primary" type="submit">
+            <c:choose>
+                <c:when test="${action == 'VIEW'}">
+                    <a href="<c:url value="/invoice/list"/>" class="btn btn-primary">
+                        <fmt:message key="button.label.invoiceList"/>
+                    </a>
+                </c:when>
+
+                <c:otherwise>
+                    <div>
+                        <a href="<c:url value="/invoice/facility"/>" class="btn btn-primary">
                             <fmt:message key="button.label.previous"/>
                         </a>
-                        <button class="btn btn-primary" type="submit">
-                            <fmt:message key="button.label.createInvoice"/>
-                        </button>
-                    </c:otherwise>
-                </c:choose>
-            </form:form>
+
+                        <form:form method="post" cssClass="d-inline-block">
+                            <button class="btn btn-primary" type="submit">
+                                <fmt:message key="button.label.createInvoice"/>
+                            </button>
+                        </form:form>
+                    </div>
+
+                </c:otherwise>
+            </c:choose>
+
         </div>
     </div>
     
