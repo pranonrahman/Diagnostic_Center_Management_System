@@ -91,16 +91,14 @@ public class AuthenticationFilter implements Filter, URL {
     }
 
     private boolean hasInvoiceAccess(HttpServletRequest request, User user) {
-        if ((request.getRequestURI().contains(INVOICE_VIEW)
+        if ((request.getRequestURI().equals(INVOICE_VIEW)
                 || request.getRequestURI().contains(INVOICE_LIST))
                 && !user.getRoles().contains(receptionistRole)
                 && !user.getRoles().contains(patientRole)) {
-
             return false;
         }
 
-        return (!request.getRequestURI().equals(INVOICE_SAVE)
-                && !request.getRequestURI().contains(INVOICE_DOCTOR)
+        return (!request.getRequestURI().contains(INVOICE_DOCTOR)
                 && !request.getRequestURI().contains(INVOICE_FACILITY)
                 && !request.getRequestURI().contains(INVOICE_MEDICINE))
                 || user.getRoles().contains(receptionistRole);
