@@ -70,7 +70,7 @@
                     </td>
 
                     <td>
-                        <c:out value="${user.getAge()}"/>
+                        <c:out value="${user.age}"/>
                     </td>
 
                     <td>
