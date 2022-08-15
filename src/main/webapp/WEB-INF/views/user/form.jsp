@@ -27,11 +27,6 @@
     </h2>
 
     <div class="w-50 mx-auto">
-        <c:if test="${param.success}">
-            <div class="alert alert-success">
-                <fmt:message key="message.successfulOperation"/>
-            </div>
-        </c:if>
 
         <form:form action="/user"
                    method="POST"
