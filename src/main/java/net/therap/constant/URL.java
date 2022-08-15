@@ -1,31 +1,30 @@
 package net.therap.constant;
 
-public class URL {
+public interface URL {
 
-    public static String USER_SAVE = "/user";
-    public static String USER_VIEW = "/user/view";
-    public static String USER_LIST = "/user/list";
-    public static String USER_DELETE = "/user/delete";
+    String USER = "/user";
+    String USER_LIST = "/user/list";
+    String USER_DELETE = "/user/delete";
 
-    public static String PATIENT_HISTORY = "/patient/history";
-    public static String PATIENT_LIST = "/patient/list";
+    String PATIENT_HISTORY = "/patient/history";
+    String PATIENT_LIST = "/patient/list";
 
-    public static String PRESCRIPTION_LIST = "/prescription/list";
-    public static String PRESCRIPTION_VIEW = "/prescription/view";
-    public static String PRESCRIPTION_SAVE = "/prescription/save";
+    String PRESCRIPTION_LIST = "/prescription/list";
+    String PRESCRIPTION = "/prescription/";
+    String PRESCRIPTION_SAVE = "/prescription/save";
 
-    public static String INVOICE_SAVE = "/invoice";
-    public static String INVOICE_DOCTOR = "/invoice/doctor";
-    public static String INVOICE_MEDICINE = "/invoice/medicine";
-    public static String INVOICE_FACILITY = "/invoice/facility";
-    public static String INVOICE_VIEW = "/invoice/view";
-    public static String INVOICE_LIST = "/invoice/list";
+    String INVOICE_SAVE = "/invoice";
+    String INVOICE_DOCTOR = "/invoice/doctor";
+    String INVOICE_MEDICINE = "/invoice/medicine";
+    String INVOICE_FACILITY = "/invoice/facility";
+    String INVOICE_VIEW = "/invoice/view";
+    String INVOICE_LIST = "/invoice/list";
 
-    public static String LOGIN = "/login";
+    String LOGIN = "/login";
 
-    public static String LOGOUT = "/logout";
+    String LOGOUT = "/logout";
 
-    public static String FAV_ICON = "/favicon.ico";
+    String FAV_ICON = "/favicon.ico";
 
-    public static String ASSETS = "/assets/";
+    String ASSETS = "/assets/";
 }
