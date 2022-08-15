@@ -41,7 +41,8 @@
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="card-title">
                         <fmt:message key="text.diagnosis"/>:
-                        <c:out value="${prescription.diagnosis == null ? 'N/A' : prescription.diagnosis}"/>
+                        <c:out value="${empty prescription.diagnosis ?
+                        'N/A' : prescription.diagnosis}"/>
                     </h5>
                     <small>
                     </small>
@@ -55,7 +56,8 @@
                 </div>
                 <p class="card-text">
                     <fmt:message key="text.symptoms"/>:
-                    <c:out value="${prescription.symptoms == null ? 'N/A' : prescription.symptoms}"/>
+                    <c:out value="${empty prescription.symptoms ?
+                    'N/A' : prescription.symptoms}"/>
                 </p>
             </a>
         </c:forEach>
@@ -80,7 +82,8 @@
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="card-title">
                         <fmt:message key="text.diagnosis"/>:
-                        <c:out value="${prescription.diagnosis == null ? 'N/A' : prescription.diagnosis}"/>
+                        <c:out value="${empty prescription.diagnosis ?
+                        'N/A' : prescription.diagnosis}"/>
                     </h5>
                     <small>
                         <fmt:message key="label.createdOn"/>:
@@ -92,7 +95,8 @@
                 </div>
                 <p class="card-text">
                     <fmt:message key="text.symptoms"/>:
-                    <c:out value="${prescription.symptoms == null ? 'N/A' : prescription.symptoms}"/>
+                    <c:out value="${empty prescription.symptoms ?
+                    'N/A' : prescription.symptoms}"/>
                 </p>
             </a>
         </c:forEach>

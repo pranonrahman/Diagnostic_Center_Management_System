@@ -42,7 +42,7 @@
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="card-title">
                         <fmt:message key="text.diagnosis"/>:
-                        <c:out value="${prescription.diagnosis == null ?
+                        <c:out value="${empty prescription.diagnosis ?
                         'N/A' : prescription.diagnosis}"/>
                     </h5>
                     <small>
@@ -55,7 +55,7 @@
                 </div>
                 <p class="card-text">
                     <fmt:message key="text.symptoms"/>:
-                    <c:out value="${prescription.symptoms == null ?
+                    <c:out value="${empty prescription.symptoms ?
                     'N/A' : prescription.symptoms}"/>
                 </p>
             </a>
