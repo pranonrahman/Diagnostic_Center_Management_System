@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.isNull;
@@ -47,13 +48,29 @@ public class UserService {
         return user;
     }
 
-    public List<User> findAll() {
-        return userDao.findAll();
+    public List<User> findAll(String filterBy) {
+
+        if(isNull(filterBy)) {
+            return userDao.findAll();
+        }
+
+        Role role = roleDao.findByName(RoleEnum.valueOf(filterBy));
+        List<User> userList = new ArrayList<>();
+
+        userDao.findAll().stream().filter(user -> user.getRoles().contains(role)).forEach(userList::add);
+
+        return userList;
     }
 
     @Transactional
     public User saveOrUpdate(User user) {
-        return userDao.saveOrUpdate(user);
+        if(user.isNew()) {
+            user = userDao.saveOrUpdate(user);
+        }
+
+        updateRole(user);
+
+        return user;
     }
 
     @Transactional
@@ -61,9 +78,11 @@ public class UserService {
         userDao.delete(user);
     }
 
-    @Transactional
-    public User updateRole(User user) {
+    public User findByUserName(String userName) {
+        return userDao.findByUserName(userName);
+    }
 
+    private void updateRole(User user) {
         Role doctorRole = roleDao.findByName(RoleEnum.valueOf("DOCTOR"));
         Role adminRole = roleDao.findByName(RoleEnum.valueOf("ADMIN"));
         Role receptionistRole = roleDao.findByName(RoleEnum.valueOf("RECEPTIONIST"));
@@ -133,10 +152,5 @@ public class UserService {
 
         userDao.saveOrUpdate(user);
 
-        return user;
-    }
-
-    public User findByUserName(String userName) {
-        return userDao.findByUserName(userName);
     }
 }

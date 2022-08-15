@@ -18,9 +18,6 @@ import static java.util.Objects.nonNull;
 @Component
 public class UserValidator implements Validator {
 
-    private static final String USER_NAME_ALREADY_EXISTS_MESSAGE = "username already exists";
-    private static final String USER_NAME_NOT_EXIST_MESSAGE = "username does not exist";
-
     @Autowired
     private UserService userService;
 
@@ -37,11 +34,11 @@ public class UserValidator implements Validator {
         User user = (User) target;
 
         if(user.isNew() && nonNull(userService.findByUserName(user.getUserName()))) {
-            errors.rejectValue("userName", "{userName.exist}", USER_NAME_ALREADY_EXISTS_MESSAGE);
+            errors.rejectValue("userName", "{userName.exist}", msa.getMessage("userName.exist"));
         }
 
         if(!user.isNew() && isNull(userService.findByUserName(user.getUserName()))) {
-            errors.rejectValue("userName", "{userName.notExist}", USER_NAME_NOT_EXIST_MESSAGE);
+            errors.rejectValue("userName", "{userName.notExist}", msa.getMessage("userName.notExist"));
         }
 
         if(nonNull(user.getDoctor()) && user.getDoctor().getFee()<0) {
