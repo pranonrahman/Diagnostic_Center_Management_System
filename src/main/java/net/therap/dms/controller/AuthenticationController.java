@@ -77,6 +77,7 @@ public class AuthenticationController implements URL {
     @RequestMapping(LOGOUT)
     public String logout(SessionStatus sessionStatus, ModelMap model) {
         sessionStatus.setComplete();
+
         setUpReferenceData(model);
 
         return LOGIN_REDIRECT_PATH;
