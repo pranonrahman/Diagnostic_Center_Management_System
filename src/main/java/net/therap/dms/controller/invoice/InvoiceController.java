@@ -15,7 +15,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -23,6 +22,7 @@ import java.util.List;
 
 import static java.util.Objects.isNull;
 import static net.therap.dms.constant.URL.INVOICE_DOCTOR;
+import static net.therap.dms.constant.URL.SUCCESS;
 import static net.therap.dms.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.dms.entity.Action.REVIEW;
 import static net.therap.dms.entity.Action.VIEW;
@@ -85,7 +85,6 @@ public class InvoiceController {
 
     @PostMapping
     public String save(@SessionAttribute(INVOICE_CMD) InvoiceCmd invoiceCmd,
-                       RedirectAttributes ra,
                        WebRequest webRequest,
                        SessionStatus status,
                        HttpServletRequest request,
@@ -110,14 +109,11 @@ public class InvoiceController {
 
         invoiceService.createEmptyPrescriptions(invoiceCmd);
         invoiceService.updateMedicineQuantity(invoiceCmd);
-
-        Invoice savedInvoice = invoiceService.saveOrUpdate(invoice);
+        invoiceService.saveOrUpdate(invoice);
 
         SessionUtil.removeInvoice(model, status, webRequest);
 
-        ra.addAttribute("id", savedInvoice.getId());
-
-        return CommonUtil.redirect(VIEW_PAGE);
+        return CommonUtil.redirect(SUCCESS);
     }
 
     private boolean isUnauthorizedToSaveInvoice(User user) {

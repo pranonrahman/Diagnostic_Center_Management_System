@@ -24,6 +24,8 @@ public interface URL {
     String INVOICE_VIEW = "/invoice";
     String INVOICE_LIST = "/invoice/list";
 
+    String SUCCESS = "/success";
+
     String LOGIN = "/login";
 
     String LOGOUT = "/logout";
