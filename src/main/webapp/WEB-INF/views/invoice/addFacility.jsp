@@ -131,8 +131,13 @@
                             <td><c:out value="${item.facility.price * item.quantity}"/></td>
                             <td>
 
-                                <form:form method="post" modelAttribute="removeCmd" action="/invoice/facility/remove">
-                                    <input type="hidden" name="id" value="${item.facility.id}">
+                                <form:form method="post"
+                                           action="/invoice/facility/remove">
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="${item.facility.id}">
+
                                     <button type="submit"
                                             class="btn btn-primary flex-grow-1 mx-3"
                                             value="REMOVE"
