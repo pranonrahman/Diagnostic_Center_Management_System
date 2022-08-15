@@ -8,6 +8,7 @@ import net.therap.service.InvoiceService;
 import net.therap.service.MedicineService;
 import net.therap.service.PrescriptionService;
 import net.therap.util.RoleUtil;
+import net.therap.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
 
 import static java.util.Objects.isNull;
@@ -58,7 +58,7 @@ public class InvoiceController {
 
     @GetMapping("/view")
     public String view(@RequestParam Long id, HttpServletRequest request, ModelMap model) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = SessionUtil.getUser(request);
 
         Invoice invoice = invoiceService.findById(id);
 
@@ -81,7 +81,7 @@ public class InvoiceController {
             return REDIRECT_DOCTOR_PAGE;
         }
 
-        User user = (User) request.getSession().getAttribute("user");
+        User user = SessionUtil.getUser(request);
         invoice.setReceptionist(user.getReceptionist());
 
         setUpReferenceData(invoice, model);
@@ -91,7 +91,7 @@ public class InvoiceController {
 
     @GetMapping("/list")
     public String list(HttpServletRequest request, @RequestParam(defaultValue = "0") long patientId, ModelMap model) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = SessionUtil.getUser(request);
 
         if (!(RoleUtil.userContains(user, RECEPTIONIST) || RoleUtil.userContains(user, PATIENT))) {
             throw new InsufficientAccessException();
@@ -125,7 +125,7 @@ public class InvoiceController {
                        HttpServletRequest request,
                        ModelMap model) {
 
-        User user = (User) request.getSession().getAttribute("user");
+        User user = SessionUtil.getUser(request);
 
         if (isNull(user) || user.getRoles().stream().noneMatch(role -> role.getName().equals(RECEPTIONIST))) {
             model.put("errorMessage", msa.getMessage("error.unAuthorized"));
