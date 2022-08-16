@@ -33,19 +33,19 @@ public class UserValidator implements Validator {
     public void validate(Object target, Errors errors) {
         User user = (User) target;
 
-        if(user.isNew() && nonNull(userService.findByUserName(user.getUserName()))) {
+        if (user.isNew() && nonNull(userService.findByUserName(user.getUserName()))) {
             errors.rejectValue("userName", "{userName.exist}", msa.getMessage("userName.exist"));
         }
 
-        if(!user.isNew() && isNull(userService.findByUserName(user.getUserName()))) {
+        if (!user.isNew() && isNull(userService.findByUserName(user.getUserName()))) {
             errors.rejectValue("userName", "{userName.notExist}", msa.getMessage("userName.notExist"));
         }
 
-        if(nonNull(user.getDoctor()) && user.getDoctor().getFee()<0) {
+        if (nonNull(user.getDoctor()) && user.getDoctor().getFee() < 0) {
             errors.rejectValue("doctor.fee", "{fee.notNegative}", msa.getMessage("fee.notNegative"));
         }
 
-        if(!user.isNew() && !userService.findById(user.getId()).getUserName().equals(user.getUserName())) {
+        if (!user.isNew() && !userService.findById(user.getId()).getUserName().equals(user.getUserName())) {
             errors.rejectValue("userName", "{userName.notChange}", msa.getMessage("userName.notChange"));
         }
     }
