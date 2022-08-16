@@ -20,7 +20,6 @@
 <jsp:include page="../header.jsp"/>
 
 <div class="container-fluid bg-primary-custom h-100">
-
     <h2 class="text-center py-3">
         <fmt:message key="text.prescriptionOf"/>
         <c:out value="${prescription.patient.user.name}"/>
@@ -33,27 +32,23 @@
             </div>
         </c:if>
 
-        <form:form method="post"
-                   modelAttribute="prescription">
+        <form:form method="post" modelAttribute="prescription">
             <p>
-                <strong> <fmt:message key="text.consultingDoctor"/> :</strong>
+                <strong><fmt:message key="text.consultingDoctor"/>: </strong>
                 <c:out value="${prescription.doctor.user.name}"/>
             </p>
 
             <div class="mb-3">
-                <form:label path="symptoms"
-                            cssClass="form-label">
+                <form:label path="symptoms" cssClass="form-label">
                     <fmt:message key="label.symptoms"/>
                 </form:label>
 
                 <form:textarea rows="3"
                                cssClass="form-control"
                                path="symptoms"
-                               readonly="${readonly}"
-                />
+                               readonly="${readonly}"/>
 
-                <form:errors path="symptoms"
-                             cssClass="invalid-feedback d-block"/>
+                <form:errors path="symptoms" cssClass="invalid-feedback d-block"/>
             </div>
 
             <fieldset class="form-group mb-3">
@@ -67,75 +62,54 @@
                                      itemLabel="name"
                                      itemValue="id"
                                      cssClass="form-check-inline ms-3"
-                                     disabled="${readonly}"
-                    />
+                                     disabled="${readonly}"/>
 
-                    <form:errors path="facilities"
-                                 cssClass="invalid-feedback d-block"/>
+                    <form:errors path="facilities" cssClass="invalid-feedback d-block"/>
                 </div>
             </fieldset>
 
             <div class="mb-3">
-                <form:label path="diagnosis"
-                            cssClass="form-label">
-
+                <form:label path="diagnosis" cssClass="form-label">
                     <fmt:message key="label.diagnosis"/>
                 </form:label>
 
                 <form:textarea rows="3"
                                cssClass="form-control"
                                path="diagnosis"
-                               readonly="${readonly}"
-                />
+                               readonly="${readonly}"/>
 
-                <form:errors path="diagnosis"
-                             cssClass="invalid-feedback d-block"/>
+                <form:errors path="diagnosis" cssClass="invalid-feedback d-block"/>
             </div>
 
             <div class="mb-3">
-                <form:label path="medicines"
-                            cssClass="form-label">
-
+                <form:label path="medicines" cssClass="form-label">
                     <fmt:message key="label.medicines"/>
                 </form:label>
 
                 <form:textarea rows="3"
                                cssClass="form-control"
                                path="medicines"
-                               readonly="${readonly}"
-                />
+                               readonly="${readonly}"/>
 
-                <small id="medicineHelp"
-                       class="form-text text-muted">
-
-                    please separate each medicine by a semicolon (;)
-                </small>
-
-                <form:errors path="medicines"
-                             cssClass="invalid-feedback d-block"/>
+                <form:errors path="medicines" cssClass="invalid-feedback d-block"/>
             </div>
 
             <div class="mb-3">
-                <form:label path="comment"
-                            cssClass="form-label">
-
+                <form:label path="comment" cssClass="form-label">
                     <fmt:message key="label.comments"/>
                 </form:label>
 
                 <form:textarea rows="3"
                                cssClass="form-control"
                                path="comment"
-                               readonly="${readonly}"
-                />
+                               readonly="${readonly}"/>
 
                 <form:errors path="comment" cssClass="invalid-feedback d-block"/>
             </div>
 
-
             <div class="d-grid">
                 <c:if test="${!readonly}">
-                    <button type="submit"
-                            class="btn btn-primary mb-2">
+                    <button type="submit" class="btn btn-primary mb-2">
                         <fmt:message key="button.label.update"/>
                     </button>
                 </c:if>

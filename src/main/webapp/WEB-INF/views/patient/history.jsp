@@ -26,26 +26,19 @@
 
     <div class="list-group">
         <h5 class="text-center"><fmt:message key="text.myAppointments"/></h5>
-        <c:forEach items="${doctorSpecificPrescriptions}"
-                   var="prescription">
 
-            <c:url var="prescriptionViewPage"
-                   value="/prescription">
-
-                <c:param name="id"
-                         value="${prescription.id}"/>
+        <c:forEach items="${doctorSpecificPrescriptions}" var="prescription">
+            <c:url var="prescriptionViewPage" value="/prescription">
+                <c:param name="id" value="${prescription.id}"/>
             </c:url>
-            <a href="${prescriptionViewPage}"
-               class="list-group-item list-group-item-dark mb-2 ">
 
+            <a href="${prescriptionViewPage}" class="list-group-item list-group-item-dark mb-2 ">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="card-title">
                         <fmt:message key="text.diagnosis"/>:
-                        <c:out value="${empty prescription.diagnosis ?
-                        'N/A' : prescription.diagnosis}"/>
+                        <c:out value="${empty prescription.diagnosis ? 'N/A' : prescription.diagnosis}"/>
                     </h5>
-                    <small>
-                    </small>
+
                     <small>
                         <fmt:message key="label.createdOn"/>:
                         <fmt:formatDate value="${prescription.created}"/>
@@ -54,10 +47,10 @@
                         <fmt:formatDate value="${prescription.updated}"/>
                     </small>
                 </div>
+
                 <p class="card-text">
                     <fmt:message key="text.symptoms"/>:
-                    <c:out value="${empty prescription.symptoms ?
-                    'N/A' : prescription.symptoms}"/>
+                    <c:out value="${empty prescription.symptoms ? 'N/A' : prescription.symptoms}"/>
                 </p>
             </a>
         </c:forEach>
@@ -67,24 +60,19 @@
 
     <div class="list-group">
         <h5 class="text-center"><fmt:message key="text.otherAppointments"/></h5>
-        <c:forEach items="${otherPrescriptions}"
-                   var="prescription">
 
-            <c:url var="prescriptionViewPage"
-                   value="/prescription">
-
-                <c:param name="id"
-                         value="${prescription.id}"/>
+        <c:forEach items="${otherPrescriptions}" var="prescription">
+            <c:url var="prescriptionViewPage" value="/prescription">
+                <c:param name="id" value="${prescription.id}"/>
             </c:url>
 
-            <a href="${prescriptionViewPage}"
-               class="list-group-item list-group-item-dark mb-2 ">
+            <a href="${prescriptionViewPage}" class="list-group-item list-group-item-dark mb-2">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="card-title">
                         <fmt:message key="text.diagnosis"/>:
-                        <c:out value="${empty prescription.diagnosis ?
-                        'N/A' : prescription.diagnosis}"/>
+                        <c:out value="${empty prescription.diagnosis ? 'N/A' : prescription.diagnosis}"/>
                     </h5>
+
                     <small>
                         <fmt:message key="label.createdOn"/>:
                         <fmt:formatDate value="${prescription.created}"/>
@@ -93,10 +81,10 @@
                         <fmt:formatDate value="${prescription.updated}"/>
                     </small>
                 </div>
+
                 <p class="card-text">
                     <fmt:message key="text.symptoms"/>:
-                    <c:out value="${empty prescription.symptoms ?
-                    'N/A' : prescription.symptoms}"/>
+                    <c:out value="${empty prescription.symptoms ? 'N/A' : prescription.symptoms}"/>
                 </p>
             </a>
         </c:forEach>

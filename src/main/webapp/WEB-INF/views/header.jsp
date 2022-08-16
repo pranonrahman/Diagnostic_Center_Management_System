@@ -10,19 +10,14 @@
 <link type="text/css" href="<c:url value="../../assets/css/style.css"/>" rel="stylesheet"/>
 <header>
     <nav class="px-4 navbar sticky-top navbar-expand-lg">
-        <a class="navbar-brand"
-           href="/">
-
-            <img src="../../assets/logo.png"
-                 alt="" width="55" height="55">
+        <a class="navbar-brand" href="/">
+            <img src="../../assets/logo.png" alt="" width="55" height="55">
         </a>
 
-        <div class="collapse navbar-collapse justify-content-end"
-             id="navbarNavDropdown">
-
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
             <ul class="navbar-nav mx-3" ${param.linksStatus}>
-                <c:if test="${RoleUtil.hasRole(user, RoleEnum.DOCTOR)}">
 
+                <c:if test="${RoleUtil.hasRole(user, RoleEnum.DOCTOR)}">
                     <li class="nav-item">
                         <a href="/patient/list" class="nav-link active">
                             <fmt:message key="navbar.link.yourPatients"/>
@@ -37,6 +32,7 @@
                             <fmt:message key="navbar.link.yourPrescriptions"/>
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <c:url var="patientInvoiceList" value="/invoice/list">
                             <c:param name="patientId" value="${user.patient.id}"/>
@@ -50,12 +46,11 @@
 
                 <c:if test="${RoleUtil.hasRole(user, RoleEnum.RECEPTIONIST)}">
                     <li class="nav-item">
-                        <a href="/invoice/doctor"
-                           class="nav-link active">
-
+                        <a href="/invoice/doctor" class="nav-link active">
                             <fmt:message key="navbar.link.createInvoice"/>
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a href="/invoice/list"
                            class="nav-link active">
@@ -76,60 +71,37 @@
 
                             <fmt:message key="text.view"/>
                         </a>
-                        <div class="dropdown-menu"
-                             aria-labelledby="navbarAdminMenuLink">
 
-                            <a href="<c:url value="/user/list"/>"
-                               class="dropdown-item">
-
+                        <div class="dropdown-menu" aria-labelledby="navbarAdminMenuLink">
+                            <a href="<c:url value="/user/list"/>" class="dropdown-item">
                                 <fmt:message key="navbar.link.viewUsers"/>
                             </a>
 
-                            <c:url var="adminList"
-                                   value="/user/list">
-
-                                <c:param name="filterBy"
-                                         value="${RoleEnum.ADMIN}"/>
+                            <c:url var="adminList" value="/user/list">
+                                <c:param name="filterBy" value="${RoleEnum.ADMIN}"/>
                             </c:url>
-                            <a href="${adminList}"
-                               class="dropdown-item">
-
+                            <a href="${adminList}" class="dropdown-item">
                                 <fmt:message key="navbar.link.viewAdmins"/>
                             </a>
 
-                            <c:url var="doctorList"
-                                   value="/user/list">
-
-                                <c:param name="filterBy"
-                                         value="${RoleEnum.DOCTOR}"/>
+                            <c:url var="doctorList" value="/user/list">
+                                <c:param name="filterBy" value="${RoleEnum.DOCTOR}"/>
                             </c:url>
-                            <a href="${doctorList}"
-                               class="dropdown-item">
-
+                            <a href="${doctorList}" class="dropdown-item">
                                 <fmt:message key="navbar.link.viewDoctors"/>
                             </a>
 
-                            <c:url var="receptionistList"
-                                   value="/user/list">
-
-                                <c:param name="filterBy"
-                                         value="${RoleEnum.RECEPTIONIST}"/>
+                            <c:url var="receptionistList" value="/user/list">
+                                <c:param name="filterBy" value="${RoleEnum.RECEPTIONIST}"/>
                             </c:url>
-                            <a href="${receptionistList}"
-                               class="dropdown-item">
-
+                            <a href="${receptionistList}" class="dropdown-item">
                                 <fmt:message key="navbar.link.viewReceptionists"/>
                             </a>
 
-                            <c:url var="patientList"
-                                   value="/user/list">
-
-                                <c:param name="filterBy"
-                                         value="${RoleEnum.PATIENT}"/>
+                            <c:url var="patientList" value="/user/list">
+                                <c:param name="filterBy" value="${RoleEnum.PATIENT}"/>
                             </c:url>
-                            <a href="${patientList}"
-                               class="dropdown-item">
-
+                            <a href="${patientList}" class="dropdown-item">
                                 <fmt:message key="navbar.link.viewAllPatients"/>
                             </a>
                         </div>
@@ -145,11 +117,10 @@
             </ul>
         </div>
 
-        <a href="/logout"
-           class="btn btn-danger">
-
+        <a href="/logout" class="btn btn-danger">
             <fmt:message key="navbar.link.logout"/>
         </a>
     </nav>
+
     <hr class="my-0"/>
 </header>
