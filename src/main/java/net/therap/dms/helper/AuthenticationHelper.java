@@ -1,6 +1,5 @@
 package net.therap.dms.helper;
 
-import net.therap.dms.command.UserCmd;
 import net.therap.dms.dao.UserDao;
 import net.therap.dms.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,9 @@ public class AuthenticationHelper {
     @Autowired
     private UserDao userDao;
 
-    public boolean isValidCredential(UserCmd userCmd) {
-        User user = userDao.findByUserName(userCmd.getUserName());
+    public boolean isValidCredential(User user) {
+        User savedUser = userDao.findByUserName(user.getUserName());
 
-        return nonNull(user) && user.getPassword().equals(userCmd.getPassword());
+        return nonNull(savedUser) && savedUser.getPassword().equals(user.getPassword());
     }
 }

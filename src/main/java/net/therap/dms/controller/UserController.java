@@ -5,6 +5,7 @@ import net.therap.dms.entity.*;
 import net.therap.dms.service.AccessManager;
 import net.therap.dms.service.RoleService;
 import net.therap.dms.service.UserService;
+import net.therap.dms.validationGroup.UserValidationGroup;
 import net.therap.dms.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -21,7 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 import static net.therap.dms.controller.UserController.USER_CMD;
-import static net.therap.dms.entity.Action.*;
+import static net.therap.dms.entity.Action.SAVE;
+import static net.therap.dms.entity.Action.VIEW;
 import static net.therap.dms.util.SessionUtil.getUser;
 import static net.therap.dms.util.UserUtil.isSessionUser;
 
@@ -34,12 +36,10 @@ import static net.therap.dms.util.UserUtil.isSessionUser;
 @SessionAttributes(USER_CMD)
 public class UserController {
 
+    public static final String USER_CMD = "user";
     private static final String FORM_PAGE = "user/form";
     private static final String LIST_PAGE = "user/list";
-
     private static final String SUCCESS_REDIRECT_PATH = "redirect:/success";
-
-    public static final String USER_CMD = "user";
     private static final String ID = "id";
     private static final String FILTER_BY = "filterBy";
 
@@ -105,7 +105,7 @@ public class UserController {
     }
 
     @PostMapping
-    public String process(@Validated @ModelAttribute("userData") User user,
+    public String process(@Validated(UserValidationGroup.class) @ModelAttribute("userData") User user,
                           BindingResult result,
                           ModelMap model,
                           RedirectAttributes redirectAttributes,
@@ -173,11 +173,11 @@ public class UserController {
         model.put("genderList", Gender.values());
         model.put("seedRoleList", roleService.findAll());
 
-        if(SAVE.equals(action)) {
+        if (SAVE.equals(action)) {
             model.put("userData", id == 0 ? new User() : userService.findById(id));
         }
 
-        model.put("isDeletable", id!=0 && !getUser(request).getUserName().equals(
-                                                userService.findById(id).getUserName()));
+        model.put("isDeletable", id != 0 && !getUser(request).getUserName().equals(
+                userService.findById(id).getUserName()));
     }
 }
