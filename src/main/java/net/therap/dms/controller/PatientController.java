@@ -4,6 +4,7 @@ import net.therap.dms.entity.Patient;
 import net.therap.dms.entity.Prescription;
 import net.therap.dms.entity.User;
 import net.therap.dms.helper.PatientHelper;
+import net.therap.dms.service.AccessManager;
 import net.therap.dms.service.DoctorService;
 import net.therap.dms.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Set;
 
 import static net.therap.dms.controller.PatientController.USER_CMD;
+import static net.therap.dms.util.SessionUtil.getUser;
 
 /**
  * @author amimul.ehsan
@@ -39,41 +43,47 @@ public class PatientController {
     @Autowired
     private PatientHelper patientHelper;
 
+    @Autowired
+    private AccessManager accessManager;
+
     @InitBinder
-    private void InitBinder(WebDataBinder webDataBinder){
+    private void InitBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
     @GetMapping("/list")
-    public String showList(ModelMap model) {
+    public String showList(ModelMap model, HttpServletRequest request) {
+        accessManager.checkPatientListAccess(request);
 
-        User user = (User) model.getAttribute(USER_CMD);
-
-        Set<Patient> patients = patientHelper.getPatientsForDoctor(user.getDoctor());
-
-        setupReferenceDataForList(patients, model);
+        setupReferenceDataForList(model, request);
 
         return LIST_VIEW_PAGE;
     }
 
     @GetMapping("/history")
-    public String showHistory(@RequestParam(value = "id", defaultValue = "0") long id,
-                              ModelMap model) {
+    public String showHistory(@RequestParam(defaultValue = "0") long id,
+                              ModelMap model,
+                              HttpServletRequest request) {
 
-        Patient patient = patientService.findById(id);
+        accessManager.checkPatientHistoryAccess(id, request);
 
-        setupReferenceDataForHistory(patient, model);
+        setupReferenceDataForHistory(id, model, request);
 
         return HISTORY_PAGE;
     }
 
-    private void setupReferenceDataForList(Set<Patient> patients, ModelMap model) {
+    private void setupReferenceDataForList(ModelMap model, HttpServletRequest request) {
+        User user = getUser(request);
+
+        Set<Patient> patients = patientHelper.getPatientsForDoctor(user.getDoctor());
+
         model.put("patients", patients);
     }
 
-    private void setupReferenceDataForHistory(Patient patient,
-                                              ModelMap model) {
-        User user = (User) model.getAttribute(USER_CMD);
+    private void setupReferenceDataForHistory(long id, ModelMap model, HttpServletRequest request) {
+        Patient patient = patientService.findById(id);
+        User user = getUser(request);
+
         List<Prescription> doctorSpecificPrescriptions = patientHelper.getPrescriptions(patient, user.getDoctor(), true);
         List<Prescription> otherPrescriptions = patientHelper.getPrescriptions(patient, user.getDoctor(), false);
 
