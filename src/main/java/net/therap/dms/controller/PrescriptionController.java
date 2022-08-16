@@ -111,7 +111,7 @@ public class PrescriptionController {
         User user = getUser(request);
 
         model.put("facilities", facilityService.findAll());
-        model.put("prescription", isNull(prescription) ? new Prescription() : prescription);
+        model.put(PRESCRIPTION_CMD, isNull(prescription) ? new Prescription() : prescription);
         model.put("readonly", !doctorHelper.hasPrescription(prescription, request));
     }
 

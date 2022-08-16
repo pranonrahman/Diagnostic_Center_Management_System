@@ -25,6 +25,7 @@
     <h2 class="text-center py-3">
         <fmt:message key="user.list.header"/>
     </h2>
+
     <div class="w-50 mx-auto">
         <table class="table text-center">
             <thead>

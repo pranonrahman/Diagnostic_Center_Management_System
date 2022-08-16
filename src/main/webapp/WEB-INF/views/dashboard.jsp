@@ -31,17 +31,24 @@
 
     <div class="w-50 mx-auto text-center">
         <c:if test="${RoleUtil.hasRole(user, RoleEnum.DOCTOR)}">
-            <h4 class="mt-5 text-center">DOCTOR</h4>
+            <h4 class="mt-5 text-center">
+                <fmt:message key="user.role.doctor"/>
+            </h4>
+
             <a href="/patient/list" class="btn btn-outline-dark w-25">
                 <fmt:message key="navbar.link.yourPatients"/>
             </a>
         </c:if>
 
         <c:if test="${RoleUtil.hasRole(user, RoleEnum.PATIENT)}">
-            <h4 class="mt-5 text-center">PATIENT</h4>
+            <h4 class="mt-5 text-center">
+                <fmt:message key="user.role.patient"/>
+            </h4>
+
             <a href="/prescription/list" class="btn btn-outline-dark w-25">
                 <fmt:message key="navbar.link.yourPrescriptions"/>
             </a>
+
             <c:url var="patientInvoiceList" value="/invoice/list">
                 <c:param name="patientId" value="${user.patient.id}"/>
             </c:url>
@@ -51,25 +58,25 @@
         </c:if>
 
         <c:if test="${RoleUtil.hasRole(user, RoleEnum.RECEPTIONIST)}">
-            <h4 class="mt-5 text-center">RECEPTIONIST</h4>
-            <a href="/invoice/doctor"
-               class="btn btn-outline-dark w-25">
+            <h4 class="mt-5 text-center">
+                <fmt:message key="user.role.receptionist"/>
+            </h4>
 
+            <a href="/invoice/doctor" class="btn btn-outline-dark w-25">
                 <fmt:message key="navbar.link.createInvoice"/>
             </a>
-            <a href="/invoice/list"
-               class="btn btn-outline-dark w-25">
 
+            <a href="/invoice/list" class="btn btn-outline-dark w-25">
                 <fmt:message key="navbar.link.viewAllInvoices"/>
             </a>
         </c:if>
 
         <c:if test="${RoleUtil.hasRole(user, RoleEnum.ADMIN)}">
-            <h4 class="mt-5 text-center">ADMIN</h4>
+            <h4 class="mt-5 text-center">
+                <fmt:message key="user.role.admin"/>
+            </h4>
 
-            <a href="<c:url value="/user/list"/>"
-               class="btn btn-outline-dark w-25">
-
+            <a href="<c:url value="/user/list"/>" class="btn btn-outline-dark w-25">
                 <fmt:message key="button.label.viewAllUsers"/>
             </a>
 
@@ -79,6 +86,7 @@
         </c:if>
     </div>
 </div>
+
 <jsp:include page="footer.jsp"/>
 </body>
 </html>

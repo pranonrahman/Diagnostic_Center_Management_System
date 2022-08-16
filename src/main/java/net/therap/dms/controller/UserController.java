@@ -170,13 +170,14 @@ public class UserController {
                                     Action action,
                                     HttpServletRequest request,
                                     ModelMap model) {
-        User user = userService.findById(id);
+
+        User user = id == 0 ? new User() : userService.findById(id);
 
         model.put("genderList", Gender.values());
         model.put("seedRoleList", roleService.findAll());
 
         if (SAVE.equals(action)) {
-            model.put("userData", id == 0 ? new User() : user);
+            model.put("userData", user);
         }
 
         model.put("isDeletable", id != 0 && !isLoggedInUser(user, request));

@@ -20,7 +20,10 @@
 
 <div class="container-fluid bg-primary-custom h-100">
 
-    <h2 class="text-center py-3"> Login </h2>
+    <h2 class="text-center py-3">
+        <fmt:message key="header.login"/>
+    </h2>
+
     <div class="w-50 mx-auto">
 
         <form:form method="post" modelAttribute="userCmd">

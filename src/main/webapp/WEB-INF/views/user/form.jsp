@@ -120,18 +120,16 @@
                             type="text"
                             value="${userData.email}"
                             cssClass="form-control"/>
+
                 <form:errors path="email" cssClass="invalid-feedback d-block"/>
             </div>
 
             <div class="mb-3">
-                <form:label path="gender"
-                            cssClass="form-label">
-
+                <form:label path="gender" cssClass="form-label">
                     <fmt:message key="user.form.gender"/>
                 </form:label>
 
-                <c:forEach var="gender"
-                           items="${genderList}">
+                <c:forEach var="gender" items="${genderList}">
 
                     <div class="form-check">
                         <form:radiobutton disabled="${readOnly}"
@@ -195,6 +193,7 @@
                     <c:when test="${existingUser}">
                         <fmt:message key="user.form.update"/>
                     </c:when>
+
                     <c:otherwise>
                         <fmt:message key="user.form.submit"/>
                     </c:otherwise>

@@ -14,6 +14,6 @@ public class SuccessController {
 
     @GetMapping
     public String showSuccess(){
-        return "successPage";
+        return "success";
     }
 }
