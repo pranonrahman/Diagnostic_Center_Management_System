@@ -5,6 +5,7 @@ import net.therap.dms.entity.*;
 import net.therap.dms.service.AccessManager;
 import net.therap.dms.service.RoleService;
 import net.therap.dms.service.UserService;
+import net.therap.dms.util.WebUtil;
 import net.therap.dms.validationGroup.UserValidationGroup;
 import net.therap.dms.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,7 @@ public class UserController {
     private static final String USER_CMD = "user";
     private static final String FORM_PAGE = "user/form";
     private static final String LIST_PAGE = "user/list";
-    private static final String SUCCESS_REDIRECT_PATH = "redirect:/success";
-    private static final String ID = "id";
-    private static final String FILTER_BY = "filterBy";
+    private static final String SUCCESS_REDIRECT_PATH = WebUtil.redirect("success");
 
     @Autowired
     private DateEditor dateEditor;
@@ -91,13 +90,13 @@ public class UserController {
     }
 
     @GetMapping
-    public String showForm(@RequestParam(value = "id", required = false, defaultValue = "0") long id,
+    public String showForm(@RequestParam(value = "id", defaultValue = "0") long id,
                            ModelMap model,
                            HttpServletRequest request) {
 
         accessManager.checkUserAccess(request);
 
-        setUpReferenceSeedData(id, SAVE, request, model);
+        setupReferenceData(id, SAVE, request, model);
 
         return FORM_PAGE;
     }
@@ -111,7 +110,7 @@ public class UserController {
 
         accessManager.checkUserAccess(request);
 
-        setUpReferenceSeedData(user.getId(), VIEW, request, model);
+        setupReferenceData(user.getId(), VIEW, request, model);
 
         if (result.hasErrors()) {
             return FORM_PAGE;
@@ -125,19 +124,19 @@ public class UserController {
             model.replace(USER_CMD, user);
         }
 
-        redirectAttributes.addAttribute(ID, user.getId());
+        redirectAttributes.addAttribute("id", user.getId());
 
         return SUCCESS_REDIRECT_PATH;
     }
 
     @RequestMapping("/list")
-    public String showList(@RequestParam(value = FILTER_BY, required = false) String filterBy,
+    public String showList(@RequestParam(value = "filterBy", required = false) String filterBy,
                            ModelMap model,
                            HttpServletRequest request) {
 
         accessManager.checkUserAccess(request);
 
-        setUpReferenceList(filterBy, model);
+        setupReferenceDataForList(filterBy, model);
 
         return LIST_PAGE;
     }
@@ -159,14 +158,14 @@ public class UserController {
         return SUCCESS_REDIRECT_PATH;
     }
 
-    private void setUpReferenceList(String filterBy, ModelMap model) {
+    private void setupReferenceDataForList(String filterBy, ModelMap model) {
         model.put("users", userService.findAll(filterBy));
     }
 
-    private void setUpReferenceSeedData(long id,
-                                        Action action,
-                                        HttpServletRequest request,
-                                        ModelMap model) {
+    private void setupReferenceData(long id,
+                                    Action action,
+                                    HttpServletRequest request,
+                                    ModelMap model) {
 
         model.put("genderList", Gender.values());
         model.put("seedRoleList", roleService.findAll());
