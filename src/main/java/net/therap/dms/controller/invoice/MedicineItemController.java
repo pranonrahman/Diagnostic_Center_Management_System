@@ -5,8 +5,9 @@ import net.therap.dms.command.MedicineItemCmd;
 import net.therap.dms.editor.MedicineEditor;
 import net.therap.dms.entity.Action;
 import net.therap.dms.entity.Medicine;
+import net.therap.dms.service.AccessManager;
 import net.therap.dms.service.MedicineService;
-import net.therap.dms.util.CommonUtil;
+import net.therap.dms.util.WebUtil;
 import net.therap.dms.validator.MedicineItemCmdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static java.util.Objects.isNull;
@@ -45,6 +47,9 @@ public class MedicineItemController {
     @Autowired
     private MedicineItemCmdValidator medicineItemCmdValidator;
 
+    @Autowired
+    private AccessManager accessManager;
+
     @InitBinder("medicineItemCmd")
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Medicine.class, medicineEditor);
@@ -52,11 +57,13 @@ public class MedicineItemController {
     }
 
     @GetMapping
-    public String view(ModelMap model) {
+    public String view(ModelMap model, HttpServletRequest request) {
+        accessManager.checkInvoiceWriteAccess(request);
+
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
 
         if (isNull(invoice) || isNull(invoice.getPatient())) {
-            return CommonUtil.redirect(INVOICE_DOCTOR);
+            return WebUtil.redirect(INVOICE_DOCTOR);
         }
 
         setUpReferenceData(VIEW, model);
@@ -68,10 +75,12 @@ public class MedicineItemController {
     public String save(@Valid @ModelAttribute(MEDICINE_CMD) MedicineItemCmd medicineItemCmd,
                        BindingResult result,
                        @RequestParam Action action,
-                       ModelMap model) {
+                       ModelMap model, HttpServletRequest request) {
+
+        accessManager.checkInvoiceWriteAccess(request);
 
         if (action.equals(NEXT)) {
-            return CommonUtil.redirect(INVOICE_FACILITY);
+            return WebUtil.redirect(INVOICE_FACILITY);
         }
 
         if (result.hasErrors()) {
@@ -85,10 +94,10 @@ public class MedicineItemController {
         invoice.getMedicines().add(medicineItemCmd);
 
         if (action.equals(ADD)) {
-            return CommonUtil.redirect(INVOICE_MEDICINE);
+            return WebUtil.redirect(INVOICE_MEDICINE);
         }
 
-        return CommonUtil.redirect(INVOICE_FACILITY);
+        return WebUtil.redirect(INVOICE_FACILITY);
     }
 
     @PostMapping("/remove")
@@ -96,7 +105,7 @@ public class MedicineItemController {
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
         invoice.getMedicines().removeIf(medicineItemCmd -> medicineItemCmd.getMedicine().getId() == medicineId);
 
-        return CommonUtil.redirect(INVOICE_MEDICINE);
+        return WebUtil.redirect(INVOICE_MEDICINE);
     }
 
     private void setUpReferenceData(Action action, ModelMap model) {

@@ -1,10 +1,12 @@
 package net.therap.dms.service;
 
-import net.therap.dms.entity.Doctor;
+import net.therap.dms.entity.Invoice;
 import net.therap.dms.entity.Prescription;
 import net.therap.dms.entity.User;
 import net.therap.dms.exception.InsufficientAccessException;
 import net.therap.dms.helper.DoctorHelper;
+import net.therap.dms.util.RoleUtil;
+import net.therap.dms.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import static net.therap.dms.entity.RoleEnum.*;
 import static net.therap.dms.util.RoleUtil.userContains;
+import static net.therap.dms.util.RoleUtil.userNotContains;
 import static net.therap.dms.util.SessionUtil.getUser;
 
 /**
@@ -24,15 +27,30 @@ public class AccessManager {
     @Autowired
     private DoctorHelper doctorHelper;
 
+    public void checkInvoiceListAccess(long patientId, HttpServletRequest request) {
+        User user = SessionUtil.getUser(request);
 
-    public void checkInvoiceAccess(HttpServletRequest request) {
-        User sessionUser = getUser(request);
+        if (!(RoleUtil.userContains(user, RECEPTIONIST)
+                || (RoleUtil.userContains(user, PATIENT) && user.getId() == patientId))) {
 
-        if (request.getMethod().equals("POST") && !userContains(sessionUser, RECEPTIONIST)) {
             throw new InsufficientAccessException();
         }
+    }
 
-        if (!userContains(sessionUser, RECEPTIONIST) && !userContains(sessionUser, PATIENT)) {
+    public void checkInvoiceDetailsAccess(Invoice invoice, HttpServletRequest request) {
+        User sessionUser = getUser(request);
+
+        if (!(userContains(sessionUser, RECEPTIONIST) ||
+                (userContains(sessionUser, PATIENT) && invoice.getPatient().getId() == sessionUser.getId()))) {
+
+            throw new InsufficientAccessException();
+        }
+    }
+
+    public void checkInvoiceWriteAccess(HttpServletRequest request) {
+        User sessionUser = getUser(request);
+
+        if (userNotContains(sessionUser, RECEPTIONIST)) {
             throw new InsufficientAccessException();
         }
     }

@@ -3,10 +3,9 @@ package net.therap.dms.controller.invoice;
 import net.therap.dms.command.InvoiceCmd;
 import net.therap.dms.entity.Invoice;
 import net.therap.dms.entity.User;
-import net.therap.dms.exception.InsufficientAccessException;
+import net.therap.dms.service.AccessManager;
 import net.therap.dms.service.InvoiceService;
-import net.therap.dms.util.CommonUtil;
-import net.therap.dms.util.RoleUtil;
+import net.therap.dms.util.WebUtil;
 import net.therap.dms.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -26,7 +25,6 @@ import static net.therap.dms.constant.URL.SUCCESS;
 import static net.therap.dms.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.dms.entity.Action.REVIEW;
 import static net.therap.dms.entity.Action.VIEW;
-import static net.therap.dms.entity.RoleEnum.PATIENT;
 import static net.therap.dms.entity.RoleEnum.RECEPTIONIST;
 
 /**
@@ -50,22 +48,27 @@ public class InvoiceController {
     @Autowired
     private MessageSourceAccessor msa;
 
+    @Autowired
+    private AccessManager accessManager;
+
     @GetMapping
     public String view(@RequestParam(defaultValue = "0") Long id, HttpServletRequest request, ModelMap model) {
         if (id == 0) {
             return review(request, model);
         }
 
-        checkAccessForView(id, request);
+        Invoice invoice = invoiceService.findById(id);
 
-        setUpReferenceData(id, model);
+        accessManager.checkInvoiceDetailsAccess(invoice, request);
+
+        setUpReferenceData(invoice, model);
 
         return VIEW_PAGE;
     }
 
     private String review(HttpServletRequest request, ModelMap model) {
         if (noInvoiceGenerated(model)) {
-            return CommonUtil.redirect(INVOICE_DOCTOR);
+            return WebUtil.redirect(INVOICE_DOCTOR);
         }
 
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
@@ -76,7 +79,7 @@ public class InvoiceController {
 
     @GetMapping("/list")
     public String list(@RequestParam(defaultValue = "0") long patientId, ModelMap model, HttpServletRequest request) {
-        checkAccessForList(request, patientId);
+        accessManager.checkInvoiceListAccess(patientId, request);
 
         setUpReferenceData(request, patientId, model);
 
@@ -113,7 +116,7 @@ public class InvoiceController {
 
         SessionUtil.removeInvoice(model, status, webRequest);
 
-        return CommonUtil.redirect(SUCCESS);
+        return WebUtil.redirect(SUCCESS);
     }
 
     private boolean isUnauthorizedToSaveInvoice(User user) {
@@ -126,29 +129,8 @@ public class InvoiceController {
         return isNull(invoice) || isNull(invoice.getPatient());
     }
 
-    private void checkAccessForView(Long id, HttpServletRequest request) {
-        User user = SessionUtil.getUser(request);
-        Invoice invoice = invoiceService.findById(id);
-
-        if (!(RoleUtil.userContains(user, RECEPTIONIST) ||
-                (RoleUtil.userContains(user, PATIENT) && invoice.getPatient().getUser().getId() == user.getId()))) {
-
-            throw new InsufficientAccessException();
-        }
-    }
-
-    private void checkAccessForList(HttpServletRequest request, long patientId) {
-        User user = SessionUtil.getUser(request);
-
-        if (!(RoleUtil.userContains(user, RECEPTIONIST)
-                || (RoleUtil.userContains(user, PATIENT) && user.getId() == patientId))) {
-
-            throw new InsufficientAccessException();
-        }
-    }
-
-    private void setUpReferenceData(long id, ModelMap model) {
-        model.addAttribute(INVOICE_VIEW_CMD, invoiceService.findById(id));
+    private void setUpReferenceData(Invoice invoice, ModelMap model) {
+        model.addAttribute(INVOICE_VIEW_CMD, invoice);
         model.put("action", VIEW);
     }
 
