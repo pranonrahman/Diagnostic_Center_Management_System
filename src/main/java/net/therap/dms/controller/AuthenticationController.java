@@ -76,10 +76,8 @@ public class AuthenticationController {
     }
 
     @RequestMapping(LOGOUT)
-    public String logout(SessionStatus sessionStatus, ModelMap model) {
+    public String logout(SessionStatus sessionStatus) {
         sessionStatus.setComplete();
-
-        setUpReferenceData(model);
 
         return LOGIN_REDIRECT_PATH;
     }
