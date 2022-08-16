@@ -1,4 +1,3 @@
-<%@ page import="net.therap.dms.entity.Role" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="net.therap.dms.entity.RoleEnum" %>
@@ -22,7 +21,7 @@
              id="navbarNavDropdown">
 
             <ul class="navbar-nav mx-3" ${param.linksStatus}>
-                <c:if test="${RoleUtil.userContains(user, RoleEnum.DOCTOR)}">
+                <c:if test="${RoleUtil.hasRole(user, RoleEnum.DOCTOR)}">
 
                     <li class="nav-item">
                         <a href="/patient/list" class="nav-link active">
@@ -32,7 +31,7 @@
                     <li class="my-auto">|</li>
                 </c:if>
 
-                <c:if test="${RoleUtil.userContains(user, RoleEnum.PATIENT)}">
+                <c:if test="${RoleUtil.hasRole(user, RoleEnum.PATIENT)}">
                     <li class="nav-item">
                         <a href="/prescription/list" class="nav-link active">
                             <fmt:message key="navbar.link.yourPrescriptions"/>
@@ -49,7 +48,7 @@
                     <li class="my-auto">|</li>
                 </c:if>
 
-                <c:if test="${RoleUtil.userContains(user, RoleEnum.RECEPTIONIST)}">
+                <c:if test="${RoleUtil.hasRole(user, RoleEnum.RECEPTIONIST)}">
                     <li class="nav-item">
                         <a href="/invoice/doctor"
                            class="nav-link active">
@@ -67,7 +66,7 @@
                     <li class="my-auto">|</li>
                 </c:if>
 
-                <c:if test="${RoleUtil.userContains(user, RoleEnum.ADMIN)}">
+                <c:if test="${RoleUtil.hasRole(user, RoleEnum.ADMIN)}">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle"
                            data-bs-toggle="dropdown"
