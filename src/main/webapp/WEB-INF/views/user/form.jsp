@@ -28,51 +28,42 @@
 
     <div class="w-50 mx-auto">
 
-        <form:form action="/user"
-                   method="POST"
-                   modelAttribute="userData">
+        <form:form method="POST" modelAttribute="userData">
 
             <div class="mb-3">
                 <form:input hidden="hidden"
                             path="id"
                             type="text"
                             value="${userData.id}"
-                            cssClass="form-control"
-                />
+                            cssClass="form-control"/>
 
                 <form:input hidden="hidden"
                             path="doctor"
                             type="text"
                             value="${userData.doctor.id}"
-                            cssClass="form-control"
-                />
+                            cssClass="form-control"/>
 
                 <form:input hidden="hidden"
                             path="patient"
                             type="text"
                             value="${userData.patient.id}"
-                            cssClass="form-control"
-                />
+                            cssClass="form-control"/>
 
                 <form:input hidden="hidden"
                             path="receptionist"
                             type="text"
                             value="${userData.receptionist.id}"
-                            cssClass="form-control"
-                />
+                            cssClass="form-control"/>
 
                 <form:input hidden="hidden"
                             path="admin"
                             type="text"
                             value="${userData.admin.id}"
-                            cssClass="form-control"
-                />
+                            cssClass="form-control"/>
 
                 <c:set var="existingUser" scope="page" value="${not userData.isNew()}"/>
 
-                <form:label path="userName"
-                            cssClass="form-label">
-
+                <form:label path="userName" cssClass="form-label">
                     <fmt:message key="user.form.userName"/>
                 </form:label>
 
@@ -80,82 +71,56 @@
                             path="userName"
                             type="text"
                             value="${userData.userName}"
-                            cssClass="form-control"
-                />
+                            cssClass="form-control"/>
 
-                <form:errors path="userName"
-                             cssClass="invalid-feedback d-block"/>
+                <form:errors path="userName" cssClass="invalid-feedback d-block"/>
             </div>
 
             <div class="mb-3">
-                <form:label path="password"
-                            cssClass="form-label">
-
+                <form:label path="password" cssClass="form-label">
                     <fmt:message key="user.form.password"/>
                 </form:label>
 
-                <form:input path="password"
-                            type="password"
-                            cssClass="form-control"
-                />
-
-                <form:errors path="password"
-                             cssClass="invalid-feedback d-block"
-                />
+                <form:input path="password" type="password" cssClass="form-control"/>
+                <form:errors path="password" cssClass="invalid-feedback d-block"/>
             </div>
 
             <div class="mb-3">
-                <form:label path="name"
-                            cssClass="form-label">
-
+                <form:label path="name" cssClass="form-label">
                     <fmt:message key="user.form.name"/>
                 </form:label>
 
                 <form:input path="name"
                             type="text"
                             value="${userData.name}"
-                            cssClass="form-control"
-                />
+                            cssClass="form-control"/>
 
-                <form:errors path="name"
-                             cssClass="invalid-feedback d-block"
-                />
+                <form:errors path="name" cssClass="invalid-feedback d-block"/>
             </div>
 
             <div class="mb-3">
-                <form:label path="phone"
-                            cssClass="form-label">
-
+                <form:label path="phone" cssClass="form-label">
                     <fmt:message key="user.form.phone"/>
                 </form:label>
 
                 <form:input path="phone"
                             type="text"
                             value="${userData.phone}"
-                            cssClass="form-control"
-                />
+                            cssClass="form-control"/>
 
-                <form:errors path="phone"
-                             cssClass="invalid-feedback d-block"
-                />
+                <form:errors path="phone" cssClass="invalid-feedback d-block"/>
             </div>
 
             <div class="mb-3">
-                <form:label path="email"
-                            cssClass="form-label">
-
+                <form:label path="email" cssClass="form-label">
                     <fmt:message key="user.form.email"/>
                 </form:label>
 
                 <form:input path="email"
                             type="text"
                             value="${userData.email}"
-                            cssClass="form-control"
-                />
-
-                <form:errors path="email"
-                             cssClass="invalid-feedback d-block"
-                />
+                            cssClass="form-control"/>
+                <form:errors path="email" cssClass="invalid-feedback d-block"/>
             </div>
 
             <div class="mb-3">
@@ -173,58 +138,45 @@
                                           cssClass="form-check-input"
                                           value="${gender}"
                                           label="${gender.displayName}"
-                                          path="gender"
-                        />
+                                          path="gender"/>
                     </div>
                 </c:forEach>
 
-                <form:errors path="gender"
-                             cssClass="d-block invalid-feedback"
-                />
+                <form:errors path="gender" cssClass="d-block invalid-feedback"/>
             </div>
 
             <div class="mb-3">
-                <form:label path="dateOfBirth"
-                            cssClass="form-label">
-
+                <form:label path="dateOfBirth" cssClass="form-label">
                     <fmt:message key="user.form.dateOfBirth"/>
                 </form:label>
 
                 <fmt:formatDate value="${userData.dateOfBirth}"
                                 var="dateString"
-                                pattern="dd-MM-yyyy"
-                />
+                                pattern="dd-MM-yyyy"/>
 
                 <form:input path="dateOfBirth"
                             type="text"
                             value="${dateString}"
-                            cssClass="form-control"
-                />
+                            cssClass="form-control"/>
 
-                <form:errors path="dateOfBirth"
-                             cssClass="invalid-feedback d-block"
-                />
+                <form:errors path="dateOfBirth" cssClass="invalid-feedback d-block"/>
             </div>
 
             <div class="mb-3">
-                <form:label path="roles"
-                            cssClass="form-label w-100">
-
+                <form:label path="roles" cssClass="form-label w-100">
                     <fmt:message key="user.form.roles"/>
                 </form:label>
+
                 <form:checkboxes path="roles"
                                  items="${seedRoleList}"
                                  itemValue="id"
                                  itemLabel="name"
-                                 cssClass="w-50"
-                />
+                                 cssClass="w-50"/>
             </div>
 
             <c:if test="${not empty userData.doctor}">
                 <div class="mb-3">
-                    <form:label path="doctor.fee"
-                                cssClass="form-label w-100">
-
+                    <form:label path="doctor.fee" cssClass="form-label w-100">
                         <fmt:message key="user.form.fee"/>
                     </form:label>
 
@@ -232,20 +184,13 @@
                                 type="number"
                                 name="fee"
                                 step="0.1"
-                                value="${userData.doctor.fee}"
-                    />
-                    <form:errors path="doctor.fee"
-                                 cssClass="invalid-feedback d-block"
-                    />
+                                value="${userData.doctor.fee}"/>
+
+                    <form:errors path="doctor.fee" cssClass="invalid-feedback d-block"/>
                 </div>
             </c:if>
 
-
-
-            <button type="submit"
-                    value="submit"
-                    class="btn btn-primary w-100">
-
+            <button type="submit" value="submit" class="btn btn-primary w-100">
                 <c:choose>
                     <c:when test="${existingUser}">
                         <fmt:message key="user.form.update"/>
@@ -259,18 +204,12 @@
 
         <c:if test="${isDeletable}">
             <div class="mb-3">
-                <form action="/user/delete" method="post">
-                    <input name="id"
-                           hidden="hidden"
-                           value="${userData.id}">
-
-                    <button type="submit"
-                            value="submit"
-                            class="btn btn-danger w-100">
-
-                        <fmt:message key="user.form.delete"/>
-                    </button>
-                </form>
+                <c:url var="deleteUrl" value="/user/delete">
+                    <c:param name="id" value="${user.id}"/>
+                </c:url>
+                <a href="${deleteUrl}" class="btn btn-danger w-100">
+                    <fmt:message key="user.form.delete"/>
+                </a>
             </div>
         </c:if>
     </div>

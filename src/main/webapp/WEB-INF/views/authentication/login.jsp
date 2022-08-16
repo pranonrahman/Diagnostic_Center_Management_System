@@ -23,43 +23,27 @@
     <h2 class="text-center py-3"> Login </h2>
     <div class="w-50 mx-auto">
 
-        <form:form method="post"
-                   modelAttribute="userCmd">
-
-            <form:errors path=""
-                             cssClass="alert alert-danger d-block"
-            />
+        <form:form method="post" modelAttribute="userCmd">
+            <form:errors path="" cssClass="alert alert-danger d-block"/>
 
             <div class="mb-3">
                 <form:label path="userName">
                     <fmt:message key="authentication.form.userName"/>
                 </form:label>
 
-                <form:input path="userName"
-                            type="text"
-                            cssClass="w-100"/>
-
-                <form:errors path="userName"
-                             cssClass="invalid-feedback d-block"
-                />
+                <form:input path="userName" type="text" cssClass="w-100"/>
+                <form:errors path="userName" cssClass="invalid-feedback d-block"/>
             </div>
 
             <div class="mb-3">
                 <form:label path="password">
                     <fmt:message key="authentication.form.password"/>
                 </form:label>
-                <form:input path="password"
-                            type="password"
-                            cssClass="w-100"/>
 
-                <form:errors path="password"
-                             cssClass="invalid-feedback d-block"
-                />
+                <form:input path="password" type="password" cssClass="w-100"/>
+                <form:errors path="password" cssClass="invalid-feedback d-block"/>
             </div>
-            <button type="submit"
-                    value="submit"
-                    class="btn btn-primary w-100">
-
+            <button type="submit" value="submit" class="btn btn-primary w-100">
                 <fmt:message key="authentication.form.submit"/>
             </button>
         </form:form>

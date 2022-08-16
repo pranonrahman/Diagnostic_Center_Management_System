@@ -29,61 +29,31 @@
         <table class="table text-center">
             <thead>
             <tr>
-                <th scope="col">
-                    <fmt:message key="user.list.userName"/>
-                </th>
-                <th scope="col">
-                    <fmt:message key="user.list.name"/>
-                </th>
-                <th scope="col">
-                    <fmt:message key="user.list.age"/>
-                </th>
-                <th scope="col">
-                    <fmt:message key="user.list.phone"/>
-                </th>
-                <th scope="col">
-                    <fmt:message key="user.list.email"/>
-                </th>
-                <th scope="col">
-                    <fmt:message key="user.list.gender"/>
-                </th>
+                <th scope="col"><fmt:message key="user.list.userName"/></th>
+                <th scope="col"><fmt:message key="user.list.name"/></th>
+                <th scope="col"><fmt:message key="user.list.age"/></th>
+                <th scope="col"><fmt:message key="user.list.phone"/></th>
+                <th scope="col"><fmt:message key="user.list.email"/></th>
+                <th scope="col"><fmt:message key="user.list.gender"/></th>
             </tr>
             </thead>
+
             <tbody>
 
             <c:forEach items="${users}" var="user">
                 <tr>
                     <td>
-                        <c:url var="userForm"
-                               value="/user/">
-
-                            <c:param name="id"
-                                     value="${user.id}"/>
+                        <c:url var="userForm" value="/user/">
+                            <c:param name="id" value="${user.id}"/>
                         </c:url>
-                        <a href="${userForm}">
-                            <c:out value="${user.userName}"/>
-                        </a>
-                    </td>
 
-                    <td>
-                        <c:out value="${user.name}"/>
+                        <a href="${userForm}"><c:out value="${user.userName}"/></a>
                     </td>
-
-                    <td>
-                        <c:out value="${user.age}"/>
-                    </td>
-
-                    <td>
-                        <c:out value="${user.phone}"/>
-                    </td>
-
-                    <td>
-                        <c:out value="${user.email}"/>
-                    </td>
-
-                    <td>
-                        <c:out value="${user.gender.displayName}"/>
-                    </td>
+                    <td><c:out value="${user.name}"/></td>
+                    <td><c:out value="${user.age}"/></td>
+                    <td><c:out value="${user.phone}"/></td>
+                    <td><c:out value="${user.email}"/></td>
+                    <td><c:out value="${user.gender.displayName}"/></td>
                 </tr>
             </c:forEach>
             </tbody>
