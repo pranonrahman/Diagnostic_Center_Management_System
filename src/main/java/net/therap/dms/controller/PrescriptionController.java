@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static java.util.Objects.isNull;
+import static net.therap.dms.controller.PrescriptionController.PRESCRIPTION_CMD;
 import static net.therap.dms.util.SessionUtil.getUser;
 import static net.therap.dms.util.WebUtil.redirect;
 
@@ -28,13 +29,14 @@ import static net.therap.dms.util.WebUtil.redirect;
  */
 @Controller
 @RequestMapping("/prescription")
+@SessionAttributes(PRESCRIPTION_CMD)
 public class PrescriptionController {
 
     private static final String VIEW_PAGE = "prescription/form";
 
     private static final String LIST_VIEW_PAGE = "prescription/list";
 
-    private static final String PRESCRIPTION_CMD = "prescription";
+    public static final String PRESCRIPTION_CMD = "prescription";
 
     @Autowired
     private FacilityService facilityService;
@@ -93,9 +95,6 @@ public class PrescriptionController {
     public String process(@ModelAttribute(PRESCRIPTION_CMD) Prescription prescription,
                           SessionStatus sessionStatus,
                           HttpServletRequest request) {
-
-        prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
-        prescription.setDoctor(doctorService.findById(prescription.getDoctor().getId()));
 
         accessManager.checkPrescriptionViewAccess(prescription, request);
 

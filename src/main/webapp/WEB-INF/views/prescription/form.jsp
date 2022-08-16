@@ -35,19 +35,8 @@
 
         <form:form method="post"
                    modelAttribute="prescription">
-
-            <form:input path="patient.id"
-                        value="${prescription.patient.id}"
-                        hidden="true"/>
-
-            <form:input path="doctor.id"
-                        value="${prescription.doctor.id}"
-                        hidden="true"/>
-
             <p>
-                <strong>
-                    <fmt:message key="text.consultingDoctor"/> :
-                </strong>
+                <strong> <fmt:message key="text.consultingDoctor"/> :</strong>
                 <c:out value="${prescription.doctor.user.name}"/>
             </p>
 
