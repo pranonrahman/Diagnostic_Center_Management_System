@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static net.therap.dms.util.AccessControlUtil.*;
+import static net.therap.dms.util.AccessManager.*;
 import static net.therap.dms.util.SessionUtil.getUser;
 
 /**
