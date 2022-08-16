@@ -1,14 +1,13 @@
 package net.therap.dms.service;
 
-import net.therap.dms.entity.Doctor;
-import net.therap.dms.entity.Prescription;
 import net.therap.dms.entity.Invoice;
+import net.therap.dms.entity.Prescription;
 import net.therap.dms.entity.User;
 import net.therap.dms.exception.InsufficientAccessException;
 import net.therap.dms.helper.DoctorHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import net.therap.dms.util.RoleUtil;
 import net.therap.dms.util.SessionUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
