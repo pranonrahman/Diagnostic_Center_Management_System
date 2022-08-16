@@ -30,9 +30,7 @@
             <div class="mb-3">
                 <form:label path="patient" cssClass="form-label"> <fmt:message key="label.patient"/> </form:label>
 
-                <form:select path="patient"
-                             cssClass="form-select form-select-lg mb-3">
-
+                <form:select path="patient" cssClass="form-select form-select-lg mb-3">
                     <form:option value=""> <fmt:message key="label.select"/> </form:option>
 
                     <form:options items="${patients}"
@@ -54,18 +52,13 @@
                                      items="${doctors}"
                                      itemValue="id"
                                      itemLabel="user.name"
-                                     path="doctors"
-                    />
+                                     path="doctors"/>
                 </div>
 
-                <form:errors path="doctors"
-                             cssClass="invalid-feedback d-block"
-                />
+                <form:errors path="doctors" cssClass="invalid-feedback d-block"/>
             </div>
 
-            <button type="submit"
-                    class="btn btn-primary">
-
+            <button type="submit" class="btn btn-primary">
                 <fmt:message key="button.label.next"/>
             </button>
         </form:form>

@@ -75,7 +75,8 @@ public class MedicineItemController {
     public String save(@Valid @ModelAttribute(MEDICINE_CMD) MedicineItemCmd medicineItemCmd,
                        BindingResult result,
                        @RequestParam Action action,
-                       ModelMap model, HttpServletRequest request) {
+                       ModelMap model,
+                       HttpServletRequest request) {
 
         accessManager.checkInvoiceWriteAccess(request);
 

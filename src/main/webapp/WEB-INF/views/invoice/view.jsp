@@ -23,25 +23,19 @@
 
     <div class="card">
         <h5 class="card-header">
-            <fmt:message key="text.invoiceOf"/> <
-            c:out value="${invoiceView.patient.user.name}"/>
+            <fmt:message key="text.invoiceOf"/> <c:out value="${invoiceView.patient.user.name}"/>
         </h5>
         <div class="card-body">
             <p class="card-title">
-                <strong>
-                    <fmt:message key="text.invoiceId"/>:
-                </strong>
+                <strong> <fmt:message key="text.invoiceId"/>: </strong>
                 <c:out value="${invoiceView.invoiceId}"/>
             </p>
             <p class="card-title">
-                <strong>
-                    <fmt:message key="text.receivedBy"/>:
-                </strong>
+                <strong> <fmt:message key="text.receivedBy"/>: </strong>
                 <c:out value="${invoiceView.receptionist.user.name}"/>
             </p>
 
             <table class="table">
-
                 <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -102,10 +96,8 @@
 
                 </c:otherwise>
             </c:choose>
-
         </div>
     </div>
-    
 </div>
 
 </body>

@@ -82,7 +82,7 @@ public class InvoiceController {
         accessManager.checkInvoiceWriteAccess(request);
 
         User user = SessionUtil.getUser(request);
-        Invoice invoice = invoiceService.getInvoiceFromCmd(invoiceCmd, user);
+        Invoice invoice = invoiceService.getInvoiceFromCmd(invoiceCmd, user.getReceptionist());
 
         if (invoice.getParticulars().isEmpty()) {
             model.put("errorMessage", msa.getMessage("error.notSelected"));
@@ -90,9 +90,7 @@ public class InvoiceController {
             return VIEW_PAGE;
         }
 
-        invoiceService.createEmptyPrescriptions(invoiceCmd);
-        invoiceService.updateMedicineQuantity(invoiceCmd);
-        invoiceService.saveOrUpdate(invoice);
+        invoiceService.saveOrUpdate(invoice, invoiceCmd);
 
         sessionStatus.setComplete();
 
@@ -125,7 +123,7 @@ public class InvoiceController {
         User user = SessionUtil.getUser(request);
         invoice.setReceptionist(user.getReceptionist());
 
-        model.put(INVOICE_VIEW_CMD, invoiceService.getInvoiceFromCmd(invoice, user));
+        model.put(INVOICE_VIEW_CMD, invoiceService.getInvoiceFromCmd(invoice, user.getReceptionist()));
         model.put("action", REVIEW);
     }
 
