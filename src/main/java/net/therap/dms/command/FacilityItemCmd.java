@@ -18,9 +18,9 @@ public class FacilityItemCmd implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
+    @NotNull(message = "{error.notNull}")
     private Facility facility;
 
-    @Min(1)
+    @Min(value = 1, message = "{error.min}")
     private int quantity;
 }
