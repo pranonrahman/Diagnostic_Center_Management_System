@@ -27,74 +27,57 @@
     </h2>
 
     <div class="w-50 mx-auto">
-        <form:form method="post"
-                   modelAttribute="facilityItemCmd">
+        <form:form method="post" modelAttribute="facilityItemCmd">
+            <div class="mb-3">
 
-        <div class="mb-3">
-            <form:label path="facility"
-                        cssClass="form-label">
+                <form:label path="facility" cssClass="form-label">
+                    <fmt:message key="label.facility"/>
+                </form:label>
 
-                <fmt:message key="label.facility"/>
-            </form:label>
+                <form:select path="facility" cssClass="form-select form-select-lg mb-3">
+                    <form:option value=""> <fmt:message key="label.select"/> </form:option>
 
-            <form:select path="facility"
-                         cssClass="form-select form-select-lg mb-3">
+                    <form:options items="${facilities}"
+                                  itemValue="id"
+                                  itemLabel="name"/>
+                </form:select>
 
-                <form:option value="">
-                    <fmt:message key="label.select"/>
-                </form:option>
+                <form:errors path="facility" cssClass="invalid-feedback d-block"/>
+            </div>
 
-                <form:options items="${facilities}"
-                              itemValue="id"
-                              itemLabel="name"
-                />
-            </form:select>
+            <div class="mb-3">
+                <form:label path="quantity" cssClass="form-label">
+                    <fmt:message key="label.quantity"/>
+                </form:label>
 
-            <form:errors path="facility"
-                         cssClass="invalid-feedback d-block"
-            />
-        </div>
+                <form:input path="quantity"
+                            type="number"
+                            cssClass="form-select form-select-lg mb-3"/>
 
-        <div class="mb-3">
-            <form:label path="quantity"
-                        cssClass="form-label">
+                <form:errors path="quantity" cssClass="invalid-feedback d-block"/>
+            </div>
 
-                <fmt:message key="label.quantity"/>
-            </form:label>
+            <div class="d-flex justify-content-between">
+                <a href="<c:url value="/invoice/medicine"/>" class="btn btn-primary">
+                    <fmt:message key="button.label.previous"/>
+                </a>
 
-            <form:input path="quantity"
-                        type="number"
-                        cssClass="form-select form-select-lg mb-3"
-            />
+                <button type="submit"
+                        class="btn btn-primary flex-grow-1 mx-3"
+                        value="ADD"
+                        name="action">
 
-            <form:errors path="quantity"
-                         cssClass="invalid-feedback d-block"
-            />
-        </div>
+                    <fmt:message key="button.label.add"/>
+                </button>
 
-        <div class="d-flex justify-content-between">
-            <a href="<c:url value="/invoice/medicine"/>"
-               class="btn btn-primary">
+                <button type="submit"
+                        class="btn btn-primary"
+                        value="NEXT"
+                        name="action">
 
-                <fmt:message key="button.label.previous"/>
-            </a>
-
-            <button type="submit"
-                    class="btn btn-primary flex-grow-1 mx-3"
-                    value="ADD"
-                    name="action">
-
-                <fmt:message key="button.label.add"/>
-            </button>
-
-            <button type="submit"
-                    class="btn btn-primary"
-                    value="NEXT"
-                    name="action">
-
-                <fmt:message key="button.label.next"/>
-            </button>
-        </div>
+                    <fmt:message key="button.label.next"/>
+                </button>
+            </div>
 
         </form:form>
     </div>
@@ -108,7 +91,6 @@
             </h4>
 
             <table class="table">
-
                 <thead>
                     <tr>
                         <th class="fw-light" scope="col">#</th>
@@ -131,9 +113,7 @@
                             <td><c:out value="${item.facility.price * item.quantity}"/></td>
                             <td>
 
-                                <form:form method="post"
-                                           action="/invoice/facility/remove">
-
+                                <form:form method="post" action="/invoice/facility/remove">
                                     <input type="hidden"
                                            name="id"
                                            value="${item.facility.id}">

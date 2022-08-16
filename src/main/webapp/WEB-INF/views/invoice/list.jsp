@@ -36,7 +36,6 @@
 
         <c:otherwise>
             <table class="table text-center">
-
                 <thead>
                 <tr>
                     <th scope="col">#</th>

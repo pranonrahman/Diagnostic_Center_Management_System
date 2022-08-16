@@ -22,37 +22,25 @@
 
 <div class="container-fluid bg-primary-custom h-100">
 
-    <h2 class="text-center py-3">
-        <fmt:message key="title.invoice"/>
-    </h2>
+    <h2 class="text-center py-3"> <fmt:message key="title.invoice"/> </h2>
 
     <div class="w-50 mx-auto">
-        <form:form method="post"
-                   modelAttribute="medicineItemCmd">
+        <form:form method="post" modelAttribute="medicineItemCmd">
 
         <div class="mb-3">
-            <form:label path="medicine"
-                        cssClass="form-label">
-
+            <form:label path="medicine" cssClass="form-label">
                 <fmt:message key="label.medicine"/>
             </form:label>
 
-            <form:select path="medicine"
-                         cssClass="form-select form-select-lg mb-3">
-
-                <form:option value="">
-                    <fmt:message key="label.select"/>
-                </form:option>
+            <form:select path="medicine" cssClass="form-select form-select-lg mb-3">
+                <form:option value=""> <fmt:message key="label.select"/> </form:option>
 
                 <form:options items="${medicines}"
                               itemValue="id"
-                              itemLabel="name"
-                />
+                              itemLabel="name"/>
             </form:select>
 
-            <form:errors path="medicine"
-                         cssClass="invalid-feedback d-block"
-            />
+            <form:errors path="medicine" cssClass="invalid-feedback d-block"/>
         </div>
 
         <div class="mb-3">
@@ -62,18 +50,13 @@
 
             <form:input path="quantity"
                         type="number"
-                        cssClass="form-select form-select-lg mb-3"
-            />
+                        cssClass="form-select form-select-lg mb-3"/>
 
-            <form:errors path="quantity"
-                         cssClass="invalid-feedback d-block"
-            />
+            <form:errors path="quantity" cssClass="invalid-feedback d-block"/>
         </div>
 
         <div class="d-flex justify-content-between">
-            <a href="<c:url value="/invoice/doctor"/>"
-               class="btn btn-primary">
-
+            <a href="<c:url value="/invoice/doctor"/>" class="btn btn-primary">
                 <fmt:message key="button.label.previous"/>
             </a>
 
@@ -106,7 +89,6 @@
             </h4>
 
             <table class="table">
-
                 <thead>
                 <tr>
                     <th class="fw-light" scope="col">#</th>
@@ -129,8 +111,7 @@
                             <td><fmt:formatNumber value="${item.medicine.unitPrice * item.quantity}"/></td>
                             <td>
 
-                                <form:form method="post"
-                                           action="/invoice/medicine/remove">
+                                <form:form method="post" action="/invoice/medicine/remove">
 
                                     <input type="hidden"
                                            name="id"
