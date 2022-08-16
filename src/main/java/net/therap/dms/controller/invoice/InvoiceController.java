@@ -66,22 +66,11 @@ public class InvoiceController {
         return VIEW_PAGE;
     }
 
-    private String review(HttpServletRequest request, ModelMap model) {
-        if (noInvoiceGenerated(model)) {
-            return WebUtil.redirect(INVOICE_DOCTOR);
-        }
-
-        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
-        setUpReferenceData(request, invoice, model);
-
-        return VIEW_PAGE;
-    }
-
     @GetMapping("/list")
     public String list(@RequestParam(defaultValue = "0") long patientId, ModelMap model, HttpServletRequest request) {
         accessManager.checkInvoiceListAccess(patientId, request);
 
-        setUpReferenceData(request, patientId, model);
+        setUpReferenceData(patientId, model, request);
 
         return LIST_VIEW_PAGE;
     }
@@ -90,8 +79,8 @@ public class InvoiceController {
     public String save(@SessionAttribute(INVOICE_CMD) InvoiceCmd invoiceCmd,
                        WebRequest webRequest,
                        SessionStatus status,
-                       HttpServletRequest request,
-                       ModelMap model) {
+                       ModelMap model,
+                       HttpServletRequest request) {
 
         User user = SessionUtil.getUser(request);
 
@@ -119,6 +108,17 @@ public class InvoiceController {
         return WebUtil.redirect(SUCCESS);
     }
 
+    private String review(HttpServletRequest request, ModelMap model) {
+        if (noInvoiceGenerated(model)) {
+            return WebUtil.redirect(INVOICE_DOCTOR);
+        }
+
+        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
+        setUpReferenceData(invoice, model, request);
+
+        return VIEW_PAGE;
+    }
+
     private boolean isUnauthorizedToSaveInvoice(User user) {
         return isNull(user) || user.getRoles().stream().noneMatch(role -> role.getName().equals(RECEPTIONIST));
     }
@@ -134,7 +134,7 @@ public class InvoiceController {
         model.put("action", VIEW);
     }
 
-    private void setUpReferenceData(HttpServletRequest request, InvoiceCmd invoice, ModelMap model) {
+    private void setUpReferenceData(InvoiceCmd invoice, ModelMap model, HttpServletRequest request) {
         User user = SessionUtil.getUser(request);
         invoice.setReceptionist(user.getReceptionist());
 
@@ -142,7 +142,7 @@ public class InvoiceController {
         model.put("action", REVIEW);
     }
 
-    private void setUpReferenceData(HttpServletRequest request, long patientId, ModelMap model) {
+    private void setUpReferenceData(long patientId, ModelMap model, HttpServletRequest request) {
         User user = SessionUtil.getUser(request);
 
         List<Invoice> invoices = new ArrayList<>();
