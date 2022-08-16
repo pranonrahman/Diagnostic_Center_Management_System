@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -106,7 +107,8 @@ public class UserController {
                           BindingResult result,
                           ModelMap model,
                           RedirectAttributes redirectAttributes,
-                          HttpServletRequest request) {
+                          HttpServletRequest request,
+                          SessionStatus sessionStatus) {
 
         accessManager.checkUserAccess(request);
 
@@ -117,6 +119,8 @@ public class UserController {
         }
 
         user = userService.saveOrUpdate(user);
+
+        sessionStatus.setComplete();
 
         User sessionUser = getUser(request);
 
