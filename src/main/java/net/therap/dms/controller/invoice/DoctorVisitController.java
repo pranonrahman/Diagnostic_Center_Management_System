@@ -7,9 +7,10 @@ import net.therap.dms.editor.PatientEditor;
 import net.therap.dms.entity.Action;
 import net.therap.dms.entity.Doctor;
 import net.therap.dms.entity.Patient;
+import net.therap.dms.service.AccessManager;
 import net.therap.dms.service.DoctorService;
 import net.therap.dms.service.PatientService;
-import net.therap.dms.util.CommonUtil;
+import net.therap.dms.util.WebUtil;
 import net.therap.dms.validator.DoctorVisitCmdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -19,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static net.therap.dms.constant.URL.INVOICE_MEDICINE;
@@ -55,6 +57,9 @@ public class DoctorVisitController {
     @Autowired
     private DoctorVisitCmdValidator doctorVisitCmdValidator;
 
+    @Autowired
+    private AccessManager accessManager;
+
     @InitBinder("doctorVisitCmd")
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Patient.class, patientEditor);
@@ -64,7 +69,9 @@ public class DoctorVisitController {
     }
 
     @GetMapping
-    public String view(ModelMap model) {
+    public String view(ModelMap model, HttpServletRequest request) {
+        accessManager.checkInvoiceWriteAccess(request);
+
         setUpReferenceData(VIEW, model);
 
         return ADD_DOCTOR_PAGE;
@@ -74,7 +81,10 @@ public class DoctorVisitController {
     public String save(@Valid @ModelAttribute(DOCTOR_VISIT_CMD) DoctorVisitCmd doctorVisitCmd,
                        BindingResult result,
                        @SessionAttribute(INVOICE_CMD) InvoiceCmd invoice,
-                       ModelMap model) {
+                       ModelMap model,
+                       HttpServletRequest request) {
+
+        accessManager.checkInvoiceWriteAccess(request);
 
         if (result.hasErrors()) {
             setUpReferenceData(SAVE, model);
@@ -84,7 +94,7 @@ public class DoctorVisitController {
         invoice.setDoctors(doctorVisitCmd.getDoctors());
         invoice.setPatient(doctorVisitCmd.getPatient());
 
-        return CommonUtil.redirect(INVOICE_MEDICINE);
+        return WebUtil.redirect(INVOICE_MEDICINE);
     }
 
     private void setUpReferenceData(Action action, ModelMap model) {
