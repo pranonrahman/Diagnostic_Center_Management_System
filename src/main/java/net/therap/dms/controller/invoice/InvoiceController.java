@@ -90,9 +90,7 @@ public class InvoiceController {
             return VIEW_PAGE;
         }
 
-        invoiceService.createEmptyPrescriptions(invoiceCmd);
-        invoiceService.updateMedicineQuantity(invoiceCmd);
-        invoiceService.saveOrUpdate(invoice);
+        invoiceService.saveOrUpdate(invoice, invoiceCmd);
 
         sessionStatus.setComplete();
 

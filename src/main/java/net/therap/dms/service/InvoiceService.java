@@ -56,9 +56,14 @@ public class InvoiceService {
     }
 
     @Transactional
-    public Invoice saveOrUpdate(Invoice invoice) {
+    public Invoice saveOrUpdate(Invoice invoice, InvoiceCmd invoiceCmd) {
+        createEmptyPrescriptions(invoiceCmd);
+        updateMedicineQuantity(invoiceCmd);
+
         return invoiceDao.saveOrUpdate(invoice);
     }
+
+
 
     public Invoice getInvoiceFromCmd(InvoiceCmd invoiceCmd, User user) {
         Invoice invoice = new Invoice();
