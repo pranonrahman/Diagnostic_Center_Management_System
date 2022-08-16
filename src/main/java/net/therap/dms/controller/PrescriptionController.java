@@ -4,6 +4,7 @@ import net.therap.dms.editor.FacilityEditor;
 import net.therap.dms.entity.Facility;
 import net.therap.dms.entity.Prescription;
 import net.therap.dms.entity.User;
+import net.therap.dms.helper.DoctorHelper;
 import net.therap.dms.helper.PrescriptionHelper;
 import net.therap.dms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -34,7 +36,7 @@ public class PrescriptionController {
 
     private static final String LIST_VIEW_PAGE = "prescription/list";
 
-    private static final String USER_CMD = "user";
+    private static final String PRESCRIPTION_CMD = "prescription";
 
     @Autowired
     private FacilityService facilityService;
@@ -53,6 +55,9 @@ public class PrescriptionController {
 
     @Autowired
     private PrescriptionHelper prescriptionHelper;
+
+    @Autowired
+    private DoctorHelper doctorHelper;
 
     @Autowired
     private AccessManager accessManager;
@@ -87,7 +92,8 @@ public class PrescriptionController {
     }
 
     @PostMapping
-    public String process(@ModelAttribute("prescription") Prescription prescription,
+    public String process(@ModelAttribute(PRESCRIPTION_CMD) Prescription prescription,
+                          SessionStatus sessionStatus,
                           HttpServletRequest request) {
 
         prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
@@ -97,16 +103,19 @@ public class PrescriptionController {
 
         prescriptionService.saveOrUpdate(prescription);
 
+        sessionStatus.setComplete();
+
         return redirect("success");
     }
 
-    private void setupReferenceDataForView(Prescription prescription, ModelMap model, HttpServletRequest request) {
+    private void setupReferenceDataForView(Prescription prescription,
+                                           ModelMap model,
+                                           HttpServletRequest request) {
         User user = getUser(request);
 
         model.put("facilities", facilityService.findAll());
         model.put("prescription", isNull(prescription) ? new Prescription() : prescription);
-        model.put("readonly", !userContains(user, DOCTOR) ||
-                (user.getDoctor().getId() != prescription.getDoctor().getId()));
+        model.put("readonly", !doctorHelper.hasPrescription(prescription, request));
     }
 
     private void setupReferenceDataForList(ModelMap model, HttpServletRequest request) {

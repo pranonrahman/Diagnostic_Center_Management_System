@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static net.therap.dms.entity.RoleEnum.DOCTOR;
+import static net.therap.dms.util.RoleUtil.userContains;
 import static net.therap.dms.util.SessionUtil.getUser;
 
 /**
@@ -33,5 +35,12 @@ public class DoctorHelper {
         }
 
         return false;
+    }
+
+    public boolean hasPrescription(Prescription prescription, HttpServletRequest request) {
+        User user = getUser(request);
+
+        return userContains(user, DOCTOR) &&
+                (user.getDoctor().getId() == prescription.getDoctor().getId());
     }
 }
