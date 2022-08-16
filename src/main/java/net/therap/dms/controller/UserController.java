@@ -21,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
-import static net.therap.dms.controller.UserController.USER_CMD;
 import static net.therap.dms.entity.Action.SAVE;
 import static net.therap.dms.entity.Action.VIEW;
 import static net.therap.dms.util.SessionUtil.getUser;
@@ -33,10 +32,9 @@ import static net.therap.dms.util.UserUtil.isSessionUser;
  */
 @Controller
 @RequestMapping("/user")
-@SessionAttributes(USER_CMD)
 public class UserController {
 
-    public static final String USER_CMD = "user";
+    private static final String USER_CMD = "user";
     private static final String FORM_PAGE = "user/form";
     private static final String LIST_PAGE = "user/list";
     private static final String SUCCESS_REDIRECT_PATH = "redirect:/success";
