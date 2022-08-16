@@ -13,4 +13,8 @@ public class SessionUtil {
     public static User getUser(HttpServletRequest request) {
         return (User) request.getSession().getAttribute("user");
     }
+
+    public static boolean isLoggedInUser(User user, HttpServletRequest request) {
+        return getUser(request).getUserName().equals(user.getUserName());
+    }
 }

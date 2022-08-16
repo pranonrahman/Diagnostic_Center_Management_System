@@ -26,7 +26,7 @@ import java.util.Date;
 import static net.therap.dms.entity.Action.SAVE;
 import static net.therap.dms.entity.Action.VIEW;
 import static net.therap.dms.util.SessionUtil.getUser;
-import static net.therap.dms.util.UserUtil.isSessionUser;
+import static net.therap.dms.util.SessionUtil.isLoggedInUser;
 
 /**
  * @author raian.rahman
@@ -153,7 +153,7 @@ public class UserController {
 
         User user = userService.findById(id);
 
-        if (isSessionUser(request, user)) {
+        if (isLoggedInUser(user, request)) {
             throw new RuntimeException(msa.getMessage("user.selfDelete.message"));
         }
 
@@ -170,15 +170,15 @@ public class UserController {
                                     Action action,
                                     HttpServletRequest request,
                                     ModelMap model) {
+        User user = userService.findById(id);
 
         model.put("genderList", Gender.values());
         model.put("seedRoleList", roleService.findAll());
 
         if (SAVE.equals(action)) {
-            model.put("userData", id == 0 ? new User() : userService.findById(id));
+            model.put("userData", id == 0 ? new User() : user);
         }
 
-        model.put("isDeletable", id != 0 && !getUser(request).getUserName().equals(
-                userService.findById(id).getUserName()));
+        model.put("isDeletable", id != 0 && !isLoggedInUser(user, request));
     }
 }

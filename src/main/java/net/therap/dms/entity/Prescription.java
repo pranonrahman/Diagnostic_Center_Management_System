@@ -16,8 +16,11 @@ import java.util.Set;
 @Table(name = "prescription")
 @Getter
 @Setter
-@NamedQuery(name = "Prescription.findAll", query = "FROM Prescription")
-public class Prescription extends Persistent implements Comparable<Prescription>{
+@NamedQueries({
+        @NamedQuery(name = "Prescription.findAll", query = "FROM Prescription"),
+        @NamedQuery(name = "Prescription.findByDoctor", query = "FROM Prescription WHERE doctor.id = :doctorId")
+})
+public class Prescription extends Persistent implements Comparable<Prescription> {
 
     private static final long serialVersionUID = 1L;
 
