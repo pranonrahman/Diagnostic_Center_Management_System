@@ -4,13 +4,8 @@ import net.therap.dms.editor.FacilityEditor;
 import net.therap.dms.entity.Facility;
 import net.therap.dms.entity.Prescription;
 import net.therap.dms.entity.User;
-import net.therap.dms.exception.InsufficientAccessException;
 import net.therap.dms.helper.PrescriptionHelper;
-import net.therap.dms.service.DoctorService;
-import net.therap.dms.service.FacilityService;
-import net.therap.dms.service.PatientService;
-import net.therap.dms.service.PrescriptionService;
-import net.therap.dms.util.RoleUtil;
+import net.therap.dms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -19,13 +14,14 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 import static net.therap.dms.controller.PatientController.USER_CMD;
 import static net.therap.dms.entity.RoleEnum.DOCTOR;
-import static net.therap.dms.entity.RoleEnum.PATIENT;
+import static net.therap.dms.util.RoleUtil.userContains;
+import static net.therap.dms.util.SessionUtil.getUser;
 
 /**
  * @author amimul.ehsan
@@ -60,6 +56,9 @@ public class PrescriptionController {
     @Autowired
     private PrescriptionHelper prescriptionHelper;
 
+    @Autowired
+    private AccessManager accessManager;
+
     @InitBinder
     private void InitBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Facility.class, facilityEditor);
@@ -67,58 +66,56 @@ public class PrescriptionController {
     }
 
     @GetMapping
-    public String show(@RequestParam(value = "id", defaultValue = "0") long id,
-                       ModelMap model) {
+    public String show(@RequestParam(defaultValue = "0") long id,
+                       ModelMap model,
+                       HttpServletRequest request) {
 
         Prescription prescription = prescriptionService.findById(id);
-        User user = (User) model.getAttribute(USER_CMD);
 
-        if (nonNull(user) &&
-                RoleUtil.userContains(user, PATIENT) &&
-                prescription.getPatient().getId() != user.getId()) {
+        accessManager.checkPrescriptionViewAccess(prescription, request);
 
-            throw new InsufficientAccessException();
-        }
-
-        setupReferenceData(prescription, user, model);
+        setupReferenceDataForView(prescription, model, request);
 
         return VIEW_PAGE;
     }
 
     @GetMapping("/list")
-    public String showList(ModelMap model) {
-        User user = (User) model.getAttribute(USER_CMD);
-        List<Prescription> prescriptions = prescriptionHelper.getPrescriptionsForPatient(user.getPatient());
+    public String showList(ModelMap model, HttpServletRequest request) {
+        accessManager.checkPrescriptionListAccess(request);
 
-        setupReferenceData(prescriptions, model);
+        setupReferenceDataForList(model, request);
 
         return LIST_VIEW_PAGE;
     }
 
     @PostMapping
     public String process(@ModelAttribute("prescription") Prescription prescription,
-                          RedirectAttributes redirectAttributes) {
+                          HttpServletRequest request) {
 
         prescription.setPatient(patientService.findById(prescription.getPatient().getId()));
         prescription.setDoctor(doctorService.findById(prescription.getDoctor().getId()));
 
+        accessManager.checkPrescriptionViewAccess(prescription, request);
+
         prescriptionService.saveOrUpdate(prescription);
 
-        redirectAttributes.addAttribute("id", prescription.getId());
-//        redirectAttributes.addAttribute("success", true);
-
-//        return "redirect:/prescription";
         return "redirect:/success";
     }
 
-    private void setupReferenceData(Prescription prescription, User user, ModelMap model) {
+    private void setupReferenceDataForView(Prescription prescription, ModelMap model, HttpServletRequest request) {
+        User user = getUser(request);
+
         model.put("facilities", facilityService.findAll());
         model.put("prescription", isNull(prescription) ? new Prescription() : prescription);
-        model.put("readonly", !RoleUtil.userContains(user, DOCTOR) ||
+        model.put("readonly", !userContains(user, DOCTOR) ||
                 (user.getDoctor().getId() != prescription.getDoctor().getId()));
     }
 
-    private void setupReferenceData(List<Prescription> prescriptions, ModelMap model) {
+    private void setupReferenceDataForList(ModelMap model, HttpServletRequest request) {
+        User user = getUser(request);
+
+        List<Prescription> prescriptions = prescriptionHelper.getPrescriptionsForPatient(user.getPatient());
+
         model.put("prescriptions", prescriptions);
     }
 }
