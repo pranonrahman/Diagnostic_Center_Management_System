@@ -1,7 +1,6 @@
 package net.therap.dms.filter;
 
 import net.therap.dms.constant.URL;
-import net.therap.dms.entity.User;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -9,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static net.therap.dms.util.AccessControlUtil.*;
-import static net.therap.dms.util.SessionUtil.getUser;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 /**
  * @author raian.rahman
@@ -21,7 +20,8 @@ public class AuthenticationFilter implements Filter, URL {
 
     private static final String LOGIN_REDIRECT_PATH = "/login";
     private static final String HOME_REDIRECT_PATH = "/";
-    private static final String INVALID_ACCESS_REDIRECT_PATH = "/invalidPage";
+
+    private static final String USER = "user";
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -34,26 +34,15 @@ public class AuthenticationFilter implements Filter, URL {
         httpServletResponse.setHeader("Pragma", "no-cache");
         httpServletResponse.setDateHeader("Expires", 0);
 
-        if (isLoggedIn(httpServletRequest)) {
-            User user = getUser(httpServletRequest);
+        if (nonNull(httpServletRequest.getSession().getAttribute(USER))) {
 
             if (httpServletRequest.getRequestURI().contains(LOGIN)) {
                 httpServletResponse.sendRedirect(HOME_REDIRECT_PATH);
                 return;
             }
-
-            if (!hasInvoiceAccess(httpServletRequest, user)
-                || !hasPatientAccess(httpServletRequest, user)
-                || !hasUserAccess(httpServletRequest, user)
-                || !hasPrescriptionAccess(httpServletRequest, user)) {
-
-                httpServletResponse.sendRedirect(INVALID_ACCESS_REDIRECT_PATH);
-
-                return;
-            }
         }
 
-        if (!isLoggedIn(httpServletRequest)
+        if (isNull(httpServletRequest.getSession().getAttribute(USER))
                 && !httpServletRequest.getRequestURI().equals(LOGIN)
                 && !httpServletRequest.getRequestURI().equals(LOGOUT)
                 && !httpServletRequest.getRequestURI().contains(ASSETS)
