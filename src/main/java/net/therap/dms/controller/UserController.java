@@ -2,6 +2,7 @@ package net.therap.dms.controller;
 
 import net.therap.dms.editor.*;
 import net.therap.dms.entity.*;
+import net.therap.dms.service.AccessManager;
 import net.therap.dms.service.RoleService;
 import net.therap.dms.service.UserService;
 import net.therap.dms.validator.UserValidator;
@@ -72,6 +73,9 @@ public class UserController {
     @Autowired
     private MessageSourceAccessor msa;
 
+    @Autowired
+    private AccessManager accessManager;
+
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Date.class, dateEditor);
@@ -90,8 +94,10 @@ public class UserController {
 
     @GetMapping
     public String showForm(@RequestParam(value = "id", required = false, defaultValue = "0") long id,
-                           HttpServletRequest request,
-                           ModelMap model) {
+                           ModelMap model,
+                           HttpServletRequest request) {
+
+        accessManager.checkUserAccess(request);
 
         setUpReferenceSeedData(id, SAVE, request, model);
 
@@ -101,9 +107,11 @@ public class UserController {
     @PostMapping
     public String process(@Validated @ModelAttribute("userData") User user,
                           BindingResult result,
+                          ModelMap model,
                           RedirectAttributes redirectAttributes,
-                          HttpServletRequest request,
-                          ModelMap model) {
+                          HttpServletRequest request) {
+
+        accessManager.checkUserAccess(request);
 
         setUpReferenceSeedData(user.getId(), VIEW, request, model);
 
@@ -126,7 +134,10 @@ public class UserController {
 
     @RequestMapping("/list")
     public String showList(@RequestParam(value = FILTER_BY, required = false) String filterBy,
-                           ModelMap model) {
+                           ModelMap model,
+                           HttpServletRequest request) {
+
+        accessManager.checkUserAccess(request);
 
         setUpReferenceList(filterBy, model);
 
@@ -136,6 +147,8 @@ public class UserController {
     @PostMapping(value = "/delete")
     public String deleteUser(@RequestParam(value = "id", defaultValue = "0") long id,
                              HttpServletRequest request) throws RuntimeException {
+
+        accessManager.checkUserAccess(request);
 
         User user = userService.findById(id);
 
