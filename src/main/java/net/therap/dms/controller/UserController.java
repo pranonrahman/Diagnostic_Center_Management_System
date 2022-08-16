@@ -39,7 +39,7 @@ public class UserController {
     private static final String USER_CMD = "user";
     private static final String FORM_PAGE = "user/form";
     private static final String LIST_PAGE = "user/list";
-    private static final String SUCCESS_REDIRECT_PATH = WebUtil.redirect("success");
+    private static final String SUCCESS_REDIRECT_PATH = WebUtil.redirect("/success");
 
     @Autowired
     private DateEditor dateEditor;
@@ -145,7 +145,7 @@ public class UserController {
         return LIST_PAGE;
     }
 
-    @PostMapping(value = "/delete")
+    @RequestMapping(value = "/delete")
     public String deleteUser(@RequestParam(value = "id", defaultValue = "0") long id,
                              HttpServletRequest request) throws RuntimeException {
 
