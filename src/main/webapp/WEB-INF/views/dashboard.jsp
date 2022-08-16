@@ -30,14 +30,14 @@
     </h2>
 
     <div class="w-50 mx-auto text-center">
-        <c:if test="${RoleUtil.userContains(user, RoleEnum.DOCTOR)}">
+        <c:if test="${RoleUtil.hasRole(user, RoleEnum.DOCTOR)}">
             <h4 class="mt-5 text-center">DOCTOR</h4>
             <a href="/patient/list" class="btn btn-outline-dark w-25">
                 <fmt:message key="navbar.link.yourPatients"/>
             </a>
         </c:if>
 
-        <c:if test="${RoleUtil.userContains(user, RoleEnum.PATIENT)}">
+        <c:if test="${RoleUtil.hasRole(user, RoleEnum.PATIENT)}">
             <h4 class="mt-5 text-center">PATIENT</h4>
             <a href="/prescription/list" class="btn btn-outline-dark w-25">
                 <fmt:message key="navbar.link.yourPrescriptions"/>
@@ -50,7 +50,7 @@
             </a>
         </c:if>
 
-        <c:if test="${RoleUtil.userContains(user, RoleEnum.RECEPTIONIST)}">
+        <c:if test="${RoleUtil.hasRole(user, RoleEnum.RECEPTIONIST)}">
             <h4 class="mt-5 text-center">RECEPTIONIST</h4>
             <a href="/invoice/doctor"
                class="btn btn-outline-dark w-25">
@@ -64,7 +64,7 @@
             </a>
         </c:if>
 
-        <c:if test="${RoleUtil.userContains(user, RoleEnum.ADMIN)}">
+        <c:if test="${RoleUtil.hasRole(user, RoleEnum.ADMIN)}">
             <h4 class="mt-5 text-center">ADMIN</h4>
 
             <a href="<c:url value="/user/list"/>"

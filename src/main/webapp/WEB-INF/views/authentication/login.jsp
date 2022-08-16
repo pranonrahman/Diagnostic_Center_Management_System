@@ -23,7 +23,7 @@
     <h2 class="text-center py-3"> Login </h2>
     <div class="w-50 mx-auto">
 
-        <form:form action="/login" method="post" modelAttribute="userCmd">
+        <form:form method="post" modelAttribute="userCmd">
             <form:errors path="" cssClass="alert alert-danger d-block"/>
 
             <div class="mb-3">

@@ -9,11 +9,7 @@ import net.therap.dms.entity.User;
  */
 public class RoleUtil {
 
-    public static boolean userContains(User user, RoleEnum roleEnum) {
+    public static boolean hasRole(User user, RoleEnum roleEnum) {
         return user.getRoles().stream().anyMatch(role -> role.getName().equals(roleEnum));
-    }
-
-    public static boolean userNotContains(User user, RoleEnum roleEnum) {
-        return user.getRoles().stream().noneMatch(role -> role.getName().equals(roleEnum));
     }
 }

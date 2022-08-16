@@ -31,6 +31,10 @@ public class PrescriptionService {
         return prescription;
     }
 
+    public List<Prescription> findByDoctor(long doctorId) {
+        return prescriptionDao.findByDoctor(doctorId);
+    }
+
     public List<Prescription> findAll() {
         return prescriptionDao.findAll();
     }

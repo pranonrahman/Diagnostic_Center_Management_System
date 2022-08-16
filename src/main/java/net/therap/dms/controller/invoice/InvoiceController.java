@@ -5,15 +5,14 @@ import net.therap.dms.entity.Invoice;
 import net.therap.dms.entity.User;
 import net.therap.dms.service.AccessManager;
 import net.therap.dms.service.InvoiceService;
-import net.therap.dms.util.WebUtil;
 import net.therap.dms.util.SessionUtil;
+import net.therap.dms.util.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ import static net.therap.dms.constant.URL.SUCCESS;
 import static net.therap.dms.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.dms.entity.Action.REVIEW;
 import static net.therap.dms.entity.Action.VIEW;
-import static net.therap.dms.entity.RoleEnum.RECEPTIONIST;
 
 /**
  * @author khandaker.maruf
@@ -76,22 +74,15 @@ public class InvoiceController {
     }
 
     @PostMapping
-    public String save(@SessionAttribute(INVOICE_CMD) InvoiceCmd invoiceCmd,
-                       WebRequest webRequest,
-                       SessionStatus status,
+    public String save(@ModelAttribute(INVOICE_CMD) InvoiceCmd invoiceCmd,
+                       SessionStatus sessionStatus,
                        ModelMap model,
                        HttpServletRequest request) {
 
+        accessManager.checkInvoiceWriteAccess(request);
+
         User user = SessionUtil.getUser(request);
-
-        if (isUnauthorizedToSaveInvoice(user)) {
-            model.put("errorMessage", msa.getMessage("error.unAuthorized"));
-
-            return VIEW_PAGE;
-        }
-
-        invoiceCmd.setReceptionist(user.getReceptionist());
-        Invoice invoice = invoiceService.getInvoiceFromCmd(invoiceCmd);
+        Invoice invoice = invoiceService.getInvoiceFromCmd(invoiceCmd, user);
 
         if (invoice.getParticulars().isEmpty()) {
             model.put("errorMessage", msa.getMessage("error.notSelected"));
@@ -103,7 +94,7 @@ public class InvoiceController {
         invoiceService.updateMedicineQuantity(invoiceCmd);
         invoiceService.saveOrUpdate(invoice);
 
-        SessionUtil.removeInvoice(model, status, webRequest);
+        sessionStatus.setComplete();
 
         return WebUtil.redirect(SUCCESS);
     }
@@ -117,10 +108,6 @@ public class InvoiceController {
         setUpReferenceData(invoice, model, request);
 
         return VIEW_PAGE;
-    }
-
-    private boolean isUnauthorizedToSaveInvoice(User user) {
-        return isNull(user) || user.getRoles().stream().noneMatch(role -> role.getName().equals(RECEPTIONIST));
     }
 
     private boolean noInvoiceGenerated(ModelMap model) {
@@ -138,7 +125,7 @@ public class InvoiceController {
         User user = SessionUtil.getUser(request);
         invoice.setReceptionist(user.getReceptionist());
 
-        model.put(INVOICE_VIEW_CMD, invoiceService.getInvoiceFromCmd(invoice));
+        model.put(INVOICE_VIEW_CMD, invoiceService.getInvoiceFromCmd(invoice, user));
         model.put("action", REVIEW);
     }
 

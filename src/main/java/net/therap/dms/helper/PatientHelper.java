@@ -3,7 +3,7 @@ package net.therap.dms.helper;
 import net.therap.dms.entity.Doctor;
 import net.therap.dms.entity.Patient;
 import net.therap.dms.entity.Prescription;
-import net.therap.dms.service.DoctorService;
+import net.therap.dms.service.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ import java.util.*;
 public class PatientHelper {
 
     @Autowired
-    private DoctorService doctorService;
+    private PrescriptionService prescriptionService;
 
     public List<Prescription> getPrescriptions(Patient patient, Doctor doctor, boolean specific) {
         List<Prescription> selectedPrescriptions = new ArrayList<>();
@@ -37,7 +37,7 @@ public class PatientHelper {
     }
 
     public Set<Patient> getPatientsForDoctor(Doctor doctor) {
-        List<Prescription> prescriptions = doctorService.findById(doctor.getId()).getPrescriptions();
+        List<Prescription> prescriptions = prescriptionService.findByDoctor(doctor.getId());
         Set<Patient> patients = new HashSet<>();
 
         for(Prescription prescription : prescriptions) {
