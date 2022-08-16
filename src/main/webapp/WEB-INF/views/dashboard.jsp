@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="net.therap.dms.entity.RoleEnum" %>
+<%@ page import="net.therap.dms.util.RoleUtil" %>
 <%--
   * @author raian.rahman
   * @since 11/08/2022
@@ -29,57 +30,53 @@
     </h2>
 
     <div class="w-50 mx-auto text-center">
-        <c:forEach items="${user.roles}" var="role">
-            <c:choose>
-                <c:when test="${role.getName().equals(RoleEnum.DOCTOR)}">
-                    <h4 class="mt-5 text-center">DOCTOR</h4>
-                    <a href="/patient/list" class="btn btn-outline-dark w-25">
-                        <fmt:message key="navbar.link.yourPatients"/>
-                    </a>
-                </c:when>
+        <c:if test="${RoleUtil.userContains(user, RoleEnum.DOCTOR)}">
+            <h4 class="mt-5 text-center">DOCTOR</h4>
+            <a href="/patient/list" class="btn btn-outline-dark w-25">
+                <fmt:message key="navbar.link.yourPatients"/>
+            </a>
+        </c:if>
 
-                <c:when test="${role.getName().equals(RoleEnum.PATIENT)}">
-                    <h4 class="mt-5 text-center">PATIENT</h4>
-                    <a href="/prescription/list" class="btn btn-outline-dark w-25">
-                        <fmt:message key="navbar.link.yourPrescriptions"/>
-                    </a>
-                    <c:url var="patientInvoiceList" value="/invoice/list">
-                        <c:param name="patientId" value="${user.patient.id}"/>
-                    </c:url>
-                    <a href="${patientInvoiceList}" class="btn btn-outline-dark w-25">
-                        <fmt:message key="navbar.link.yourInvoices"/>
-                    </a>
-                </c:when>
+        <c:if test="${RoleUtil.userContains(user, RoleEnum.PATIENT)}">
+            <h4 class="mt-5 text-center">PATIENT</h4>
+            <a href="/prescription/list" class="btn btn-outline-dark w-25">
+                <fmt:message key="navbar.link.yourPrescriptions"/>
+            </a>
+            <c:url var="patientInvoiceList" value="/invoice/list">
+                <c:param name="patientId" value="${user.patient.id}"/>
+            </c:url>
+            <a href="${patientInvoiceList}" class="btn btn-outline-dark w-25">
+                <fmt:message key="navbar.link.yourInvoices"/>
+            </a>
+        </c:if>
 
-                <c:when test="${role.getName().equals(RoleEnum.RECEPTIONIST)}">
-                    <h4 class="mt-5 text-center">RECEPTIONIST</h4>
-                    <a href="/invoice/doctor"
-                       class="btn btn-outline-dark w-25">
+        <c:if test="${RoleUtil.userContains(user, RoleEnum.RECEPTIONIST)}">
+            <h4 class="mt-5 text-center">RECEPTIONIST</h4>
+            <a href="/invoice/doctor"
+               class="btn btn-outline-dark w-25">
 
-                        <fmt:message key="navbar.link.createInvoice"/>
-                    </a>
-                    <a href="/invoice/list"
-                       class="btn btn-outline-dark w-25">
+                <fmt:message key="navbar.link.createInvoice"/>
+            </a>
+            <a href="/invoice/list"
+               class="btn btn-outline-dark w-25">
 
-                        <fmt:message key="navbar.link.viewAllInvoices"/>
-                    </a>
-                </c:when>
+                <fmt:message key="navbar.link.viewAllInvoices"/>
+            </a>
+        </c:if>
 
-                <c:when test="${role.getName().equals(RoleEnum.ADMIN)}">
-                    <h4 class="mt-5 text-center">ADMIN</h4>
+        <c:if test="${RoleUtil.userContains(user, RoleEnum.ADMIN)}">
+            <h4 class="mt-5 text-center">ADMIN</h4>
 
-                    <a href="<c:url value="/user/list"/>"
-                       class="btn btn-outline-dark w-25">
+            <a href="<c:url value="/user/list"/>"
+               class="btn btn-outline-dark w-25">
 
-                        <fmt:message key="button.label.viewAllUsers"/>
-                    </a>
+                <fmt:message key="button.label.viewAllUsers"/>
+            </a>
 
-                    <a href="/user/" class="btn btn-outline-dark w-25">
-                        <fmt:message key="navbar.link.createUser"/>
-                    </a>
-                </c:when>
-            </c:choose>
-        </c:forEach>
+            <a href="/user/" class="btn btn-outline-dark w-25">
+                <fmt:message key="navbar.link.createUser"/>
+            </a>
+        </c:if>
     </div>
 </div>
 <jsp:include page="footer.jsp"/>

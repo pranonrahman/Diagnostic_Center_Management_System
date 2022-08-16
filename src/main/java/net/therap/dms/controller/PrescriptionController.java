@@ -12,23 +12,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static java.util.Objects.isNull;
-import static net.therap.dms.controller.PatientController.USER_CMD;
 import static net.therap.dms.entity.RoleEnum.DOCTOR;
 import static net.therap.dms.util.RoleUtil.userContains;
 import static net.therap.dms.util.SessionUtil.getUser;
+import static net.therap.dms.util.WebUtil.redirect;
 
 /**
  * @author amimul.ehsan
  * @since 02/08/2022
  */
 @Controller
-@SessionAttributes(USER_CMD)
 @RequestMapping("/prescription")
 public class PrescriptionController {
 
@@ -99,7 +97,7 @@ public class PrescriptionController {
 
         prescriptionService.saveOrUpdate(prescription);
 
-        return "redirect:/success";
+        return redirect("success");
     }
 
     private void setupReferenceDataForView(Prescription prescription, ModelMap model, HttpServletRequest request) {

@@ -12,13 +12,15 @@ import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Set;
 
-import static net.therap.dms.controller.PatientController.USER_CMD;
 import static net.therap.dms.util.SessionUtil.getUser;
 
 /**
@@ -26,13 +28,12 @@ import static net.therap.dms.util.SessionUtil.getUser;
  * @since 03/08/2022
  */
 @Controller
-@SessionAttributes(USER_CMD)
 @RequestMapping("/patient")
 public class PatientController {
 
     private static final String HISTORY_PAGE = "patient/history";
     private static final String LIST_VIEW_PAGE = "patient/list";
-    public static final String USER_CMD = "user";
+    private static final String USER_CMD = "user";
 
     @Autowired
     private PatientService patientService;

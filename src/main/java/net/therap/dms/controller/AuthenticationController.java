@@ -14,23 +14,20 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
 
 import static net.therap.dms.constant.URL.LOGIN;
 import static net.therap.dms.constant.URL.LOGOUT;
-import static net.therap.dms.controller.AuthenticationController.USER;
 
 /**
  * @author raian.rahman
  * @since 8/3/22
  */
 @Controller
-@SessionAttributes(USER)
 public class AuthenticationController {
 
-    public static final String USER = "user";
+    private static final String USER = "user";
     private static final String LOGIN_REDIRECT_PATH = "redirect:/login";
     private static final String DASHBOARD_REDIRECT_PATH = "redirect:/";
     private static final String FORM_PAGE = "/authentication/form";
@@ -74,8 +71,8 @@ public class AuthenticationController {
     }
 
     @RequestMapping(LOGOUT)
-    public String logout(SessionStatus sessionStatus) {
-        sessionStatus.setComplete();
+    public String logout(HttpServletRequest request) {
+        request.getSession().invalidate();
 
         return LOGIN_REDIRECT_PATH;
     }
