@@ -101,8 +101,10 @@ public class MedicineItemController {
         return WebUtil.redirect(INVOICE_FACILITY);
     }
 
-    @PostMapping("/remove")
-    public String remove(@RequestParam("id") long medicineId, ModelMap model) {
+    @GetMapping("/remove")
+    public String remove(@RequestParam("id") long medicineId, ModelMap model, HttpServletRequest request) {
+        accessManager.checkInvoiceWriteAccess(request);
+
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
         invoice.getMedicines().removeIf(medicineItemCmd -> medicineItemCmd.getMedicine().getId() == medicineId);
 

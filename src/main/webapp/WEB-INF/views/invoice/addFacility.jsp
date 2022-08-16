@@ -112,20 +112,13 @@
                             <td><c:out value="${item.quantity}"/></td>
                             <td><c:out value="${item.facility.price * item.quantity}"/></td>
                             <td>
+                                <c:url var="facilityRemoveUrl" value="/invoice/facility/remove">
+                                    <c:param name="id" value="${item.facility.id}"/>
+                                </c:url>
 
-                                <form:form method="post" action="/invoice/facility/remove">
-                                    <input type="hidden"
-                                           name="id"
-                                           value="${item.facility.id}">
-
-                                    <button type="submit"
-                                            class="btn btn-primary flex-grow-1 mx-3"
-                                            value="REMOVE"
-                                            name="action">
-
-                                        <fmt:message key="button.label.remove"/>
-                                    </button>
-                                </form:form>
+                                <a href="${facilityRemoveUrl}" class="btn btn-primary flex-grow-1 mx-3">
+                                    <fmt:message key="button.label.remove"/>
+                                </a>
                             </td>
                         </tr>
                     </p>
