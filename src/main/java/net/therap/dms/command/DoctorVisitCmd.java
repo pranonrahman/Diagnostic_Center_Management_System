@@ -8,8 +8,8 @@ import net.therap.dms.entity.Patient;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author khandaker.maruf
@@ -24,9 +24,9 @@ public class DoctorVisitCmd implements Serializable {
 
     @NotNull
     private Patient patient;
-    private List<Doctor> doctors;
+    private Set<Doctor> doctors;
 
     public DoctorVisitCmd() {
-        doctors = new ArrayList<>();
+        doctors = new HashSet<>();
     }
 }

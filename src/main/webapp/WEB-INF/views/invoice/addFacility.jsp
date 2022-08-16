@@ -110,14 +110,14 @@
             <table class="table">
 
                 <thead>
-                <tr>
-                    <th class="fw-light" scope="col">#</th>
-                    <th class="fw-light" scope="col"> <fmt:message key="table.column.facility"/> </th>
-                    <th class="fw-light" scope="col"> <fmt:message key="table.column.unitPrice"/> </th>
-                    <th class="fw-light" scope="col"> <fmt:message key="table.column.units"/> </th>
-                    <th class="fw-light" scope="col"> <fmt:message key="table.column.price"/> </th>
-                    <th class="fw-light" scope="col"> <fmt:message key="table.column.action"/> </th>
-                </tr>
+                    <tr>
+                        <th class="fw-light" scope="col">#</th>
+                        <th class="fw-light" scope="col"> <fmt:message key="table.column.facility"/> </th>
+                        <th class="fw-light" scope="col"> <fmt:message key="table.column.unitPrice"/> </th>
+                        <th class="fw-light" scope="col"> <fmt:message key="table.column.units"/> </th>
+                        <th class="fw-light" scope="col"> <fmt:message key="table.column.price"/> </th>
+                        <th class="fw-light" scope="col"> <fmt:message key="table.column.action"/> </th>
+                    </tr>
                 </thead>
 
                 <tbody>

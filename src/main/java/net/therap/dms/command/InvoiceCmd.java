@@ -8,7 +8,9 @@ import net.therap.dms.entity.Receptionist;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author khandaker.maruf
@@ -25,12 +27,12 @@ public class InvoiceCmd implements Serializable {
     private long invoiceId;
     private double totalCost;
     private Patient patient;
-    private List<Doctor> doctors;
+    private Set<Doctor> doctors;
     private List<MedicineItemCmd> medicines;
     private List<FacilityItemCmd> facilities;
 
     public InvoiceCmd() {
-        doctors = new ArrayList<>();
+        doctors = new HashSet<>();
         medicines = new ArrayList<>();
         facilities = new ArrayList<>();
     }

@@ -41,7 +41,6 @@
             </p>
 
             <table class="table">
-
                 <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -102,10 +101,8 @@
 
                 </c:otherwise>
             </c:choose>
-
         </div>
     </div>
-    
 </div>
 
 </body>

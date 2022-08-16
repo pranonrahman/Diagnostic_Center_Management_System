@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,12 +66,14 @@ public class InvoiceService {
 
 
 
-    public Invoice getInvoiceFromCmd(InvoiceCmd invoiceCmd, User user) {
+    public Invoice getInvoiceFromCmd(InvoiceCmd invoiceCmd, Receptionist receptionist) {
         Invoice invoice = new Invoice();
         invoice.setPatient(invoiceCmd.getPatient());
-        invoice.setReceptionist(user.getReceptionist());
+        invoice.setReceptionist(receptionist);
 
-        invoice.getParticulars().addAll(getDoctorVisitParticulars(invoiceCmd.getDoctors()));
+        List<Doctor> doctors = new ArrayList<>(invoiceCmd.getDoctors());
+
+        invoice.getParticulars().addAll(getDoctorVisitParticulars(doctors));
         invoice.getParticulars().addAll(getMedicineParticulars(invoiceCmd.getMedicines()));
         invoice.getParticulars().addAll(getFacilityParticulars(invoiceCmd.getFacilities()));
 
