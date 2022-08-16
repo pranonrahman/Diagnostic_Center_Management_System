@@ -50,7 +50,7 @@ public class UserService {
 
     public List<User> findAll(String filterBy) {
 
-        if(isNull(filterBy)) {
+        if (isNull(filterBy)) {
             return userDao.findAll();
         }
 
@@ -64,7 +64,7 @@ public class UserService {
 
     @Transactional
     public User saveOrUpdate(User user) {
-        if(user.isNew()) {
+        if (user.isNew()) {
             user = userDao.saveOrUpdate(user);
         }
 
