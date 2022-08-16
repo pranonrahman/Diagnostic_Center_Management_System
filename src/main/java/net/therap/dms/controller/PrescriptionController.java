@@ -19,8 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static java.util.Objects.isNull;
-import static net.therap.dms.entity.RoleEnum.DOCTOR;
-import static net.therap.dms.util.RoleUtil.userContains;
 import static net.therap.dms.util.SessionUtil.getUser;
 import static net.therap.dms.util.WebUtil.redirect;
 

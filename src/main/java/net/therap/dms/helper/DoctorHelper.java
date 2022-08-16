@@ -4,14 +4,13 @@ import net.therap.dms.entity.Doctor;
 import net.therap.dms.entity.Prescription;
 import net.therap.dms.entity.User;
 import net.therap.dms.service.DoctorService;
-import net.therap.dms.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
 import static net.therap.dms.entity.RoleEnum.DOCTOR;
-import static net.therap.dms.util.RoleUtil.userContains;
+import static net.therap.dms.util.RoleUtil.hasRole;
 import static net.therap.dms.util.SessionUtil.getUser;
 
 /**
@@ -40,7 +39,7 @@ public class DoctorHelper {
     public boolean hasPrescription(Prescription prescription, HttpServletRequest request) {
         User user = getUser(request);
 
-        return userContains(user, DOCTOR) &&
+        return hasRole(user, DOCTOR) &&
                 (user.getDoctor().getId() == prescription.getDoctor().getId());
     }
 }
