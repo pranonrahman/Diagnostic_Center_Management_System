@@ -110,22 +110,13 @@
                             <td><c:out value="${item.quantity}"/></td>
                             <td><fmt:formatNumber value="${item.medicine.unitPrice * item.quantity}"/></td>
                             <td>
+                                <c:url var="medicineRemoveUrl" value="/invoice/medicine/remove">
+                                    <c:param name="id" value="${item.medicine.id}"/>
+                                </c:url>
 
-                                <form:form method="post" action="/invoice/medicine/remove">
-
-                                    <input type="hidden"
-                                           name="id"
-                                           value="${item.medicine.id}">
-
-                                    <button type="submit"
-                                            class="btn btn-primary flex-grow-1 mx-3"
-                                            value="REMOVE"
-                                            name="action">
-
-                                        <fmt:message key="button.label.remove"/>
-                                    </button>
-                                </form:form>
-
+                                <a href="${medicineRemoveUrl}" class="btn btn-primary flex-grow-1 mx-3">
+                                    <fmt:message key="button.label.remove"/>
+                                </a>
                             </td>
                         </tr>
                     </p>

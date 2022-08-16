@@ -98,8 +98,10 @@ public class FacilityItemController {
         return WebUtil.redirect(INVOICE);
     }
 
-    @PostMapping("/remove")
-    public String remove(@RequestParam("id") long facilityId, ModelMap model) {
+    @GetMapping("/remove")
+    public String remove(@RequestParam("id") long facilityId, ModelMap model, HttpServletRequest request) {
+        accessManager.checkInvoiceWriteAccess(request);
+
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
         invoice.getFacilities().removeIf(facilityItem -> facilityItem.getFacility().getId() == facilityId);
 
