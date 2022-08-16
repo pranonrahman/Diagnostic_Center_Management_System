@@ -28,7 +28,7 @@
 
     <div class="w-50 mx-auto">
 
-        <form:form action="/user" method="POST" modelAttribute="userData">
+        <form:form method="POST" modelAttribute="userData">
 
             <div class="mb-3">
                 <form:input hidden="hidden"
@@ -204,12 +204,12 @@
 
         <c:if test="${isDeletable}">
             <div class="mb-3">
-                <form action="/user/delete" method="get">
-                    <input name="id" hidden="hidden" value="${userData.id}">
-                    <button type="submit" value="submit" class="btn btn-danger w-100">
-                        <fmt:message key="user.form.delete"/>
-                    </button>
-                </form>
+                <c:url var="deleteUrl" value="/user/delete">
+                    <c:param name="id" value="${user.id}"/>
+                </c:url>
+                <a href="${deleteUrl}" class="btn btn-danger w-100">
+                    <fmt:message key="user.form.delete"/>
+                </a>
             </div>
         </c:if>
     </div>
