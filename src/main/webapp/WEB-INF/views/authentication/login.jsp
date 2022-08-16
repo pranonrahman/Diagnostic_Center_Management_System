@@ -23,8 +23,7 @@
     <h2 class="text-center py-3"> Login </h2>
     <div class="w-50 mx-auto">
 
-        <form:form action="/login"
-                   method="post"
+        <form:form method="post"
                    modelAttribute="userCmd">
 
             <form:errors path=""

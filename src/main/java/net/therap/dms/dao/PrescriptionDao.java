@@ -16,6 +16,12 @@ public class PrescriptionDao extends Dao<Prescription> {
         super(Prescription.class);
     }
 
+    public List<Prescription> findByDoctor(long doctorId) {
+        return em.createNamedQuery("Prescription.findByDoctor", Prescription.class)
+                .setParameter("doctorId", doctorId)
+                .getResultList();
+    }
+
     public List<Prescription> findAll() {
         return em.createNamedQuery("Prescription.findAll", Prescription.class)
                 .getResultList();
