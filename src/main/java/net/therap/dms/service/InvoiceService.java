@@ -60,10 +60,10 @@ public class InvoiceService {
         return invoiceDao.saveOrUpdate(invoice);
     }
 
-    public Invoice getInvoiceFromCmd(InvoiceCmd invoiceCmd) {
+    public Invoice getInvoiceFromCmd(InvoiceCmd invoiceCmd, User user) {
         Invoice invoice = new Invoice();
         invoice.setPatient(invoiceCmd.getPatient());
-        invoice.setReceptionist(invoiceCmd.getReceptionist());
+        invoice.setReceptionist(user.getReceptionist());
 
         invoice.getParticulars().addAll(getDoctorVisitParticulars(invoiceCmd.getDoctors()));
         invoice.getParticulars().addAll(getMedicineParticulars(invoiceCmd.getMedicines()));
