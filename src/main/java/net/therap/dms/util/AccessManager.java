@@ -14,7 +14,7 @@ import static net.therap.dms.util.RoleUtil.userContains;
  * @author raian.rahman
  * @since 8/15/22
  */
-public class AccessControlUtil implements URL {
+public class AccessManager implements URL {
 
     private static final String USER = "user";
 

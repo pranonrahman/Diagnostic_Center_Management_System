@@ -1,7 +1,6 @@
 package net.therap.dms.controller;
 
 import net.therap.dms.command.UserCmd;
-import net.therap.dms.constant.URL;
 import net.therap.dms.editor.RoleEditor;
 import net.therap.dms.entity.Role;
 import net.therap.dms.service.UserService;
@@ -18,6 +17,8 @@ import org.springframework.web.bind.support.SessionStatus;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import static net.therap.dms.constant.URL.LOGIN;
+import static net.therap.dms.constant.URL.LOGOUT;
 import static net.therap.dms.controller.AuthenticationController.USER;
 
 /**
@@ -26,7 +27,7 @@ import static net.therap.dms.controller.AuthenticationController.USER;
  */
 @Controller
 @SessionAttributes(USER)
-public class AuthenticationController implements URL {
+public class AuthenticationController {
 
     private static final String LOGIN_REDIRECT_PATH = "redirect:/login";
     private static final String DASHBOARD_REDIRECT_PATH = "redirect:/";
