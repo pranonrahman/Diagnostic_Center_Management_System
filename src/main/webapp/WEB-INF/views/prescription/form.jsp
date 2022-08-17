@@ -26,12 +26,6 @@
     </h2>
 
     <div class="w-50 mx-auto">
-        <c:if test="${param.success != null}">
-            <div class="alert alert-success" role="alert">
-                <fmt:message key="prescription.updated.message"/>
-            </div>
-        </c:if>
-
         <form:form method="post" modelAttribute="prescription">
             <p>
                 <strong><fmt:message key="text.consultingDoctor"/>: </strong>
