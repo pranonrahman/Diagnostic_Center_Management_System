@@ -10,12 +10,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
-import static net.therap.dms.entity.RoleEnum.*;
-import static net.therap.dms.util.RoleUtil.hasRole;
+import static java.util.Objects.nonNull;
 
 /**
  * @author raian.rahman
@@ -97,18 +94,18 @@ public class User extends Persistent {
     }
 
     public boolean hasDoctorRole() {
-        return hasRole(this, DOCTOR);
+        return nonNull(doctor);
     }
 
     public boolean hasPatientRole() {
-        return hasRole(this, PATIENT);
+        return nonNull(patient);
     }
 
     public boolean hasReceptionistRole() {
-        return hasRole(this, RECEPTIONIST);
+        return nonNull(receptionist);
     }
 
     public boolean hasAdminRole() {
-        return hasRole(this, ADMIN);
+        return nonNull(admin);
     }
 }
