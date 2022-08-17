@@ -70,6 +70,7 @@ public class UserController {
 
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
+        webDataBinder.setDisallowedFields("id");
         webDataBinder.registerCustomEditor(Date.class, new DateEditor());
         webDataBinder.registerCustomEditor(Role.class, roleEditor);
         webDataBinder.registerCustomEditor(Admin.class, adminEditor);
@@ -85,7 +86,7 @@ public class UserController {
                            ModelMap model,
                            HttpServletRequest request) {
 
-        accessManager.checkUserAccess(request, SAVE);
+        accessManager.checkUserAccess(request);
 
         User user = id == 0 ? new User() : userService.findById(id);
 
@@ -102,7 +103,7 @@ public class UserController {
                           HttpServletRequest request,
                           SessionStatus sessionStatus) {
 
-        accessManager.checkUserAccess(request, action);
+        accessManager.checkUserAccess(request);
 
         if (result.hasErrors()) {
             setupReferenceData(user, VIEW, request, model);
@@ -111,6 +112,8 @@ public class UserController {
         }
 
         if(DELETE.equals(action)) {
+            accessManager.checkUserDeleteAccess(user, request);
+
             userService.delete(user);
         } else {
             user = userService.saveOrUpdate(user);
@@ -130,7 +133,7 @@ public class UserController {
                            ModelMap model,
                            HttpServletRequest request) {
 
-        accessManager.checkUserAccess(request, VIEW);
+        accessManager.checkUserAccess(request);
 
         setupReferenceDataForList(filterBy, model);
 
