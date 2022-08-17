@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static net.therap.dms.constant.URL.INVOICE_MEDICINE;
-import static net.therap.dms.controller.invoice.DoctorVisitController.INVOICE_CMD;
+import static net.therap.dms.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.dms.entity.Action.SAVE;
 import static net.therap.dms.entity.Action.VIEW;
 import static net.therap.dms.util.WebUtil.redirect;
@@ -37,7 +37,6 @@ import static net.therap.dms.util.WebUtil.redirect;
 @SessionAttributes(INVOICE_CMD)
 public class DoctorVisitController {
 
-    public static final String INVOICE_CMD = "invoice";
     private static final String DOCTOR_VISIT_CMD = "doctorVisitCmd";
 
     private static final String ADD_DOCTOR_PAGE = "/invoice/addDoctor";

@@ -33,7 +33,6 @@ import static net.therap.dms.util.WebUtil.redirect;
 @SessionAttributes(INVOICE_CMD)
 public class FacilityItemController {
 
-    public static final String INVOICE_CMD = "invoice";
     public static final String FACILITY_CMD = "facilityItemCmd";
 
     private static final String ADD_FACILITY_PAGE = "/invoice/addFacility";
