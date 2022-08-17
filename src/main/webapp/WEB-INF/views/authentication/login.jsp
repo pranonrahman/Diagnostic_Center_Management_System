@@ -46,6 +46,7 @@
                 <form:input path="password" type="password" cssClass="w-100"/>
                 <form:errors path="password" cssClass="invalid-feedback d-block"/>
             </div>
+
             <button type="submit" value="submit" class="btn btn-primary w-100">
                 <fmt:message key="authentication.form.submit"/>
             </button>
