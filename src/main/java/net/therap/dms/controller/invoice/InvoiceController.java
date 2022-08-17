@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 import static net.therap.dms.constant.URL.INVOICE_DOCTOR;
@@ -130,15 +129,14 @@ public class InvoiceController {
     private void setUpReferenceData(long patientId, ModelMap model, HttpServletRequest request) {
         User user = SessionUtil.getUser(request);
 
-        List<Invoice> invoices = new ArrayList<>();
-        boolean isPatient = false;
+        List<Invoice> invoices;
+        boolean isPatient = patientId != 0 && patientId == user.getPatient().getId() ;
 
-        if (patientId == 0) {
-            invoices = invoiceService.findAll();
-
-        } else if (patientId == user.getPatient().getId()) {
+        if (isPatient) {
             invoices = invoiceService.findByPatient(user.getPatient());
-            isPatient = true;
+
+        } else {
+            invoices = invoiceService.findAll();
         }
 
         model.addAttribute("invoices", invoices);
