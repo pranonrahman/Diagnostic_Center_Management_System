@@ -5,7 +5,6 @@ import net.therap.dms.entity.*;
 import net.therap.dms.service.AccessManager;
 import net.therap.dms.service.RoleService;
 import net.therap.dms.service.UserService;
-import net.therap.dms.util.WebUtil;
 import net.therap.dms.validationGroup.UserValidationGroup;
 import net.therap.dms.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,7 @@ import static net.therap.dms.entity.Action.SAVE;
 import static net.therap.dms.entity.Action.VIEW;
 import static net.therap.dms.util.SessionUtil.getUser;
 import static net.therap.dms.util.SessionUtil.isLoggedInUser;
+import static net.therap.dms.util.WebUtil.redirect;
 
 /**
  * @author raian.rahman
@@ -39,7 +39,7 @@ public class UserController {
     private static final String USER_CMD = "user";
     private static final String FORM_PAGE = "user/form";
     private static final String LIST_PAGE = "user/list";
-    private static final String SUCCESS_REDIRECT_PATH = WebUtil.redirect("/success");
+    private static final String SUCCESS = "/success";
 
     @Autowired
     private DateEditor dateEditor;
@@ -130,7 +130,7 @@ public class UserController {
 
         redirectAttributes.addAttribute("id", user.getId());
 
-        return SUCCESS_REDIRECT_PATH;
+        return redirect(SUCCESS);
     }
 
     @RequestMapping("/list")
@@ -159,7 +159,7 @@ public class UserController {
 
         userService.delete(user);
 
-        return SUCCESS_REDIRECT_PATH;
+        return redirect(SUCCESS);
     }
 
     private void setupReferenceDataForList(String filterBy, ModelMap model) {
