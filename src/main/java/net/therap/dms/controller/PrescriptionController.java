@@ -35,6 +35,8 @@ public class PrescriptionController {
     public static final String PRESCRIPTION_CMD = "prescription";
     private static final String VIEW_PAGE = "prescription/form";
     private static final String LIST_VIEW_PAGE = "prescription/list";
+    private static final String SUCCESS = "success";
+
     @Autowired
     private FacilityService facilityService;
 
@@ -93,7 +95,7 @@ public class PrescriptionController {
 
         sessionStatus.setComplete();
 
-        return redirect("success");
+        return redirect(SUCCESS);
     }
 
     private void setupReferenceDataForView(Prescription prescription,

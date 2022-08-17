@@ -15,7 +15,7 @@ import org.springframework.validation.Validator;
 public class DoctorVisitCmdValidator implements Validator {
 
     @Autowired
-    MessageSourceAccessor msa;
+    private MessageSourceAccessor msa;
 
     @Override
     public boolean supports(Class<?> clazz) {
