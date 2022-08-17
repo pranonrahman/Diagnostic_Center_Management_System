@@ -118,7 +118,7 @@ public class UserController {
             user = userService.saveOrUpdate(user);
 
             if (isLoggedInUser(user, request)) {
-                model.replace(USER_CMD, user);
+                request.getSession().setAttribute(USER_CMD, user);
             }
         }
 
