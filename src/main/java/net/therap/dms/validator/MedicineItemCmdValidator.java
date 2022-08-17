@@ -17,7 +17,7 @@ import static java.util.Objects.isNull;
 public class MedicineItemCmdValidator implements Validator {
 
     @Autowired
-    MessageSourceAccessor msa;
+    private MessageSourceAccessor msa;
 
     @Override
     public boolean supports(Class<?> clazz) {

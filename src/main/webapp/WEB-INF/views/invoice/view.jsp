@@ -37,35 +37,35 @@
 
             <table class="table">
                 <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col"> <fmt:message key="table.column.serviceName"/> </th>
-                    <th scope="col"> <fmt:message key="table.column.unitPrice"/> </th>
-                    <th scope="col"> <fmt:message key="table.column.units"/> </th>
-                    <th scope="col" class="text-end"> <fmt:message key="table.column.priceInBDT"/> </th>
-                </tr>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col"> <fmt:message key="table.column.serviceName"/> </th>
+                        <th scope="col"> <fmt:message key="table.column.unitPrice"/> </th>
+                        <th scope="col"> <fmt:message key="table.column.units"/> </th>
+                        <th scope="col" class="text-end"> <fmt:message key="table.column.priceInBDT"/> </th>
+                    </tr>
                 </thead>
 
                 <tbody>
-                <c:forEach items="${invoiceView.particulars}" var="particular" varStatus="loop">
-                    <p class="card-text">
-                        <tr>
-                            <th scope="row">${loop.index + 1}</th>
-                            <td><c:out value="${particular.name}"/></td>
-                            <td><fmt:formatNumber value="${particular.unitPrice}"/></td>
-                            <td><fmt:formatNumber value="${particular.units}"/></td>
-                            <td class="text-end">
-                                <fmt:formatNumber value="${particular.units * particular.unitPrice}"/>
-                            </td>
-                        </tr>
-                    </p>
-                </c:forEach>
+                    <c:forEach items="${invoiceView.particulars}" var="particular" varStatus="loop">
+                        <p class="card-text">
+                            <tr>
+                                <th scope="row">${loop.index + 1}</th>
+                                <td><c:out value="${particular.name}"/></td>
+                                <td><fmt:formatNumber value="${particular.unitPrice}"/></td>
+                                <td><fmt:formatNumber value="${particular.units}"/></td>
+                                <td class="text-end">
+                                    <fmt:formatNumber value="${particular.units * particular.unitPrice}"/>
+                                </td>
+                            </tr>
+                        </p>
+                    </c:forEach>
 
-                <tr>
-                    <td colspan="5" class="text-end fw-bold">
-                        <fmt:message key="text.total"/>: <fmt:formatNumber value="${invoiceView.totalCost}"/>
-                    </td>
-                </tr>
+                    <tr>
+                        <td colspan="5" class="text-end fw-bold">
+                            <fmt:message key="text.total"/>: <fmt:formatNumber value="${invoiceView.totalCost}"/>
+                        </td>
+                    </tr>
 
                 </tbody>
             </table>
@@ -87,11 +87,9 @@
                             <fmt:message key="button.label.previous"/>
                         </a>
 
-                        <form:form method="post" cssClass="d-inline-block">
-                            <button class="btn btn-primary" type="submit">
-                                <fmt:message key="button.label.createInvoice"/>
-                            </button>
-                        </form:form>
+                        <a href="<c:url value="/invoice/save"/>" class="btn btn-primary">
+                            <fmt:message key="button.label.createInvoice"/>
+                        </a>
                     </div>
 
                 </c:otherwise>
