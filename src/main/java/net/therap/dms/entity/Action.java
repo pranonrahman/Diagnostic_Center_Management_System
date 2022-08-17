@@ -7,6 +7,7 @@ package net.therap.dms.entity;
 public enum Action {
 
     SAVE,
+    DELETE,
     VIEW,
     REVIEW,
     ADD,
