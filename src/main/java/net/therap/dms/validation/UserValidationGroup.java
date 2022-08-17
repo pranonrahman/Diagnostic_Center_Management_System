@@ -1,4 +1,4 @@
-package net.therap.dms.validationGroup;
+package net.therap.dms.validation;
 
 /**
  * @author raian.rahman
