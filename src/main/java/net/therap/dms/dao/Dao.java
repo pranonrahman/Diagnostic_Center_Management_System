@@ -25,7 +25,7 @@ public class Dao<T extends Persistent> {
     }
 
     public T saveOrUpdate(T object) {
-        if(object.isNew()) {
+        if (object.isNew()) {
             em.persist(object);
         } else {
             object = em.merge(object);

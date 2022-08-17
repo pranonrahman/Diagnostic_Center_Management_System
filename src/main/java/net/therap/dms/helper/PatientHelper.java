@@ -26,7 +26,7 @@ public class PatientHelper {
         for (Prescription prescription : allPrescriptions) {
             if (specific && prescription.getDoctor().getId() == doctor.getId()) {
                 selectedPrescriptions.add(prescription);
-            } else if (!specific && prescription.getDoctor().getId() != doctor.getId()){
+            } else if (!specific && prescription.getDoctor().getId() != doctor.getId()) {
                 selectedPrescriptions.add(prescription);
             }
         }
@@ -40,7 +40,7 @@ public class PatientHelper {
         List<Prescription> prescriptions = prescriptionService.findByDoctor(doctor.getId());
         Set<Patient> patients = new HashSet<>();
 
-        for(Prescription prescription : prescriptions) {
+        for (Prescription prescription : prescriptions) {
             patients.add(prescription.getPatient());
         }
 

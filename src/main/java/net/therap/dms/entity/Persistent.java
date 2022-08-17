@@ -48,7 +48,7 @@ public class Persistent implements Serializable {
         }
 
         Persistent that = (Persistent) o;
-        
+
         return getId() == that.getId();
     }
 
