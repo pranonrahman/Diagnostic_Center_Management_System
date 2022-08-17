@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -59,6 +60,7 @@ public class PrescriptionController {
     private void InitBinder(WebDataBinder webDataBinder) {
         webDataBinder.registerCustomEditor(Facility.class, facilityEditor);
         webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+        webDataBinder.setDisallowedFields("id", "doctor", "patient");
     }
 
     @GetMapping
@@ -86,10 +88,18 @@ public class PrescriptionController {
 
     @PostMapping
     public String process(@ModelAttribute(PRESCRIPTION_CMD) Prescription prescription,
+                          BindingResult result,
+                          ModelMap model,
                           SessionStatus sessionStatus,
                           HttpServletRequest request) {
 
         accessManager.checkPrescriptionViewAccess(prescription, request);
+
+        if (result.hasErrors()) {
+            setupReferenceDataForView(prescription, model, request);
+
+            return VIEW_PAGE;
+        }
 
         prescriptionService.saveOrUpdate(prescription);
 
