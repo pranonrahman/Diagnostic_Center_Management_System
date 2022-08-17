@@ -35,8 +35,7 @@
 
                     <form:options items="${patients}"
                                   itemValue="id"
-                                  itemLabel="user.name"
-                    />
+                                  itemLabel="user.name"/>
                 </form:select>
 
                 <form:errors path="patient" cssClass="invalid-feedback d-block"/>
