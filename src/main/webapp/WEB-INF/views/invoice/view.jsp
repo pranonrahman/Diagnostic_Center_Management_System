@@ -77,7 +77,11 @@
 
             <c:choose>
                 <c:when test="${action == 'VIEW'}">
-                    <a href="<c:url value="/invoice/list"/>" class="btn btn-primary">
+                    <c:url var="patientInvoiceList" value="/invoice/list">
+                        <c:param name="patientId" value="${user.hasPatientRole() ? user.patient.id : 0}"/>
+                    </c:url>
+
+                    <a href="${patientInvoiceList}" class="btn btn-primary">
                         <fmt:message key="button.label.invoiceList"/>
                     </a>
                 </c:when>

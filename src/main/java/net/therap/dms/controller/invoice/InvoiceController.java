@@ -53,10 +53,6 @@ public class InvoiceController {
 
     @GetMapping
     public String view(@RequestParam(defaultValue = "0") Long id, HttpServletRequest request, ModelMap model) {
-        if (invoiceHelper.invoiceNotCreated(model)) {
-            return redirect(INVOICE_DOCTOR);
-        }
-
         if (id == 0) {
             return review(request, model);
         }
@@ -107,6 +103,10 @@ public class InvoiceController {
     }
 
     private String review(HttpServletRequest request, ModelMap model) {
+        if (invoiceHelper.invoiceNotCreated(model)) {
+            return redirect(INVOICE_DOCTOR);
+        }
+
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
         setUpReferenceData(invoice, model, request);
 
