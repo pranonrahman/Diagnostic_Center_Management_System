@@ -10,7 +10,6 @@ import net.therap.dms.entity.Patient;
 import net.therap.dms.service.AccessManager;
 import net.therap.dms.service.DoctorService;
 import net.therap.dms.service.PatientService;
-import net.therap.dms.util.WebUtil;
 import net.therap.dms.validator.DoctorVisitCmdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -27,6 +26,7 @@ import static net.therap.dms.constant.URL.INVOICE_MEDICINE;
 import static net.therap.dms.controller.invoice.DoctorVisitController.INVOICE_CMD;
 import static net.therap.dms.entity.Action.SAVE;
 import static net.therap.dms.entity.Action.VIEW;
+import static net.therap.dms.util.WebUtil.redirect;
 
 /**
  * @author khandaker.maruf
@@ -94,7 +94,7 @@ public class DoctorVisitController {
         invoice.setDoctors(doctorVisitCmd.getDoctors());
         invoice.setPatient(doctorVisitCmd.getPatient());
 
-        return WebUtil.redirect(INVOICE_MEDICINE);
+        return redirect(INVOICE_MEDICINE);
     }
 
     private void setUpReferenceData(Action action, ModelMap model) {

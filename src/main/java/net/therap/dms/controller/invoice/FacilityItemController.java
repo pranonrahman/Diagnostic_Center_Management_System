@@ -5,9 +5,9 @@ import net.therap.dms.command.InvoiceCmd;
 import net.therap.dms.editor.FacilityEditor;
 import net.therap.dms.entity.Action;
 import net.therap.dms.entity.Facility;
+import net.therap.dms.helper.InvoiceHelper;
 import net.therap.dms.service.AccessManager;
 import net.therap.dms.service.FacilityService;
-import net.therap.dms.util.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import static java.util.Objects.isNull;
 import static net.therap.dms.constant.URL.*;
 import static net.therap.dms.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.dms.entity.Action.*;
+import static net.therap.dms.util.WebUtil.redirect;
 
 /**
  * @author khandaker.maruf
@@ -47,6 +47,9 @@ public class FacilityItemController {
     @Autowired
     private AccessManager accessManager;
 
+    @Autowired
+    private InvoiceHelper invoiceHelper;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Facility.class, facilityEditor);
@@ -57,10 +60,8 @@ public class FacilityItemController {
     public String view(ModelMap model, HttpServletRequest request) {
         accessManager.checkInvoiceWriteAccess(request);
 
-        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
-
-        if (isNull(invoice) || isNull(invoice.getPatient())) {
-            return WebUtil.redirect(INVOICE_DOCTOR);
+        if (invoiceHelper.invoiceNotCreated(model)) {
+            return redirect(INVOICE_DOCTOR);
         }
 
         setUpReferenceData(VIEW, model);
@@ -78,7 +79,7 @@ public class FacilityItemController {
         accessManager.checkInvoiceWriteAccess(request);
 
         if (action.equals(NEXT)) {
-            return WebUtil.redirect(INVOICE);
+            return redirect(INVOICE);
         }
 
         if (result.hasErrors()) {
@@ -92,20 +93,24 @@ public class FacilityItemController {
         invoice.getFacilities().add(facilityItemCmd);
 
         if (action.equals(ADD)) {
-            return WebUtil.redirect(INVOICE_FACILITY);
+            return redirect(INVOICE_FACILITY);
         }
 
-        return WebUtil.redirect(INVOICE);
+        return redirect(INVOICE);
     }
 
     @GetMapping("/remove")
     public String remove(@RequestParam("id") long facilityId, ModelMap model, HttpServletRequest request) {
         accessManager.checkInvoiceWriteAccess(request);
 
+        if (invoiceHelper.invoiceNotCreated(model)) {
+            return redirect(INVOICE_DOCTOR);
+        }
+
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
         invoice.getFacilities().removeIf(facilityItem -> facilityItem.getFacility().getId() == facilityId);
 
-        return WebUtil.redirect(INVOICE_FACILITY);
+        return redirect(INVOICE_FACILITY);
     }
 
     private void setUpReferenceData(Action action, ModelMap model) {
