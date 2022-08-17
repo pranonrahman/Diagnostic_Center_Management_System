@@ -3,10 +3,10 @@ package net.therap.dms.controller.invoice;
 import net.therap.dms.command.InvoiceCmd;
 import net.therap.dms.entity.Invoice;
 import net.therap.dms.entity.User;
+import net.therap.dms.helper.InvoiceHelper;
 import net.therap.dms.service.AccessManager;
 import net.therap.dms.service.InvoiceService;
 import net.therap.dms.util.SessionUtil;
-import net.therap.dms.util.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
@@ -18,12 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Objects.isNull;
 import static net.therap.dms.constant.URL.INVOICE_DOCTOR;
 import static net.therap.dms.constant.URL.SUCCESS;
 import static net.therap.dms.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.dms.entity.Action.REVIEW;
 import static net.therap.dms.entity.Action.VIEW;
+import static net.therap.dms.util.WebUtil.redirect;
 
 /**
  * @author khandaker.maruf
@@ -49,15 +49,21 @@ public class InvoiceController {
     @Autowired
     private AccessManager accessManager;
 
+    @Autowired
+    private InvoiceHelper invoiceHelper;
+
     @GetMapping
     public String view(@RequestParam(defaultValue = "0") Long id, HttpServletRequest request, ModelMap model) {
+        Invoice invoice = invoiceService.findById(id);
+        accessManager.checkInvoiceDetailsAccess(invoice, request);
+
+        if (invoiceHelper.invoiceNotCreated(model)) {
+            return redirect(INVOICE_DOCTOR);
+        }
+
         if (id == 0) {
             return review(request, model);
         }
-
-        Invoice invoice = invoiceService.findById(id);
-
-        accessManager.checkInvoiceDetailsAccess(invoice, request);
 
         setUpReferenceData(invoice, model);
 
@@ -73,13 +79,17 @@ public class InvoiceController {
         return LIST_VIEW_PAGE;
     }
 
-    @PostMapping
+    @GetMapping("/save")
     public String save(@ModelAttribute(INVOICE_CMD) InvoiceCmd invoiceCmd,
                        SessionStatus sessionStatus,
                        ModelMap model,
                        HttpServletRequest request) {
 
         accessManager.checkInvoiceWriteAccess(request);
+
+        if (invoiceHelper.invoiceNotCreated(model)) {
+            return redirect(INVOICE_DOCTOR);
+        }
 
         User user = SessionUtil.getUser(request);
         Invoice invoice = invoiceService.getInvoiceFromCmd(invoiceCmd, user.getReceptionist());
@@ -94,24 +104,14 @@ public class InvoiceController {
 
         sessionStatus.setComplete();
 
-        return WebUtil.redirect(SUCCESS);
+        return redirect(SUCCESS);
     }
 
     private String review(HttpServletRequest request, ModelMap model) {
-        if (noInvoiceGenerated(model)) {
-            return WebUtil.redirect(INVOICE_DOCTOR);
-        }
-
         InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
         setUpReferenceData(invoice, model, request);
 
         return VIEW_PAGE;
-    }
-
-    private boolean noInvoiceGenerated(ModelMap model) {
-        InvoiceCmd invoice = (InvoiceCmd) model.get(INVOICE_CMD);
-
-        return isNull(invoice) || isNull(invoice.getPatient());
     }
 
     private void setUpReferenceData(Invoice invoice, ModelMap model) {

@@ -87,11 +87,9 @@
                             <fmt:message key="button.label.previous"/>
                         </a>
 
-                        <form:form method="post" cssClass="d-inline-block">
-                            <button class="btn btn-primary" type="submit">
-                                <fmt:message key="button.label.createInvoice"/>
-                            </button>
-                        </form:form>
+                        <a href="<c:url value="/invoice/save"/>" class="btn btn-primary">
+                            <fmt:message key="button.label.createInvoice"/>
+                        </a>
                     </div>
 
                 </c:otherwise>
