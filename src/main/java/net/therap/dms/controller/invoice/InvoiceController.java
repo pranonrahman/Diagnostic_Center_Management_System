@@ -54,9 +54,6 @@ public class InvoiceController {
 
     @GetMapping
     public String view(@RequestParam(defaultValue = "0") Long id, HttpServletRequest request, ModelMap model) {
-        Invoice invoice = invoiceService.findById(id);
-        accessManager.checkInvoiceDetailsAccess(invoice, request);
-
         if (invoiceHelper.invoiceNotCreated(model)) {
             return redirect(INVOICE_DOCTOR);
         }
@@ -64,6 +61,9 @@ public class InvoiceController {
         if (id == 0) {
             return review(request, model);
         }
+
+        Invoice invoice = invoiceService.findById(id);
+        accessManager.checkInvoiceDetailsAccess(invoice, request);
 
         setUpReferenceData(invoice, model);
 
@@ -80,7 +80,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/save")
-    public String save(@ModelAttribute(INVOICE_CMD) InvoiceCmd invoiceCmd,
+    public String save(@SessionAttribute(INVOICE_CMD) InvoiceCmd invoiceCmd,
                        SessionStatus sessionStatus,
                        ModelMap model,
                        HttpServletRequest request) {
