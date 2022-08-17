@@ -103,29 +103,29 @@
                 </thead>
 
                 <tbody>
-                <c:forEach items="${invoice.facilities}" var="item" varStatus="loop">
-                    <p class="card-text">
-                        <tr>
-                            <th scope="row">${loop.index + 1}</th>
-                            <td><c:out value="${item.facility.name}"/></td>
-                            <td><c:out value="${item.facility.price}"/></td>
-                            <td><c:out value="${item.quantity}"/></td>
-                            <td><c:out value="${item.facility.price * item.quantity}"/></td>
-                            <td>
-                                <c:url var="facilityRemoveUrl" value="/invoice/facility/remove">
-                                    <c:param name="id" value="${item.facility.id}"/>
-                                </c:url>
+                    <c:forEach items="${invoice.facilities}" var="item" varStatus="loop">
+                        <p class="card-text">
+                            <tr>
+                                <th scope="row">${loop.index + 1}</th>
+                                <td><c:out value="${item.facility.name}"/></td>
+                                <td><c:out value="${item.facility.price}"/></td>
+                                <td><c:out value="${item.quantity}"/></td>
+                                <td><c:out value="${item.facility.price * item.quantity}"/></td>
+                                <td>
+                                    <c:url var="facilityRemoveUrl" value="/invoice/facility/remove">
+                                        <c:param name="id" value="${item.facility.id}"/>
+                                    </c:url>
 
-                                <a href="${facilityRemoveUrl}" class="btn btn-primary flex-grow-1 mx-3">
-                                    <fmt:message key="button.label.remove"/>
-                                </a>
-                            </td>
-                        </tr>
-                    </p>
-                </c:forEach>
-
+                                    <a href="${facilityRemoveUrl}" class="btn btn-primary flex-grow-1 mx-3">
+                                        <fmt:message key="button.label.remove"/>
+                                    </a>
+                                </td>
+                            </tr>
+                        </p>
+                    </c:forEach>
                 </tbody>
             </table>
+
         </div>
     </c:if>
 
