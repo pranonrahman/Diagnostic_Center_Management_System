@@ -1,5 +1,6 @@
 package net.therap.dms.service;
 
+import net.therap.dms.entity.Action;
 import net.therap.dms.entity.Invoice;
 import net.therap.dms.entity.Prescription;
 import net.therap.dms.entity.User;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static net.therap.dms.entity.Action.DELETE;
 import static net.therap.dms.util.SessionUtil.getUser;
 import static net.therap.dms.util.SessionUtil.isLoggedInUser;
 
@@ -51,16 +53,14 @@ public class AccessManager {
         }
     }
 
-    public void checkUserDeleteAccess(User user, HttpServletRequest request) {
-        if(isLoggedInUser(user, request)) {
-            throw new InsufficientAccessException();
-        }
-    }
-
-    public void checkUserAccess(HttpServletRequest request) {
+    public void checkUserAccess(HttpServletRequest request, Action action) {
         User sessionUser = getUser(request);
 
         if (!sessionUser.hasAdminRole()) {
+            throw new InsufficientAccessException();
+        }
+
+        if(DELETE.equals(action) && isLoggedInUser(sessionUser, request)) {
             throw new InsufficientAccessException();
         }
     }

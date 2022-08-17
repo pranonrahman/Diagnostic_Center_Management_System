@@ -159,20 +159,26 @@
             </c:if>
 
             <div class="mb-3">
-                <button type="submit"
-                        class="btn btn-primary w-100"
-                        name="action"
-                        value="SAVE">
+                <c:choose>
+                    <c:when test="${userData.isNew()}">
+                        <button type="submit"
+                                class="btn btn-primary w-100"
+                                name="action"
+                                value="SAVE">
 
-                    <c:choose>
-                        <c:when test="${userData.isNew()}">
                             <fmt:message key="user.form.submit"/>
-                        </c:when>
-                        <c:otherwise>
+                        </button>
+                    </c:when>
+                    <c:otherwise>
+                        <button type="submit"
+                                class="btn btn-primary w-100"
+                                name="action"
+                                value="UPDATE">
+
                             <fmt:message key="user.form.update"/>
-                        </c:otherwise>
-                    </c:choose>
-                </button>
+                        </button>
+                    </c:otherwise>
+                </c:choose>
             </div>
 
             <c:if test="${isDeletable}">
