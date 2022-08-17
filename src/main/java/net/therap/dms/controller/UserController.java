@@ -5,12 +5,10 @@ import net.therap.dms.entity.*;
 import net.therap.dms.service.AccessManager;
 import net.therap.dms.service.RoleService;
 import net.therap.dms.service.UserService;
-import net.therap.dms.util.WebUtil;
-import net.therap.dms.validationGroup.UserValidationGroup;
+import net.therap.dms.validation.UserValidationGroup;
 import net.therap.dms.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -18,15 +16,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
-import static net.therap.dms.entity.Action.SAVE;
-import static net.therap.dms.entity.Action.VIEW;
-import static net.therap.dms.util.SessionUtil.getUser;
+import static net.therap.dms.controller.UserController.USER_DATA;
+import static net.therap.dms.entity.Action.*;
 import static net.therap.dms.util.SessionUtil.isLoggedInUser;
+import static net.therap.dms.util.WebUtil.redirect;
 
 /**
  * @author raian.rahman
@@ -34,15 +31,15 @@ import static net.therap.dms.util.SessionUtil.isLoggedInUser;
  */
 @Controller
 @RequestMapping("/user")
+@SessionAttributes({USER_DATA})
 public class UserController {
+
+    public static final String USER_DATA = "userData";
 
     private static final String USER_CMD = "user";
     private static final String FORM_PAGE = "user/form";
     private static final String LIST_PAGE = "user/list";
-    private static final String SUCCESS_REDIRECT_PATH = WebUtil.redirect("/success");
-
-    @Autowired
-    private DateEditor dateEditor;
+    private static final String SUCCESS = "/success";
 
     @Autowired
     private RoleEditor roleEditor;
@@ -69,18 +66,11 @@ public class UserController {
     private DoctorEditor doctorEditor;
 
     @Autowired
-    private MessageSourceAccessor msa;
-
-    @Autowired
     private AccessManager accessManager;
 
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
-        webDataBinder.registerCustomEditor(Date.class, dateEditor);
-    }
-
-    @InitBinder({"userData", "user"})
-    private void userInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.registerCustomEditor(Date.class, new DateEditor());
         webDataBinder.registerCustomEditor(Role.class, roleEditor);
         webDataBinder.registerCustomEditor(Admin.class, adminEditor);
         webDataBinder.registerCustomEditor(Receptionist.class, receptionistEditor);
@@ -97,7 +87,9 @@ public class UserController {
 
         accessManager.checkUserAccess(request);
 
-        setupReferenceData(id, SAVE, request, model);
+        User user = id == 0 ? new User() : userService.findById(id);
+
+        setupReferenceData(user, SAVE, request, model);
 
         return FORM_PAGE;
     }
@@ -105,35 +97,37 @@ public class UserController {
     @PostMapping
     public String process(@Validated(UserValidationGroup.class) @ModelAttribute("userData") User user,
                           BindingResult result,
+                          @RequestParam("action") Action action,
                           ModelMap model,
-                          RedirectAttributes redirectAttributes,
                           HttpServletRequest request,
                           SessionStatus sessionStatus) {
 
         accessManager.checkUserAccess(request);
 
-        setupReferenceData(user.getId(), VIEW, request, model);
+        setupReferenceData(user, VIEW, request, model);
 
         if (result.hasErrors()) {
             return FORM_PAGE;
         }
 
-        user = userService.saveOrUpdate(user);
+        if(DELETE.equals(action)) {
+            accessManager.checkUserDeleteAccess(user, request);
+
+            userService.delete(user);
+        } else {
+            user = userService.saveOrUpdate(user);
+
+            if (isLoggedInUser(user, request)) {
+                model.replace(USER_CMD, user);
+            }
+        }
 
         sessionStatus.setComplete();
 
-        User sessionUser = getUser(request);
-
-        if (sessionUser.getUserName().equals(user.getUserName())) {
-            model.replace(USER_CMD, user);
-        }
-
-        redirectAttributes.addAttribute("id", user.getId());
-
-        return SUCCESS_REDIRECT_PATH;
+        return redirect(SUCCESS);
     }
 
-    @RequestMapping("/list")
+    @GetMapping("/list")
     public String showList(@RequestParam(value = "filterBy", required = false) String filterBy,
                            ModelMap model,
                            HttpServletRequest request) {
@@ -145,41 +139,22 @@ public class UserController {
         return LIST_PAGE;
     }
 
-    @RequestMapping(value = "/delete")
-    public String deleteUser(@RequestParam(value = "id", defaultValue = "0") long id,
-                             HttpServletRequest request) throws RuntimeException {
-
-        accessManager.checkUserAccess(request);
-
-        User user = userService.findById(id);
-
-        if (isLoggedInUser(user, request)) {
-            throw new RuntimeException(msa.getMessage("user.selfDelete.message"));
-        }
-
-        userService.delete(user);
-
-        return SUCCESS_REDIRECT_PATH;
-    }
-
     private void setupReferenceDataForList(String filterBy, ModelMap model) {
         model.put("users", userService.findAll(filterBy));
     }
 
-    private void setupReferenceData(long id,
+    private void setupReferenceData(User user,
                                     Action action,
                                     HttpServletRequest request,
                                     ModelMap model) {
-
-        User user = id == 0 ? new User() : userService.findById(id);
 
         model.put("genderList", Gender.values());
         model.put("seedRoleList", roleService.findAll());
 
         if (SAVE.equals(action)) {
-            model.put("userData", user);
+            model.put(USER_DATA, user);
         }
 
-        model.put("isDeletable", id != 0 && !isLoggedInUser(user, request));
+        model.put("isDeletable", !user.isNew() && !isLoggedInUser(user, request));
     }
 }

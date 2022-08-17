@@ -31,36 +31,6 @@
         <form:form method="POST" modelAttribute="userData">
 
             <div class="mb-3">
-                <form:input hidden="hidden"
-                            path="id"
-                            type="text"
-                            value="${userData.id}"
-                            cssClass="form-control"/>
-
-                <form:input hidden="hidden"
-                            path="doctor"
-                            type="text"
-                            value="${userData.doctor.id}"
-                            cssClass="form-control"/>
-
-                <form:input hidden="hidden"
-                            path="patient"
-                            type="text"
-                            value="${userData.patient.id}"
-                            cssClass="form-control"/>
-
-                <form:input hidden="hidden"
-                            path="receptionist"
-                            type="text"
-                            value="${userData.receptionist.id}"
-                            cssClass="form-control"/>
-
-                <form:input hidden="hidden"
-                            path="admin"
-                            type="text"
-                            value="${userData.admin.id}"
-                            cssClass="form-control"/>
-
                 <c:set var="existingUser" scope="page" value="${not userData.isNew()}"/>
 
                 <form:label path="userName" cssClass="form-label">
@@ -188,29 +158,34 @@
                 </div>
             </c:if>
 
-            <button type="submit" value="submit" class="btn btn-primary w-100">
-                <c:choose>
-                    <c:when test="${existingUser}">
-                        <fmt:message key="user.form.update"/>
-                    </c:when>
-
-                    <c:otherwise>
-                        <fmt:message key="user.form.submit"/>
-                    </c:otherwise>
-                </c:choose>
-            </button>
-        </form:form>
-
-        <c:if test="${isDeletable}">
             <div class="mb-3">
-                <c:url var="deleteUrl" value="/user/delete">
-                    <c:param name="id" value="${user.id}"/>
-                </c:url>
-                <a href="${deleteUrl}" class="btn btn-danger w-100">
-                    <fmt:message key="user.form.delete"/>
-                </a>
+                <button type="submit"
+                        class="btn btn-primary w-100"
+                        name="action"
+                        value="SAVE">
+
+                    <c:choose>
+                        <c:when test="${userData.isNew()}">
+                            <fmt:message key="user.form.submit"/>
+                        </c:when>
+                        <c:otherwise>
+                            <fmt:message key="user.form.update"/>
+                        </c:otherwise>
+                    </c:choose>
+                </button>
             </div>
-        </c:if>
+
+            <c:if test="${isDeletable}">
+                <div class="mb-3">
+                    <button type="submit"
+                            class="btn btn-danger w-100"
+                            name="action"
+                            value="DELETE">
+                        <fmt:message key="user.form.delete"/>
+                    </button>
+                </div>
+            </c:if>
+        </form:form>
     </div>
 </div>
 </body>

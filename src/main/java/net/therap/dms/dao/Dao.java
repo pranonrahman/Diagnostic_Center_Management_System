@@ -37,6 +37,6 @@ public class Dao<T extends Persistent> {
     }
 
     public void delete(T object) {
-        em.remove(object);
+        em.remove(em.contains(object) ? object : em.merge(object));
     }
 }

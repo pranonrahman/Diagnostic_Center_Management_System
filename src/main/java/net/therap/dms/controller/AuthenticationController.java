@@ -4,7 +4,7 @@ import net.therap.dms.editor.RoleEditor;
 import net.therap.dms.entity.Role;
 import net.therap.dms.entity.User;
 import net.therap.dms.service.UserService;
-import net.therap.dms.validationGroup.UserAuthenticationGroup;
+import net.therap.dms.validation.UserAuthenticationGroup;
 import net.therap.dms.validator.AuthenticationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;

@@ -101,7 +101,7 @@ public class PrescriptionController {
     private void setupReferenceDataForView(Prescription prescription,
                                            ModelMap model,
                                            HttpServletRequest request) {
-        
+
         model.put("facilities", facilityService.findAll());
         model.put(PRESCRIPTION_CMD, isNull(prescription) ? new Prescription() : prescription);
         model.put("readonly", !doctorHelper.hasPrescription(prescription, request));
