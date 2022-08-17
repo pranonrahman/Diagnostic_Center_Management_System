@@ -10,7 +10,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static java.util.Objects.nonNull;
 
@@ -60,12 +62,11 @@ public class User extends Persistent {
     @Size(min = 3, max = 255, message = "{password.size}", groups = {UserAuthenticationGroup.class, UserValidationGroup.class})
     private String password;
 
-    @ManyToMany(cascade = {CascadeType.MERGE},
-            fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private Set<Role> roles;
+    private List<Role> roles;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     @PrimaryKeyJoinColumn
@@ -84,7 +85,7 @@ public class User extends Persistent {
     private Receptionist receptionist;
 
     public User() {
-        roles = new HashSet<>();
+        roles = new ArrayList<>();
     }
 
     public int getAge() {
