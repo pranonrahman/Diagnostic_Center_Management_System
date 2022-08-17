@@ -32,23 +32,14 @@ import static net.therap.dms.util.WebUtil.redirect;
 @SessionAttributes(PRESCRIPTION_CMD)
 public class PrescriptionController {
 
-    private static final String VIEW_PAGE = "prescription/form";
-
-    private static final String LIST_VIEW_PAGE = "prescription/list";
-
     public static final String PRESCRIPTION_CMD = "prescription";
-
+    private static final String VIEW_PAGE = "prescription/form";
+    private static final String LIST_VIEW_PAGE = "prescription/list";
     @Autowired
     private FacilityService facilityService;
 
     @Autowired
-    private DoctorService doctorService;
-
-    @Autowired
     private PrescriptionService prescriptionService;
-
-    @Autowired
-    private PatientService patientService;
 
     @Autowired
     private FacilityEditor facilityEditor;
@@ -108,8 +99,7 @@ public class PrescriptionController {
     private void setupReferenceDataForView(Prescription prescription,
                                            ModelMap model,
                                            HttpServletRequest request) {
-        User user = getUser(request);
-
+        
         model.put("facilities", facilityService.findAll());
         model.put(PRESCRIPTION_CMD, isNull(prescription) ? new Prescription() : prescription);
         model.put("readonly", !doctorHelper.hasPrescription(prescription, request));

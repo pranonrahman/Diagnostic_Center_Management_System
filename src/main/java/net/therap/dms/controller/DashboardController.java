@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 8/11/22
  */
 @Controller
-@RequestMapping({"/","/home"})
+@RequestMapping({"/", "/home"})
 public class DashboardController {
 
     private static final String VIEW_PAGE = "dashboard";
