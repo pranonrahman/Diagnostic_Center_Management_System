@@ -5,14 +5,11 @@ import net.therap.dms.entity.Prescription;
 import net.therap.dms.entity.User;
 import net.therap.dms.exception.InsufficientAccessException;
 import net.therap.dms.helper.DoctorHelper;
-import net.therap.dms.util.RoleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static net.therap.dms.entity.RoleEnum.*;
-import static net.therap.dms.util.RoleUtil.hasRole;
 import static net.therap.dms.util.SessionUtil.getUser;
 import static net.therap.dms.util.SessionUtil.isLoggedInUser;
 
@@ -27,10 +24,10 @@ public class AccessManager {
     private DoctorHelper doctorHelper;
 
     public void checkInvoiceListAccess(long patientId, HttpServletRequest request) {
-        User user = getUser(request);
+        User sessionUser = getUser(request);
 
-        if (!(RoleUtil.hasRole(user, RECEPTIONIST)
-                || (RoleUtil.hasRole(user, PATIENT) && user.getId() == patientId))) {
+        if (!(sessionUser.hasReceptionistRole()
+                || (sessionUser.hasPatientRole() && sessionUser.getId() == patientId))) {
 
             throw new InsufficientAccessException();
         }
@@ -39,8 +36,8 @@ public class AccessManager {
     public void checkInvoiceDetailsAccess(Invoice invoice, HttpServletRequest request) {
         User sessionUser = getUser(request);
 
-        if (!(hasRole(sessionUser, RECEPTIONIST) ||
-                (hasRole(sessionUser, PATIENT) && invoice.getPatient().getId() == sessionUser.getId()))) {
+        if (!(sessionUser.hasReceptionistRole() ||
+                (sessionUser.hasPatientRole() && invoice.getPatient().getId() == sessionUser.getId()))) {
 
             throw new InsufficientAccessException();
         }
@@ -49,7 +46,7 @@ public class AccessManager {
     public void checkInvoiceWriteAccess(HttpServletRequest request) {
         User sessionUser = getUser(request);
 
-        if (!hasRole(sessionUser, RECEPTIONIST)) {
+        if (!sessionUser.hasReceptionistRole()) {
             throw new InsufficientAccessException();
         }
     }
@@ -63,7 +60,7 @@ public class AccessManager {
     public void checkUserAccess(HttpServletRequest request) {
         User sessionUser = getUser(request);
 
-        if (!hasRole(sessionUser, ADMIN)) {
+        if (!sessionUser.hasAdminRole()) {
             throw new InsufficientAccessException();
         }
     }
@@ -71,7 +68,7 @@ public class AccessManager {
     public void checkPatientListAccess(HttpServletRequest request) {
         User sessionUser = getUser(request);
 
-        if (!hasRole(sessionUser, DOCTOR)) {
+        if (!sessionUser.hasDoctorRole()) {
             throw new InsufficientAccessException();
         }
     }
@@ -87,7 +84,7 @@ public class AccessManager {
     public void checkPrescriptionListAccess(HttpServletRequest request) {
         User sessionUser = getUser(request);
 
-        if (!hasRole(sessionUser, PATIENT)) {
+        if (!sessionUser.hasPatientRole()) {
             throw new InsufficientAccessException();
         }
     }
@@ -95,16 +92,16 @@ public class AccessManager {
     public void checkPrescriptionViewAccess(Prescription prescription, HttpServletRequest request) {
         User sessionUser = getUser(request);
 
-        if (!hasRole(sessionUser, DOCTOR)
-                && !hasRole(sessionUser, PATIENT)) {
+        if (!sessionUser.hasDoctorRole()
+                && !sessionUser.hasPatientRole()) {
 
             throw new InsufficientAccessException();
         }
 
         long patientId = prescription.getPatient().getId();
 
-        if ((hasRole(sessionUser, PATIENT) && patientId != sessionUser.getId())
-                || (hasRole(sessionUser, DOCTOR) && !doctorHelper.hasPatient(patientId, request))) {
+        if ((sessionUser.hasPatientRole() && patientId != sessionUser.getId())
+                || (sessionUser.hasDoctorRole() && !doctorHelper.hasPatient(patientId, request))) {
 
             throw new InsufficientAccessException();
         }
