@@ -85,7 +85,7 @@ public class UserController {
                            ModelMap model,
                            HttpServletRequest request) {
 
-        accessManager.checkUserAccess(request);
+        accessManager.checkUserAccess(request, SAVE);
 
         User user = id == 0 ? new User() : userService.findById(id);
 
@@ -102,17 +102,15 @@ public class UserController {
                           HttpServletRequest request,
                           SessionStatus sessionStatus) {
 
-        accessManager.checkUserAccess(request);
-
-        setupReferenceData(user, VIEW, request, model);
+        accessManager.checkUserAccess(request, action);
 
         if (result.hasErrors()) {
+            setupReferenceData(user, VIEW, request, model);
+
             return FORM_PAGE;
         }
 
         if(DELETE.equals(action)) {
-            accessManager.checkUserDeleteAccess(user, request);
-
             userService.delete(user);
         } else {
             user = userService.saveOrUpdate(user);
@@ -132,7 +130,7 @@ public class UserController {
                            ModelMap model,
                            HttpServletRequest request) {
 
-        accessManager.checkUserAccess(request);
+        accessManager.checkUserAccess(request, VIEW);
 
         setupReferenceDataForList(filterBy, model);
 
