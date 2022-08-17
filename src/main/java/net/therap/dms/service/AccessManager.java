@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import static net.therap.dms.entity.RoleEnum.*;
 import static net.therap.dms.util.RoleUtil.hasRole;
 import static net.therap.dms.util.SessionUtil.getUser;
+import static net.therap.dms.util.SessionUtil.isLoggedInUser;
 
 /**
  * @author raian.rahman
@@ -49,6 +50,12 @@ public class AccessManager {
         User sessionUser = getUser(request);
 
         if (!hasRole(sessionUser, RECEPTIONIST)) {
+            throw new InsufficientAccessException();
+        }
+    }
+
+    public void checkUserDeleteAccess(User user, HttpServletRequest request) {
+        if(isLoggedInUser(user, request)) {
             throw new InsufficientAccessException();
         }
     }

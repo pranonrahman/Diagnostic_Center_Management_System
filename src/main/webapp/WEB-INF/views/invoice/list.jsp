@@ -47,24 +47,24 @@
                 </thead>
 
                 <tbody>
-                <c:forEach var="invoice" items="${invoices}" varStatus="loop">
-                    <tr>
-                        <th scope="row">${loop.index + 1}</th>
-                        <td class="d-inline-block text-truncate" style="max-width: 150px">
-                            <c:out value="${invoice.invoiceId}"/>
-                        </td>
-                        <td hidden="${isPatient}"><c:out value="${invoice.patient.user.name}"/></td>
-                        <td> <fmt:formatDate value="${invoice.created}"/> </td>
-                        <td> <fmt:formatNumber value="${invoice.totalCost}"/> </td>
+                    <c:forEach var="invoice" items="${invoices}" varStatus="loop">
+                        <tr>
+                            <th scope="row">${loop.index + 1}</th>
+                            <td class="d-inline-block text-truncate" style="max-width: 150px">
+                                <c:out value="${invoice.invoiceId}"/>
+                            </td>
+                            <td hidden="${isPatient}"><c:out value="${invoice.patient.user.name}"/></td>
+                            <td> <fmt:formatDate value="${invoice.created}"/> </td>
+                            <td> <fmt:formatNumber value="${invoice.totalCost}"/> </td>
 
-                        <c:url var="invoiceLink" value="/invoice">
-                            <c:param name="id" value="${invoice.id}"/>
-                        </c:url>
-                        <td>
-                            <a href="${invoiceLink}"><fmt:message key="button.label.details"/> </a>
-                        </td>
-                    </tr>
-                </c:forEach>
+                            <c:url var="invoiceLink" value="/invoice">
+                                <c:param name="id" value="${invoice.id}"/>
+                            </c:url>
+                            <td>
+                                <a href="${invoiceLink}"><fmt:message key="button.label.details"/> </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
         </c:otherwise>

@@ -2,8 +2,8 @@ package net.therap.dms.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.therap.dms.validationGroup.UserAuthenticationGroup;
-import net.therap.dms.validationGroup.UserValidationGroup;
+import net.therap.dms.validation.UserAuthenticationGroup;
+import net.therap.dms.validation.UserValidationGroup;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

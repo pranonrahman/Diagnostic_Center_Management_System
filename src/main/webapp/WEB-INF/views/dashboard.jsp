@@ -20,7 +20,7 @@
 </head>
 <body>
 <jsp:include page="header.jsp">
-    <jsp:param name="linksStatus" value="hidden"/>
+    <jsp:param name="hiddenStatus" value="hidden"/>
 </jsp:include>
 
 <div class="container-fluid bg-primary-custom h-100">
