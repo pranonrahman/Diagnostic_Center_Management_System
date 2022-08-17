@@ -14,6 +14,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static net.therap.dms.entity.RoleEnum.*;
+import static net.therap.dms.util.RoleUtil.hasRole;
+
 /**
  * @author raian.rahman
  * @since 8/1/22
@@ -91,5 +94,21 @@ public class User extends Persistent {
         Date now = new Date();
 
         return (int) ((now.getTime() - this.getDateOfBirth().getTime()) / 31536000000L);
+    }
+
+    public boolean hasDoctorRole() {
+        return hasRole(this, DOCTOR);
+    }
+
+    public boolean hasPatientRole() {
+        return hasRole(this, PATIENT);
+    }
+
+    public boolean hasReceptionistRole() {
+        return hasRole(this, RECEPTIONIST);
+    }
+
+    public boolean hasAdminRole() {
+        return hasRole(this, ADMIN);
     }
 }

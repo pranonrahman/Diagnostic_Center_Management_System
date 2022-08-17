@@ -1,8 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="net.therap.dms.entity.RoleEnum" %>
-<%@ page import="net.therap.dms.util.RoleUtil" %>
 <%--
   * @author raian.rahman
   * @since 11/08/2022
@@ -30,7 +28,7 @@
     </h2>
 
     <div class="w-50 mx-auto text-center">
-        <c:if test="${RoleUtil.hasRole(user, RoleEnum.DOCTOR)}">
+        <c:if test="${user.hasDoctorRole()}">
             <h4 class="mt-5 text-center">
                 <fmt:message key="user.role.doctor"/>
             </h4>
@@ -40,7 +38,7 @@
             </a>
         </c:if>
 
-        <c:if test="${RoleUtil.hasRole(user, RoleEnum.PATIENT)}">
+        <c:if test="${user.hasPatientRole()}">
             <h4 class="mt-5 text-center">
                 <fmt:message key="user.role.patient"/>
             </h4>
@@ -57,7 +55,7 @@
             </a>
         </c:if>
 
-        <c:if test="${RoleUtil.hasRole(user, RoleEnum.RECEPTIONIST)}">
+        <c:if test="${user.hasReceptionistRole()}">
             <h4 class="mt-5 text-center">
                 <fmt:message key="user.role.receptionist"/>
             </h4>
@@ -71,7 +69,7 @@
             </a>
         </c:if>
 
-        <c:if test="${RoleUtil.hasRole(user, RoleEnum.ADMIN)}">
+        <c:if test="${user.hasAdminRole()}">
             <h4 class="mt-5 text-center">
                 <fmt:message key="user.role.admin"/>
             </h4>
@@ -80,7 +78,7 @@
                 <fmt:message key="button.label.viewAllUsers"/>
             </a>
 
-            <a href="/user/" class="btn btn-outline-dark w-25">
+            <a href="/user" class="btn btn-outline-dark w-25">
                 <fmt:message key="navbar.link.createUser"/>
             </a>
         </c:if>

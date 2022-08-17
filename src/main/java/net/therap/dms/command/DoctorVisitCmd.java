@@ -24,6 +24,7 @@ public class DoctorVisitCmd implements Serializable {
 
     @NotNull
     private Patient patient;
+
     private Set<Doctor> doctors;
 
     public DoctorVisitCmd() {
