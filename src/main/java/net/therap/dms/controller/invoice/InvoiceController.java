@@ -6,7 +6,6 @@ import net.therap.dms.entity.User;
 import net.therap.dms.helper.InvoiceHelper;
 import net.therap.dms.service.AccessManager;
 import net.therap.dms.service.InvoiceService;
-import net.therap.dms.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
@@ -22,6 +21,7 @@ import static net.therap.dms.constant.URL.SUCCESS;
 import static net.therap.dms.controller.invoice.InvoiceController.INVOICE_CMD;
 import static net.therap.dms.entity.Action.REVIEW;
 import static net.therap.dms.entity.Action.VIEW;
+import static net.therap.dms.util.SessionUtil.getUser;
 import static net.therap.dms.util.WebUtil.redirect;
 
 /**
@@ -90,7 +90,7 @@ public class InvoiceController {
             return redirect(INVOICE_DOCTOR);
         }
 
-        User user = SessionUtil.getUser(request);
+        User user = getUser(request);
         Invoice invoice = invoiceService.getInvoiceFromCmd(invoiceCmd, user.getReceptionist());
 
         if (invoice.getParticulars().isEmpty()) {
@@ -119,7 +119,7 @@ public class InvoiceController {
     }
 
     private void setUpReferenceData(InvoiceCmd invoice, ModelMap model, HttpServletRequest request) {
-        User user = SessionUtil.getUser(request);
+        User user = getUser(request);
         invoice.setReceptionist(user.getReceptionist());
 
         model.put(INVOICE_VIEW_CMD, invoiceService.getInvoiceFromCmd(invoice, user.getReceptionist()));
@@ -127,7 +127,7 @@ public class InvoiceController {
     }
 
     private void setUpReferenceData(long patientId, ModelMap model, HttpServletRequest request) {
-        User user = SessionUtil.getUser(request);
+        User user = getUser(request);
 
         List<Invoice> invoices;
         boolean isPatient = patientId != 0 && patientId == user.getPatient().getId() ;

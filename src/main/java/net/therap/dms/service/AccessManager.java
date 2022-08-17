@@ -6,7 +6,6 @@ import net.therap.dms.entity.User;
 import net.therap.dms.exception.InsufficientAccessException;
 import net.therap.dms.helper.DoctorHelper;
 import net.therap.dms.util.RoleUtil;
-import net.therap.dms.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +26,7 @@ public class AccessManager {
     private DoctorHelper doctorHelper;
 
     public void checkInvoiceListAccess(long patientId, HttpServletRequest request) {
-        User user = SessionUtil.getUser(request);
+        User user = getUser(request);
 
         if (!(RoleUtil.hasRole(user, RECEPTIONIST)
                 || (RoleUtil.hasRole(user, PATIENT) && user.getId() == patientId))) {
