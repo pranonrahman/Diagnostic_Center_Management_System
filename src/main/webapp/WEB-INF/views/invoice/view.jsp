@@ -30,6 +30,7 @@
                 <strong> <fmt:message key="text.invoiceId"/>: </strong>
                 <c:out value="${invoiceView.invoiceId}"/>
             </p>
+
             <p class="card-title">
                 <strong> <fmt:message key="text.receivedBy"/>: </strong>
                 <c:out value="${invoiceView.receptionist.user.name}"/>

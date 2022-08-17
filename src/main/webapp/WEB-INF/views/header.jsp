@@ -15,7 +15,7 @@
         </a>
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-            <ul class="navbar-nav mx-3" ${param.linksStatus}>
+            <ul class="navbar-nav mx-3" ${param.hiddenStatus}>
 
                 <c:if test="${RoleUtil.hasRole(user, RoleEnum.DOCTOR)}">
                     <li class="nav-item">
