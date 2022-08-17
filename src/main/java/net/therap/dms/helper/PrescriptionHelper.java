@@ -14,11 +14,11 @@ import java.util.List;
 @Component
 public class PrescriptionHelper {
 
-    public List<Prescription> getPrescriptionsForPatient(Patient patient){
+    public List<Prescription> getPrescriptionsForPatient(Patient patient) {
         List<Prescription> prescriptions = patient.getPrescriptions();
 
         Collections.sort(prescriptions);
-        
+
         return prescriptions;
     }
 }

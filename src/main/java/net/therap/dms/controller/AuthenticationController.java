@@ -4,7 +4,6 @@ import net.therap.dms.editor.RoleEditor;
 import net.therap.dms.entity.Role;
 import net.therap.dms.entity.User;
 import net.therap.dms.service.UserService;
-import net.therap.dms.util.WebUtil;
 import net.therap.dms.validationGroup.UserAuthenticationGroup;
 import net.therap.dms.validator.AuthenticationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,7 @@ public class AuthenticationController {
     private static final String USER = "user";
     private static final String FORM_PAGE = "/authentication/login";
     private static final String USER_CMD = "userCmd";
+
     @Autowired
     private RoleEditor roleEditor;
 

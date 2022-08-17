@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SuccessController {
 
     @GetMapping
-    public String showSuccess(){
+    public String showSuccess() {
         return "success";
     }
 }

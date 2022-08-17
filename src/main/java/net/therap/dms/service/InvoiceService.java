@@ -24,14 +24,11 @@ import static java.util.Objects.isNull;
 public class InvoiceService {
 
     @Autowired
-    private InvoiceDao invoiceDao;
-
-    @Autowired
     ReceptionistService receptionistService;
-
     @Autowired
     ParticularService particularService;
-
+    @Autowired
+    private InvoiceDao invoiceDao;
     @Autowired
     private PrescriptionService prescriptionService;
 
@@ -63,7 +60,6 @@ public class InvoiceService {
 
         return invoiceDao.saveOrUpdate(invoice);
     }
-
 
 
     public Invoice getInvoiceFromCmd(InvoiceCmd invoiceCmd, Receptionist receptionist) {

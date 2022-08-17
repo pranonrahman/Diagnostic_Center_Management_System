@@ -26,8 +26,8 @@ public class DoctorHelper {
     public boolean hasPatient(long patientId, HttpServletRequest request) {
         Doctor doctor = doctorService.findById(getUser(request).getId());
 
-        for(Prescription prescription : doctor.getPrescriptions()) {
-            if(prescription.getPatient().getId() == patientId) {
+        for (Prescription prescription : doctor.getPrescriptions()) {
+            if (prescription.getPatient().getId() == patientId) {
 
                 return true;
             }
