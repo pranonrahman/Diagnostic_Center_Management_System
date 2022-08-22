@@ -1,29 +1,11 @@
-# README #
+# Overview
+This project was built for managing overall prescription, invoice and appointment management for a diagnostic center. This project was built with Spring boot framework and MySql was used as the db for this project. 
 
-This README would normally document whatever steps are necessary to get your application up and running.
+## Build and Run
+* Step 1: Clone this repository
+* Step 2: Execute ```./gradlew build``` from terminal to build the project. It will automatically download all the dependancies
+* Step 3: Execute ```./gradlew run``` to run the project on server
+* Step 4: Visit ```https://localhost:8083/``` to see the demo of the project.
 
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+## Modules and user roles
+Ongoing
